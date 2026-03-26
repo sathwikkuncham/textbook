@@ -149,7 +149,7 @@ export default function SettingsPage() {
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b border-border bg-card">
-        <div className="mx-auto flex max-w-2xl items-center gap-3 px-6 py-4">
+        <div className="mx-auto flex max-w-2xl items-center gap-3 px-4 py-3 md:px-6 md:py-4">
           <Button
             variant="ghost"
             size="icon-sm"
@@ -169,7 +169,7 @@ export default function SettingsPage() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-2xl px-6 py-8">
+      <main className="mx-auto max-w-2xl px-4 py-6 md:px-6 md:py-8">
         <div className="space-y-6">
           {/* Learning Preferences */}
           <section className="rounded-lg border border-border bg-card p-6">

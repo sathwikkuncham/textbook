@@ -6,15 +6,19 @@ import { useKeyboardShortcuts } from "@/hooks/use-keyboard-shortcuts";
 import { useLearningState } from "@/hooks/use-learning-state";
 import { useProgress } from "@/hooks/use-progress";
 import { useAssessment } from "@/hooks/use-assessment";
+import { useMobile } from "@/hooks/use-mobile";
 import { TopBar } from "./top-bar";
 import { StatusBar } from "./status-bar";
 import { PanelLayout } from "./panel-layout";
+import { MobileWorkspace } from "./mobile-workspace";
 
 interface WorkspaceShellProps {
   topicSlug: string;
 }
 
 export function WorkspaceShell({ topicSlug }: WorkspaceShellProps) {
+  const { isMobile } = useMobile();
+
   const {
     leftSidebarOpen,
     rightSidebarOpen,
@@ -75,7 +79,7 @@ export function WorkspaceShell({ topicSlug }: WorkspaceShellProps) {
   }, [topicSlug]);
 
   return (
-    <div className="flex h-screen w-screen flex-col overflow-hidden">
+    <div className="flex h-dvh w-screen flex-col overflow-hidden">
       <TopBar
         phase={learning.phase}
         topic={learning.topic}
@@ -83,23 +87,34 @@ export function WorkspaceShell({ topicSlug }: WorkspaceShellProps) {
         isLoading={learning.isLoading}
         completionPercent={progress.completionPercent}
       />
-      <PanelLayout
-        leftSidebarOpen={leftSidebarOpen}
-        rightSidebarOpen={rightSidebarOpen}
-        onLeftSidebarOpenChange={setLeftSidebarOpen}
-        onRightSidebarOpenChange={setRightSidebarOpen}
-        learning={learning}
-        activeModule={activeModule}
-        progress={progress}
-        assessment={assessment}
-      />
-      <StatusBar
-        activeModuleTitle={activeModule?.title ?? null}
-        phase={learning.phase}
-        completionPercent={progress.completionPercent}
-        reviewsDueCount={progress.reviewsDueCount}
-        onReviewsClick={handleReviewsClick}
-      />
+      {isMobile ? (
+        <MobileWorkspace
+          learning={learning}
+          activeModule={activeModule}
+          progress={progress}
+          assessment={assessment}
+        />
+      ) : (
+        <>
+          <PanelLayout
+            leftSidebarOpen={leftSidebarOpen}
+            rightSidebarOpen={rightSidebarOpen}
+            onLeftSidebarOpenChange={setLeftSidebarOpen}
+            onRightSidebarOpenChange={setRightSidebarOpen}
+            learning={learning}
+            activeModule={activeModule}
+            progress={progress}
+            assessment={assessment}
+          />
+          <StatusBar
+            activeModuleTitle={activeModule?.title ?? null}
+            phase={learning.phase}
+            completionPercent={progress.completionPercent}
+            reviewsDueCount={progress.reviewsDueCount}
+            onReviewsClick={handleReviewsClick}
+          />
+        </>
+      )}
     </div>
   );
 }

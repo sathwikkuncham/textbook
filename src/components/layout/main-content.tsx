@@ -75,7 +75,7 @@ export function MainContent({
   if (quizContent) {
     return (
       <ScrollArea className="h-full">
-        <div className="mx-auto max-w-3xl px-8 py-6">{quizContent}</div>
+        <div className="mx-auto max-w-3xl px-4 py-4 md:px-8 md:py-6">{quizContent}</div>
       </ScrollArea>
     );
   }
@@ -96,17 +96,17 @@ export function MainContent({
           onAction={(action, text) => onTextSelectionAction(action, text)}
         />
       )}
-      <article ref={articleRef} className="mx-auto max-w-3xl px-8 py-6">
+      <article ref={articleRef} className="mx-auto max-w-3xl px-4 py-4 md:px-8 md:py-6">
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
           components={{
             h1: ({ children }) => (
-              <h1 className="mb-6 border-b border-border pb-3 font-serif text-2xl font-bold text-foreground">
+              <h1 className="mb-6 border-b border-border pb-3 font-serif text-xl font-bold text-foreground md:text-2xl">
                 {children}
               </h1>
             ),
             h2: ({ children }) => (
-              <h2 className="mb-4 mt-10 border-b border-border/50 pb-2 font-serif text-xl font-semibold text-foreground">
+              <h2 className="mb-4 mt-10 border-b border-border/50 pb-2 font-serif text-lg font-semibold text-foreground md:text-xl">
                 {children}
               </h2>
             ),

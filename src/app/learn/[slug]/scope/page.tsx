@@ -221,9 +221,9 @@ export default function ScopeReviewPage() {
   }
 
   return (
-    <div className="flex h-screen flex-col overflow-hidden bg-background">
+    <div className="flex h-dvh flex-col overflow-hidden bg-background">
       <header className="shrink-0 border-b border-border bg-card">
-        <div className="mx-auto flex max-w-4xl items-center gap-3 px-6 py-4">
+        <div className="mx-auto flex max-w-4xl items-center gap-3 px-4 py-3 md:px-6 md:py-4">
           <Button
             variant="ghost"
             size="icon-sm"
@@ -246,7 +246,7 @@ export default function ScopeReviewPage() {
         </div>
       </header>
 
-      <main className="mx-auto flex w-full max-w-4xl flex-1 flex-col overflow-hidden px-6 py-4">
+      <main className="mx-auto flex w-full max-w-4xl flex-1 flex-col overflow-hidden px-4 py-3 md:px-6 md:py-4">
         <div className="mb-3 flex shrink-0 items-center justify-between">
           <div>
             <h2 className="font-serif text-base font-semibold text-foreground">

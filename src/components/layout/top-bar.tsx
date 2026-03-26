@@ -32,7 +32,7 @@ export function TopBar({
   return (
     <div
       data-slot="top-bar"
-      className="flex h-12 shrink-0 items-center border-b border-border bg-card px-4"
+      className="flex h-12 shrink-0 items-center border-b border-border bg-card px-2 md:px-4"
     >
       <Tooltip>
         <TooltipTrigger asChild>
@@ -47,21 +47,21 @@ export function TopBar({
         <TooltipContent>Back to topics</TooltipContent>
       </Tooltip>
 
-      <div className="ml-2 flex items-center gap-2">
-        <BookOpen className="size-5 text-primary" />
-        <span className="font-serif text-sm font-semibold text-card-foreground">
+      <div className="ml-1.5 flex min-w-0 items-center gap-1.5 md:ml-2 md:gap-2">
+        <BookOpen className="size-4 shrink-0 text-primary md:size-5" />
+        <span className="truncate font-serif text-sm font-semibold text-card-foreground">
           {topic ?? "Loading..."}
         </span>
       </div>
 
       {isLoading && (
-        <Loader2 className="ml-3 size-4 animate-spin text-primary" />
+        <Loader2 className="ml-2 size-4 shrink-0 animate-spin text-primary md:ml-3" />
       )}
 
-      <div className="ml-6 flex items-center gap-2">
-        <span className="text-xs text-muted-foreground">Progress</span>
-        <Progress value={completionPercent} className="w-32" />
-        <span className="text-xs text-muted-foreground">
+      <div className="ml-2 flex items-center gap-1.5 md:ml-6 md:gap-2">
+        <span className="hidden text-xs text-muted-foreground md:inline">Progress</span>
+        <Progress value={completionPercent} className="w-16 md:w-32" />
+        <span className="text-xs tabular-nums text-muted-foreground">
           {completionPercent}%
         </span>
       </div>
