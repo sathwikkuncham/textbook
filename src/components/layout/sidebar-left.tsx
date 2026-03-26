@@ -227,23 +227,23 @@ export function SidebarLeft({
                               onSubtopicClick(module.id, subtopic.id)
                             }
                             className={cn(
-                              "flex w-full items-center gap-2 overflow-hidden rounded-md px-2.5 py-2 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50",
+                              "flex w-full items-start gap-2 overflow-hidden rounded-md px-2.5 py-2 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50",
                               isSubActive
                                 ? "bg-primary/10 text-foreground font-medium"
                                 : "text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
                             )}
                           >
                             {isCompleted ? (
-                              <CheckCircle2 className="size-4 shrink-0 text-green-600 dark:text-green-400" />
+                              <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-green-600 dark:text-green-400" />
                             ) : isSubActive && isLoading ? (
-                              <Loader2 className="size-4 shrink-0 animate-spin text-primary" />
+                              <Loader2 className="mt-0.5 size-4 shrink-0 animate-spin text-primary" />
                             ) : (
-                              <Circle className="size-4 shrink-0 text-muted-foreground/30" />
+                              <Circle className="mt-0.5 size-4 shrink-0 text-muted-foreground/30" />
                             )}
-                            <span className="min-w-0 flex-1 truncate text-sm">
+                            <span className="min-w-0 flex-1 text-sm">
                               {subtopic.title}
                             </span>
-                            <span className="shrink-0 text-xs tabular-nums text-muted-foreground">
+                            <span className="mt-0.5 shrink-0 text-xs tabular-nums text-muted-foreground">
                               {subtopic.estimated_minutes}m
                             </span>
                           </button>
