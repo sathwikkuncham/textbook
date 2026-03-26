@@ -103,7 +103,7 @@ export function SidebarLeft({
       </div>
 
       {/* Module list */}
-      <ScrollArea className="min-h-0 flex-1">
+      <ScrollArea className="min-h-0 flex-1 [&_[data-slot=scroll-area-viewport]>div]:!block">
         <nav className="space-y-2 p-3">
           {curriculum.modules.map((module) => {
             const isExpanded = expandedModules.has(module.id);
