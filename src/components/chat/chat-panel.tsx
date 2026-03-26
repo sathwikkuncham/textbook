@@ -228,9 +228,9 @@ export function ChatPanel({
             className="flex-1 resize-none rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:opacity-50"
           />
           <Button
-            size="icon"
             onClick={handleSend}
             disabled={!inputValue.trim() || isStreaming || isDisabled}
+            className="h-auto shrink-0 px-3 py-2"
           >
             {isStreaming ? (
               <Loader2 className="size-4 animate-spin" />
