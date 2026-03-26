@@ -16,13 +16,18 @@ export function useSwipe<T extends HTMLElement = HTMLDivElement>({
   const ref = useRef<T | null>(null);
   const startX = useRef(0);
   const startY = useRef(0);
+  const tracking = useRef(false);
 
   const handleTouchStart = useCallback(
     (e: TouchEvent) => {
       if (!enabled) return;
       // Ignore swipes that originate inside a modal/popup overlay
       const target = e.target as HTMLElement;
-      if (target.closest(".fixed, [role=dialog]")) return;
+      if (target.closest(".fixed, [role=dialog]")) {
+        tracking.current = false;
+        return;
+      }
+      tracking.current = true;
       startX.current = e.touches[0].clientX;
       startY.current = e.touches[0].clientY;
     },
@@ -31,7 +36,8 @@ export function useSwipe<T extends HTMLElement = HTMLDivElement>({
 
   const handleTouchEnd = useCallback(
     (e: TouchEvent) => {
-      if (!enabled) return;
+      if (!enabled || !tracking.current) return;
+      tracking.current = false;
       const endX = e.changedTouches[0].clientX;
       const endY = e.changedTouches[0].clientY;
       const deltaX = endX - startX.current;
