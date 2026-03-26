@@ -102,7 +102,8 @@ export function MermaidDiagram({ chart, caption }: MermaidDiagramProps) {
 
         const sanitized = chart
           .replace(/<br\s*\/?>/gi, "\\n")
-          .replace(/<[^>]+>/g, "");
+          .replace(/<[^>]+>/g, "")
+          .replace(/`/g, "'");
 
         const { svg: renderedSvg } = await mermaid.render(id, sanitized);
         if (!cancelled) {
