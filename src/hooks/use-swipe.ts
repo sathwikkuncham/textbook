@@ -20,6 +20,9 @@ export function useSwipe<T extends HTMLElement = HTMLDivElement>({
   const handleTouchStart = useCallback(
     (e: TouchEvent) => {
       if (!enabled) return;
+      // Ignore swipes that originate inside a modal/popup overlay
+      const target = e.target as HTMLElement;
+      if (target.closest(".fixed, [role=dialog]")) return;
       startX.current = e.touches[0].clientX;
       startY.current = e.touches[0].clientY;
     },
