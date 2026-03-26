@@ -32,7 +32,6 @@ export function MobileWorkspace({
     selectedText: string;
   } | null>(null);
 
-  // Switch to learn tab when subtopic is selected from contents
   const handleSubtopicNavigate = useCallback(
     (moduleId: number, subtopicId: string) => {
       learning.navigateToSubtopic(moduleId, subtopicId);
@@ -41,7 +40,6 @@ export function MobileWorkspace({
     [learning]
   );
 
-  // Text selection → chat handoff
   const handleTextSelectionAction = useCallback(
     (action: string, selectedText: string) => {
       setPendingAction({ action, selectedText });
@@ -54,7 +52,6 @@ export function MobileWorkspace({
     setPendingAction(null);
   }, []);
 
-  // Swipe gestures — only on learn tab
   const { ref: swipeRef } = useSwipe<HTMLDivElement>({
     onSwipeRight: () => setActiveTab("contents"),
     onSwipeLeft: () => setActiveTab("chat"),
@@ -110,18 +107,10 @@ export function MobileWorkspace({
       : undefined;
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col">
-      {/* Panels — all mounted, visibility toggled */}
-      <div ref={swipeRef} className="relative min-h-0 flex-1">
-        {/* Contents panel */}
-        <div
-          className={cn(
-            "absolute inset-0 transition-transform duration-200 ease-out",
-            activeTab === "contents"
-              ? "translate-x-0"
-              : "-translate-x-full"
-          )}
-        >
+    <div ref={swipeRef} className="flex min-h-0 flex-1 flex-col overflow-hidden">
+      {/* Panels — all mounted, active one visible via display */}
+      <div className={cn("min-h-0 flex-1", activeTab !== "contents" && "hidden")}>
+        <div className="h-full">
           <SidebarLeft
             curriculum={learning.curriculum}
             activeModuleId={learning.activeModuleId}
@@ -138,18 +127,10 @@ export function MobileWorkspace({
             }}
           />
         </div>
+      </div>
 
-        {/* Learn panel */}
-        <div
-          className={cn(
-            "absolute inset-0 transition-transform duration-200 ease-out",
-            activeTab === "learn"
-              ? "translate-x-0"
-              : activeTab === "contents"
-                ? "translate-x-full"
-                : "-translate-x-full"
-          )}
-        >
+      <div className={cn("min-h-0 flex-1", activeTab !== "learn" && "hidden")}>
+        <div className="h-full">
           <MainContent
             phase={learning.phase}
             content={learning.moduleContent}
@@ -160,16 +141,10 @@ export function MobileWorkspace({
             quizContent={quizContent}
           />
         </div>
+      </div>
 
-        {/* Chat panel */}
-        <div
-          className={cn(
-            "absolute inset-0 transition-transform duration-200 ease-out",
-            activeTab === "chat"
-              ? "translate-x-0"
-              : "translate-x-full"
-          )}
-        >
+      <div className={cn("min-h-0 flex-1", activeTab !== "chat" && "hidden")}>
+        <div className="h-full">
           <ChatPanel
             topicId={learning.topicId}
             topic={learning.topic}
@@ -182,7 +157,6 @@ export function MobileWorkspace({
         </div>
       </div>
 
-      {/* Bottom navigation */}
       <BottomNav
         activeTab={activeTab}
         onTabChange={setActiveTab}
