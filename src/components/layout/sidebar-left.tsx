@@ -62,11 +62,11 @@ export function SidebarLeft({
 
   if (!curriculum) {
     return (
-      <div className="flex h-full flex-col bg-sidebar">
+      <div className="flex h-full flex-col overflow-hidden bg-sidebar">
         <div className="flex items-center gap-2.5 border-b border-sidebar-border px-4 py-3">
-          <BookOpen className="size-5 text-primary" />
-          <span className="font-serif text-sm font-semibold text-sidebar-foreground">
-            Explorer
+          <BookOpen className="size-5 text-sidebar-foreground/70" />
+          <span className="text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/70">
+            Contents
           </span>
         </div>
         <div className="flex flex-1 items-center justify-center p-6">
@@ -93,9 +93,9 @@ export function SidebarLeft({
   }
 
   return (
-    <div className="flex h-full flex-col bg-sidebar">
+    <div className="flex h-full flex-col overflow-hidden bg-sidebar">
       {/* Header */}
-      <div className="flex items-center gap-2.5 border-b border-sidebar-border px-4 py-3">
+      <div className="flex shrink-0 items-center gap-2.5 border-b border-sidebar-border px-4 py-3">
         <BookOpen className="size-5 text-sidebar-foreground/70" />
         <span className="text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/70">
           Contents
@@ -103,8 +103,8 @@ export function SidebarLeft({
       </div>
 
       {/* Module list */}
-      <ScrollArea className="flex-1">
-        <nav className="p-3 space-y-2">
+      <ScrollArea className="min-h-0 flex-1">
+        <nav className="space-y-2 p-3">
           {curriculum.modules.map((module) => {
             const isExpanded = expandedModules.has(module.id);
             const isLoaded = module.id === loadedModuleId;
@@ -124,7 +124,7 @@ export function SidebarLeft({
               <div
                 key={module.id}
                 className={cn(
-                  "rounded-lg transition-colors",
+                  "overflow-hidden rounded-lg transition-colors",
                   isLoaded
                     ? "bg-sidebar-accent/60"
                     : isExpanded
@@ -165,13 +165,13 @@ export function SidebarLeft({
                     <Circle className="size-4 shrink-0 text-muted-foreground/30" />
                   )}
 
-                  <div className="min-w-0 flex-1">
+                  <div className="min-w-0 flex-1 overflow-hidden">
                     <span className="block truncate text-sm font-medium">
                       {module.id}. {module.title}
                     </span>
                     {isExpanded && (
                       <div className="mt-1 flex items-center gap-2">
-                        <div className="h-1 flex-1 overflow-hidden rounded-full bg-muted">
+                        <div className="h-1 min-w-0 flex-1 overflow-hidden rounded-full bg-muted">
                           <div
                             className="h-full rounded-full bg-primary transition-all"
                             style={{ width: `${modulePercent}%` }}
@@ -211,9 +211,9 @@ export function SidebarLeft({
 
                 {/* Expanded content */}
                 {isExpanded && (
-                  <div className="pb-2">
+                  <div className="overflow-hidden pb-2">
                     {/* Subtopics */}
-                    <div className="ml-5 border-l-2 border-sidebar-border pl-3 pr-2">
+                    <div className="ml-5 overflow-hidden border-l-2 border-sidebar-border pl-2">
                       {module.subtopics.map((subtopic) => {
                         const isSubActive =
                           subtopic.id === activeSubtopicId;
@@ -227,7 +227,7 @@ export function SidebarLeft({
                               onSubtopicClick(module.id, subtopic.id)
                             }
                             className={cn(
-                              "flex w-full items-center gap-2 rounded-md px-2.5 py-2 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50",
+                              "flex w-full items-center gap-2 overflow-hidden rounded-md px-2.5 py-2 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50",
                               isSubActive
                                 ? "bg-primary/10 text-foreground font-medium"
                                 : "text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
@@ -291,7 +291,7 @@ export function SidebarLeft({
       </ScrollArea>
 
       {/* Footer */}
-      <div className="border-t border-sidebar-border px-4 py-2.5 text-sm text-muted-foreground">
+      <div className="shrink-0 border-t border-sidebar-border px-4 py-2.5 text-sm text-muted-foreground">
         {curriculum.modules.length} modules &middot;{" "}
         {curriculum.estimated_total_minutes} min
       </div>
