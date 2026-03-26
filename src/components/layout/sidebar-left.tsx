@@ -136,23 +136,23 @@ export function SidebarLeft({
                 <button
                   onClick={() => toggleModule(module.id)}
                   className={cn(
-                    "flex w-full items-center gap-2 rounded-lg px-3 py-2.5 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50",
+                    "flex w-full items-start gap-2 rounded-lg px-3 py-2.5 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50",
                     isLoaded
                       ? "text-sidebar-accent-foreground"
                       : "text-sidebar-foreground hover:bg-sidebar-accent/40"
                   )}
                 >
                   {isExpanded ? (
-                    <ChevronDown className="size-4 shrink-0 text-muted-foreground" />
+                    <ChevronDown className="mt-0.5 size-4 shrink-0 text-muted-foreground" />
                   ) : (
-                    <ChevronRight className="size-4 shrink-0 text-muted-foreground" />
+                    <ChevronRight className="mt-0.5 size-4 shrink-0 text-muted-foreground" />
                   )}
 
                   {/* Module status icon */}
                   {cp?.passed ? (
-                    <CheckCircle2 className="size-4 shrink-0 text-green-600 dark:text-green-400" />
+                    <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-green-600 dark:text-green-400" />
                   ) : completedCount > 0 ? (
-                    <div className="relative flex size-4 shrink-0 items-center justify-center">
+                    <div className="relative mt-0.5 flex size-4 shrink-0 items-center justify-center">
                       <Circle className="size-4 text-primary/30" />
                       <div
                         className="absolute inset-0 rounded-full border-2 border-primary"
@@ -162,11 +162,11 @@ export function SidebarLeft({
                       />
                     </div>
                   ) : (
-                    <Circle className="size-4 shrink-0 text-muted-foreground/30" />
+                    <Circle className="mt-0.5 size-4 shrink-0 text-muted-foreground/30" />
                   )}
 
                   <div className="min-w-0 flex-1 overflow-hidden">
-                    <span className="block truncate text-sm font-medium">
+                    <span className="block text-sm font-medium">
                       {module.id}. {module.title}
                     </span>
                     {isExpanded && (
@@ -196,7 +196,7 @@ export function SidebarLeft({
                   {!isExpanded && (
                     <span
                       className={cn(
-                        "shrink-0 rounded-md px-1.5 py-0.5 text-xs tabular-nums",
+                        "mt-0.5 shrink-0 rounded-md px-1.5 py-0.5 text-xs tabular-nums",
                         cp?.passed
                           ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
                           : completedCount > 0
