@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useTheme } from "next-themes";
-import { Maximize2, ZoomIn, ZoomOut, X } from "lucide-react";
+import { Maximize2, ZoomIn, ZoomOut, RotateCcw, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface MermaidDiagramProps {
@@ -15,7 +15,6 @@ interface MermaidDiagramProps {
  * so the SVG scales responsively to fill available space.
  */
 function makeResponsiveSvg(svgString: string): string {
-  // Extract width and height from the SVG tag
   const widthMatch = svgString.match(/\bwidth="([^"]+)"/);
   const heightMatch = svgString.match(/\bheight="([^"]+)"/);
 
@@ -26,22 +25,18 @@ function makeResponsiveSvg(svgString: string): string {
 
   if (isNaN(w) || isNaN(h)) return svgString;
 
-  // Check if viewBox already exists
   const hasViewBox = /\bviewBox="/.test(svgString);
 
   let result = svgString;
 
-  // Add viewBox if missing
   if (!hasViewBox) {
     result = result.replace("<svg", `<svg viewBox="0 0 ${w} ${h}"`);
   }
 
-  // Replace fixed width/height with responsive values
   result = result
     .replace(/\bwidth="[^"]*"/, 'width="100%"')
     .replace(/\bheight="[^"]*"/, 'height="100%"');
 
-  // Add preserveAspectRatio if not present
   if (!/preserveAspectRatio/.test(result)) {
     result = result.replace("<svg", '<svg preserveAspectRatio="xMidYMid meet"');
   }
@@ -105,7 +100,6 @@ export function MermaidDiagram({ chart, caption }: MermaidDiagramProps) {
         const mermaid = (await import("mermaid")).default;
         const id = `mermaid-${Math.random().toString(36).slice(2, 9)}`;
 
-        // Sanitize: strip HTML tags that Gemini sometimes generates in labels
         const sanitized = chart
           .replace(/<br\s*\/?>/gi, "\\n")
           .replace(/<[^>]+>/g, "");
@@ -134,6 +128,10 @@ export function MermaidDiagram({ chart, caption }: MermaidDiagramProps) {
 
   const handleZoomOut = useCallback(() => {
     setZoom((prev) => Math.max(prev - 0.25, 0.5));
+  }, []);
+
+  const handleResetZoom = useCallback(() => {
+    setZoom(1);
   }, []);
 
   const openModal = useCallback(() => {
@@ -182,7 +180,7 @@ export function MermaidDiagram({ chart, caption }: MermaidDiagramProps) {
         )}
         <button
           onClick={openModal}
-          className="absolute right-2 top-2 rounded-md bg-card/80 p-1.5 opacity-0 shadow-sm backdrop-blur transition-opacity group-hover:opacity-100 hover:bg-muted"
+          className="absolute right-2 top-2 rounded-md bg-card/80 p-2 shadow-sm backdrop-blur transition-opacity hover:bg-muted md:opacity-0 md:group-hover:opacity-100"
           title="Expand diagram"
         >
           <Maximize2 className="size-4 text-muted-foreground" />
@@ -195,44 +193,60 @@ export function MermaidDiagram({ chart, caption }: MermaidDiagramProps) {
           onClick={closeModal}
         >
           <div
-            className="relative mx-4 flex h-[85vh] w-[85vw] flex-col rounded-xl bg-card shadow-2xl"
+            className="relative flex h-[95dvh] w-[95vw] flex-col rounded-xl bg-card shadow-2xl md:h-[85vh] md:w-[85vw]"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between border-b border-border px-4 py-3">
-              <div className="flex items-center gap-2">
+            {/* Toolbar */}
+            <div className="flex shrink-0 items-center justify-between border-b border-border px-3 py-2 md:px-4 md:py-3">
+              <div className="flex items-center gap-1.5 md:gap-2">
                 <Button
                   variant="outline"
-                  size="icon-sm"
+                  size="icon"
                   onClick={handleZoomOut}
                   disabled={zoom <= 0.5}
                 >
                   <ZoomOut className="size-4" />
                 </Button>
-                <span className="min-w-[3rem] text-center text-xs text-muted-foreground">
+                <span className="min-w-[3rem] text-center text-xs tabular-nums text-muted-foreground">
                   {Math.round(zoom * 100)}%
                 </span>
                 <Button
                   variant="outline"
-                  size="icon-sm"
+                  size="icon"
                   onClick={handleZoomIn}
                   disabled={zoom >= 3}
                 >
                   <ZoomIn className="size-4" />
                 </Button>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={handleResetZoom}
+                  disabled={zoom === 1}
+                >
+                  <RotateCcw className="size-4" />
+                </Button>
               </div>
               {caption && (
-                <span className="text-sm text-muted-foreground">
+                <span className="mx-2 hidden text-sm text-muted-foreground md:inline">
                   {caption}
                 </span>
               )}
-              <Button variant="ghost" size="icon-sm" onClick={closeModal}>
+              <Button variant="ghost" size="icon" onClick={closeModal}>
                 <X className="size-4" />
               </Button>
             </div>
-            <div className="flex flex-1 items-center justify-center overflow-auto p-6">
+
+            {/* Scrollable + zoomable diagram area */}
+            <div className="flex-1 overflow-auto overscroll-contain">
               <div
-                style={{ transform: `scale(${zoom})`, transformOrigin: "center center" }}
-                className="flex h-full w-full items-center justify-center transition-transform duration-200"
+                style={{
+                  width: `${zoom * 100}%`,
+                  height: `${zoom * 100}%`,
+                  minWidth: "100%",
+                  minHeight: "100%",
+                }}
+                className="flex items-center justify-center p-4 md:p-6"
                 dangerouslySetInnerHTML={{ __html: makeResponsiveSvg(svg) }}
               />
             </div>
