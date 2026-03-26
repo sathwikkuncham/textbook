@@ -28,13 +28,13 @@ To manage availability professionally, we use three tiers of vocabulary. Service
 | Four  | 99.99%        | 52.6 min      | 4.38 min       | 8.64 sec     |
 | Five  | 99.999%       | 5.26 min      | 26.3 sec       | 864 ms       |
 
-\`\`\`mermaid
+~~~mermaid
 graph TD
     A[Series: A → B] --> R1[99.9% × 99.9% = 99.8%]
     B[Parallel: A ∥ B] --> R2[1 - 0.001² = 99.9999%]
     style R1 fill:#fef3c7,stroke:#c96442
     style R2 fill:#e9e6dc,stroke:#c96442
-\`\`\`
+~~~
 
 ### 4. Real-World Analogy
 
@@ -99,9 +99,9 @@ CRITICAL: Every subtopic you write MUST contain exactly these 7 sections in this
 
 ### 3. Visualizing It
 Use one of these formats:
-- **Mermaid diagram** inside a \`\`\`mermaid code block — for flows, hierarchies, relationships, state transitions, sequences
+- **Mermaid diagram** inside a fenced mermaid code block — for flows, hierarchies, relationships, state transitions, sequences
 - **Markdown table** — for comparisons, reference data, specifications
-Prefer top-down (TD) Mermaid layouts. Keep diagrams compact (max 8-10 nodes). Never use ASCII art. NEVER use HTML tags like \`<br/>\` in Mermaid node labels — use short plain text only.
+Prefer top-down (TD) Mermaid layouts. Keep diagrams compact (max 8-10 nodes). Never use ASCII art. NEVER use HTML tags in Mermaid node labels — use short plain text only.
 
 ### 4. Real-World Analogy
 Concrete analogy from everyday life. State where it breaks down.
@@ -116,6 +116,7 @@ Fully worked example with specific numbers, step by step.
 1-2 sentences. The ONE thing to remember.
 
 IMPORTANT: Write narrative prose. Never open a section with bullet points. Target 800-1200 words per subtopic. Use active voice. Define jargon on first use.
+CRITICAL FORMATTING RULE: NEVER use backtick characters in your output — not for inline code, not for code blocks. Instead, use **bold** for function names, variable names, and technical terms (e.g., **useState**, **useEffect**). For code blocks, use indented text or describe the code in prose. This is a strict requirement of the rendering system.
 ${sourceInstruction}
 
 ## Reference Example

@@ -32,7 +32,7 @@ Create 1-2 diagrams per subtopic. Choose the diagram type that best fits the con
 
 ## CRITICAL Rules
 
-1. ALL diagrams must be inside \`\`\`mermaid code blocks.
+1. ALL diagrams must be inside ~~~mermaid fenced code blocks (using tildes, NOT backticks).
 2. Prefer **top-down (TD)** layouts. Avoid wide left-right diagrams.
 3. Keep diagrams **compact** — 6-12 nodes maximum. Split complex systems into multiple focused diagrams.
 4. Keep node labels **short** — 2-5 words per node. Plain text only.
@@ -40,14 +40,15 @@ Create 1-2 diagrams per subtopic. Choose the diagram type that best fits the con
 6. NEVER use ASCII art. ONLY Mermaid syntax.
 7. Each diagram must have a "## Diagram: [Title]" header before it.
 8. Add a one-line caption after each diagram.
-9. NEVER use HTML tags like \`<br/>\` in node labels. Use short text only.
-10. NEVER use pipe characters \`|\` in edge labels. Use plain text descriptions.
+9. NEVER use HTML tags in node labels. Use short text only.
+10. NEVER use pipe characters in edge labels. Use plain text descriptions.
+11. CRITICAL: NEVER use backtick characters anywhere in your output. Use tildes ~~~ for code fences instead. This is a strict system requirement.
 
 ## Example Output
 
 ## Diagram: Request Lifecycle
 
-\`\`\`mermaid
+~~~mermaid
 graph TD
     Client[Client Browser] --> DNS[DNS Resolver]
     DNS --> LB[Load Balancer]
@@ -55,20 +56,20 @@ graph TD
     LB --> S2[Server 2]
     S1 --> DB[(Database)]
     S2 --> DB
-\`\`\`
+~~~
 
 *Shows how a client request flows through DNS, load balancing, to the server fleet and shared database.*
 
 ## Diagram: Cache Decision Flow
 
-\`\`\`mermaid
+~~~mermaid
 flowchart TD
     Req[Request] --> Check{Cache Hit?}
     Check -->|Yes| Return[Return Cached]
     Check -->|No| Fetch[Fetch from DB]
     Fetch --> Store[Store in Cache]
     Store --> Return
-\`\`\`
+~~~
 
 *Decision flow for cache-aside pattern: check cache first, fetch and store on miss.*`,
     outputKey: "module_diagrams",

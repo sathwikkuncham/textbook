@@ -92,7 +92,13 @@ export async function POST(request: NextRequest) {
   }
 
   const subtopicDesc = `${subtopic.id}: ${subtopic.title} (key concepts: ${subtopic.key_concepts.join(", ")})`;
-  const researchContext = JSON.stringify(research, null, 2).slice(0, 6000);
+  // Strip curly braces from research context — the @google/adk template
+  // engine interprets {word} patterns as context variables, so code examples
+  // like {useState} or {count} from React/JS research data cause errors.
+  // The research context is supplementary AI context, not user-facing content.
+  const researchContext = JSON.stringify(research, null, 2)
+    .slice(0, 6000)
+    .replace(/[{}]/g, "");
 
   try {
     // Check if source-based and prepare tools
@@ -151,6 +157,7 @@ export async function POST(request: NextRequest) {
       diagrams: diagramResult,
     });
   } catch (error) {
+    console.error("[content-api] Generation failed:", error);
     const message =
       error instanceof Error ? error.message : "Content generation failed";
     return NextResponse.json({ error: message }, { status: 500 });

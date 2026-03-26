@@ -14,24 +14,31 @@ function addDays(date: Date, days: number): Date {
 }
 
 export async function GET(request: NextRequest) {
-  const topicId = request.nextUrl.searchParams.get("topicId");
+  try {
+    const topicId = request.nextUrl.searchParams.get("topicId");
 
-  if (topicId) {
-    const due = await getReviewsDue(parseInt(topicId, 10));
+    if (topicId) {
+      const due = await getReviewsDue(parseInt(topicId, 10));
+      return NextResponse.json({
+        success: true,
+        due,
+        dueCount: due.length,
+      });
+    }
+
+    const due = await getReviewsDue();
     return NextResponse.json({
       success: true,
       due,
       dueCount: due.length,
     });
+  } catch (error) {
+    console.error("[reviews-api] Error:", error);
+    return NextResponse.json(
+      { success: true, due: [], dueCount: 0 },
+      { status: 200 }
+    );
   }
-
-  // Global review count (all topics)
-  const due = await getReviewsDue();
-  return NextResponse.json({
-    success: true,
-    due,
-    dueCount: due.length,
-  });
 }
 
 export async function POST(request: NextRequest) {
