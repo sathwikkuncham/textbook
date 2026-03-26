@@ -24,9 +24,9 @@ const SOURCE_BADGES: Record<string, string> = {
 };
 
 const LEVEL_STYLES: Record<string, string> = {
-  beginner: "bg-emerald-100 text-emerald-800",
-  intermediate: "bg-blue-100 text-blue-800",
-  advanced: "bg-purple-100 text-purple-800",
+  beginner: "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400",
+  intermediate: "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400",
+  advanced: "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400",
 };
 
 function timeAgo(dateStr: string): string {
@@ -59,7 +59,7 @@ export function TopicCard({
   return (
     <button
       onClick={() => router.push(`/learn/${slug}`)}
-      className="group flex w-full flex-col rounded-lg border border-border bg-card p-5 text-left shadow-sm transition-all hover:border-primary/40 hover:shadow-md"
+      className="group flex w-full flex-col rounded-lg border border-border bg-card p-5 text-left shadow-sm transition-all hover:border-primary/40 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
     >
       <div className="mb-3 flex items-start justify-between">
         <div className="flex items-center gap-2">
@@ -72,7 +72,7 @@ export function TopicCard({
           {sourceType && SOURCE_BADGES[sourceType] && (
             <Badge
               variant="outline"
-              className="text-[10px] bg-amber-50 text-amber-700 border-amber-200"
+              className="text-[10px] bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-900/30 dark:text-amber-400 dark:border-amber-800"
             >
               {SOURCE_BADGES[sourceType]}
             </Badge>
@@ -93,7 +93,7 @@ export function TopicCard({
           <span>Progress</span>
           <span>{Math.round(completionPercent)}%</span>
         </div>
-        <Progress value={completionPercent} className="h-1.5" />
+        <Progress value={completionPercent} />
       </div>
 
       <div className="flex items-center justify-between text-xs text-muted-foreground">

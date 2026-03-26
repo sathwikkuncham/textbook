@@ -30,7 +30,7 @@ function QuizProgressDots({
           <button
             key={i}
             onClick={() => onGoTo(i)}
-            className={`size-2.5 rounded-full transition-all ${
+            className={`size-2.5 rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 ${
               isCurrent
                 ? "scale-125 bg-primary ring-2 ring-primary/30"
                 : isAnswered
@@ -68,7 +68,7 @@ function QuizQuestionCard({
             <button
               key={opt}
               onClick={() => onSelectAnswer(letter)}
-              className={`flex-1 rounded-lg border-2 p-6 text-center text-base font-medium transition-all ${
+              className={`flex-1 rounded-lg border-2 p-6 text-center text-base font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 ${
                 isSelected
                   ? "border-primary bg-primary/5 text-foreground"
                   : "border-border bg-card text-muted-foreground hover:border-primary/40 hover:bg-muted/50"
@@ -97,7 +97,7 @@ function QuizQuestionCard({
           <button
             key={opt}
             onClick={() => onSelectAnswer(letter)}
-            className={`flex w-full items-start gap-3 rounded-lg border-2 p-4 text-left transition-all ${
+            className={`flex w-full items-start gap-3 rounded-lg border-2 p-4 text-left transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 ${
               isSelected
                 ? "border-primary bg-primary/5"
                 : "border-border bg-card hover:border-primary/40 hover:bg-muted/50"

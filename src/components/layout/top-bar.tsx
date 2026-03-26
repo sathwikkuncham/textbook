@@ -49,7 +49,7 @@ export function TopBar({
 
       <div className="ml-2 flex items-center gap-2">
         <BookOpen className="size-5 text-primary" />
-        <span className="text-sm font-semibold text-card-foreground">
+        <span className="font-serif text-sm font-semibold text-card-foreground">
           {topic ?? "Loading..."}
         </span>
       </div>
@@ -60,7 +60,7 @@ export function TopBar({
 
       <div className="ml-6 flex items-center gap-2">
         <span className="text-xs text-muted-foreground">Progress</span>
-        <Progress value={completionPercent} className="h-1.5 w-32" />
+        <Progress value={completionPercent} className="w-32" />
         <span className="text-xs text-muted-foreground">
           {completionPercent}%
         </span>

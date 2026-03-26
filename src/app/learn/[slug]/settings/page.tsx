@@ -233,9 +233,9 @@ export default function SettingsPage() {
             </div>
 
             {hasChanges && (
-              <div className="mt-4 flex items-start gap-2 rounded-md border border-amber-200 bg-amber-50 p-3">
-                <AlertTriangle className="mt-0.5 size-4 shrink-0 text-amber-600" />
-                <p className="text-xs text-amber-800">
+              <div className="mt-4 flex items-start gap-2 rounded-md border border-amber-200 bg-amber-50 p-3 dark:border-amber-800 dark:bg-amber-900/20">
+                <AlertTriangle className="mt-0.5 size-4 shrink-0 text-amber-600 dark:text-amber-400" />
+                <p className="text-xs text-amber-800 dark:text-amber-300">
                   Changing these settings will regenerate your curriculum.
                   Already-generated content for existing subtopics will be
                   preserved, but module structure may change.

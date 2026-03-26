@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
+import { useTheme } from "next-themes";
 import { Maximize2, ZoomIn, ZoomOut, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -48,24 +49,35 @@ function makeResponsiveSvg(svgString: string): string {
   return result;
 }
 
-let mermaidInitialized = false;
+/** Read CSS custom properties from the active theme to style Mermaid diagrams. */
+function getThemeVariables(): Record<string, string> {
+  const style = getComputedStyle(document.documentElement);
+  const get = (prop: string, fallback: string) =>
+    style.getPropertyValue(prop).trim() || fallback;
 
-async function initMermaid() {
-  if (mermaidInitialized) return;
+  return {
+    primaryColor: get("--card", "#faf9f5"),
+    primaryTextColor: get("--foreground", "#3d3929"),
+    primaryBorderColor: get("--border", "#dad9d4"),
+    lineColor: get("--primary", "#c96442"),
+    secondaryColor: get("--secondary", "#e9e6dc"),
+    tertiaryColor: get("--muted", "#ede9de"),
+    fontFamily: "ui-sans-serif, system-ui, sans-serif",
+    fontSize: "14px",
+  };
+}
+
+let lastInitializedTheme: string | null = null;
+
+async function initMermaid(resolvedTheme: string | undefined) {
+  const themeKey = resolvedTheme ?? "light";
+  if (lastInitializedTheme === themeKey) return;
+
   const mermaid = (await import("mermaid")).default;
   mermaid.initialize({
     startOnLoad: false,
     theme: "base",
-    themeVariables: {
-      primaryColor: "#f5f4ee",
-      primaryTextColor: "#3d3929",
-      primaryBorderColor: "#dad9d4",
-      lineColor: "#c96442",
-      secondaryColor: "#e9e6dc",
-      tertiaryColor: "#ede9de",
-      fontFamily: "ui-sans-serif, system-ui, sans-serif",
-      fontSize: "14px",
-    },
+    themeVariables: getThemeVariables(),
     flowchart: {
       htmlLabels: false,
       curve: "basis",
@@ -73,7 +85,7 @@ async function initMermaid() {
     },
     suppressErrorRendering: true,
   });
-  mermaidInitialized = true;
+  lastInitializedTheme = themeKey;
 }
 
 export function MermaidDiagram({ chart, caption }: MermaidDiagramProps) {
@@ -82,13 +94,14 @@ export function MermaidDiagram({ chart, caption }: MermaidDiagramProps) {
   const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [zoom, setZoom] = useState(1);
+  const { resolvedTheme } = useTheme();
 
   useEffect(() => {
     let cancelled = false;
 
     async function render() {
       try {
-        await initMermaid();
+        await initMermaid(resolvedTheme);
         const mermaid = (await import("mermaid")).default;
         const id = `mermaid-${Math.random().toString(36).slice(2, 9)}`;
 
@@ -113,7 +126,7 @@ export function MermaidDiagram({ chart, caption }: MermaidDiagramProps) {
     return () => {
       cancelled = true;
     };
-  }, [chart]);
+  }, [chart, resolvedTheme]);
 
   const handleZoomIn = useCallback(() => {
     setZoom((prev) => Math.min(prev + 0.25, 3));

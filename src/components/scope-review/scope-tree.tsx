@@ -9,6 +9,7 @@ import {
   SkipForward,
 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import type {
   SourceToc,
@@ -118,7 +119,8 @@ export function ScopeTree({ toc, scope, onScopeChange }: ScopeTreeProps) {
               >
                 <button
                   onClick={() => toggleExpand(chapter.id)}
-                  className="shrink-0 text-muted-foreground"
+                  aria-label={`${isExpanded ? "Collapse" : "Expand"} ${chapter.title}`}
+                  className="shrink-0 text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 rounded"
                 >
                   {isExpanded ? (
                     <ChevronDown className="size-4" />
@@ -127,11 +129,10 @@ export function ScopeTree({ toc, scope, onScopeChange }: ScopeTreeProps) {
                   )}
                 </button>
 
-                <input
-                  type="checkbox"
+                <Checkbox
                   checked={included}
-                  onChange={() => toggleInclude(chapter)}
-                  className="size-4 shrink-0 rounded border-border accent-primary"
+                  onCheckedChange={() => toggleInclude(chapter)}
+                  aria-label={`Toggle ${chapter.title}`}
                 />
 
                 <span
@@ -153,6 +154,7 @@ export function ScopeTree({ toc, scope, onScopeChange }: ScopeTreeProps) {
                   <button
                     onClick={() => cyclePriority(chapter.id)}
                     title={`Priority: ${priorityInfo.label}. Click to change.`}
+                    className="rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
                   >
                     <Badge
                       variant="outline"

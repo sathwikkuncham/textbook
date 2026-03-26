@@ -44,7 +44,7 @@ function QuestionReviewItem({ question, result }: QuestionReviewItemProps) {
     <div className="rounded-lg border border-border bg-card">
       <button
         onClick={() => setExpanded(!expanded)}
-        className="flex w-full items-center gap-3 p-4 text-left"
+        className="flex w-full items-center gap-3 p-4 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 rounded-lg"
       >
         {result.isCorrect ? (
           <CheckCircle2 className="size-5 shrink-0 text-green-600 dark:text-green-400" />

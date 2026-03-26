@@ -47,18 +47,28 @@ export function TextSelectionToolbar({
 
     const rect = range.getBoundingClientRect();
     setPosition({
-      top: rect.top + window.scrollY - 48,
-      left: rect.left + window.scrollX + rect.width / 2,
+      top: rect.top - 48,
+      left: rect.left + rect.width / 2,
     });
     setSelectedText(text);
   }, [articleRef]);
 
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    if (e.key === "Escape") {
+      window.getSelection()?.removeAllRanges();
+      setPosition(null);
+      setSelectedText("");
+    }
+  }, []);
+
   useEffect(() => {
     document.addEventListener("selectionchange", handleSelectionChange);
+    document.addEventListener("keydown", handleKeyDown);
     return () => {
       document.removeEventListener("selectionchange", handleSelectionChange);
+      document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [handleSelectionChange]);
+  }, [handleSelectionChange, handleKeyDown]);
 
   const handleAction = (action: "explain" | "go_deeper" | "simplify") => {
     if (selectedText) {
@@ -72,6 +82,8 @@ export function TextSelectionToolbar({
 
   return createPortal(
     <div
+      role="toolbar"
+      aria-label="Text selection actions"
       className="fixed z-50 flex items-center gap-1 rounded-lg border border-border bg-popover p-1 shadow-lg"
       style={{
         top: position.top,
@@ -81,21 +93,21 @@ export function TextSelectionToolbar({
     >
       <button
         onClick={() => handleAction("explain")}
-        className="flex items-center gap-1 rounded-md px-2 py-1 text-xs text-popover-foreground transition-colors hover:bg-muted"
+        className="flex items-center gap-1 rounded-md px-2 py-1 text-xs text-popover-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
       >
         <BookOpen className="size-3" />
         Explain
       </button>
       <button
         onClick={() => handleAction("go_deeper")}
-        className="flex items-center gap-1 rounded-md px-2 py-1 text-xs text-popover-foreground transition-colors hover:bg-muted"
+        className="flex items-center gap-1 rounded-md px-2 py-1 text-xs text-popover-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
       >
         <Layers className="size-3" />
         Go Deeper
       </button>
       <button
         onClick={() => handleAction("simplify")}
-        className="flex items-center gap-1 rounded-md px-2 py-1 text-xs text-popover-foreground transition-colors hover:bg-muted"
+        className="flex items-center gap-1 rounded-md px-2 py-1 text-xs text-popover-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
       >
         <Minimize2 className="size-3" />
         Simplify

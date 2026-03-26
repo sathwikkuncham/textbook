@@ -16,10 +16,10 @@
   --secondary: #e9e6dc;
   --secondary-foreground: #535146;
   --muted: #ede9de;
-  --muted-foreground: #83827d;
-  --accent: #e9e6dc;
+  --muted-foreground: #6d6b63;
+  --accent: #e0dbd0;
   --accent-foreground: #28261b;
-  --destructive: #141413;
+  --destructive: #c93b3b;
   --destructive-foreground: #ffffff;
   --border: #dad9d4;
   --input: #b4b2a7;
@@ -87,9 +87,11 @@
   --sidebar-primary-foreground: #fbfbfb;
   --sidebar-accent: #0f0f0e;
   --sidebar-accent-foreground: #c3c0b6;
-  --sidebar-border: #ebebeb;
-  --sidebar-ring: #b5b5b5;
+  --sidebar-border: #3e3e38;
+  --sidebar-ring: #555550;
   --radius: 0.5rem;
+  --spacing: 0.25rem;
+  --tracking-normal: 0em;
   --shadow-color: oklch(0 0 0);
   --shadow-opacity: 0.1;
   --shadow-blur: 3px;
@@ -139,10 +141,6 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
-
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-mono);
-  --font-serif: var(--font-serif);
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
