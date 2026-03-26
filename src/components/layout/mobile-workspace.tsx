@@ -52,10 +52,18 @@ export function MobileWorkspace({
     setPendingAction(null);
   }, []);
 
+  const TAB_ORDER: MobileTab[] = ["contents", "learn", "chat"];
+
   const { ref: swipeRef } = useSwipe<HTMLDivElement>({
-    onSwipeRight: () => setActiveTab("contents"),
-    onSwipeLeft: () => setActiveTab("chat"),
-    enabled: activeTab === "learn",
+    onSwipeRight: () => {
+      const idx = TAB_ORDER.indexOf(activeTab);
+      if (idx > 0) setActiveTab(TAB_ORDER[idx - 1]);
+    },
+    onSwipeLeft: () => {
+      const idx = TAB_ORDER.indexOf(activeTab);
+      if (idx < TAB_ORDER.length - 1) setActiveTab(TAB_ORDER[idx + 1]);
+    },
+    enabled: true,
   });
 
   const activeSubtopicTitle = useMemo(() => {
