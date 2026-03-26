@@ -1,0 +1,251 @@
+{
+  "topic": "Git Version Control",
+  "topic_slug": "git-version-control",
+  "level": "intermediate",
+  "goal": "general understanding",
+  "estimated_total_minutes": 240,
+  "modules": [
+    {
+      "id": 1,
+      "title": "The Git Engine: Architecture and Objects",
+      "estimated_minutes": 45,
+      "description": "To master Git, you must stop viewing it as a file-tracker and start seeing it as a content-addressable filesystem. This module explains the internal data structures that make Git fast and reliable.",
+      "subtopics": [
+        {
+          "id": "1.1",
+          "title": "Snapshots vs. Diffs",
+          "estimated_minutes": 15,
+          "key_concepts": [
+            "Snapshot metaphor",
+            "Accounting Ledger vs. High-Speed Camera",
+            "Data integrity"
+          ],
+          "teaching_approach": "analogy-driven"
+        },
+        {
+          "id": "1.2",
+          "title": "The Four Object Types",
+          "estimated_minutes": 20,
+          "key_concepts": [
+            "Blobs",
+            "Trees",
+            "Commits",
+            "Tags",
+            "SHA-1 hashing"
+          ],
+          "teaching_approach": "first-principles"
+        },
+        {
+          "id": "1.3",
+          "title": "The Directed Acyclic Graph (DAG)",
+          "estimated_minutes": 10,
+          "key_concepts": [
+            "Commit nodes",
+            "Parent pointers",
+            "Branch labels as pointers"
+          ],
+          "teaching_approach": "visual"
+        }
+      ],
+      "checkpoint": {
+        "type": "quiz",
+        "num_questions": 5,
+        "pass_threshold": 70,
+        "question_types": [
+          "conceptual",
+          "true_false"
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "title": "Mastering the Graph: Branch Integration",
+      "estimated_minutes": 50,
+      "description": "Understanding how to combine work is the core of intermediate Git usage. This module covers the technical differences between moving pointers and creating new history.",
+      "subtopics": [
+        {
+          "id": "2.1",
+          "title": "Merge vs. Rebase",
+          "estimated_minutes": 20,
+          "key_concepts": [
+            "Linear vs. Non-linear history",
+            "Replay mechanism",
+            "Context preservation"
+          ],
+          "teaching_approach": "example-first"
+        },
+        {
+          "id": "2.2",
+          "title": "Merge Mechanics",
+          "estimated_minutes": 15,
+          "key_concepts": [
+            "Fast-forward merge",
+            "Three-way merge",
+            "Common ancestors"
+          ],
+          "teaching_approach": "visual"
+        },
+        {
+          "id": "2.3",
+          "title": "The Detached HEAD State",
+          "estimated_minutes": 15,
+          "key_concepts": [
+            "Checking out hashes",
+            "Anonymous branches",
+            "Recovery via switch"
+          ],
+          "teaching_approach": "first-principles"
+        }
+      ],
+      "checkpoint": {
+        "type": "quiz",
+        "num_questions": 5,
+        "pass_threshold": 70,
+        "question_types": [
+          "conceptual",
+          "application"
+        ]
+      }
+    },
+    {
+      "id": 3,
+      "title": "Professional Collaboration & Remotes",
+      "estimated_minutes": 45,
+      "description": "Working with others requires managing the synchronization between local state and the shared server. This module clarifies the 'middle layer' of remote-tracking.",
+      "subtopics": [
+        {
+          "id": "3.1",
+          "title": "The Remote Bridge",
+          "estimated_minutes": 15,
+          "key_concepts": [
+            "Remote-tracking branches",
+            "Fetch vs. Pull",
+            "Tracking configurations"
+          ],
+          "teaching_approach": "visual"
+        },
+        {
+          "id": "3.2",
+          "title": "Standard Workflows",
+          "estimated_minutes": 15,
+          "key_concepts": [
+            "GitHub Flow (PRs)",
+            "Git Flow (Release cycles)",
+            "CI/CD integration"
+          ],
+          "teaching_approach": "example-first"
+        },
+        {
+          "id": "3.3",
+          "title": "Safe History Rewriting",
+          "estimated_minutes": 15,
+          "key_concepts": [
+            "Force pushing",
+            "--force-with-lease",
+            "Shared branch etiquette"
+          ],
+          "teaching_approach": "first-principles"
+        }
+      ],
+      "checkpoint": {
+        "type": "quiz",
+        "num_questions": 5,
+        "pass_threshold": 70,
+        "question_types": [
+          "conceptual",
+          "application",
+          "true_false"
+        ]
+      }
+    },
+    {
+      "id": 4,
+      "title": "Intermediate Precision Tools",
+      "estimated_minutes": 50,
+      "description": "These commands act as 'superpowers' for specific development scenarios, from handling interruptions to finding bugs through automation.",
+      "subtopics": [
+        {
+          "id": "4.1",
+          "title": "Git Stash: Temporary Storage",
+          "estimated_minutes": 15,
+          "key_concepts": [
+            "Stash push/pop",
+            "Stash apply",
+            "Including untracked files"
+          ],
+          "teaching_approach": "example-first"
+        },
+        {
+          "id": "4.2",
+          "title": "Git Bisect: Bug Hunting",
+          "estimated_minutes": 20,
+          "key_concepts": [
+            "Binary search history",
+            "Good vs. Bad commits",
+            "Automated debugging"
+          ],
+          "teaching_approach": "first-principles"
+        },
+        {
+          "id": "4.3",
+          "title": "Cherry-Picking",
+          "estimated_minutes": 15,
+          "key_concepts": [
+            "Selective commit application",
+            "Patching across branches"
+          ],
+          "teaching_approach": "visual"
+        }
+      ],
+      "checkpoint": {
+        "type": "quiz",
+        "num_questions": 5,
+        "pass_threshold": 70,
+        "question_types": [
+          "application",
+          "conceptual"
+        ]
+      }
+    },
+    {
+      "id": 5,
+      "title": "History Refinement & Disaster Recovery",
+      "estimated_minutes": 50,
+      "description": "A professional developer knows how to clean their history before sharing it and how to recover when a command goes wrong.",
+      "subtopics": [
+        {
+          "id": "5.1",
+          "title": "Interactive Rebase",
+          "estimated_minutes": 25,
+          "key_concepts": [
+            "Squashing commits",
+            "Rewording messages",
+            "Dropping changes",
+            "Cleaning Pull Requests"
+          ],
+          "teaching_approach": "example-first"
+        },
+        {
+          "id": "5.2",
+          "title": "The Safety Net: Reflog",
+          "estimated_minutes": 25,
+          "key_concepts": [
+            "HEAD movement logs",
+            "Recovering deleted branches",
+            "Undoing bad rebases"
+          ],
+          "teaching_approach": "visual"
+        }
+      ],
+      "checkpoint": {
+        "type": "quiz",
+        "num_questions": 5,
+        "pass_threshold": 70,
+        "question_types": [
+          "application",
+          "conceptual"
+        ]
+      }
+    }
+  ]
+}

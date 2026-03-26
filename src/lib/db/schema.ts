@@ -1,0 +1,221 @@
+import {
+  pgTable,
+  text,
+  integer,
+  timestamp,
+  jsonb,
+  serial,
+  varchar,
+  boolean,
+  real,
+  uniqueIndex,
+} from "drizzle-orm/pg-core";
+
+export const topics = pgTable(
+  "topics",
+  {
+    id: serial("id").primaryKey(),
+    slug: varchar("slug", { length: 255 }).notNull(),
+    displayName: text("display_name").notNull(),
+    level: varchar("level", { length: 50 }).notNull(),
+    goal: text("goal").notNull(),
+    timeCommitment: varchar("time_commitment", { length: 50 }).notNull(),
+    totalModules: integer("total_modules").notNull().default(0),
+    estimatedMinutes: integer("estimated_minutes").notNull().default(0),
+    completionPercent: real("completion_percent").notNull().default(0),
+    currentModule: integer("current_module").notNull().default(1),
+    currentSubtopic: integer("current_subtopic").notNull().default(1),
+    totalTimeMinutes: integer("total_time_minutes").notNull().default(0),
+    sourceType: varchar("source_type", { length: 20 }).notNull().default("topic_only"),
+    sourcePath: text("source_path"),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    lastSession: timestamp("last_session").notNull().defaultNow(),
+  },
+  (table) => [uniqueIndex("topics_slug_idx").on(table.slug)]
+);
+
+export const researchCache = pgTable("research_cache", {
+  id: serial("id").primaryKey(),
+  topicId: integer("topic_id")
+    .notNull()
+    .references(() => topics.id, { onDelete: "cascade" }),
+  foundations: jsonb("foundations"),
+  applications: jsonb("applications"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+export const curricula = pgTable("curricula", {
+  id: serial("id").primaryKey(),
+  topicId: integer("topic_id")
+    .notNull()
+    .references(() => topics.id, { onDelete: "cascade" }),
+  structure: jsonb("structure").notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+export const moduleContent = pgTable(
+  "module_content",
+  {
+    id: serial("id").primaryKey(),
+    topicId: integer("topic_id")
+      .notNull()
+      .references(() => topics.id, { onDelete: "cascade" }),
+    moduleId: integer("module_id").notNull(),
+    content: text("content").notNull(),
+    diagrams: text("diagrams"),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+  },
+  (table) => [
+    uniqueIndex("module_content_topic_module_idx").on(
+      table.topicId,
+      table.moduleId
+    ),
+  ]
+);
+
+export const moduleQuizzes = pgTable(
+  "module_quizzes",
+  {
+    id: serial("id").primaryKey(),
+    topicId: integer("topic_id")
+      .notNull()
+      .references(() => topics.id, { onDelete: "cascade" }),
+    moduleId: integer("module_id").notNull(),
+    questions: jsonb("questions").notNull(),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+  },
+  (table) => [
+    uniqueIndex("module_quizzes_topic_module_idx").on(
+      table.topicId,
+      table.moduleId
+    ),
+  ]
+);
+
+export const progress = pgTable(
+  "progress",
+  {
+    id: serial("id").primaryKey(),
+    topicId: integer("topic_id")
+      .notNull()
+      .references(() => topics.id, { onDelete: "cascade" }),
+    moduleId: integer("module_id").notNull(),
+    subtopicId: varchar("subtopic_id", { length: 20 }).notNull(),
+    status: varchar("status", { length: 20 }).notNull().default("locked"),
+    completedAt: timestamp("completed_at"),
+  },
+  (table) => [
+    uniqueIndex("progress_topic_subtopic_idx").on(
+      table.topicId,
+      table.subtopicId
+    ),
+  ]
+);
+
+export const checkpoints = pgTable(
+  "checkpoints",
+  {
+    id: serial("id").primaryKey(),
+    topicId: integer("topic_id")
+      .notNull()
+      .references(() => topics.id, { onDelete: "cascade" }),
+    moduleId: integer("module_id").notNull(),
+    passed: boolean("passed").notNull().default(false),
+    score: real("score").notNull().default(0),
+    attemptCount: integer("attempt_count").notNull().default(0),
+    scoresHistory: jsonb("scores_history").notNull().default([]),
+    lastAttemptAt: timestamp("last_attempt_at"),
+  },
+  (table) => [
+    uniqueIndex("checkpoints_topic_module_idx").on(
+      table.topicId,
+      table.moduleId
+    ),
+  ]
+);
+
+export const spacedRepetition = pgTable(
+  "spaced_repetition",
+  {
+    id: serial("id").primaryKey(),
+    topicId: integer("topic_id")
+      .notNull()
+      .references(() => topics.id, { onDelete: "cascade" }),
+    moduleId: integer("module_id").notNull(),
+    boxNumber: integer("box_number").notNull().default(1),
+    nextReviewDate: timestamp("next_review_date").notNull(),
+    lastReviewDate: timestamp("last_review_date"),
+    lastScore: real("last_score"),
+    reviewHistory: jsonb("review_history").notNull().default([]),
+  },
+  (table) => [
+    uniqueIndex("spaced_rep_topic_module_idx").on(
+      table.topicId,
+      table.moduleId
+    ),
+  ]
+);
+
+export const chatSessions = pgTable("chat_sessions", {
+  id: serial("id").primaryKey(),
+  topicId: integer("topic_id")
+    .notNull()
+    .references(() => topics.id, { onDelete: "cascade" }),
+  title: text("title").notNull().default("New Chat"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
+export const chatHistory = pgTable("chat_history", {
+  id: serial("id").primaryKey(),
+  sessionId: integer("session_id")
+    .notNull()
+    .references(() => chatSessions.id, { onDelete: "cascade" }),
+  topicId: integer("topic_id")
+    .notNull()
+    .references(() => topics.id, { onDelete: "cascade" }),
+  moduleId: integer("module_id"),
+  subtopicId: varchar("subtopic_id", { length: 20 }),
+  role: varchar("role", { length: 20 }).notNull(),
+  content: text("content").notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+export const sourceStructures = pgTable(
+  "source_structures",
+  {
+    id: serial("id").primaryKey(),
+    topicId: integer("topic_id")
+      .notNull()
+      .references(() => topics.id, { onDelete: "cascade" }),
+    rawToc: jsonb("raw_toc").notNull(),
+    calibration: jsonb("calibration").notNull(),
+    userScope: jsonb("user_scope"),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  },
+  (table) => [
+    uniqueIndex("source_structures_topic_idx").on(table.topicId),
+  ]
+);
+
+export const sourcePageCache = pgTable(
+  "source_page_cache",
+  {
+    id: serial("id").primaryKey(),
+    topicId: integer("topic_id")
+      .notNull()
+      .references(() => topics.id, { onDelete: "cascade" }),
+    sectionKey: varchar("section_key", { length: 255 }).notNull(),
+    pageRangeStart: integer("page_range_start").notNull(),
+    pageRangeEnd: integer("page_range_end").notNull(),
+    extractedText: text("extracted_text").notNull(),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+  },
+  (table) => [
+    uniqueIndex("source_page_cache_topic_section_idx").on(
+      table.topicId,
+      table.sectionKey
+    ),
+  ]
+);

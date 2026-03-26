@@ -1,0 +1,251 @@
+{
+  "topic": "System Design",
+  "topic_slug": "system-design",
+  "level": "intermediate",
+  "goal": "interview preparation",
+  "estimated_total_minutes": 240,
+  "modules": [
+    {
+      "id": 1,
+      "title": "Scaling & Networking Foundations",
+      "estimated_minutes": 45,
+      "description": "Before designing complex architectures, you must understand how a single request travels and why vertical scaling eventually fails. This module establishes the 'how' and 'why' of distributing load.",
+      "subtopics": [
+        {
+          "id": "1.1",
+          "title": "The Request Lifecycle & Proxies",
+          "estimated_minutes": 15,
+          "key_concepts": [
+            "DNS",
+            "IP Packets",
+            "Forward vs Reverse Proxies"
+          ],
+          "teaching_approach": "visual"
+        },
+        {
+          "id": "1.2",
+          "title": "Scaling Strategies: Vertical vs Horizontal",
+          "estimated_minutes": 15,
+          "key_concepts": [
+            "Resource ceilings",
+            "Statelessness",
+            "Adding machines vs RAM"
+          ],
+          "teaching_approach": "first-principles"
+        },
+        {
+          "id": "1.3",
+          "title": "Load Balancing Tier",
+          "estimated_minutes": 15,
+          "key_concepts": [
+            "L4 vs L7 Load Balancers",
+            "Round Robin",
+            "Least Connections",
+            "IP Hash"
+          ],
+          "teaching_approach": "example-first"
+        }
+      ],
+      "checkpoint": {
+        "type": "quiz",
+        "num_questions": 5,
+        "pass_threshold": 70,
+        "question_types": [
+          "conceptual",
+          "application"
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "title": "Data Layer: Storage, Sharding & Consistency",
+      "estimated_minutes": 50,
+      "description": "Data is the most difficult component to scale. This module covers how to choose the right database and how to split data across a cluster using the 'gold standard' of consistent hashing.",
+      "subtopics": [
+        {
+          "id": "2.1",
+          "title": "SQL vs NoSQL: The ACID/BASE Trade-off",
+          "estimated_minutes": 15,
+          "key_concepts": [
+            "Relational schemas",
+            "Document/Key-Value stores",
+            "Indexing (B-Trees)"
+          ],
+          "teaching_approach": "first-principles"
+        },
+        {
+          "id": "2.2",
+          "title": "Replication & High Availability",
+          "estimated_minutes": 15,
+          "key_concepts": [
+            "Master-Slave replication",
+            "Multi-master",
+            "Read vs Write scaling"
+          ],
+          "teaching_approach": "analogy-driven"
+        },
+        {
+          "id": "2.3",
+          "title": "Sharding & Consistent Hashing",
+          "estimated_minutes": 20,
+          "key_concepts": [
+            "Horizontal partitioning",
+            "Hotspot keys",
+            "Ring-based hashing"
+          ],
+          "teaching_approach": "visual"
+        }
+      ],
+      "checkpoint": {
+        "type": "quiz",
+        "num_questions": 5,
+        "pass_threshold": 70,
+        "question_types": [
+          "application",
+          "true_false"
+        ]
+      }
+    },
+    {
+      "id": 3,
+      "title": "Performance, Caching & Asynchronism",
+      "estimated_minutes": 45,
+      "description": "Speed is a feature. This module focuses on removing bottlenecks by moving data closer to the user (CDNs/Caching) and decoupling heavy tasks using message queues.",
+      "subtopics": [
+        {
+          "id": "3.1",
+          "title": "Caching Strategies & Invalidation",
+          "estimated_minutes": 15,
+          "key_concepts": [
+            "Cache-aside",
+            "Write-through",
+            "LRU/LFU eviction",
+            "Redis"
+          ],
+          "teaching_approach": "example-first"
+        },
+        {
+          "id": "3.2",
+          "title": "Message Queues & Event-Driven Design",
+          "estimated_minutes": 15,
+          "key_concepts": [
+            "Kafka",
+            "RabbitMQ",
+            "Pub-Sub",
+            "Decoupling"
+          ],
+          "teaching_approach": "analogy-driven"
+        },
+        {
+          "id": "3.3",
+          "title": "CDNs & Edge Computing",
+          "estimated_minutes": 15,
+          "key_concepts": [
+            "Static content",
+            "Edge nodes",
+            "Latency reduction"
+          ],
+          "teaching_approach": "visual"
+        }
+      ],
+      "checkpoint": {
+        "type": "quiz",
+        "num_questions": 5,
+        "pass_threshold": 70,
+        "question_types": [
+          "conceptual",
+          "application"
+        ]
+      }
+    },
+    {
+      "id": 4,
+      "title": "Distributed Theory & Modern Patterns",
+      "estimated_minutes": 40,
+      "description": "To reach the senior level, you must understand the mathematical limits of distributed systems. This module covers the core theorems and algorithms that prevent data corruption and handle failure.",
+      "subtopics": [
+        {
+          "id": "4.1",
+          "title": "CAP & PACELC Theorems",
+          "estimated_minutes": 20,
+          "key_concepts": [
+            "Consistency vs Availability",
+            "Partition Tolerance",
+            "Latency trade-offs"
+          ],
+          "teaching_approach": "first-principles"
+        },
+        {
+          "id": "4.2",
+          "title": "Consensus & Probabilistic Structures",
+          "estimated_minutes": 20,
+          "key_concepts": [
+            "Raft/Paxos",
+            "Leader Election",
+            "Bloom Filters"
+          ],
+          "teaching_approach": "visual"
+        }
+      ],
+      "checkpoint": {
+        "type": "quiz",
+        "num_questions": 5,
+        "pass_threshold": 70,
+        "question_types": [
+          "conceptual",
+          "true_false"
+        ]
+      }
+    },
+    {
+      "id": 5,
+      "title": "The Interview Framework & Execution",
+      "estimated_minutes": 60,
+      "description": "Knowledge isn't enough; you must be able to deliver a design in 45 minutes. This module teaches the 7-step framework and how to handle modern challenges like AI-integrated systems.",
+      "subtopics": [
+        {
+          "id": "5.1",
+          "title": "The 7-Step Interview Framework",
+          "estimated_minutes": 15,
+          "key_concepts": [
+            "Requirement clarification",
+            "API Design",
+            "High-level diagrams"
+          ],
+          "teaching_approach": "example-first"
+        },
+        {
+          "id": "5.2",
+          "title": "Back-of-the-Envelope Estimation",
+          "estimated_minutes": 20,
+          "key_concepts": [
+            "QPS math",
+            "Storage math",
+            "Latency numbers to know"
+          ],
+          "teaching_approach": "first-principles"
+        },
+        {
+          "id": "5.3",
+          "title": "Advanced Deep Dives: Social Media & AI",
+          "estimated_minutes": 25,
+          "key_concepts": [
+            "Fan-out (Twitter)",
+            "WebSockets (WhatsApp)",
+            "RAG & Vector DBs"
+          ],
+          "teaching_approach": "visual"
+        }
+      ],
+      "checkpoint": {
+        "type": "quiz",
+        "num_questions": 6,
+        "pass_threshold": 70,
+        "question_types": [
+          "application",
+          "conceptual"
+        ]
+      }
+    }
+  ]
+}
