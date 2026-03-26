@@ -1,7 +1,7 @@
 "use client";
 
 import {
-  FolderTree,
+  BookOpen,
   ChevronDown,
   ChevronRight,
   Circle,
@@ -10,6 +10,7 @@ import {
   ClipboardCheck,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
 import { useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import type { Curriculum } from "@/lib/types/learning";
@@ -63,31 +64,66 @@ export function SidebarLeft({
   if (!curriculum) {
     return (
       <div className="flex h-full flex-col bg-sidebar">
-        <div className="flex items-center gap-2 border-b border-sidebar-border px-3 py-2">
-          <FolderTree className="size-4 text-sidebar-foreground/70" />
-          <span className="text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/70">
+        <div className="flex items-center gap-2.5 border-b border-sidebar-border px-4 py-3">
+          <BookOpen className="size-5 text-primary" />
+          <span className="font-serif text-sm font-semibold text-sidebar-foreground">
             Explorer
           </span>
         </div>
-        <div className="flex flex-1 items-center justify-center p-4">
-          <p className="text-sm text-muted-foreground">
-            {isLoading ? "Building curriculum..." : "No topic selected"}
-          </p>
+        <div className="flex flex-1 items-center justify-center p-6">
+          <div className="flex flex-col items-center gap-3">
+            {isLoading ? (
+              <>
+                <Loader2 className="size-6 animate-spin text-primary" />
+                <p className="text-sm text-muted-foreground">
+                  Building curriculum...
+                </p>
+              </>
+            ) : (
+              <>
+                <BookOpen className="size-10 text-muted-foreground/20" />
+                <p className="text-sm text-muted-foreground">
+                  No topic selected
+                </p>
+              </>
+            )}
+          </div>
         </div>
       </div>
     );
   }
 
+  const totalCompleted = curriculum.modules.reduce((sum, mod) => {
+    return sum + mod.subtopics.filter((s) => completedSubtopics.has(s.id)).length;
+  }, 0);
+  const totalSubtopics = curriculum.modules.reduce(
+    (sum, mod) => sum + mod.subtopics.length,
+    0
+  );
+  const overallPercent =
+    totalSubtopics > 0 ? Math.round((totalCompleted / totalSubtopics) * 100) : 0;
+
   return (
     <div className="flex h-full flex-col bg-sidebar">
-      <div className="flex items-center gap-2 border-b border-sidebar-border px-3 py-2">
-        <FolderTree className="size-4 text-sidebar-foreground/70" />
-        <span className="text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/70">
-          {curriculum.topic}
-        </span>
+      {/* Header */}
+      <div className="border-b border-sidebar-border px-4 py-3">
+        <div className="flex items-center gap-2.5">
+          <BookOpen className="size-5 text-primary" />
+          <span className="min-w-0 flex-1 truncate font-serif text-sm font-semibold text-sidebar-foreground">
+            {curriculum.topic}
+          </span>
+        </div>
+        <div className="mt-2.5 flex items-center gap-2.5">
+          <Progress value={overallPercent} className="flex-1" />
+          <span className="shrink-0 text-xs tabular-nums text-muted-foreground">
+            {overallPercent}%
+          </span>
+        </div>
       </div>
+
+      {/* Module list */}
       <ScrollArea className="flex-1">
-        <nav className="py-2 pl-2 pr-3">
+        <nav className="p-3 space-y-2">
           {curriculum.modules.map((module) => {
             const isExpanded = expandedModules.has(module.id);
             const isLoaded = module.id === loadedModuleId;
@@ -95,66 +131,108 @@ export function SidebarLeft({
               completedSubtopics.has(s.id)
             ).length;
             const totalCount = module.subtopics.length;
-            const allSubtopicsCompleted = completedCount === totalCount;
+            const allSubtopicsCompleted =
+              completedCount === totalCount && totalCount > 0;
             const cp = checkpoints.get(module.id);
-
-            // Module icon: check if passed, circle if in progress
-            const moduleIcon = cp?.passed ? (
-              <CheckCircle2 className="size-3.5 shrink-0 text-green-600 dark:text-green-400" />
-            ) : completedCount > 0 ? (
-              <div className="relative flex size-3.5 shrink-0 items-center justify-center">
-                <Circle className="size-3.5 text-primary/40" />
-                <div
-                  className="absolute inset-0 rounded-full border-[1.5px] border-primary"
-                  style={{
-                    clipPath: `polygon(50% 50%, 50% 0%, ${completedCount >= totalCount / 2 ? "100% 0%, 100% 100%, 0% 100%, 0% 0%," : `${50 + 50 * Math.sin((completedCount / totalCount) * 2 * Math.PI)}% ${50 - 50 * Math.cos((completedCount / totalCount) * 2 * Math.PI)}%,`} 50% 50%)`,
-                  }}
-                />
-              </div>
-            ) : (
-              <Circle className="size-3.5 shrink-0 text-muted-foreground/40" />
-            );
+            const modulePercent =
+              totalCount > 0
+                ? Math.round((completedCount / totalCount) * 100)
+                : 0;
 
             return (
-              <div key={module.id} className="mb-1">
+              <div
+                key={module.id}
+                className={cn(
+                  "rounded-lg transition-colors",
+                  isLoaded
+                    ? "bg-sidebar-accent/60"
+                    : isExpanded
+                      ? "bg-sidebar-accent/30"
+                      : ""
+                )}
+              >
                 {/* Module header */}
                 <button
                   onClick={() => toggleModule(module.id)}
                   className={cn(
-                    "flex w-full items-center gap-1.5 rounded-md px-2 py-1.5 text-left text-sm transition-colors",
+                    "flex w-full items-center gap-2 rounded-lg px-3 py-2.5 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50",
                     isLoaded
-                      ? "bg-sidebar-accent text-sidebar-accent-foreground"
-                      : "text-sidebar-foreground hover:bg-sidebar-accent/50"
+                      ? "text-sidebar-accent-foreground"
+                      : "text-sidebar-foreground hover:bg-sidebar-accent/40"
                   )}
                 >
                   {isExpanded ? (
-                    <ChevronDown className="size-3.5 shrink-0" />
+                    <ChevronDown className="size-4 shrink-0 text-muted-foreground" />
                   ) : (
-                    <ChevronRight className="size-3.5 shrink-0" />
+                    <ChevronRight className="size-4 shrink-0 text-muted-foreground" />
                   )}
-                  {moduleIcon}
-                  <span className="min-w-0 flex-1 truncate font-medium">
-                    {module.id}. {module.title}
-                  </span>
-                  {/* Subtopic counter */}
-                  <span
-                    className={cn(
-                      "shrink-0 rounded px-1 py-0.5 text-[10px] tabular-nums",
-                      cp?.passed
-                        ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
-                        : completedCount > 0
-                          ? "bg-primary/10 text-primary"
-                          : "bg-muted text-muted-foreground"
+
+                  {/* Module status icon */}
+                  {cp?.passed ? (
+                    <CheckCircle2 className="size-4 shrink-0 text-green-600 dark:text-green-400" />
+                  ) : completedCount > 0 ? (
+                    <div className="relative flex size-4 shrink-0 items-center justify-center">
+                      <Circle className="size-4 text-primary/30" />
+                      <div
+                        className="absolute inset-0 rounded-full border-2 border-primary"
+                        style={{
+                          clipPath: `polygon(50% 50%, 50% 0%, ${completedCount >= totalCount / 2 ? "100% 0%, 100% 100%, 0% 100%, 0% 0%," : `${50 + 50 * Math.sin((completedCount / totalCount) * 2 * Math.PI)}% ${50 - 50 * Math.cos((completedCount / totalCount) * 2 * Math.PI)}%,`} 50% 50%)`,
+                        }}
+                      />
+                    </div>
+                  ) : (
+                    <Circle className="size-4 shrink-0 text-muted-foreground/30" />
+                  )}
+
+                  <div className="min-w-0 flex-1">
+                    <span className="block truncate text-sm font-medium">
+                      {module.id}. {module.title}
+                    </span>
+                    {isExpanded && (
+                      <div className="mt-1 flex items-center gap-2">
+                        <div className="h-1 flex-1 overflow-hidden rounded-full bg-muted">
+                          <div
+                            className="h-full rounded-full bg-primary transition-all"
+                            style={{ width: `${modulePercent}%` }}
+                          />
+                        </div>
+                        <span
+                          className={cn(
+                            "shrink-0 text-xs tabular-nums",
+                            cp?.passed
+                              ? "text-green-600 dark:text-green-400"
+                              : completedCount > 0
+                                ? "text-primary"
+                                : "text-muted-foreground"
+                          )}
+                        >
+                          {completedCount}/{totalCount}
+                        </span>
+                      </div>
                     )}
-                  >
-                    {completedCount}/{totalCount}
-                  </span>
+                  </div>
+
+                  {!isExpanded && (
+                    <span
+                      className={cn(
+                        "shrink-0 rounded-md px-1.5 py-0.5 text-xs tabular-nums",
+                        cp?.passed
+                          ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+                          : completedCount > 0
+                            ? "bg-primary/10 text-primary"
+                            : "text-muted-foreground"
+                      )}
+                    >
+                      {completedCount}/{totalCount}
+                    </span>
+                  )}
                 </button>
 
+                {/* Expanded content */}
                 {isExpanded && (
-                  <>
+                  <div className="pb-2">
                     {/* Subtopics */}
-                    <div className="ml-4 mt-0.5 border-l border-sidebar-border pl-2">
+                    <div className="ml-5 border-l-2 border-sidebar-border pl-3 pr-2">
                       {module.subtopics.map((subtopic) => {
                         const isSubActive =
                           subtopic.id === activeSubtopicId;
@@ -168,23 +246,23 @@ export function SidebarLeft({
                               onSubtopicClick(module.id, subtopic.id)
                             }
                             className={cn(
-                              "flex w-full items-center gap-1.5 rounded-md px-2 py-1 text-left text-xs transition-colors",
+                              "flex w-full items-center gap-2 rounded-md px-2.5 py-2 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50",
                               isSubActive
-                                ? "bg-sidebar-accent text-sidebar-accent-foreground font-medium"
-                                : "text-sidebar-foreground/80 hover:bg-sidebar-accent/30"
+                                ? "bg-primary/10 text-foreground font-medium"
+                                : "text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
                             )}
                           >
                             {isCompleted ? (
-                              <CheckCircle2 className="size-3 shrink-0 text-green-600 dark:text-green-400" />
+                              <CheckCircle2 className="size-4 shrink-0 text-green-600 dark:text-green-400" />
                             ) : isSubActive && isLoading ? (
-                              <Loader2 className="size-3 shrink-0 animate-spin text-primary" />
+                              <Loader2 className="size-4 shrink-0 animate-spin text-primary" />
                             ) : (
-                              <Circle className="size-3 shrink-0 text-muted-foreground/40" />
+                              <Circle className="size-4 shrink-0 text-muted-foreground/30" />
                             )}
-                            <span className="min-w-0 flex-1 truncate">
+                            <span className="min-w-0 flex-1 truncate text-sm">
                               {subtopic.title}
                             </span>
-                            <span className="shrink-0 rounded bg-muted px-1 py-0.5 text-[10px] text-muted-foreground">
+                            <span className="shrink-0 text-xs tabular-nums text-muted-foreground">
                               {subtopic.estimated_minutes}m
                             </span>
                           </button>
@@ -192,13 +270,13 @@ export function SidebarLeft({
                       })}
                     </div>
 
-                    {/* Checkpoint section — visually separated from subtopics */}
+                    {/* Checkpoint */}
                     {(() => {
                       if (cp?.passed) {
                         return (
-                          <div className="mx-2 mt-2 flex items-center gap-1.5 rounded-md border border-green-200 bg-green-50 px-2.5 py-1.5 dark:border-green-800 dark:bg-green-900/20">
-                            <CheckCircle2 className="size-3.5 shrink-0 text-green-600 dark:text-green-400" />
-                            <span className="text-xs font-medium text-green-700 dark:text-green-400">
+                          <div className="mx-3 mt-2 flex items-center gap-2 rounded-lg border border-green-200 bg-green-50 px-3 py-2 dark:border-green-800 dark:bg-green-900/20">
+                            <CheckCircle2 className="size-4 shrink-0 text-green-600 dark:text-green-400" />
+                            <span className="text-sm font-medium text-green-700 dark:text-green-400">
                               Passed ({cp.score}%)
                             </span>
                           </div>
@@ -206,14 +284,14 @@ export function SidebarLeft({
                       }
                       if (allSubtopicsCompleted && onStartQuiz) {
                         return (
-                          <div className="mx-2 mt-2">
+                          <div className="mx-3 mt-2">
                             <Button
                               variant={cp ? "outline" : "default"}
-                              size="xs"
-                              className="w-full gap-1.5"
+                              size="sm"
+                              className="w-full gap-2"
                               onClick={() => onStartQuiz(module.id)}
                             >
-                              <ClipboardCheck className="size-3" />
+                              <ClipboardCheck className="size-4" />
                               {cp
                                 ? `Retry Quiz (${cp.attemptCount})`
                                 : "Take Quiz"}
@@ -223,14 +301,16 @@ export function SidebarLeft({
                       }
                       return null;
                     })()}
-                  </>
+                  </div>
                 )}
               </div>
             );
           })}
         </nav>
       </ScrollArea>
-      <div className="border-t border-sidebar-border px-3 py-2 text-xs text-muted-foreground">
+
+      {/* Footer */}
+      <div className="border-t border-sidebar-border px-4 py-2.5 text-sm text-muted-foreground">
         {curriculum.modules.length} modules &middot;{" "}
         {curriculum.estimated_total_minutes} min
       </div>
