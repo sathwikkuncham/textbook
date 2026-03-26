@@ -28,7 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full antialiased" suppressHydrationWarning>
-      <body className="h-full overflow-hidden">
+      <body className="h-full">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <TooltipProvider delayDuration={300}>{children}</TooltipProvider>
         </ThemeProvider>
