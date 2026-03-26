@@ -10,7 +10,6 @@ import {
   ClipboardCheck,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
 import { useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import type { Curriculum } from "@/lib/types/learning";
@@ -93,32 +92,14 @@ export function SidebarLeft({
     );
   }
 
-  const totalCompleted = curriculum.modules.reduce((sum, mod) => {
-    return sum + mod.subtopics.filter((s) => completedSubtopics.has(s.id)).length;
-  }, 0);
-  const totalSubtopics = curriculum.modules.reduce(
-    (sum, mod) => sum + mod.subtopics.length,
-    0
-  );
-  const overallPercent =
-    totalSubtopics > 0 ? Math.round((totalCompleted / totalSubtopics) * 100) : 0;
-
   return (
     <div className="flex h-full flex-col bg-sidebar">
       {/* Header */}
-      <div className="border-b border-sidebar-border px-4 py-3">
-        <div className="flex items-center gap-2.5">
-          <BookOpen className="size-5 text-primary" />
-          <span className="min-w-0 flex-1 truncate font-serif text-sm font-semibold text-sidebar-foreground">
-            {curriculum.topic}
-          </span>
-        </div>
-        <div className="mt-2.5 flex items-center gap-2.5">
-          <Progress value={overallPercent} className="flex-1" />
-          <span className="shrink-0 text-xs tabular-nums text-muted-foreground">
-            {overallPercent}%
-          </span>
-        </div>
+      <div className="flex items-center gap-2.5 border-b border-sidebar-border px-4 py-3">
+        <BookOpen className="size-5 text-sidebar-foreground/70" />
+        <span className="text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/70">
+          Contents
+        </span>
       </div>
 
       {/* Module list */}
