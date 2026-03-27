@@ -62,8 +62,8 @@ export function TopicCard({
       className="group flex w-full flex-col rounded-lg border border-border bg-card p-5 text-left shadow-sm transition-all hover:border-primary/40 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
     >
       <div className="mb-3 flex items-start justify-between">
-        <div className="flex items-center gap-2">
-          <BookOpen className="size-4 text-primary" />
+        <div className="flex items-start gap-2">
+          <BookOpen className="mt-1 size-4 shrink-0 text-primary" />
           <h3 className="font-serif text-base font-semibold text-card-foreground group-hover:text-primary transition-colors line-clamp-3">
             {displayName}
           </h3>

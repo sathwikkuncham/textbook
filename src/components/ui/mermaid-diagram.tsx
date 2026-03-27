@@ -103,7 +103,10 @@ export function MermaidDiagram({ chart, caption }: MermaidDiagramProps) {
         const sanitized = chart
           .replace(/<br\s*\/?>/gi, "\\n")
           .replace(/<[^>]+>/g, "")
-          .replace(/`/g, "'");
+          .replace(/`/g, "'")
+          // Strip inline style directives — they hardcode light-mode colors
+          // that become unreadable in dark mode. Theme variables handle styling.
+          .replace(/^\s*style\s+\S+\s+.*$/gm, "");
 
         const { svg: renderedSvg } = await mermaid.render(id, sanitized);
         if (!cancelled) {
