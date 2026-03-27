@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import {
   searchModuleContent,
+  searchModuleContentFTS,
   getAllTopics,
   getAllCurricula,
 } from "@/lib/db/repository";
@@ -25,8 +26,13 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const [contentRows, allTopics, allCurricula] = await Promise.all([
-      searchModuleContent(query, 20),
+    // Use full-text search with stemming, fall back to ILIKE
+    const ftsResults = await searchModuleContentFTS(query, 20);
+    const contentRows = ftsResults.length > 0
+      ? ftsResults
+      : await searchModuleContent(query, 20);
+
+    const [allTopics, allCurricula] = await Promise.all([
       getAllTopics(),
       getAllCurricula(),
     ]);

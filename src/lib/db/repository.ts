@@ -596,3 +596,21 @@ export async function searchModuleContent(query: string, limit = 20) {
     .where(ilike(moduleContent.content, `%${escaped}%`))
     .limit(limit);
 }
+
+export async function searchModuleContentFTS(query: string, limit = 20) {
+  const result = await db.execute(sql`
+    SELECT id, topic_id as "topicId", module_id as "moduleId", content,
+           ts_rank(content_tsv, plainto_tsquery('english', ${query})) as rank
+    FROM module_content
+    WHERE content_tsv @@ plainto_tsquery('english', ${query})
+    ORDER BY rank DESC
+    LIMIT ${limit}
+  `);
+  return result as unknown as Array<{
+    id: number;
+    topicId: number;
+    moduleId: number;
+    content: string;
+    rank: number;
+  }>;
+}
