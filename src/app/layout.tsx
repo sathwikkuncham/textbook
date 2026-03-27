@@ -25,13 +25,13 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Textbook",
-  description: "Deep learning experience powered by AI",
+  title: "Clarity",
+  description: "AI that teaches you anything",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Textbook",
+    title: "Clarity",
   },
 };
 

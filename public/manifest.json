@@ -1,11 +1,11 @@
 {
-  "name": "Textbook",
-  "short_name": "Textbook",
-  "description": "Deep learning on any topic, powered by AI",
+  "name": "Clarity",
+  "short_name": "Clarity",
+  "description": "AI that teaches you anything",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#faf9f5",
-  "theme_color": "#c96442",
+  "background_color": "#FFFDF8",
+  "theme_color": "#DC2626",
   "orientation": "any",
   "icons": [
     {

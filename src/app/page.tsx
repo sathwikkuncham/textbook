@@ -34,10 +34,10 @@ export default async function HomePage() {
           <div className="flex items-center gap-2 md:gap-3">
             <BookOpen className="size-5 text-primary md:size-6" />
             <h1 className="font-serif text-lg font-bold tracking-tight text-foreground md:text-xl">
-              Textbook
+              Clarity<span className="text-primary">.</span>
             </h1>
             <span className="hidden text-sm text-muted-foreground sm:inline">
-              Deep learning on any topic, powered by AI
+              AI that teaches you anything
             </span>
           </div>
           <div className="flex items-center gap-2">
@@ -138,7 +138,7 @@ export default async function HomePage() {
             </span>
             <h2 className="mb-3 font-serif text-3xl font-bold tracking-tight text-foreground md:text-4xl">
               Welcome to{" "}
-              <span className="text-gradient-primary">Textbook</span>
+              <span className="text-gradient-primary">Clarity</span>
             </h2>
             <p className="mb-8 max-w-md text-center text-sm leading-relaxed text-muted-foreground">
               AI agents will research any topic, design a curriculum, and

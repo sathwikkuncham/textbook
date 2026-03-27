@@ -1,6 +1,6 @@
-const CACHE_NAME = "textbook-v1";
-const STATIC_CACHE = "textbook-static-v1";
-const API_CACHE = "textbook-api-v1";
+const CACHE_NAME = "clarity-v1";
+const STATIC_CACHE = "clarity-static-v1";
+const API_CACHE = "clarity-api-v1";
 
 // Static assets to precache
 const PRECACHE_URLS = ["/", "/offline"];

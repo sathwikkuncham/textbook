@@ -127,13 +127,22 @@ export function TopicCard({
         <span className={cn("mb-1 text-[11px] font-medium", levelInfo.class)}>
           {levelInfo.label}
         </span>
-        <p className="text-xs text-muted-foreground">
-          {isComplete
-            ? "Completed"
-            : hasProgress
-              ? `${Math.round(completionPercent)}% complete`
-              : `${totalModules} modules · ${formatTime(estimatedMinutes)}`}
-        </p>
+        {hasProgress && (
+          <div className="mt-1 flex items-center gap-2">
+            <div className="h-1 flex-1 rounded-full bg-muted">
+              <div
+                className="h-full rounded-full bg-[image:var(--gradient-primary)]"
+                style={{ width: `${completionPercent}%` }}
+              />
+            </div>
+            <span className="text-[10px] font-medium text-primary">
+              {Math.round(completionPercent)}%
+            </span>
+          </div>
+        )}
+        {isComplete && (
+          <p className="text-xs font-medium text-primary">Completed</p>
+        )}
 
         {/* Spacer */}
         <div className="min-h-3 flex-1" />
