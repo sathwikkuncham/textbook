@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { BookOpen, Loader2, Settings, ArrowLeft } from "lucide-react";
+import { BookOpen, Loader2, Settings, ArrowLeft, Maximize, Minimize } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -18,6 +18,8 @@ interface TopBarProps {
   topicSlug?: string;
   isLoading: boolean;
   completionPercent: number;
+  focusMode?: boolean;
+  onToggleFocusMode?: () => void;
 }
 
 export function TopBar({
@@ -26,6 +28,8 @@ export function TopBar({
   topicSlug,
   isLoading,
   completionPercent,
+  focusMode,
+  onToggleFocusMode,
 }: TopBarProps) {
   const router = useRouter();
 
@@ -67,6 +71,27 @@ export function TopBar({
       </div>
 
       <div className="ml-auto flex items-center gap-1">
+        {onToggleFocusMode && (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                onClick={onToggleFocusMode}
+                className="hidden md:inline-flex"
+              >
+                {focusMode ? (
+                  <Minimize className="size-4" />
+                ) : (
+                  <Maximize className="size-4" />
+                )}
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              {focusMode ? "Exit focus mode (Esc)" : "Focus mode (Ctrl+Shift+F)"}
+            </TooltipContent>
+          </Tooltip>
+        )}
         <ThemeToggle />
         <Tooltip>
           <TooltipTrigger asChild>

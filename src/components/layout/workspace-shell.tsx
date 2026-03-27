@@ -22,15 +22,19 @@ export function WorkspaceShell({ topicSlug }: WorkspaceShellProps) {
   const {
     leftSidebarOpen,
     rightSidebarOpen,
+    focusMode,
     toggleLeftSidebar,
     toggleRightSidebar,
     setLeftSidebarOpen,
     setRightSidebarOpen,
+    toggleFocusMode,
   } = usePanelState();
 
   useKeyboardShortcuts({
     onToggleLeftSidebar: toggleLeftSidebar,
     onToggleRightSidebar: toggleRightSidebar,
+    onToggleFocusMode: toggleFocusMode,
+    focusMode,
   });
 
   const learning = useLearningState();
@@ -86,6 +90,8 @@ export function WorkspaceShell({ topicSlug }: WorkspaceShellProps) {
         topicSlug={topicSlug}
         isLoading={learning.isLoading}
         completionPercent={progress.completionPercent}
+        focusMode={focusMode}
+        onToggleFocusMode={toggleFocusMode}
       />
       {isMobile ? (
         <MobileWorkspace
@@ -106,13 +112,15 @@ export function WorkspaceShell({ topicSlug }: WorkspaceShellProps) {
             progress={progress}
             assessment={assessment}
           />
-          <StatusBar
-            activeModuleTitle={activeModule?.title ?? null}
-            phase={learning.phase}
-            completionPercent={progress.completionPercent}
-            reviewsDueCount={progress.reviewsDueCount}
-            onReviewsClick={handleReviewsClick}
-          />
+          {!focusMode && (
+            <StatusBar
+              activeModuleTitle={activeModule?.title ?? null}
+              phase={learning.phase}
+              completionPercent={progress.completionPercent}
+              reviewsDueCount={progress.reviewsDueCount}
+              onReviewsClick={handleReviewsClick}
+            />
+          )}
         </>
       )}
     </div>
