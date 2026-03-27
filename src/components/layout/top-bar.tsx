@@ -1,8 +1,9 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { BookOpen, Loader2, Settings, ArrowLeft, Maximize, Minimize } from "lucide-react";
+import { BookOpen, Loader2, Settings, ArrowLeft, Maximize, Minimize, Search } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { useCommandPalette } from "@/hooks/use-command-palette";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import {
@@ -32,6 +33,7 @@ export function TopBar({
   onToggleFocusMode,
 }: TopBarProps) {
   const router = useRouter();
+  const { setOpen: openPalette } = useCommandPalette();
 
   return (
     <div
@@ -71,6 +73,18 @@ export function TopBar({
       </div>
 
       <div className="ml-auto flex items-center gap-1">
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              onClick={() => openPalette(true)}
+            >
+              <Search className="size-4" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>Search (Ctrl+K)</TooltipContent>
+        </Tooltip>
         {onToggleFocusMode && (
           <Tooltip>
             <TooltipTrigger asChild>

@@ -2,9 +2,9 @@ import { BookOpen } from "lucide-react";
 import { db } from "@/lib/db/client";
 import { topics } from "@/lib/db/schema";
 import { desc } from "drizzle-orm";
-import { TopicCard } from "@/components/home/topic-card";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { NewTopicDialog } from "@/components/home/new-topic-dialog";
+import { TopicListShell } from "@/components/home/topic-list-shell";
 
 export const dynamic = "force-dynamic";
 
@@ -36,32 +36,19 @@ export default async function HomePage() {
 
       <main className="mx-auto max-w-5xl px-4 py-6 md:px-6 md:py-8">
         {allTopics.length > 0 ? (
-          <section>
-            <div className="mb-6 flex items-center justify-between">
-              <h2 className="font-serif text-lg font-semibold text-foreground">
-                Your Topics
-              </h2>
-              <span className="text-sm text-muted-foreground">
-                {allTopics.length} topic{allTopics.length !== 1 ? "s" : ""}
-              </span>
-            </div>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {allTopics.map((t) => (
-                <TopicCard
-                  key={t.slug}
-                  slug={t.slug}
-                  displayName={t.displayName}
-                  level={t.level}
-                  goal={t.goal}
-                  totalModules={t.totalModules}
-                  estimatedMinutes={t.estimatedMinutes}
-                  completionPercent={t.completionPercent}
-                  lastSession={t.lastSession.toISOString()}
-                  sourceType={t.sourceType}
-                />
-              ))}
-            </div>
-          </section>
+          <TopicListShell
+            topics={allTopics.map((t) => ({
+              slug: t.slug,
+              displayName: t.displayName,
+              level: t.level,
+              goal: t.goal,
+              totalModules: t.totalModules,
+              estimatedMinutes: t.estimatedMinutes,
+              completionPercent: t.completionPercent,
+              lastSession: t.lastSession.toISOString(),
+              sourceType: t.sourceType,
+            }))}
+          />
         ) : (
           <section className="flex flex-col items-center justify-center py-20">
             <BookOpen className="mb-4 size-16 text-muted-foreground/20" />

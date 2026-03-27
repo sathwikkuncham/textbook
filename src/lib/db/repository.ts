@@ -1,4 +1,4 @@
-import { eq, and, asc, desc, lte } from "drizzle-orm";
+import { eq, and, asc, desc, lte, ilike, sql } from "drizzle-orm";
 import { db } from "./client";
 import {
   topics,
@@ -569,4 +569,29 @@ export async function appendChatMessage(
     .values({ sessionId, topicId, moduleId, subtopicId, role, content })
     .returning();
   return result[0];
+}
+
+// ── Search ──────────────────────────────────────────────
+
+export async function getAllCurricula() {
+  return db
+    .select({
+      topicId: curricula.topicId,
+      structure: curricula.structure,
+    })
+    .from(curricula);
+}
+
+export async function searchModuleContent(query: string, limit = 20) {
+  const escaped = query.replace(/%/g, "\\%").replace(/_/g, "\\_");
+  return db
+    .select({
+      id: moduleContent.id,
+      topicId: moduleContent.topicId,
+      moduleId: moduleContent.moduleId,
+      content: moduleContent.content,
+    })
+    .from(moduleContent)
+    .where(ilike(moduleContent.content, `%${escaped}%`))
+    .limit(limit);
 }
