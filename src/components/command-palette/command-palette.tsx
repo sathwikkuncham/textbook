@@ -27,6 +27,7 @@ export function CommandPalette() {
   const { open, setOpen } = useCommandPalette();
   const [mode, setMode] = useState<SearchMode>("navigate");
   const [query, setQuery] = useState("");
+  const [aiTrigger, setAiTrigger] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -60,6 +61,10 @@ export function CommandPalette() {
     if (e.key === "Escape") {
       setOpen(false);
     }
+    if (e.key === "Enter" && mode === "ai") {
+      e.preventDefault();
+      setAiTrigger((prev) => !prev);
+    }
   };
 
   if (!open) return null;
@@ -78,6 +83,16 @@ export function CommandPalette() {
       <div className="relative mx-auto mt-[12vh] w-full max-w-xl px-4 animate-in fade-in-0 slide-in-from-top-4 duration-200 md:mt-[20vh] md:px-0">
         <Command
           shouldFilter={mode === "navigate"}
+          filter={(value, search) => {
+            const v = value.toLowerCase();
+            const s = search.toLowerCase();
+            // Word-boundary match (e.g. "git" matches "Git Version Control") → high score
+            const words = v.split(/\s+/);
+            if (words.some((w) => w.startsWith(s))) return 1;
+            // Substring match (e.g. "git" inside "Registry") → low score
+            if (v.includes(s)) return 0.3;
+            return 0;
+          }}
           onKeyDown={handleKeyDown}
           className="overflow-hidden rounded-xl border border-border/50 bg-popover shadow-2xl ring-1 ring-black/5 dark:ring-white/5"
         >
@@ -126,7 +141,7 @@ export function CommandPalette() {
           <Command.List className="max-h-[min(50vh,24rem)] overflow-y-auto overscroll-contain px-2 py-2">
             {mode === "navigate" && <NavigationResults />}
             {mode === "content" && <ContentSearchResults query={query} />}
-            {mode === "ai" && <AISearchResults query={query} />}
+            {mode === "ai" && <AISearchResults query={query} triggerSearch={aiTrigger} />}
           </Command.List>
 
           {/* Footer */}

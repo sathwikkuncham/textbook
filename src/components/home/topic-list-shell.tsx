@@ -1,6 +1,7 @@
 "use client";
 
 import { Search, X } from "lucide-react";
+import { useCommandPalette } from "@/hooks/use-command-palette";
 import {
   Select,
   SelectContent,
@@ -63,6 +64,7 @@ export function TopicListShell({ topics }: TopicListShellProps) {
     clearFilters,
     activeFilterCount,
   } = useTopicFilters(topics);
+  const { setOpen: openPalette } = useCommandPalette();
 
   return (
     <section>
@@ -75,8 +77,16 @@ export function TopicListShell({ topics }: TopicListShellProps) {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search topics..."
-            className="h-10 w-full rounded-md border border-input bg-background pl-9 pr-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+            className="h-10 w-full rounded-md border border-input bg-background pl-9 pr-20 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring sm:pr-24"
           />
+          <button
+            onClick={() => openPalette(true)}
+            className="absolute right-2 top-1/2 flex -translate-y-1/2 items-center gap-1.5 rounded-md border border-border bg-muted/80 px-2 py-1 text-[10px] font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          >
+            <Search className="size-3" />
+            <span className="hidden sm:inline">Ctrl K</span>
+            <span className="sm:hidden">Search</span>
+          </button>
         </div>
         <Select value={sortKey} onValueChange={(v) => setSortKey(v as SortKey)}>
           <SelectTrigger className="h-10 w-full text-sm sm:w-44">

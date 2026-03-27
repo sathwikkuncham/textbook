@@ -29,7 +29,6 @@ export default async function HomePage() {
             </span>
           </div>
           <div className="flex items-center gap-2">
-            <SearchTrigger />
             <ThemeToggle />
             <NewTopicDialog />
           </div>

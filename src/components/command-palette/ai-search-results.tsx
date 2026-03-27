@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Sparkles, Loader2, ArrowRight, Send } from "lucide-react";
 import ReactMarkdown from "react-markdown";
@@ -15,9 +15,10 @@ interface NavigateTarget {
 
 interface AISearchResultsProps {
   query: string;
+  triggerSearch?: boolean;
 }
 
-export function AISearchResults({ query }: AISearchResultsProps) {
+export function AISearchResults({ query, triggerSearch }: AISearchResultsProps) {
   const router = useRouter();
   const { setOpen } = useCommandPalette();
   const [response, setResponse] = useState("");
@@ -84,6 +85,14 @@ export function AISearchResults({ query }: AISearchResultsProps) {
       setLoading(false);
     }
   }, [query, loading]);
+
+  // Auto-trigger search on Enter key (parent flips triggerSearch)
+  useEffect(() => {
+    if (triggerSearch && query.trim() && !loading && !response) {
+      handleSearch();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [triggerSearch]);
 
   if (!response && !loading) {
     return (
