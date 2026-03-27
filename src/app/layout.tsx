@@ -1,8 +1,10 @@
 import type { Metadata, Viewport } from "next";
+import { Suspense } from "react";
 import { Inter, Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { CommandPaletteProvider } from "@/components/command-palette/command-palette-provider";
+import { RouteProgress } from "@/components/ui/route-progress";
 import "./globals.css";
 
 const inter = Inter({
@@ -51,6 +53,9 @@ export default function RootLayout({
     <html lang="en" className={`h-full antialiased ${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
       <body className="h-full">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+          <Suspense fallback={null}>
+            <RouteProgress />
+          </Suspense>
           <TooltipProvider delayDuration={300}>
             <CommandPaletteProvider>{children}</CommandPaletteProvider>
           </TooltipProvider>

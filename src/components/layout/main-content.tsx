@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { BookOpen, Loader2 } from "lucide-react";
+import { BookOpen } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -19,11 +19,40 @@ interface MainContentProps {
   quizContent?: React.ReactNode;
 }
 
-function LoadingState({ message }: { message: string }) {
+function ContentSkeleton() {
   return (
-    <div className="flex h-full flex-col items-center justify-center gap-4">
-      <Loader2 className="size-8 animate-spin text-primary" />
-      <p className="text-sm text-muted-foreground">{message}</p>
+    <div className="mx-auto max-w-3xl px-4 py-4 md:px-8 md:py-6">
+      {/* Heading */}
+      <div className="mb-6 border-b border-border pb-3">
+        <div className="h-7 w-1/2 animate-pulse rounded bg-muted" />
+      </div>
+      {/* Paragraph block */}
+      <div className="space-y-3">
+        <div className="h-4 w-full animate-pulse rounded bg-muted" />
+        <div className="h-4 w-11/12 animate-pulse rounded bg-muted" />
+        <div className="h-4 w-4/5 animate-pulse rounded bg-muted" />
+        <div className="h-4 w-full animate-pulse rounded bg-muted" />
+      </div>
+      {/* Subheading */}
+      <div className="mb-3 mt-10 h-6 w-2/5 animate-pulse rounded bg-muted" />
+      {/* More paragraphs */}
+      <div className="space-y-3">
+        <div className="h-4 w-full animate-pulse rounded bg-muted" />
+        <div className="h-4 w-10/12 animate-pulse rounded bg-muted" />
+        <div className="h-4 w-9/12 animate-pulse rounded bg-muted" />
+      </div>
+      {/* Code block */}
+      <div className="mt-4 h-32 w-full animate-pulse rounded-lg border border-border bg-muted/50" />
+      {/* Another heading */}
+      <div className="mb-3 mt-8 h-5 w-1/3 animate-pulse rounded bg-muted" />
+      {/* Final paragraphs */}
+      <div className="space-y-3">
+        <div className="h-4 w-full animate-pulse rounded bg-muted" />
+        <div className="h-4 w-11/12 animate-pulse rounded bg-muted" />
+        <div className="h-4 w-3/4 animate-pulse rounded bg-muted" />
+        <div className="h-4 w-5/6 animate-pulse rounded bg-muted" />
+        <div className="h-4 w-2/3 animate-pulse rounded bg-muted" />
+      </div>
     </div>
   );
 }
@@ -53,12 +82,6 @@ function ErrorState({ error }: { error: string }) {
   );
 }
 
-const PHASE_MESSAGES: Record<string, string> = {
-  researching: "Researching topic with parallel agents...",
-  designing: "Designing curriculum from research...",
-  assessing: "Generating assessment...",
-};
-
 export function MainContent({
   phase,
   content,
@@ -81,9 +104,7 @@ export function MainContent({
   }
 
   if (isLoading && !content) {
-    const message =
-      PHASE_MESSAGES[phase] ?? `Loading ${activeModuleTitle ?? "content"}...`;
-    return <LoadingState message={message} />;
+    return <ContentSkeleton />;
   }
 
   if (!content) return <ReadyState />;
