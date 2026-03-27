@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { BookOpen, Loader2, Settings, ArrowLeft, Maximize, Minimize, Search } from "lucide-react";
+import { Loader2, Settings, ArrowLeft, Maximize, Minimize, Search } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { useCommandPalette } from "@/hooks/use-command-palette";
 import { Button } from "@/components/ui/button";
@@ -54,7 +54,7 @@ export function TopBar({
       </Tooltip>
 
       <div className="ml-1.5 flex min-w-0 items-center gap-1.5 md:ml-2 md:gap-2">
-        <BookOpen className="size-4 shrink-0 text-primary md:size-5" />
+        <span className="shrink-0 font-serif text-sm font-bold text-foreground md:text-base">C<span className="text-primary">.</span></span>
         <span className="truncate font-serif text-sm font-semibold text-card-foreground">
           {topic ?? "Loading..."}
         </span>

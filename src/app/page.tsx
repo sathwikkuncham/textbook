@@ -1,4 +1,4 @@
-import { BookOpen, ArrowRight, Clock, Layers } from "lucide-react";
+import { ArrowRight, Clock, Layers } from "lucide-react";
 import Link from "next/link";
 import { db } from "@/lib/db/client";
 import { topics } from "@/lib/db/schema";
@@ -32,12 +32,14 @@ export default async function HomePage() {
       <header className="border-b border-border bg-card">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3 md:px-6 md:py-4">
           <div className="flex items-center gap-2 md:gap-3">
-            <BookOpen className="size-5 text-primary md:size-6" />
-            <h1 className="font-serif text-lg font-bold tracking-tight text-foreground md:text-xl">
-              Clarity<span className="text-primary">.</span>
-            </h1>
-            <span className="hidden text-sm text-muted-foreground sm:inline">
-              AI that teaches you anything
+            <span className="group relative">
+              <span className="font-serif text-xl font-bold tracking-tight text-foreground md:text-2xl">
+                Clarity
+              </span>
+              <span className="font-serif text-xl font-bold tracking-tight text-primary md:text-2xl">
+                .
+              </span>
+              <span className="absolute -bottom-1 left-0 h-0.5 w-0 rounded-full bg-primary transition-all duration-300 group-hover:w-full" />
             </span>
           </div>
           <div className="flex items-center gap-2">
@@ -130,8 +132,10 @@ export default async function HomePage() {
           </>
         ) : (
           <section className="flex flex-col items-center justify-center py-24">
-            <div className="mb-6 flex size-20 items-center justify-center rounded-2xl bg-primary/10">
-              <BookOpen className="size-10 text-primary" />
+            <div className="mb-6">
+              <span className="font-serif text-5xl font-bold tracking-tight text-foreground">
+                C<span className="text-primary">.</span>
+              </span>
             </div>
             <span className="mb-2 text-[10px] font-bold uppercase tracking-widest text-primary">
               Get Started
