@@ -35,6 +35,11 @@ export default function RootLayout({
             <CommandPaletteProvider>{children}</CommandPaletteProvider>
           </TooltipProvider>
         </ThemeProvider>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js')`,
+          }}
+        />
       </body>
     </html>
   );
