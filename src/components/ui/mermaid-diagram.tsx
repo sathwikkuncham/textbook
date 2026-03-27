@@ -105,9 +105,12 @@ function remapStyleColors(chart: string, isDark: boolean): string {
     "#e0f2fe": "#1e3a5f",
     // Purples
     "#ede9fe": "#2e1065", "#e9d5ff": "#2e1065",
-    // Theme warm tones
-    "#e9e6dc": "#1a1915", "#f5f4ee": "#262624", "#ede9de": "#1b1b19",
-    "#faf9f5": "#262624",
+    // Theme warm tones (new palette)
+    "#F5F0E8": "#18181b", "#FAF7F2": "#111113", "#EDE8DE": "#1f1f23",
+    "#FFFDF8": "#0a0a0b",
+    // Old theme warm tones (backward compat with existing content)
+    "#e9e6dc": "#18181b", "#f5f4ee": "#111113", "#ede9de": "#1f1f23",
+    "#faf9f5": "#0a0a0b",
   };
 
   let result = chart;
@@ -116,7 +119,8 @@ function remapStyleColors(chart: string, isDark: boolean): string {
   }
 
   // Remap stroke to dark-mode primary
-  result = result.replaceAll("stroke:#c96442", "stroke:#d97757");
+  result = result.replaceAll("stroke:#c96442", "stroke:#EF4444");
+  result = result.replaceAll("stroke:#DC2626", "stroke:#EF4444");
 
   return result;
 }

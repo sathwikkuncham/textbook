@@ -33,7 +33,7 @@ export function StatusBar({
   return (
     <div
       data-slot="status-bar"
-      className="flex h-6 shrink-0 select-none items-center justify-between border-t border-primary/80 bg-primary px-3 text-xs text-primary-foreground"
+      className="flex h-6 shrink-0 select-none items-center justify-between border-t border-border bg-[image:var(--gradient-primary)] px-3 text-xs text-white"
     >
       <div className="flex items-center gap-1.5">
         {isActive && phase !== "learning" && phase !== "assessing" ? (

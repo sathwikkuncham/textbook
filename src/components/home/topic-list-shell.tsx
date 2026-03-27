@@ -89,7 +89,7 @@ export function TopicListShell({ topics }: TopicListShellProps) {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search topics..."
-            className="h-10 w-full rounded-md border border-input bg-background pl-9 pr-20 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring sm:pr-24"
+            className="h-10 w-full rounded-xl border border-border bg-card pl-9 pr-20 text-sm text-foreground shadow-[0_1px_3px_rgba(26,22,20,0.05)] placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring sm:pr-24"
           />
           <button
             onClick={() => openPalette(true)}
@@ -142,7 +142,7 @@ export function TopicListShell({ topics }: TopicListShellProps) {
             className={cn(
               "shrink-0 rounded-full border px-2.5 py-1 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50",
               filters.sourceType.has(chip.value)
-                ? "border-primary bg-primary/10 text-primary"
+                ? "border-primary/30 bg-primary/10 text-primary"
                 : "border-border text-muted-foreground hover:text-foreground"
             )}
           >
@@ -159,7 +159,7 @@ export function TopicListShell({ topics }: TopicListShellProps) {
             className={cn(
               "shrink-0 rounded-full border px-2.5 py-1 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50",
               filters.status.has(chip.value)
-                ? "border-primary bg-primary/10 text-primary"
+                ? "border-primary/30 bg-primary/10 text-primary"
                 : "border-border text-muted-foreground hover:text-foreground"
             )}
           >
@@ -176,7 +176,7 @@ export function TopicListShell({ topics }: TopicListShellProps) {
             className={cn(
               "shrink-0 rounded-full border px-2.5 py-1 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50",
               filters.category.has(chip.value)
-                ? "border-primary bg-primary/10 text-primary"
+                ? "border-primary/30 bg-primary/10 text-primary"
                 : "border-border text-muted-foreground hover:text-foreground"
             )}
           >
@@ -197,8 +197,8 @@ export function TopicListShell({ topics }: TopicListShellProps) {
 
       {/* Results count */}
       <div className="mb-4 flex items-center justify-between">
-        <h2 className="font-serif text-lg font-semibold text-foreground">
-          Your Topics
+        <h2 className="font-serif text-lg font-semibold tracking-tight text-foreground">
+          All Topics
         </h2>
         <span className="text-sm text-muted-foreground">
           {filteredTopics.length === topics.length
@@ -222,6 +222,7 @@ export function TopicListShell({ topics }: TopicListShellProps) {
               completionPercent={t.completionPercent}
               lastSession={t.lastSession}
               sourceType={t.sourceType}
+              category={t.category}
             />
           ))}
         </div>

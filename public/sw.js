@@ -74,7 +74,7 @@ self.addEventListener("fetch", (event) => {
               caches.open(STATIC_CACHE).then((cache) => cache.put(request, clone));
             }
             return response;
-          })
+          }).catch(() => new Response("", { status: 408 }))
       )
     );
     return;

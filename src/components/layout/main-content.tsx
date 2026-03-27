@@ -101,12 +101,12 @@ export function MainContent({
           remarkPlugins={[remarkGfm]}
           components={{
             h1: ({ children }) => (
-              <h1 className="mb-6 border-b border-border pb-3 font-serif text-xl font-bold text-foreground md:text-2xl">
+              <h1 className="mb-6 border-b border-border pb-3 font-serif text-xl font-bold tracking-tight text-foreground md:text-2xl">
                 {children}
               </h1>
             ),
             h2: ({ children }) => (
-              <h2 className="mb-4 mt-10 border-b border-border/50 pb-2 font-serif text-lg font-semibold text-foreground md:text-xl">
+              <h2 className="mb-4 mt-10 border-b border-border/50 pb-2 font-serif text-lg font-semibold tracking-tight text-foreground md:text-xl">
                 {children}
               </h2>
             ),
@@ -138,7 +138,7 @@ export function MainContent({
               );
             },
             p: ({ children }) => (
-              <p className="mb-4 leading-7 text-foreground/90">{children}</p>
+              <p className="mb-4 leading-relaxed text-foreground/90">{children}</p>
             ),
             strong: ({ children }) => (
               <strong className="font-semibold text-foreground">
