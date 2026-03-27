@@ -64,7 +64,7 @@ export function TopicCard({
       <div className="mb-3 flex items-start justify-between">
         <div className="flex items-center gap-2">
           <BookOpen className="size-4 text-primary" />
-          <h3 className="font-serif text-base font-semibold text-card-foreground group-hover:text-primary transition-colors">
+          <h3 className="font-serif text-base font-semibold text-card-foreground group-hover:text-primary transition-colors line-clamp-3">
             {displayName}
           </h3>
         </div>
