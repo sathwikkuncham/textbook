@@ -11,7 +11,6 @@ import { useMobile } from "@/hooks/use-mobile";
 import { TopBar } from "./top-bar";
 import { StatusBar } from "./status-bar";
 import { PanelLayout } from "./panel-layout";
-import { MobileWorkspace } from "./mobile-workspace";
 
 interface WorkspaceShellProps {
   topicSlug: string;
@@ -113,35 +112,25 @@ export function WorkspaceShell({ topicSlug }: WorkspaceShellProps) {
         onToggleLeftSidebar={toggleLeftSidebar}
         onToggleRightSidebar={toggleRightSidebar}
       />
-      {isMobile ? (
-        <MobileWorkspace
-          learning={learning}
-          activeModule={activeModule}
-          progress={progress}
-          assessment={assessment}
+      <PanelLayout
+        leftSidebarOpen={leftSidebarOpen}
+        rightSidebarOpen={rightSidebarOpen}
+        onLeftSidebarOpenChange={setLeftSidebarOpen}
+        onRightSidebarOpenChange={setRightSidebarOpen}
+        learning={learning}
+        activeModule={activeModule}
+        progress={progress}
+        assessment={assessment}
+        isMobile={isMobile}
+      />
+      {!isMobile && !focusMode && (
+        <StatusBar
+          activeModuleTitle={activeModule?.title ?? null}
+          phase={learning.phase}
+          completionPercent={progress.completionPercent}
+          reviewsDueCount={progress.reviewsDueCount}
+          onReviewsClick={handleReviewsClick}
         />
-      ) : (
-        <>
-          <PanelLayout
-            leftSidebarOpen={leftSidebarOpen}
-            rightSidebarOpen={rightSidebarOpen}
-            onLeftSidebarOpenChange={setLeftSidebarOpen}
-            onRightSidebarOpenChange={setRightSidebarOpen}
-            learning={learning}
-            activeModule={activeModule}
-            progress={progress}
-            assessment={assessment}
-          />
-          {!focusMode && (
-            <StatusBar
-              activeModuleTitle={activeModule?.title ?? null}
-              phase={learning.phase}
-              completionPercent={progress.completionPercent}
-              reviewsDueCount={progress.reviewsDueCount}
-              onReviewsClick={handleReviewsClick}
-            />
-          )}
-        </>
       )}
     </div>
   );

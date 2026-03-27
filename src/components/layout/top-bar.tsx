@@ -69,19 +69,19 @@ export function TopBar({
           <TooltipContent>Back to topics</TooltipContent>
         </Tooltip>
 
-        {/* Contents toggle — labeled pill button */}
+        {/* Contents toggle — icon on mobile, labeled pill on desktop */}
         {onToggleLeftSidebar && (
           <button
             onClick={onToggleLeftSidebar}
             className={cn(
-              "ml-1 hidden items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors md:inline-flex",
+              "ml-1 inline-flex items-center gap-1.5 rounded-lg px-2 py-1.5 text-xs font-medium transition-colors md:px-2.5",
               leftSidebarOpen
                 ? "bg-primary/10 text-primary"
                 : "text-muted-foreground hover:bg-accent hover:text-foreground"
             )}
           >
             <PanelLeft className="size-3.5" />
-            Contents
+            <span className="hidden md:inline">Contents</span>
           </button>
         )}
 
@@ -108,19 +108,19 @@ export function TopBar({
 
       {/* Right group: AI chat toggle + utilities */}
       <div className="ml-auto flex items-center gap-1">
-        {/* AI Chat toggle — prominent labeled pill */}
+        {/* AI Chat toggle — icon on mobile, labeled pill on desktop */}
         {onToggleRightSidebar && (
           <button
             onClick={onToggleRightSidebar}
             className={cn(
-              "hidden items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-colors md:inline-flex",
+              "inline-flex items-center gap-1.5 rounded-lg px-2 py-1.5 text-xs font-medium transition-colors md:px-3",
               rightSidebarOpen
                 ? "bg-primary/10 text-primary"
                 : "text-muted-foreground hover:bg-accent hover:text-foreground"
             )}
           >
             <MessageSquare className="size-3.5" />
-            AI Chat
+            <span className="hidden md:inline">AI Chat</span>
           </button>
         )}
 
