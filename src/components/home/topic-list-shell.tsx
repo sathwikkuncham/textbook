@@ -115,7 +115,7 @@ export function TopicListShell({ topics }: TopicListShellProps) {
       </div>
 
       {/* Filter chips */}
-      <div className="mb-4 flex items-center gap-2 overflow-x-auto pb-1">
+      <div className="scrollbar-none mb-4 flex items-center gap-2 overflow-x-auto pb-1">
         <span className="shrink-0 text-xs text-muted-foreground">Filter:</span>
 
         {LEVEL_CHIPS.map((chip) => (
