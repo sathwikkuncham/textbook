@@ -57,7 +57,7 @@ export function NavigationResults() {
           heading={
             <div className="flex items-center gap-2 px-2 py-1.5">
               <BookOpen className="size-3 text-primary/60" />
-              <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground/70">
+              <span className="line-clamp-1 text-[11px] font-semibold tracking-wide text-muted-foreground/70">
                 {topicName}
               </span>
             </div>
