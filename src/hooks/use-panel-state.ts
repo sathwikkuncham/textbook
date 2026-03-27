@@ -12,12 +12,12 @@ interface PanelState {
 }
 
 export function usePanelState(): PanelState {
-  const [leftSidebarOpen, setLeftSidebarOpen] = useState(true);
-  const [rightSidebarOpen, setRightSidebarOpen] = useState(true);
+  const [leftSidebarOpen, setLeftSidebarOpen] = useState(false);
+  const [rightSidebarOpen, setRightSidebarOpen] = useState(false);
   const [focusMode, setFocusMode] = useState(false);
 
   // Store panel state before entering focus mode so we can restore it
-  const savedState = useRef({ left: true, right: true });
+  const savedState = useRef({ left: false, right: false });
 
   const toggleLeftSidebar = useCallback(() => {
     setLeftSidebarOpen((prev) => !prev);

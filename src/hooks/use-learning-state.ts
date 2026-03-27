@@ -112,14 +112,40 @@ export function useLearningState() {
         const currData = await currRes.json();
         if (!currData.success) throw new Error(currData.error);
 
+        const firstModule = currData.curriculum.modules[0];
+        const firstSubtopic = firstModule?.subtopics[0];
+
         setState((prev) => ({
           ...prev,
           curriculum: currData.curriculum,
-          activeModuleId: 1,
-          activeSubtopicId:
-            currData.curriculum.modules[0]?.subtopics[0]?.id ?? null,
-          isLoading: false,
+          activeModuleId: firstModule?.id ?? 1,
+          activeSubtopicId: firstSubtopic?.id ?? null,
         }));
+
+        // Auto-load the first subtopic content so the user never sees an empty state
+        if (firstModule && firstSubtopic) {
+          const contentRes = await fetch("/api/learn/content", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              topic: topicInfo.displayName,
+              slug: topicInfo.slug,
+              moduleId: firstModule.id,
+              subtopicId: firstSubtopic.id,
+            }),
+          });
+          const contentData = await contentRes.json();
+          if (contentData.success) {
+            setState((prev) => ({
+              ...prev,
+              moduleContent: contentData.content,
+              moduleDiagrams: contentData.diagrams,
+              isLoading: false,
+            }));
+            return;
+          }
+        }
+        setState((prev) => ({ ...prev, isLoading: false }));
       } catch (err) {
         setError(
           err instanceof Error ? err.message : "Failed to load topic"

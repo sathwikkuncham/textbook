@@ -1,16 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useCallback, useState, useMemo } from "react";
-import type { PanelImperativeHandle } from "react-resizable-panels";
-import {
-  ResizablePanelGroup,
-  ResizablePanel,
-  ResizableHandle,
-} from "@/components/ui/resizable";
+import { useCallback, useState, useMemo } from "react";
 import { SidebarLeft } from "./sidebar-left";
 import { MainContent } from "./main-content";
 import { ChatPanel } from "@/components/chat/chat-panel";
 import { QuizShell } from "@/components/quiz/quiz-shell";
+import { cn } from "@/lib/utils";
 import type { Module } from "@/lib/types/learning";
 import type { useLearningState } from "@/hooks/use-learning-state";
 import type { useProgress } from "@/hooks/use-progress";
@@ -37,51 +32,14 @@ export function PanelLayout({
   progress,
   assessment,
 }: PanelLayoutProps) {
-  const leftPanelRef = useRef<PanelImperativeHandle>(null);
-  const rightPanelRef = useRef<PanelImperativeHandle>(null);
-  const hasMounted = useRef(false);
-
   const [pendingAction, setPendingAction] = useState<{
     action: string;
     selectedText: string;
   } | null>(null);
 
-  useEffect(() => {
-    if (!hasMounted.current) return;
-    if (leftSidebarOpen) leftPanelRef.current?.expand();
-    else leftPanelRef.current?.collapse();
-  }, [leftSidebarOpen]);
-
-  useEffect(() => {
-    if (!hasMounted.current) return;
-    if (rightSidebarOpen) rightPanelRef.current?.expand();
-    else rightPanelRef.current?.collapse();
-  }, [rightSidebarOpen]);
-
-  useEffect(() => {
-    hasMounted.current = true;
-  }, []);
-
-  const handleLeftCollapse = useCallback(() => {
-    onLeftSidebarOpenChange(false);
-  }, [onLeftSidebarOpenChange]);
-
-  const handleLeftExpand = useCallback(() => {
-    onLeftSidebarOpenChange(true);
-  }, [onLeftSidebarOpenChange]);
-
-  const handleRightCollapse = useCallback(() => {
-    onRightSidebarOpenChange(false);
-  }, [onRightSidebarOpenChange]);
-
-  const handleRightExpand = useCallback(() => {
-    onRightSidebarOpenChange(true);
-  }, [onRightSidebarOpenChange]);
-
   const handleTextSelectionAction = useCallback(
     (action: string, selectedText: string) => {
       setPendingAction({ action, selectedText });
-      // Ensure right panel is open for chat
       if (!rightSidebarOpen) {
         onRightSidebarOpenChange(true);
       }
@@ -92,6 +50,14 @@ export function PanelLayout({
   const clearPendingAction = useCallback(() => {
     setPendingAction(null);
   }, []);
+
+  const handleSubtopicClick = useCallback(
+    (moduleId: number, subtopicId: string) => {
+      learning.navigateToSubtopic(moduleId, subtopicId);
+      onLeftSidebarOpenChange(false);
+    },
+    [learning, onLeftSidebarOpenChange]
+  );
 
   const activeSubtopicTitle = useMemo(() => {
     if (!learning.curriculum || !learning.activeSubtopicId) return undefined;
@@ -104,41 +70,12 @@ export function PanelLayout({
     return undefined;
   }, [learning.curriculum, learning.activeSubtopicId]);
 
+  const anyDrawerOpen = leftSidebarOpen || rightSidebarOpen;
+
   return (
-    <ResizablePanelGroup orientation="horizontal" className="flex-1">
-      <ResizablePanel
-        panelRef={leftPanelRef}
-        id="left-sidebar"
-        defaultSize="22%"
-        minSize="15%"
-        maxSize="30%"
-        collapsible
-        collapsedSize="0%"
-        onResize={(panelSize) => {
-          if (!hasMounted.current) return;
-          if (panelSize.asPercentage === 0) handleLeftCollapse();
-          else handleLeftExpand();
-        }}
-      >
-        <SidebarLeft
-          curriculum={learning.curriculum}
-          activeModuleId={learning.activeModuleId}
-          activeSubtopicId={learning.activeSubtopicId}
-          loadedModuleId={learning.activeModuleId}
-          completedSubtopics={progress.completedSubtopics}
-          checkpoints={progress.checkpoints}
-          isLoading={learning.isLoading}
-          onSubtopicClick={learning.navigateToSubtopic}
-          onStartQuiz={(moduleId) => {
-            learning.setPhase("assessing");
-            assessment.startQuiz(moduleId);
-          }}
-        />
-      </ResizablePanel>
-
-      <ResizableHandle className="transition-colors hover:bg-primary/50 data-[resize-handle-active]:bg-primary" />
-
-      <ResizablePanel id="main-content" defaultSize="50%" minSize="30%">
+    <>
+      {/* Main content — full width, always visible */}
+      <div className="h-full w-full">
         <MainContent
           phase={learning.phase}
           content={learning.moduleContent}
@@ -151,58 +88,106 @@ export function PanelLayout({
           activeSubtopicId={learning.activeSubtopicId}
           onNavigateSubtopic={learning.navigateToSubtopic}
           quizContent={
-            assessment.mode !== "idle" ? (() => {
-              const quizModule = learning.curriculum?.modules.find(
-                (m) => m.id === assessment.moduleId
-              );
-              return (
-              <QuizShell
-                assessment={assessment}
-                moduleTitle={quizModule?.title ?? activeModule?.title ?? ""}
-                passThreshold={quizModule?.checkpoint.pass_threshold ?? 70}
-                onDismiss={() => {
-                  assessment.dismiss();
-                  learning.setPhase("learning");
-                }}
-                onNextModule={() => {
-                  assessment.dismiss();
-                  learning.setPhase("learning");
-                  // Navigate to first subtopic of next module
-                  const quizModId = assessment.moduleId ?? activeModule?.id;
-                  if (quizModId && learning.curriculum) {
-                    const nextModule = learning.curriculum.modules.find(
-                      (m) => m.id === quizModId + 1
-                    );
-                    if (nextModule && nextModule.subtopics[0]) {
-                      learning.navigateToSubtopic(
-                        nextModule.id,
-                        nextModule.subtopics[0].id
-                      );
-                    }
-                  }
-                  progress.refreshProgress();
-                }}
-              />
-              );
-            })() : undefined
+            assessment.mode !== "idle"
+              ? (() => {
+                  const quizModule = learning.curriculum?.modules.find(
+                    (m) => m.id === assessment.moduleId
+                  );
+                  return (
+                    <QuizShell
+                      assessment={assessment}
+                      moduleTitle={
+                        quizModule?.title ?? activeModule?.title ?? ""
+                      }
+                      passThreshold={
+                        quizModule?.checkpoint.pass_threshold ?? 70
+                      }
+                      onDismiss={() => {
+                        assessment.dismiss();
+                        learning.setPhase("learning");
+                      }}
+                      onNextModule={() => {
+                        assessment.dismiss();
+                        learning.setPhase("learning");
+                        const quizModId =
+                          assessment.moduleId ?? activeModule?.id;
+                        if (quizModId && learning.curriculum) {
+                          const nextModule =
+                            learning.curriculum.modules.find(
+                              (m) => m.id === quizModId + 1
+                            );
+                          if (nextModule && nextModule.subtopics[0]) {
+                            learning.navigateToSubtopic(
+                              nextModule.id,
+                              nextModule.subtopics[0].id
+                            );
+                          }
+                        }
+                        progress.refreshProgress();
+                      }}
+                    />
+                  );
+                })()
+              : undefined
           }
         />
-      </ResizablePanel>
+      </div>
 
-      <ResizableHandle className="transition-colors hover:bg-primary/50 data-[resize-handle-active]:bg-primary" />
+      {/* Backdrop — fixed overlay, shared for both drawers */}
+      {anyDrawerOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black/20 backdrop-blur-[2px]"
+          style={{ top: 48 }}
+          onClick={() => {
+            if (leftSidebarOpen) onLeftSidebarOpenChange(false);
+            if (rightSidebarOpen) onRightSidebarOpenChange(false);
+          }}
+        />
+      )}
 
-      <ResizablePanel
-        panelRef={rightPanelRef}
-        id="right-sidebar"
-        defaultSize="28%"
-        minSize="20%"
-        maxSize="40%"
-        collapsible
-        collapsedSize="0%"
-        onResize={(panelSize) => {
-          if (!hasMounted.current) return;
-          if (panelSize.asPercentage === 0) handleRightCollapse();
-          else handleRightExpand();
+      {/* Left sidebar drawer — fixed position */}
+      <div
+        className={cn(
+          "fixed z-50 w-80 overflow-hidden rounded-2xl border border-border bg-card shadow-[0_10px_40px_-10px_rgba(26,22,20,0.15),0_20px_50px_-10px_rgba(26,22,20,0.08)]",
+          !leftSidebarOpen && "pointer-events-none"
+        )}
+        style={{
+          top: 60,
+          bottom: 36,
+          left: leftSidebarOpen ? 12 : -332,
+          opacity: leftSidebarOpen ? 1 : 0,
+          transition: "left 300ms ease-out, opacity 200ms ease-out",
+        }}
+      >
+        <SidebarLeft
+          curriculum={learning.curriculum}
+          activeModuleId={learning.activeModuleId}
+          activeSubtopicId={learning.activeSubtopicId}
+          loadedModuleId={learning.activeModuleId}
+          completedSubtopics={progress.completedSubtopics}
+          checkpoints={progress.checkpoints}
+          isLoading={learning.isLoading}
+          onSubtopicClick={handleSubtopicClick}
+          onStartQuiz={(moduleId) => {
+            learning.setPhase("assessing");
+            assessment.startQuiz(moduleId);
+            onLeftSidebarOpenChange(false);
+          }}
+        />
+      </div>
+
+      {/* Right chat drawer — fixed position */}
+      <div
+        className={cn(
+          "fixed z-50 w-[380px] overflow-hidden rounded-2xl border border-border bg-card shadow-[0_10px_40px_-10px_rgba(26,22,20,0.15),0_20px_50px_-10px_rgba(26,22,20,0.08)]",
+          !rightSidebarOpen && "pointer-events-none"
+        )}
+        style={{
+          top: 60,
+          bottom: 36,
+          right: rightSidebarOpen ? 12 : -392,
+          opacity: rightSidebarOpen ? 1 : 0,
+          transition: "right 300ms ease-out, opacity 200ms ease-out",
         }}
       >
         <ChatPanel
@@ -215,7 +200,7 @@ export function PanelLayout({
           pendingAction={pendingAction}
           onPendingActionConsumed={clearPendingAction}
         />
-      </ResizablePanel>
-    </ResizablePanelGroup>
+      </div>
+    </>
   );
 }

@@ -108,8 +108,10 @@ export function WorkspaceShell({ topicSlug }: WorkspaceShellProps) {
         topicSlug={topicSlug}
         isLoading={learning.isLoading}
         completionPercent={progress.completionPercent}
-        focusMode={focusMode}
-        onToggleFocusMode={toggleFocusMode}
+        leftSidebarOpen={leftSidebarOpen}
+        rightSidebarOpen={rightSidebarOpen}
+        onToggleLeftSidebar={toggleLeftSidebar}
+        onToggleRightSidebar={toggleRightSidebar}
       />
       {isMobile ? (
         <MobileWorkspace
