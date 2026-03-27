@@ -32,15 +32,15 @@ const CATEGORY_ACCENTS: Record<string, string> = {
 const LEVEL_LABELS: Record<string, { label: string; class: string }> = {
   beginner: {
     label: "Beginner",
-    class: "text-emerald-600 dark:text-emerald-400",
+    class: "text-primary/70",
   },
   intermediate: {
     label: "Intermediate",
-    class: "text-blue-600 dark:text-blue-400",
+    class: "text-primary/85",
   },
   advanced: {
     label: "Advanced",
-    class: "text-purple-600 dark:text-purple-400",
+    class: "text-primary",
   },
 };
 
@@ -99,10 +99,7 @@ export function TopicCard({
       {(hasProgress || isComplete) && (
         <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-muted/50">
           <div
-            className={cn(
-              "h-full transition-all duration-500",
-              isComplete ? "bg-emerald-500" : "bg-primary"
-            )}
+            className="h-full bg-primary transition-all duration-500"
             style={{ width: `${completionPercent}%` }}
           />
         </div>
