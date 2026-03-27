@@ -5,6 +5,7 @@ import { desc } from "drizzle-orm";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { NewTopicDialog } from "@/components/home/new-topic-dialog";
 import { TopicListShell } from "@/components/home/topic-list-shell";
+import { SearchTrigger } from "@/components/home/search-trigger";
 
 export const dynamic = "force-dynamic";
 
@@ -28,6 +29,7 @@ export default async function HomePage() {
             </span>
           </div>
           <div className="flex items-center gap-2">
+            <SearchTrigger />
             <ThemeToggle />
             <NewTopicDialog />
           </div>
