@@ -146,6 +146,10 @@ export function MobileWorkspace({
             error={learning.error}
             activeModuleTitle={activeModule?.title}
             onTextSelectionAction={handleTextSelectionAction}
+            curriculum={learning.curriculum}
+            activeModuleId={learning.activeModuleId}
+            activeSubtopicId={learning.activeSubtopicId}
+            onNavigateSubtopic={learning.navigateToSubtopic}
             quizContent={quizContent}
           />
         </div>

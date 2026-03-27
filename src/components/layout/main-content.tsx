@@ -1,13 +1,21 @@
 "use client";
 
-import { useRef } from "react";
-import { BookOpen } from "lucide-react";
+import { useRef, useMemo } from "react";
+import { BookOpen, ChevronLeft, ChevronRight } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { MermaidDiagram } from "@/components/ui/mermaid-diagram";
 import { TextSelectionToolbar } from "@/components/chat/text-selection-toolbar";
 import type { LearningPhase } from "@/hooks/use-learning-state";
+import type { Curriculum } from "@/lib/types/learning";
+
+interface SubtopicNavInfo {
+  moduleId: number;
+  subtopicId: string;
+  moduleTitle: string;
+  subtopicTitle: string;
+}
 
 interface MainContentProps {
   phase: LearningPhase;
@@ -17,6 +25,10 @@ interface MainContentProps {
   activeModuleTitle?: string;
   onTextSelectionAction?: (action: string, selectedText: string) => void;
   quizContent?: React.ReactNode;
+  curriculum?: Curriculum | null;
+  activeModuleId?: number | null;
+  activeSubtopicId?: string | null;
+  onNavigateSubtopic?: (moduleId: number, subtopicId: string) => void;
 }
 
 function ContentSkeleton() {
@@ -82,6 +94,95 @@ function ErrorState({ error }: { error: string }) {
   );
 }
 
+function useSubtopicNav(
+  curriculum: Curriculum | null | undefined,
+  activeModuleId: number | null | undefined,
+  activeSubtopicId: string | null | undefined
+): { prev: SubtopicNavInfo | null; next: SubtopicNavInfo | null; current: string | null } {
+  return useMemo(() => {
+    if (!curriculum || !activeModuleId || !activeSubtopicId) {
+      return { prev: null, next: null, current: null };
+    }
+
+    // Flatten all subtopics across all modules
+    const flat: SubtopicNavInfo[] = [];
+    for (const mod of curriculum.modules) {
+      for (const sub of mod.subtopics) {
+        flat.push({
+          moduleId: mod.id,
+          subtopicId: sub.id,
+          moduleTitle: mod.title,
+          subtopicTitle: sub.title,
+        });
+      }
+    }
+
+    const currentIdx = flat.findIndex(
+      (s) => s.moduleId === activeModuleId && s.subtopicId === activeSubtopicId
+    );
+
+    const currentLabel = currentIdx >= 0
+      ? `${flat[currentIdx].moduleTitle}`
+      : null;
+
+    return {
+      prev: currentIdx > 0 ? flat[currentIdx - 1] : null,
+      next: currentIdx >= 0 && currentIdx < flat.length - 1 ? flat[currentIdx + 1] : null,
+      current: currentLabel,
+    };
+  }, [curriculum, activeModuleId, activeSubtopicId]);
+}
+
+function SubtopicNavBar({
+  prev,
+  next,
+  onNavigate,
+}: {
+  prev: SubtopicNavInfo | null;
+  next: SubtopicNavInfo | null;
+  onNavigate: (moduleId: number, subtopicId: string) => void;
+}) {
+  if (!prev && !next) return null;
+
+  return (
+    <nav className="mt-10 flex items-stretch gap-3 border-t border-border pt-6">
+      {prev ? (
+        <button
+          onClick={() => onNavigate(prev.moduleId, prev.subtopicId)}
+          className="group flex flex-1 flex-col items-start gap-1 rounded-xl border border-border bg-card p-4 text-left transition-all duration-300 hover:border-primary/30 hover:shadow-[var(--shadow-glow-red)]"
+        >
+          <span className="flex items-center gap-1 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+            <ChevronLeft className="size-3" />
+            Previous
+          </span>
+          <span className="text-sm font-medium text-foreground line-clamp-1">
+            {prev.subtopicTitle}
+          </span>
+        </button>
+      ) : (
+        <div className="flex-1" />
+      )}
+
+      {next ? (
+        <button
+          onClick={() => onNavigate(next.moduleId, next.subtopicId)}
+          className="group flex flex-1 flex-col items-end gap-1 rounded-xl border border-border bg-card p-4 text-right transition-all duration-300 hover:border-primary/30 hover:shadow-[var(--shadow-glow-red)]"
+        >
+          <span className="flex items-center gap-1 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+            Next
+            <ChevronRight className="size-3" />
+          </span>
+          <span className="text-sm font-medium text-foreground line-clamp-1">
+            {next.subtopicTitle}
+          </span>
+        </button>
+      ) : (
+        <div className="flex-1" />
+      )}
+    </nav>
+  );
+}
+
 export function MainContent({
   phase,
   content,
@@ -90,8 +191,13 @@ export function MainContent({
   activeModuleTitle,
   onTextSelectionAction,
   quizContent,
+  curriculum,
+  activeModuleId,
+  activeSubtopicId,
+  onNavigateSubtopic,
 }: MainContentProps) {
   const articleRef = useRef<HTMLElement>(null);
+  const { prev, next } = useSubtopicNav(curriculum, activeModuleId, activeSubtopicId);
 
   if (error) return <ErrorState error={error} />;
 
@@ -245,6 +351,15 @@ export function MainContent({
         >
           {content}
         </ReactMarkdown>
+
+        {/* Prev / Next navigation */}
+        {onNavigateSubtopic && (
+          <SubtopicNavBar
+            prev={prev}
+            next={next}
+            onNavigate={onNavigateSubtopic}
+          />
+        )}
       </article>
     </ScrollArea>
   );

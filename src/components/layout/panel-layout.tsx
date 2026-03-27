@@ -146,6 +146,10 @@ export function PanelLayout({
           error={learning.error}
           activeModuleTitle={activeModule?.title}
           onTextSelectionAction={handleTextSelectionAction}
+          curriculum={learning.curriculum}
+          activeModuleId={learning.activeModuleId}
+          activeSubtopicId={learning.activeSubtopicId}
+          onNavigateSubtopic={learning.navigateToSubtopic}
           quizContent={
             assessment.mode !== "idle" ? (() => {
               const quizModule = learning.curriculum?.modules.find(

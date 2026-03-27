@@ -53,10 +53,10 @@ export default function RootLayout({
     <html lang="en" className={`h-full antialiased ${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
       <body className="h-full">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-          <Suspense fallback={null}>
-            <RouteProgress />
-          </Suspense>
           <TooltipProvider delayDuration={300}>
+            <Suspense fallback={null}>
+              <RouteProgress />
+            </Suspense>
             <CommandPaletteProvider>{children}</CommandPaletteProvider>
           </TooltipProvider>
         </ThemeProvider>

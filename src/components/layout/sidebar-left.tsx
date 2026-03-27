@@ -293,7 +293,9 @@ export function SidebarLeft({
       {/* Footer */}
       <div className="shrink-0 border-t border-sidebar-border px-4 py-2.5 text-sm text-muted-foreground">
         {curriculum.modules.length} modules &middot;{" "}
-        {curriculum.estimated_total_minutes} min
+        {curriculum.estimated_total_minutes >= 60
+          ? `${Math.floor(curriculum.estimated_total_minutes / 60)}h ${curriculum.estimated_total_minutes % 60 > 0 ? `${curriculum.estimated_total_minutes % 60}m` : ""}`
+          : `${curriculum.estimated_total_minutes}m`}
       </div>
     </div>
   );
