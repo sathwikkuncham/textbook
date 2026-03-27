@@ -103,6 +103,7 @@ export function useLearningState() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             topic: topicInfo.displayName,
+            slug: topicInfo.slug,
             level: topicInfo.level,
             goal: topicInfo.goal,
             timeCommitment: topicInfo.timeCommitment ?? "standard",
@@ -148,6 +149,7 @@ export function useLearningState() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             topic: topicSummary.displayName,
+            slug: topicSummary.slug,
             level: topicSummary.level,
             goal: topicSummary.goal,
             timeCommitment: "standard",
@@ -218,7 +220,7 @@ export function useLearningState() {
         const currRes = await fetch("/api/learn/curriculum", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ topic, level, goal, timeCommitment }),
+          body: JSON.stringify({ topic, slug: topicSlug, level, goal, timeCommitment }),
         });
         const currData = await currRes.json();
         if (!currData.success) throw new Error(currData.error);
@@ -275,7 +277,7 @@ export function useLearningState() {
         const res = await fetch("/api/learn/content", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ topic: state.topic, moduleId }),
+          body: JSON.stringify({ topic: state.topic, slug: state.topicSlug, moduleId }),
         });
         const data = await res.json();
         if (!data.success) throw new Error(data.error);
@@ -292,7 +294,7 @@ export function useLearningState() {
         );
       }
     },
-    [state.topic, state.activeModuleId, state.moduleContent, setError]
+    [state.topic, state.topicSlug, state.activeModuleId, state.moduleContent, setError]
   );
 
   const navigateToSubtopic = useCallback(
@@ -313,6 +315,7 @@ export function useLearningState() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             topic: state.topic,
+            slug: state.topicSlug,
             moduleId,
             subtopicId,
           }),

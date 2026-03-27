@@ -5,8 +5,9 @@ import type { UserScopeSelection } from "@/lib/types/learning";
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
-  const { topic, scope } = body as {
+  const { topic, slug: providedSlug, scope } = body as {
     topic: string;
+    slug?: string;
     scope: UserScopeSelection;
   };
 
@@ -24,7 +25,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const topicSlug = generateSlug(topic);
+  const topicSlug = providedSlug || generateSlug(topic);
   const topicRecord = await findTopicBySlug(topicSlug);
 
   if (!topicRecord) {

@@ -81,7 +81,8 @@ export async function POST(request: NextRequest) {
   );
 
   // Get topic info
-  const topicSlug = topic ? generateSlug(topic) : "";
+  const providedSlug = body.slug as string | undefined;
+  const topicSlug = providedSlug || (topic ? generateSlug(topic) : "");
   const topicRecord = topicSlug
     ? await findTopicBySlug(topicSlug)
     : null;

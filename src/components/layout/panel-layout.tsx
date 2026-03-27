@@ -204,6 +204,7 @@ export function PanelLayout({
         <ChatPanel
           topicId={learning.topicId}
           topic={learning.topic}
+          topicSlug={learning.topicSlug}
           moduleId={learning.activeModuleId}
           subtopicId={learning.activeSubtopicId}
           subtopicTitle={activeSubtopicTitle}

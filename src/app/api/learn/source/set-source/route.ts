@@ -7,7 +7,7 @@ import { generateSlug } from "@/lib/types/learning";
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
-  const { topic, sourceType, sourcePath } = body;
+  const { topic, slug: providedSlug, sourceType, sourcePath } = body;
 
   if (!topic || !sourceType || !sourcePath) {
     return NextResponse.json(
@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const topicSlug = generateSlug(topic);
+  const topicSlug = providedSlug || generateSlug(topic);
   const topicRecord = await findTopicBySlug(topicSlug);
 
   if (!topicRecord) {

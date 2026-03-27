@@ -31,7 +31,8 @@ const INITIAL_STATE: AssessmentState = {
 
 export function useAssessment(
   topicId: number | null,
-  topic: string | null
+  topic: string | null,
+  topicSlug: string | null = null
 ) {
   const [state, setState] = useState<AssessmentState>(INITIAL_STATE);
 
@@ -49,7 +50,7 @@ export function useAssessment(
         const res = await fetch("/api/learn/assess", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ topic, moduleId }),
+          body: JSON.stringify({ topic, slug: topicSlug, moduleId }),
         });
         const data = await res.json();
         if (!data.success) throw new Error(data.error);
@@ -88,7 +89,7 @@ export function useAssessment(
         const res = await fetch("/api/learn/assess", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ topic, moduleId }),
+          body: JSON.stringify({ topic, slug: topicSlug, moduleId }),
         });
         const data = await res.json();
         if (!data.success) throw new Error(data.error);

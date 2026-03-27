@@ -4,7 +4,7 @@ import { findTopicBySlug } from "@/lib/db/repository";
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
-  const { topic } = body;
+  const { topic, slug: providedSlug } = body;
 
   if (!topic || typeof topic !== "string") {
     return NextResponse.json(
@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const topicSlug = generateSlug(topic);
+  const topicSlug = providedSlug || generateSlug(topic);
   const existing = await findTopicBySlug(topicSlug);
 
   return NextResponse.json({

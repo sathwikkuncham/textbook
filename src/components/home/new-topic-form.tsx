@@ -162,6 +162,7 @@ export function NewTopicForm() {
           }),
         });
         if (!researchRes.ok) throw new Error("Research failed");
+        const researchData = await researchRes.json();
 
         setPhase("Designing curriculum...");
         const currRes = await fetch("/api/learn/curriculum", {
@@ -169,6 +170,7 @@ export function NewTopicForm() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             topic: topic.trim(),
+            slug: researchData.topicSlug,
             level,
             goal,
             timeCommitment,
@@ -177,8 +179,7 @@ export function NewTopicForm() {
         const currData = await currRes.json();
         if (!currData.success) throw new Error(currData.error);
 
-        const slug = generateSlug(topic.trim());
-        router.push(`/learn/${slug}`);
+        router.push(`/learn/${researchData.topicSlug}`);
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");

@@ -110,6 +110,7 @@ export default function SettingsPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           topic: original.displayName,
+          slug,
           level,
           goal,
           timeCommitment,

@@ -16,7 +16,7 @@ export const maxDuration = 60;
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
-  const { topic, level, goal, timeCommitment } = body;
+  const { topic, slug: providedSlug, level, goal, timeCommitment } = body;
 
   if (!topic || !level || !goal || !timeCommitment) {
     return NextResponse.json(
@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const topicSlug = generateSlug(topic);
+  const topicSlug = providedSlug || generateSlug(topic);
   const topicRecord = await findTopicBySlug(topicSlug);
 
   if (!topicRecord) {

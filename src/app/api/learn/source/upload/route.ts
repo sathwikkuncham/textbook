@@ -19,7 +19,8 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const topicSlug = generateSlug(topic);
+  const providedSlug = formData.get("slug") as string | null;
+  const topicSlug = providedSlug || generateSlug(topic);
   const fileName = `${topicSlug}/${Date.now()}-${file.name}`;
 
   const buffer = Buffer.from(await file.arrayBuffer());

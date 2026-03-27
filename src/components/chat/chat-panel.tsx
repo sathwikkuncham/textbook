@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 interface ChatPanelProps {
   topicId: number | null;
   topic: string | null;
+  topicSlug: string | null;
   moduleId: number | null;
   subtopicId: string | null;
   subtopicTitle?: string;
@@ -25,6 +26,7 @@ interface ChatPanelProps {
 export function ChatPanel({
   topicId,
   topic,
+  topicSlug,
   moduleId,
   subtopicId,
   subtopicTitle,
@@ -47,7 +49,7 @@ export function ChatPanel({
     selectSession,
     isLoadingHistory,
     error,
-  } = useChat({ topicId, topic, moduleId, subtopicId });
+  } = useChat({ topicId, topic, topicSlug, moduleId, subtopicId });
 
   // Auto-scroll
   useEffect(() => {

@@ -48,7 +48,7 @@ export default function ScopeReviewPage() {
         const res = await fetch("/api/learn/source/discover", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ topic: slug.replace(/-/g, " ") }),
+          body: JSON.stringify({ topic: slug.replace(/-/g, " "), slug }),
         });
         const data = await res.json();
         if (!data.success) throw new Error(data.error);
@@ -92,6 +92,7 @@ export default function ScopeReviewPage() {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               topic: slug.replace(/-/g, " "),
+              slug,
               level: topic.level,
               goal: topic.goal,
             }),
@@ -147,7 +148,7 @@ export default function ScopeReviewPage() {
       await fetch("/api/learn/source/scope", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ topic: topicName, scope }),
+        body: JSON.stringify({ topic: topicName, slug, scope }),
       });
 
       // Run research (supplementary)
@@ -169,6 +170,7 @@ export default function ScopeReviewPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           topic: topicName,
+          slug,
           level: topicInfo.level,
           goal: topicInfo.goal,
           timeCommitment: topicInfo.timeCommitment,

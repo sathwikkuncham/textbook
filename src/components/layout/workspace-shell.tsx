@@ -44,7 +44,7 @@ export function WorkspaceShell({ topicSlug }: WorkspaceShellProps) {
   const learning = useLearningState();
   const activeModule = learning.getActiveModule();
   const progress = useProgress(learning.topicId, learning.curriculum);
-  const assessment = useAssessment(learning.topicId, learning.topic);
+  const assessment = useAssessment(learning.topicId, learning.topic, learning.topicSlug);
 
   // Track subtopic completion on navigation
   const prevSubtopicRef = useRef<{

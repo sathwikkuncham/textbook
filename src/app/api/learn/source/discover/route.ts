@@ -13,7 +13,7 @@ export const maxDuration = 120;
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
-  const { topic } = body;
+  const { topic, slug: providedSlug } = body;
 
   if (!topic) {
     return NextResponse.json(
@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const topicSlug = generateSlug(topic);
+  const topicSlug = providedSlug || generateSlug(topic);
   const topicRecord = await findTopicBySlug(topicSlug);
 
   if (!topicRecord) {

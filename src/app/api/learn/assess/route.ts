@@ -14,7 +14,7 @@ export const maxDuration = 60;
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
-  const { topic, moduleId } = body;
+  const { topic, slug: providedSlug, moduleId } = body;
 
   if (!topic || moduleId === undefined) {
     return NextResponse.json(
@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const topicSlug = generateSlug(topic);
+  const topicSlug = providedSlug || generateSlug(topic);
   const topicRecord = await findTopicBySlug(topicSlug);
 
   if (!topicRecord) {

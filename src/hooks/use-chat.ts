@@ -18,11 +18,12 @@ export interface ChatSession {
 interface UseChatParams {
   topicId: number | null;
   topic: string | null;
+  topicSlug: string | null;
   moduleId: number | null;
   subtopicId: string | null;
 }
 
-export function useChat({ topicId, topic, moduleId, subtopicId }: UseChatParams) {
+export function useChat({ topicId, topic, topicSlug, moduleId, subtopicId }: UseChatParams) {
   const [sessions, setSessions] = useState<ChatSession[]>([]);
   const [activeSessionId, setActiveSessionId] = useState<number | null>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -142,6 +143,7 @@ export function useChat({ topicId, topic, moduleId, subtopicId }: UseChatParams)
           body: JSON.stringify({
             topicId,
             topic,
+            slug: topicSlug,
             sessionId: activeSessionId,
             moduleId,
             subtopicId,

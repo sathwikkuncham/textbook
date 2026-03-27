@@ -156,6 +156,7 @@ export function MobileWorkspace({
           <ChatPanel
             topicId={learning.topicId}
             topic={learning.topic}
+            topicSlug={learning.topicSlug}
             moduleId={learning.activeModuleId}
             subtopicId={learning.activeSubtopicId}
             subtopicTitle={activeSubtopicTitle}
