@@ -83,6 +83,44 @@ async function initMermaid(resolvedTheme: string | undefined) {
   lastInitializedTheme = themeKey;
 }
 
+/** Remap hardcoded fill/stroke colors in Mermaid style directives to be
+ *  readable in both light and dark modes. Preserves color intent
+ *  (green=success, red=error, yellow=warning) while adapting brightness. */
+function remapStyleColors(chart: string, isDark: boolean): string {
+  if (!isDark) return chart;
+
+  // Map light-mode fill colors to dark-mode equivalents
+  const colorMap: Record<string, string> = {
+    // Yellows/ambers
+    "#fef3c7": "#433617", "#fde68a": "#433617", "#fef9c3": "#433617",
+    "#fffbeb": "#433617", "#fefce8": "#433617",
+    // Greens
+    "#dcfce7": "#14532d", "#bbf7d0": "#14532d", "#d1fae5": "#14532d",
+    "#ecfdf5": "#14532d", "#f0fdf4": "#14532d",
+    // Reds
+    "#fecaca": "#450a0a", "#fee2e2": "#450a0a", "#fef2f2": "#450a0a",
+    "#ffe4e6": "#450a0a",
+    // Blues
+    "#dbeafe": "#1e3a5f", "#bfdbfe": "#1e3a5f", "#eff6ff": "#1e3a5f",
+    "#e0f2fe": "#1e3a5f",
+    // Purples
+    "#ede9fe": "#2e1065", "#e9d5ff": "#2e1065",
+    // Theme warm tones
+    "#e9e6dc": "#1a1915", "#f5f4ee": "#262624", "#ede9de": "#1b1b19",
+    "#faf9f5": "#262624",
+  };
+
+  let result = chart;
+  for (const [light, dark] of Object.entries(colorMap)) {
+    result = result.replaceAll(light, dark);
+  }
+
+  // Remap stroke to dark-mode primary
+  result = result.replaceAll("stroke:#c96442", "stroke:#d97757");
+
+  return result;
+}
+
 export function MermaidDiagram({ chart, caption }: MermaidDiagramProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [svg, setSvg] = useState<string>("");
@@ -100,13 +138,14 @@ export function MermaidDiagram({ chart, caption }: MermaidDiagramProps) {
         const mermaid = (await import("mermaid")).default;
         const id = `mermaid-${Math.random().toString(36).slice(2, 9)}`;
 
-        const sanitized = chart
-          .replace(/<br\s*\/?>/gi, "\\n")
-          .replace(/<[^>]+>/g, "")
-          .replace(/`/g, "'")
-          // Strip inline style directives — they hardcode light-mode colors
-          // that become unreadable in dark mode. Theme variables handle styling.
-          .replace(/^\s*style\s+\S+\s+.*$/gm, "");
+        const isDark = resolvedTheme === "dark";
+        const sanitized = remapStyleColors(
+          chart
+            .replace(/<br\s*\/?>/gi, "\\n")
+            .replace(/<[^>]+>/g, "")
+            .replace(/`/g, "'"),
+          isDark
+        );
 
         const { svg: renderedSvg } = await mermaid.render(id, sanitized);
         if (!cancelled) {

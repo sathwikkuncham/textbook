@@ -68,7 +68,7 @@ export function NavigationResults() {
               key={`${item.topicSlug}-${item.subtopicId}`}
               value={`${item.topicName} ${item.moduleTitle} ${item.subtopicTitle} ${item.keyConcepts.join(" ")}`}
               onSelect={() => {
-                router.push(`/learn/${item.topicSlug}`);
+                router.push(`/learn/${item.topicSlug}?m=${item.moduleId}&s=${item.subtopicId}`);
                 setOpen(false);
               }}
               className="group flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors aria-selected:bg-primary/5 aria-selected:text-foreground"

@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import { WorkspaceShell } from "@/components/layout/workspace-shell";
 import { db } from "@/lib/db/client";
@@ -39,5 +40,9 @@ export default async function LearnPage({ params }: LearnPageProps) {
     }
   }
 
-  return <WorkspaceShell topicSlug={slug} />;
+  return (
+    <Suspense>
+      <WorkspaceShell topicSlug={slug} />
+    </Suspense>
+  );
 }

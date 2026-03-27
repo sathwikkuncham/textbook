@@ -94,7 +94,7 @@ export function ContentSearchResults({ query }: ContentSearchResultsProps) {
           key={`${result.topicSlug}-${result.subtopicId}-${i}`}
           value={`${result.topicName} ${result.moduleTitle} ${result.subtopicTitle} ${result.snippet}`}
           onSelect={() => {
-            router.push(`/learn/${result.topicSlug}`);
+            router.push(`/learn/${result.topicSlug}?m=${result.moduleId}&s=${result.subtopicId}`);
             setOpen(false);
           }}
           className="group flex cursor-pointer items-start gap-3 rounded-lg px-3 py-3 transition-colors aria-selected:bg-primary/5"

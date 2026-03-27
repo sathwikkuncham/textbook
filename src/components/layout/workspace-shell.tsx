@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useCallback } from "react";
+import { useSearchParams } from "next/navigation";
 import { usePanelState } from "@/hooks/use-panel-state";
 import { useKeyboardShortcuts } from "@/hooks/use-keyboard-shortcuts";
 import { useLearningState } from "@/hooks/use-learning-state";
@@ -18,6 +19,9 @@ interface WorkspaceShellProps {
 
 export function WorkspaceShell({ topicSlug }: WorkspaceShellProps) {
   const { isMobile } = useMobile();
+  const searchParams = useSearchParams();
+  const targetModule = searchParams.get("m");
+  const targetSubtopic = searchParams.get("s");
 
   const {
     leftSidebarOpen,
@@ -81,6 +85,20 @@ export function WorkspaceShell({ topicSlug }: WorkspaceShellProps) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [topicSlug]);
+
+  // Navigate to specific subtopic from command palette URL params
+  const hasNavigatedRef = useRef(false);
+  useEffect(() => {
+    if (
+      targetModule &&
+      targetSubtopic &&
+      learning.curriculum &&
+      !hasNavigatedRef.current
+    ) {
+      hasNavigatedRef.current = true;
+      learning.navigateToSubtopic(parseInt(targetModule), targetSubtopic);
+    }
+  }, [targetModule, targetSubtopic, learning.curriculum, learning]);
 
   return (
     <div className="flex h-dvh w-screen flex-col overflow-hidden">
