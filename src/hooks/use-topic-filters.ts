@@ -1,7 +1,7 @@
 import { useState, useMemo, useCallback } from "react";
 
 export type SortKey = "lastSession" | "alphabetical" | "progress" | "modules" | "time";
-export type FilterCategory = "level" | "sourceType" | "status";
+export type FilterCategory = "level" | "sourceType" | "status" | "category";
 
 interface TopicItem {
   slug: string;
@@ -13,11 +13,13 @@ interface TopicItem {
   completionPercent: number;
   lastSession: string;
   sourceType?: string;
+  category?: string;
 }
 
 interface Filters {
   level: Set<string>;
   sourceType: Set<string>;
+  category: Set<string>;
   status: Set<string>;
 }
 
@@ -34,6 +36,7 @@ export function useTopicFilters(topics: TopicItem[]) {
     level: new Set(),
     sourceType: new Set(),
     status: new Set(),
+    category: new Set(),
   });
 
   const toggleFilter = useCallback((category: FilterCategory, value: string) => {
@@ -49,12 +52,12 @@ export function useTopicFilters(topics: TopicItem[]) {
   }, []);
 
   const clearFilters = useCallback(() => {
-    setFilters({ level: new Set(), sourceType: new Set(), status: new Set() });
+    setFilters({ level: new Set(), sourceType: new Set(), status: new Set(), category: new Set() });
     setSearchQuery("");
   }, []);
 
   const activeFilterCount =
-    filters.level.size + filters.sourceType.size + filters.status.size;
+    filters.level.size + filters.sourceType.size + filters.status.size + filters.category.size;
 
   const filteredTopics = useMemo(() => {
     let result = topics;
@@ -72,6 +75,13 @@ export function useTopicFilters(topics: TopicItem[]) {
     // Filter: level
     if (filters.level.size > 0) {
       result = result.filter((t) => filters.level.has(t.level));
+    }
+
+    // Filter: category
+    if (filters.category.size > 0) {
+      result = result.filter((t) =>
+        filters.category.has(t.category ?? "general")
+      );
     }
 
     // Filter: sourceType

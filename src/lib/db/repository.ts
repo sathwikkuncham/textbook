@@ -40,6 +40,7 @@ export async function createTopic(data: {
   level: string;
   goal: string;
   timeCommitment: string;
+  category?: string;
 }) {
   const result = await db.insert(topics).values(data).returning();
   return result[0];

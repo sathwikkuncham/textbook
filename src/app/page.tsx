@@ -48,6 +48,7 @@ export default async function HomePage() {
               completionPercent: t.completionPercent,
               lastSession: t.lastSession.toISOString(),
               sourceType: t.sourceType,
+              category: t.category,
             }))}
           />
         ) : (

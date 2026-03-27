@@ -8,6 +8,7 @@ import {
 } from "@/lib/db/repository";
 import { createResearchPipeline } from "@/agents/pipelines/research-pipeline";
 import { runAgent } from "@/agents/runner";
+import { deriveTopicName } from "@/agents/topic-namer";
 
 export const maxDuration = 120;
 
@@ -22,16 +23,19 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const topicSlug = generateSlug(topic);
+  // Derive a clean topic name and category from the raw user input
+  const { name: derivedName, category } = await deriveTopicName(topic, level, goal);
+  const topicSlug = generateSlug(derivedName);
 
   let topicRecord = await findTopicBySlug(topicSlug);
   if (!topicRecord) {
     topicRecord = await createTopic({
       slug: topicSlug,
-      displayName: topic,
+      displayName: derivedName,
       level,
       goal,
       timeCommitment: timeCommitment ?? "standard",
+      category,
     });
   }
 

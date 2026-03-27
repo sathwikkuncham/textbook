@@ -28,11 +28,23 @@ interface TopicItem {
   completionPercent: number;
   lastSession: string;
   sourceType?: string;
+  category?: string;
 }
 
 interface TopicListShellProps {
   topics: TopicItem[];
 }
+
+const CATEGORY_CHIPS = [
+  { value: "programming", label: "Programming" },
+  { value: "systems", label: "Systems" },
+  { value: "data-science", label: "Data Science" },
+  { value: "web-dev", label: "Web Dev" },
+  { value: "devops", label: "DevOps" },
+  { value: "theory", label: "Theory" },
+  { value: "math", label: "Math" },
+  { value: "design", label: "Design" },
+];
 
 const LEVEL_CHIPS = [
   { value: "beginner", label: "Beginner", class: "bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400" },
@@ -147,6 +159,23 @@ export function TopicListShell({ topics }: TopicListShellProps) {
             className={cn(
               "shrink-0 rounded-full border px-2.5 py-1 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50",
               filters.status.has(chip.value)
+                ? "border-primary bg-primary/10 text-primary"
+                : "border-border text-muted-foreground hover:text-foreground"
+            )}
+          >
+            {chip.label}
+          </button>
+        ))}
+
+        <span className="text-border">|</span>
+
+        {CATEGORY_CHIPS.map((chip) => (
+          <button
+            key={chip.value}
+            onClick={() => toggleFilter("category" as FilterCategory, chip.value)}
+            className={cn(
+              "shrink-0 rounded-full border px-2.5 py-1 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50",
+              filters.category.has(chip.value)
                 ? "border-primary bg-primary/10 text-primary"
                 : "border-border text-muted-foreground hover:text-foreground"
             )}

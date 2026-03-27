@@ -26,6 +26,7 @@ export const topics = pgTable(
     currentModule: integer("current_module").notNull().default(1),
     currentSubtopic: integer("current_subtopic").notNull().default(1),
     totalTimeMinutes: integer("total_time_minutes").notNull().default(0),
+    category: varchar("category", { length: 100 }).notNull().default("general"),
     sourceType: varchar("source_type", { length: 20 }).notNull().default("topic_only"),
     sourcePath: text("source_path"),
     createdAt: timestamp("created_at").notNull().defaultNow(),
