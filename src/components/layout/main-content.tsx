@@ -33,7 +33,7 @@ interface MainContentProps {
 
 function ContentSkeleton() {
   return (
-    <div className="mx-auto max-w-3xl px-4 py-4 md:px-8 md:py-6">
+    <div className="mx-auto max-w-4xl px-4 py-4 md:px-8 md:py-6">
       {/* Heading */}
       <div className="mb-6 border-b border-border pb-3">
         <div className="h-7 w-1/2 animate-pulse rounded bg-muted" />
@@ -204,7 +204,7 @@ export function MainContent({
   if (quizContent) {
     return (
       <ScrollArea className="h-full">
-        <div className="mx-auto max-w-3xl px-4 py-4 md:px-8 md:py-6">{quizContent}</div>
+        <div className="mx-auto max-w-4xl px-4 py-4 md:px-8 md:py-6">{quizContent}</div>
       </ScrollArea>
     );
   }
@@ -223,7 +223,7 @@ export function MainContent({
           onAction={(action, text) => onTextSelectionAction(action, text)}
         />
       )}
-      <article ref={articleRef} className="mx-auto max-w-3xl px-4 py-4 md:px-8 md:py-6">
+      <article ref={articleRef} className="mx-auto max-w-4xl px-4 py-4 md:px-8 md:py-6">
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
           components={{
