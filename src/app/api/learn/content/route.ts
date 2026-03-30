@@ -8,15 +8,18 @@ import {
   findSourceStructure,
   saveModuleContent,
   clearAudio,
+  saveContentEvaluation,
+  findLearnerInsights,
 } from "@/lib/db/repository";
 import { createContentComposer } from "@/agents/content-composer";
+import { createContentEvaluator } from "@/agents/content-evaluator";
 import { createDiagramSpecialist } from "@/agents/diagram-specialist";
 import { createFetchPDFSectionTool } from "@/agents/tools/fetch-pdf-section";
 import { createFetchPreviousSubtopicTool } from "@/agents/tools/fetch-previous-subtopic";
 import { runAgent } from "@/agents/runner";
 import type { BaseTool } from "@google/adk";
 
-export const maxDuration = 120;
+export const maxDuration = 180;
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
@@ -144,6 +147,20 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Fetch learner model for adaptive content (if available)
+    let learnerContext: string | undefined;
+    const learnerInsights = await findLearnerInsights(topicRecord.id);
+    if (learnerInsights) {
+      const weakAreas = learnerInsights.weakAreas as string[];
+      const style = learnerInsights.learningStyle as Record<string, unknown>;
+      learnerContext = [
+        weakAreas.length > 0 ? `Weak areas: ${weakAreas.join(", ")}` : null,
+        style?.preferredApproach ? `Preferred approach: ${style.preferredApproach}` : null,
+        style?.paceCategory ? `Pace: ${style.paceCategory}` : null,
+        style?.helpSeekingPattern ? `Help-seeking: ${style.helpSeekingPattern}` : null,
+      ].filter(Boolean).join("\n");
+    }
+
     const contentComposer = createContentComposer(
       topic,
       curriculum.level,
@@ -158,6 +175,7 @@ export async function POST(request: NextRequest) {
         totalSubtopics,
         teachingApproach: subtopic.teaching_approach,
         moduleSubtopicList,
+        learnerContext,
       }
     );
 
@@ -178,17 +196,94 @@ export async function POST(request: NextRequest) {
 
     const diagramMessage = `Create a Mermaid diagram for this subtopic:\n${subtopicDesc}`;
 
-    const [contentResult, diagramResult] = await Promise.all([
+    const [initialContent, diagramResult] = await Promise.all([
       runAgent(contentComposer, finalContentMessage),
       runAgent(diagramSpecialist, diagramMessage),
     ]);
 
-    await saveModuleContent(
-      topicRecord.id,
-      dbKey,
-      contentResult,
-      diagramResult
-    );
+    // Content quality evaluation loop
+    let bestContent = initialContent;
+    let bestScore = 0;
+    let contentResult = initialContent;
+    let attempt = 1;
+    const MAX_ATTEMPTS = 3;
+
+    while (attempt <= MAX_ATTEMPTS) {
+      const evaluator = createContentEvaluator(
+        topicRecord.id,
+        subtopic.title,
+        position as "first" | "middle" | "last",
+        curriculum.level
+      );
+
+      const evalResult = await runAgent(
+        evaluator,
+        `Evaluate this teaching content for subtopic "${subtopic.title}":\n\n${contentResult}`
+      );
+
+      // Parse evaluation JSON
+      let evaluation: {
+        clarityScore: number;
+        completenessScore: number;
+        continuityScore: number | null;
+        exampleQualityScore: number;
+        accuracyScore: number;
+        overallScore: number;
+        verdict: string;
+        issues: string[];
+        suggestions: string[];
+      };
+
+      try {
+        const cleaned = evalResult.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
+        evaluation = JSON.parse(cleaned);
+      } catch {
+        // If parsing fails, accept the content as-is
+        console.warn("[content-api] Failed to parse evaluation, accepting content");
+        break;
+      }
+
+      // Save evaluation record
+      await saveContentEvaluation({
+        topicId: topicRecord.id,
+        moduleId,
+        subtopicId: subtopic.id,
+        dbKey,
+        attempt,
+        clarityScore: evaluation.clarityScore,
+        completenessScore: evaluation.completenessScore,
+        continuityScore: evaluation.continuityScore ?? null,
+        exampleQualityScore: evaluation.exampleQualityScore,
+        accuracyScore: evaluation.accuracyScore,
+        overallScore: evaluation.overallScore,
+        verdict: evaluation.verdict,
+        issues: evaluation.issues ?? [],
+        suggestions: evaluation.suggestions ?? [],
+      });
+
+      // Track best
+      if (evaluation.overallScore > bestScore) {
+        bestScore = evaluation.overallScore;
+        bestContent = contentResult;
+      }
+
+      // Check verdict
+      if (evaluation.verdict === "pass" || attempt === MAX_ATTEMPTS) {
+        break;
+      }
+
+      // Regenerate with feedback
+      console.log(`[content-api] Quality score ${evaluation.overallScore}/100, regenerating (attempt ${attempt + 1})`);
+      const feedbackMsg = finalContentMessage +
+        `\n\nQUALITY FEEDBACK (attempt ${attempt}): Fix these issues:\n` +
+        evaluation.issues.join("\n") + "\n\nSuggestions:\n" +
+        evaluation.suggestions.join("\n");
+
+      contentResult = await runAgent(contentComposer, feedbackMsg);
+      attempt++;
+    }
+
+    await saveModuleContent(topicRecord.id, dbKey, bestContent, diagramResult);
 
     return NextResponse.json({
       success: true,
@@ -196,8 +291,10 @@ export async function POST(request: NextRequest) {
       topicId: topicRecord.id,
       moduleId,
       subtopicId: subtopic.id,
-      content: contentResult,
+      content: bestContent,
       diagrams: diagramResult,
+      qualityScore: bestScore > 0 ? bestScore : undefined,
+      generationAttempts: attempt,
     });
   } catch (error) {
     console.error("[content-api] Generation failed:", error);

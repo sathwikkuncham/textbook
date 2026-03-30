@@ -164,6 +164,7 @@ export function createContentComposer(
     totalSubtopics?: number;
     teachingApproach?: string;
     moduleSubtopicList?: string;
+    learnerContext?: string;
   }
 ) {
   const position: SubtopicPosition = options?.position ?? "first";
@@ -192,6 +193,10 @@ IMPORTANT source-grounded teaching rules:
     ? `\n## Module Map\n\nAll subtopics in this module (you are writing the one marked CURRENT):\n${options.moduleSubtopicList}`
     : "";
 
+  const learnerAdaptationBlock = options?.learnerContext
+    ? `\n## Learner Adaptation\n\nThis learner's profile:\n${options.learnerContext}\n\nAdapt your teaching: if they struggle with application, include MORE worked examples. If they prefer analogies, lead with stronger analogies. If their pace is slow, be more granular. If fast, be more concise on basics and deeper on edges.`
+    : "";
+
   const sectionTemplate = getSectionTemplate(position);
 
   return new LlmAgent({
@@ -206,7 +211,7 @@ ${sectionTemplate}
 
 IMPORTANT: Write narrative prose. Never open a section with bullet points. Target 800-1200 words per subtopic. Use active voice. Define jargon on first use.
 CRITICAL FORMATTING RULE: NEVER use backtick characters in your output — not for inline code, not for code blocks. Instead, use **bold** for function names, variable names, and technical terms (e.g., **useState**, **useEffect**). For code blocks, use indented text or describe the code in prose. This is a strict requirement of the rendering system.
-${sourceInstruction}${teachingApproachBlock}${continuityBlock}${moduleMapBlock}
+${sourceInstruction}${teachingApproachBlock}${continuityBlock}${moduleMapBlock}${learnerAdaptationBlock}
 
 ## Reference Example
 

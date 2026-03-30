@@ -9,9 +9,11 @@ import {
   createChatSession,
   updateChatSessionTitle,
   appendChatMessage,
+  logLearnerSignal,
 } from "@/lib/db/repository";
 import { createChatTutor } from "@/agents/chat-tutor";
 import { createFetchPDFSectionTool } from "@/agents/tools/fetch-pdf-section";
+import { createFetchPreviousSubtopicTool } from "@/agents/tools/fetch-previous-subtopic";
 import { streamAgentText } from "@/agents/runner";
 import { generateSlug } from "@/lib/types/learning";
 
@@ -97,10 +99,10 @@ export async function POST(request: NextRequest) {
 
   // Get current subtopic content from DB
   let subtopicContent = "";
+  const subtopicIndex = module
+    ? module.subtopics.findIndex((s) => s.id === subtopicId)
+    : -1;
   if (topicRecord && moduleId && subtopicId && module) {
-    const subtopicIndex = module.subtopics.findIndex(
-      (s) => s.id === subtopicId
-    );
     const dbKey = moduleId * 100 + subtopicIndex;
     const cached = await findModuleContent(topicRecord.id, dbKey);
     if (cached) {
@@ -116,6 +118,21 @@ export async function POST(request: NextRequest) {
     if (structure) {
       sourceTitle = structure.rawToc.title;
       tools = [createFetchPDFSectionTool(topicRecord.id, topicSlug)];
+    }
+  }
+
+  // Add previous subtopic tool for continuity
+  if (topicRecord && module && subtopicIndex > 0) {
+    const prevTool = createFetchPreviousSubtopicTool(
+      topicRecord.id,
+      moduleId!,
+      subtopicIndex,
+      module.subtopics
+    );
+    if (tools) {
+      tools.push(prevTool);
+    } else {
+      tools = [prevTool];
     }
   }
 
@@ -175,6 +192,17 @@ export async function POST(request: NextRequest) {
           "assistant",
           fullResponse
         );
+
+        // Log chat signal (fire-and-forget)
+        if (topicRecord && action) {
+          logLearnerSignal({
+            topicId: topicRecord.id,
+            moduleId: moduleId ?? undefined,
+            subtopicId: subtopicId ?? undefined,
+            signalType: "chat_action",
+            data: { action, selectedText: selectedText?.slice(0, 200) },
+          }).catch(console.error);
+        }
 
         controller.enqueue(
           encoder.encode(

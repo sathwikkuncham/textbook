@@ -3,6 +3,7 @@ import {
   findCheckpoint,
   saveCheckpoint,
   saveReviewSchedule,
+  logLearnerSignal,
 } from "@/lib/db/repository";
 import type {
   QuizQuestion,
@@ -118,6 +119,21 @@ export async function POST(request: NextRequest) {
     attemptNumber: attemptCount,
     questionResults,
   };
+
+  // Log signal for learner model
+  logLearnerSignal({
+    topicId,
+    moduleId,
+    signalType: passed ? "quiz_completed" : "quiz_failed",
+    data: { score, passed, attemptCount },
+  }).catch(console.error);
+
+  // Trigger learner model update (fire-and-forget)
+  fetch(`${request.nextUrl.origin}/api/learn/learner-model`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ topicId }),
+  }).catch(console.error);
 
   return NextResponse.json({ success: true, result });
 }

@@ -13,6 +13,9 @@ import {
   spacedRepetition,
   chatSessions,
   chatHistory,
+  learnerInsights,
+  learnerSignals,
+  contentEvaluations,
 } from "./schema";
 import type {
   Curriculum,
@@ -636,4 +639,109 @@ export async function searchModuleContentFTS(query: string, limit = 20) {
     content: string;
     rank: number;
   }>;
+}
+
+// ── Learner Insights ───────────────────────────────────
+
+export async function findLearnerInsights(topicId: number) {
+  const result = await db
+    .select()
+    .from(learnerInsights)
+    .where(eq(learnerInsights.topicId, topicId))
+    .limit(1);
+  return result[0] ?? null;
+}
+
+export async function saveLearnerInsights(
+  topicId: number,
+  data: {
+    conceptMastery: unknown;
+    strengthAreas: unknown;
+    weakAreas: unknown;
+    learningStyle: unknown;
+    engagementProfile: unknown;
+  }
+) {
+  const existing = await findLearnerInsights(topicId);
+
+  if (existing) {
+    await db
+      .update(learnerInsights)
+      .set({ ...data, updatedAt: new Date() })
+      .where(eq(learnerInsights.id, existing.id));
+  } else {
+    await db.insert(learnerInsights).values({ topicId, ...data });
+  }
+}
+
+// ── Learner Signals ────────────────────────────────────
+
+export async function logLearnerSignal(data: {
+  topicId: number;
+  moduleId?: number;
+  subtopicId?: string;
+  signalType: string;
+  data: Record<string, unknown>;
+}) {
+  await db.insert(learnerSignals).values(data);
+}
+
+export async function getLearnerSignals(
+  topicId: number,
+  signalType?: string,
+  limit: number = 100
+) {
+  if (signalType) {
+    return db
+      .select()
+      .from(learnerSignals)
+      .where(
+        and(
+          eq(learnerSignals.topicId, topicId),
+          eq(learnerSignals.signalType, signalType)
+        )
+      )
+      .orderBy(desc(learnerSignals.createdAt))
+      .limit(limit);
+  }
+  return db
+    .select()
+    .from(learnerSignals)
+    .where(eq(learnerSignals.topicId, topicId))
+    .orderBy(desc(learnerSignals.createdAt))
+    .limit(limit);
+}
+
+// ── Content Evaluations ────────────────────────────────
+
+export async function saveContentEvaluation(data: {
+  topicId: number;
+  moduleId: number;
+  subtopicId: string;
+  dbKey: number;
+  attempt: number;
+  clarityScore: number;
+  completenessScore: number;
+  continuityScore: number | null;
+  exampleQualityScore: number;
+  accuracyScore: number;
+  overallScore: number;
+  verdict: string;
+  issues: string[];
+  suggestions: string[];
+}) {
+  await db.insert(contentEvaluations).values(data);
+}
+
+export async function getContentEvaluations(topicId: number, dbKey: number) {
+  return db
+    .select()
+    .from(contentEvaluations)
+    .where(
+      and(
+        eq(contentEvaluations.topicId, topicId),
+        eq(contentEvaluations.dbKey, dbKey)
+      )
+    )
+    .orderBy(asc(contentEvaluations.attempt));
 }

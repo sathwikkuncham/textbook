@@ -66,6 +66,8 @@ export const moduleContent = pgTable(
     diagrams: text("diagrams"),
     audioUrl: text("audio_url"),
     paragraphTimings: jsonb("paragraph_timings"),
+    qualityScore: real("quality_score"),
+    generationAttempts: integer("generation_attempts").notNull().default(1),
     createdAt: timestamp("created_at").notNull().defaultNow(),
   },
   (table) => [
@@ -222,3 +224,53 @@ export const sourcePageCache = pgTable(
     ),
   ]
 );
+
+export const learnerInsights = pgTable(
+  "learner_insights",
+  {
+    id: serial("id").primaryKey(),
+    topicId: integer("topic_id")
+      .notNull()
+      .references(() => topics.id, { onDelete: "cascade" }),
+    conceptMastery: jsonb("concept_mastery").notNull().default({}),
+    strengthAreas: jsonb("strength_areas").notNull().default([]),
+    weakAreas: jsonb("weak_areas").notNull().default([]),
+    learningStyle: jsonb("learning_style").notNull().default({}),
+    engagementProfile: jsonb("engagement_profile").notNull().default({}),
+    updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  },
+  (table) => [uniqueIndex("learner_insights_topic_idx").on(table.topicId)]
+);
+
+export const learnerSignals = pgTable("learner_signals", {
+  id: serial("id").primaryKey(),
+  topicId: integer("topic_id")
+    .notNull()
+    .references(() => topics.id, { onDelete: "cascade" }),
+  moduleId: integer("module_id"),
+  subtopicId: varchar("subtopic_id", { length: 20 }),
+  signalType: varchar("signal_type", { length: 50 }).notNull(),
+  data: jsonb("data").notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+export const contentEvaluations = pgTable("content_evaluations", {
+  id: serial("id").primaryKey(),
+  topicId: integer("topic_id")
+    .notNull()
+    .references(() => topics.id, { onDelete: "cascade" }),
+  moduleId: integer("module_id").notNull(),
+  subtopicId: varchar("subtopic_id", { length: 20 }).notNull(),
+  dbKey: integer("db_key").notNull(),
+  attempt: integer("attempt").notNull(),
+  clarityScore: real("clarity_score").notNull(),
+  completenessScore: real("completeness_score").notNull(),
+  continuityScore: real("continuity_score"),
+  exampleQualityScore: real("example_quality_score").notNull(),
+  accuracyScore: real("accuracy_score").notNull(),
+  overallScore: real("overall_score").notNull(),
+  verdict: varchar("verdict", { length: 20 }).notNull(),
+  issues: jsonb("issues").notNull().default([]),
+  suggestions: jsonb("suggestions").notNull().default([]),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});

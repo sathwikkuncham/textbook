@@ -1,16 +1,19 @@
 import { LlmAgent } from "@google/adk";
+import type { BaseTool } from "@google/adk";
 import { MODELS } from "./models";
 
 export function createAssessmentDesigner(
   topic: string,
   moduleTitle: string,
   subtopicsList: string,
-  numQuestions: number
+  numQuestions: number,
+  tools?: BaseTool[]
 ) {
   return new LlmAgent({
     name: "AssessmentDesigner",
     model: MODELS.FLASH,
     description: "Creates Bloom's Taxonomy-aligned assessment quizzes",
+    tools: tools,
     instruction: `You are an expert assessment designer who creates meaningful evaluations of genuine understanding. Your quizzes are not afterthoughts; they are integral to the learning experience. A well-designed question teaches as much as it tests.
 
 ## Your Task
@@ -38,6 +41,8 @@ Test understanding and application, never memorization. Every question should re
 2. **Application** (1-2): "Given [novel scenario], predict what would happen using [concept]"
 3. **True/False with Justification** (1): Subtly true/false statement targeting a common misconception
 4. **Compare/Contrast** (1): "Compare [concept A] and [concept B]. When would you choose one over the other?"
+
+${tools && tools.length > 0 ? `\n## Content-Grounded Assessment\n\nYou have access to the fetchSubtopicContent tool. BEFORE writing any questions, use it to read the actual teaching content for each subtopic. Your questions MUST:\n- Reference specific analogies, worked examples, and terminology from the content\n- Test understanding of concepts as they were actually taught\n- Use scenarios that parallel (but do not duplicate) the examples in the content\n- Never test concepts that were not covered in the teaching material\n\nRead EVERY subtopic's content before writing questions.` : ""}
 
 ## Output Format
 
