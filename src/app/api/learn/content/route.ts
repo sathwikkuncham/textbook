@@ -19,6 +19,39 @@ import { createFetchPreviousSubtopicTool } from "@/agents/tools/fetch-previous-s
 import { runAgent } from "@/agents/runner";
 import type { BaseTool } from "@google/adk";
 
+async function evaluateContentAsync(
+  topicId: number, moduleId: number, subtopicId: string, subtopicTitle: string,
+  dbKey: number, content: string, position: "first" | "middle" | "last", level: string
+) {
+  const evaluator = createContentEvaluator(topicId, subtopicTitle, position, level);
+  const evalResult = await runAgent(
+    evaluator,
+    `Evaluate this teaching content for subtopic "${subtopicTitle}":\n\n${content}`
+  );
+
+  try {
+    const cleaned = evalResult.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
+    const evaluation = JSON.parse(cleaned);
+
+    await saveContentEvaluation({
+      topicId, moduleId, subtopicId, dbKey, attempt: 1,
+      clarityScore: evaluation.clarityScore ?? 0,
+      completenessScore: evaluation.completenessScore ?? 0,
+      continuityScore: evaluation.continuityScore ?? null,
+      exampleQualityScore: evaluation.exampleQualityScore ?? 0,
+      accuracyScore: evaluation.accuracyScore ?? 0,
+      overallScore: evaluation.overallScore ?? 0,
+      verdict: evaluation.verdict ?? "pass",
+      issues: evaluation.issues ?? [],
+      suggestions: evaluation.suggestions ?? [],
+    });
+
+    console.log(`[content-eval] ${subtopicId}: score ${evaluation.overallScore}/100 — ${evaluation.verdict}`);
+  } catch {
+    console.warn(`[content-eval] Failed to parse evaluation for ${subtopicId}`);
+  }
+}
+
 export const maxDuration = 180;
 
 export async function POST(request: NextRequest) {
@@ -135,14 +168,28 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Previous subtopic tool (for continuity — not available for first subtopic)
-    if (!isFirst) {
+    // Cross-curriculum content tool — agent can read ANY previously generated subtopic
+    // Builds available list from all previous modules + current module's earlier subtopics
+    const allAvailableSubtopics: Array<{ id: string; title: string; dbKey: number }> = [];
+    for (const mod of curriculum.modules) {
+      if (mod.id < moduleId) {
+        // All subtopics from completed modules
+        mod.subtopics.forEach((s, i) => {
+          allAvailableSubtopics.push({ id: s.id, title: s.title, dbKey: mod.id * 100 + i });
+        });
+      } else if (mod.id === moduleId && subtopicIndex > 0) {
+        // Earlier subtopics in current module
+        mod.subtopics.slice(0, subtopicIndex).forEach((s, i) => {
+          allAvailableSubtopics.push({ id: s.id, title: s.title, dbKey: mod.id * 100 + i });
+        });
+      }
+    }
+
+    if (allAvailableSubtopics.length > 0) {
       tools.push(
         createFetchPreviousSubtopicTool(
           topicRecord.id,
-          moduleId,
-          subtopicIndex,
-          module.subtopics
+          allAvailableSubtopics
         )
       );
     }
@@ -176,6 +223,7 @@ export async function POST(request: NextRequest) {
         teachingApproach: subtopic.teaching_approach,
         moduleSubtopicList,
         learnerContext,
+        moduleId,
       }
     );
 
@@ -201,89 +249,15 @@ export async function POST(request: NextRequest) {
       runAgent(diagramSpecialist, diagramMessage),
     ]);
 
-    // Content quality evaluation loop
-    let bestContent = initialContent;
-    let bestScore = 0;
-    let contentResult = initialContent;
-    let attempt = 1;
-    const MAX_ATTEMPTS = 3;
+    // Save content immediately — don't block the user
+    await saveModuleContent(topicRecord.id, dbKey, initialContent, diagramResult);
 
-    while (attempt <= MAX_ATTEMPTS) {
-      const evaluator = createContentEvaluator(
-        topicRecord.id,
-        subtopic.title,
-        position as "first" | "middle" | "last",
-        curriculum.level
-      );
-
-      const evalResult = await runAgent(
-        evaluator,
-        `Evaluate this teaching content for subtopic "${subtopic.title}":\n\n${contentResult}`
-      );
-
-      // Parse evaluation JSON
-      let evaluation: {
-        clarityScore: number;
-        completenessScore: number;
-        continuityScore: number | null;
-        exampleQualityScore: number;
-        accuracyScore: number;
-        overallScore: number;
-        verdict: string;
-        issues: string[];
-        suggestions: string[];
-      };
-
-      try {
-        const cleaned = evalResult.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
-        evaluation = JSON.parse(cleaned);
-      } catch {
-        // If parsing fails, accept the content as-is
-        console.warn("[content-api] Failed to parse evaluation, accepting content");
-        break;
-      }
-
-      // Save evaluation record
-      await saveContentEvaluation({
-        topicId: topicRecord.id,
-        moduleId,
-        subtopicId: subtopic.id,
-        dbKey,
-        attempt,
-        clarityScore: evaluation.clarityScore,
-        completenessScore: evaluation.completenessScore,
-        continuityScore: evaluation.continuityScore ?? null,
-        exampleQualityScore: evaluation.exampleQualityScore,
-        accuracyScore: evaluation.accuracyScore,
-        overallScore: evaluation.overallScore,
-        verdict: evaluation.verdict,
-        issues: evaluation.issues ?? [],
-        suggestions: evaluation.suggestions ?? [],
-      });
-
-      // Track best
-      if (evaluation.overallScore > bestScore) {
-        bestScore = evaluation.overallScore;
-        bestContent = contentResult;
-      }
-
-      // Check verdict
-      if (evaluation.verdict === "pass" || attempt === MAX_ATTEMPTS) {
-        break;
-      }
-
-      // Regenerate with feedback
-      console.log(`[content-api] Quality score ${evaluation.overallScore}/100, regenerating (attempt ${attempt + 1})`);
-      const feedbackMsg = finalContentMessage +
-        `\n\nQUALITY FEEDBACK (attempt ${attempt}): Fix these issues:\n` +
-        evaluation.issues.join("\n") + "\n\nSuggestions:\n" +
-        evaluation.suggestions.join("\n");
-
-      contentResult = await runAgent(contentComposer, feedbackMsg);
-      attempt++;
-    }
-
-    await saveModuleContent(topicRecord.id, dbKey, bestContent, diagramResult);
+    // Run quality evaluation asynchronously (fire-and-forget)
+    // Scores are logged for analytics; regeneration happens only via explicit user request
+    evaluateContentAsync(
+      topicRecord.id, moduleId, subtopic.id, subtopic.title, dbKey,
+      initialContent, position as "first" | "middle" | "last", curriculum.level
+    ).catch(console.error);
 
     return NextResponse.json({
       success: true,
@@ -291,10 +265,8 @@ export async function POST(request: NextRequest) {
       topicId: topicRecord.id,
       moduleId,
       subtopicId: subtopic.id,
-      content: bestContent,
+      content: initialContent,
       diagrams: diagramResult,
-      qualityScore: bestScore > 0 ? bestScore : undefined,
-      generationAttempts: attempt,
     });
   } catch (error) {
     console.error("[content-api] Generation failed:", error);

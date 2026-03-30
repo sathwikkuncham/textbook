@@ -13,6 +13,16 @@ import type {
   LeitnerBox,
 } from "@/lib/types/learning";
 import { LEITNER_INTERVALS } from "@/lib/types/learning";
+import { createLearningOrchestrator } from "@/agents/learning-orchestrator";
+import { runAgent } from "@/agents/runner";
+
+async function triggerOrchestrator(topicId: number, triggerEvent: string, origin: string) {
+  const orchestrator = createLearningOrchestrator(topicId, triggerEvent);
+  await runAgent(
+    orchestrator,
+    `Analyze the learner's performance and determine if curriculum changes are needed. Trigger: ${triggerEvent}`
+  );
+}
 
 function addDays(date: Date, days: number): Date {
   const result = new Date(date);
@@ -150,6 +160,14 @@ export async function POST(request: NextRequest) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ topicId }),
   }).catch(console.error);
+
+  // Trigger orchestrator for curriculum adaptation (fire-and-forget)
+  // Only on quiz failure (2nd+ attempt) or module completion (passed)
+  if (!passed && attemptCount >= 2) {
+    triggerOrchestrator(topicId, `Quiz failed for module ${moduleId} (attempt ${attemptCount}, score ${score}%). Learner has failed this module ${attemptCount} times.`, request.nextUrl.origin).catch(console.error);
+  } else if (passed) {
+    triggerOrchestrator(topicId, `Module ${moduleId} completed with score ${score}%. This is attempt ${attemptCount}.`, request.nextUrl.origin).catch(console.error);
+  }
 
   return NextResponse.json({ success: true, result });
 }

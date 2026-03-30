@@ -132,6 +132,7 @@ export function PanelLayout({
           activeModuleId={learning.activeModuleId}
           activeSubtopicId={learning.activeSubtopicId}
           activeSubtopicTitle={activeSubtopicTitle}
+          topicId={learning.topicId}
           onNavigateSubtopic={learning.navigateToSubtopic}
           onRegenerate={
             learning.activeModuleId && learning.activeSubtopicId

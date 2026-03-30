@@ -145,6 +145,62 @@ export async function saveCurriculum(
   }
 }
 
+// ── Curriculum Modifications ───────────────────────────
+
+export async function getCurriculumModifications(topicId: number) {
+  const result = await db
+    .select({ modifications: curricula.modifications })
+    .from(curricula)
+    .where(eq(curricula.topicId, topicId))
+    .limit(1);
+  return (result[0]?.modifications as unknown as Array<{
+    id: string;
+    type: string;
+    targetModuleId: number;
+    targetSubtopicId?: string;
+    reason: string;
+    details: Record<string, unknown>;
+    status: string;
+    createdAt: string;
+  }>) ?? [];
+}
+
+export async function saveCurriculumModifications(
+  topicId: number,
+  newModifications: Array<{
+    id: string;
+    type: string;
+    targetModuleId: number;
+    targetSubtopicId?: string;
+    reason: string;
+    details: Record<string, unknown>;
+    status: string;
+    createdAt: string;
+  }>
+) {
+  const existing = await getCurriculumModifications(topicId);
+  const merged = [...existing, ...newModifications];
+  await db
+    .update(curricula)
+    .set({ modifications: merged as unknown as Record<string, unknown> })
+    .where(eq(curricula.topicId, topicId));
+}
+
+export async function updateModificationStatus(
+  topicId: number,
+  modificationId: string,
+  status: "accepted" | "rejected"
+) {
+  const modifications = await getCurriculumModifications(topicId);
+  const updated = modifications.map((m) =>
+    m.id === modificationId ? { ...m, status } : m
+  );
+  await db
+    .update(curricula)
+    .set({ modifications: updated as unknown as Record<string, unknown> })
+    .where(eq(curricula.topicId, topicId));
+}
+
 // ── Module Content ──────────────────────────────────────
 
 export async function findModuleContent(

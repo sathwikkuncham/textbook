@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import type { Curriculum, Module } from "@/lib/types/learning";
 
 export type LearningPhase =
@@ -58,8 +58,14 @@ export function useLearningState() {
     setState((prev) => ({ ...prev, error, isLoading: false }));
   }, []);
 
+  const loadingRef = useRef(false);
+
   const loadTopicBySlug = useCallback(
     async (slug: string) => {
+      // Prevent duplicate calls (React StrictMode, double-click, etc.)
+      if (loadingRef.current) return;
+      loadingRef.current = true;
+
       setState((prev) => ({
         ...prev,
         topicSlug: slug,
@@ -150,6 +156,8 @@ export function useLearningState() {
         setError(
           err instanceof Error ? err.message : "Failed to load topic"
         );
+      } finally {
+        loadingRef.current = false;
       }
     },
     [setError]
@@ -323,9 +331,12 @@ export function useLearningState() {
     [state.topic, state.topicSlug, state.activeModuleId, state.moduleContent, setError]
   );
 
+  const navigatingRef = useRef(false);
+
   const navigateToSubtopic = useCallback(
     async (moduleId: number, subtopicId: string) => {
-      if (!state.topic) return;
+      if (!state.topic || navigatingRef.current) return;
+      navigatingRef.current = true;
 
       setState((prev) => ({
         ...prev,
@@ -366,6 +377,8 @@ export function useLearningState() {
         setError(
           err instanceof Error ? err.message : "Failed to load content"
         );
+      } finally {
+        navigatingRef.current = false;
       }
     },
     [state.topic, setError]

@@ -58,10 +58,15 @@ import type { BaseTool } from "@google/adk";
 
 type SubtopicPosition = "first" | "middle" | "last";
 
-function getSectionTemplate(position: SubtopicPosition): string {
+function getSectionTemplate(position: SubtopicPosition, isFirstModule: boolean = true): string {
+  const section1First = isFirstModule
+    ? `### 1. Why This Matters
+2-3 narrative paragraphs. Hook the reader with a concrete, visceral scenario. Never start with a definition.`
+    : `### 1. Why This Matters
+2-3 narrative paragraphs. Bridge from the previous module's conclusion, then introduce why this new module's theme matters. Do NOT open with "Imagine you are..." — the learner is already invested in the topic. Instead, connect to what they already know and reveal what new dimension they are about to explore.`;
+
   const section1 = {
-    first: `### 1. Why This Matters
-2-3 narrative paragraphs. Hook the reader with a concrete, visceral scenario. Never start with a definition.`,
+    first: section1First,
     middle: `### 1. Connecting the Dots
 1-2 paragraphs that bridge from what the learner just covered. Reference the previous subtopic's key insight naturally. Then transition to why THIS subtopic matters next. Do NOT open with a standalone scenario like "Imagine you are..." — the learner is already engaged in the module's narrative arc.`,
     last: `### 1. The Full Picture
@@ -133,21 +138,36 @@ function getTeachingApproachGuidance(approach: string): string {
   }
 }
 
-function getContinuityInstruction(position: SubtopicPosition): string {
-  if (position === "first") return "";
+function getContinuityInstruction(position: SubtopicPosition, isFirstModule: boolean): string {
+  const crossModuleBlock = position === "first" && !isFirstModule
+    ? `
+## Cross-Module Continuity
+
+You have access to the **fetchPreviousSubtopic** tool which can read subtopics from PREVIOUS modules.
+
+This is the FIRST subtopic of a new module, but the learner has completed earlier modules. You MUST:
+- Read the KEY TAKEAWAY (last section) of the final subtopic from the previous module
+- Open your "Why This Matters" section by bridging from that foundation — connect this new module's theme to what was established before
+- Example: "In the previous module, we established that [key insight]. Now we turn to a fundamentally different question: [new module's theme]..."
+- Do NOT start as if the learner is encountering this topic for the first time`
+    : "";
+
+  if (position === "first" && isFirstModule) return "";
+  if (position === "first") return crossModuleBlock;
 
   return `
 ## Building Continuity
 
-You have access to the **fetchPreviousSubtopic** tool. Use it to read the full content of previously covered subtopics in this module. This is how you maintain narrative continuity:
+You have access to the **fetchPreviousSubtopic** tool. It can read subtopics from the current module AND from previous modules. Use it to maintain narrative continuity:
 
 - Read at minimum the immediately preceding subtopic to understand where the learner's knowledge currently sits
 - Reference specific concepts, analogies, or examples from earlier subtopics where it strengthens your explanation
 - Extend or build on previous analogies when they naturally apply
 - Use connecting language: "Now that we understand X...", "Building on the staging pipeline from the previous section..."
 - Do NOT re-explain concepts the learner has already covered — reference them, don't re-teach them
+- You CAN reference concepts from previous modules when relevant: "Recall from our reliability discussion in Module 1..."
 
-You decide which previous subtopics to read. At minimum, read the most recent one.${position === "last" ? " As the final subtopic, read ALL previous subtopics to synthesize the module." : ""}`;
+You decide which previous subtopics to read. At minimum, read the most recent one.${position === "last" ? " As the final subtopic, read ALL previous subtopics in this module to synthesize." : ""}`;
 }
 
 export function createContentComposer(
@@ -165,29 +185,37 @@ export function createContentComposer(
     teachingApproach?: string;
     moduleSubtopicList?: string;
     learnerContext?: string;
+    moduleId?: number;
   }
 ) {
   const position: SubtopicPosition = options?.position ?? "first";
 
   const sourceInstruction = options?.sourceTitle
     ? `
-## Source Material
+## Source Material — CRITICAL
 
-You are teaching from a specific source: "${options.sourceTitle}". You have access to the \`fetchPDFSection\` tool to retrieve the original text from the book.
+You are teaching from: "${options.sourceTitle}". You have the \`fetchPDFSection\` tool.
 
-IMPORTANT source-grounded teaching rules:
-- Use \`fetchPDFSection\` to read the relevant section from the source before writing each subtopic
-- Reference the source naturally: "As ${options.sourceTitle.split(",")[0]} explains..." or "The authors describe this as..."
-- Ground your explanations in the source's specific terminology, examples, and progression
-- You may expand on the source with your own analogies, examples, and visualizations
-- Maintain the 7-section format — the source informs the content, it doesn't replace the structure`
+MANDATORY: You MUST call fetchPDFSection to read the relevant chapter/section BEFORE writing. Do NOT write from memory or research alone — the source text is the primary authority.
+
+Source-grounded teaching rules:
+- Follow the source's SPECIFIC progression of arguments, not a generic version
+- Use the source's OWN examples. If Kleppmann uses Twitter's fan-out, YOU use Twitter's fan-out with the same numbers
+- Preserve the author's terminology exactly: if the book says "impedance mismatch," you say "impedance mismatch"
+- Include the author's specific comparisons (e.g., MongoDB vs CouchDB vs RethinkDB, not generic "NoSQL databases")
+- Reference specific numbers, benchmarks, and statistics from the source (e.g., "MTTF of 10-50 years", "10,000 disks means one failure per day")
+- Include the author's caveats and nuances — do not simplify away complexity for an intermediate learner
+- You may ADD analogies, visualizations, and worked examples ON TOP of the source, but never REPLACE the source's arguments with generic ones
+- Reference the source naturally: "As ${options.sourceTitle.split(",")[0]} explains..." or "The authors point out that..."
+- The 7-section format structures YOUR explanation of the source, it doesn't replace the source`
     : "";
 
   const teachingApproachBlock = options?.teachingApproach
     ? `\n## Teaching Approach\n\n${getTeachingApproachGuidance(options.teachingApproach)}`
     : "";
 
-  const continuityBlock = getContinuityInstruction(position);
+  const isFirstModule = (options?.moduleId ?? 1) === 1;
+  const continuityBlock = getContinuityInstruction(position, isFirstModule);
 
   const moduleMapBlock = options?.moduleSubtopicList
     ? `\n## Module Map\n\nAll subtopics in this module (you are writing the one marked CURRENT):\n${options.moduleSubtopicList}`
@@ -197,7 +225,7 @@ IMPORTANT source-grounded teaching rules:
     ? `\n## Learner Adaptation\n\nThis learner's profile:\n${options.learnerContext}\n\nAdapt your teaching: if they struggle with application, include MORE worked examples. If they prefer analogies, lead with stronger analogies. If their pace is slow, be more granular. If fast, be more concise on basics and deeper on edges.`
     : "";
 
-  const sectionTemplate = getSectionTemplate(position);
+  const sectionTemplate = getSectionTemplate(position, isFirstModule);
 
   return new LlmAgent({
     name: "ContentComposer",
@@ -209,7 +237,7 @@ IMPORTANT source-grounded teaching rules:
 
 ${sectionTemplate}
 
-IMPORTANT: Write narrative prose. Never open a section with bullet points. Target 800-1200 words per subtopic. Use active voice. Define jargon on first use.
+IMPORTANT: Write narrative prose. Never open a section with bullet points. Target 1500-2500 words per subtopic — cover the material with depth, not superficially. Use active voice. Define jargon on first use. Include specific numbers, benchmarks, and statistics wherever the source or research provides them.
 CRITICAL FORMATTING RULE: NEVER use backtick characters in your output — not for inline code, not for code blocks. Instead, use **bold** for function names, variable names, and technical terms (e.g., **useState**, **useEffect**). For code blocks, use indented text or describe the code in prose. This is a strict requirement of the rendering system.
 ${sourceInstruction}${teachingApproachBlock}${continuityBlock}${moduleMapBlock}${learnerAdaptationBlock}
 

@@ -9,6 +9,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { MermaidDiagram } from "@/components/ui/mermaid-diagram";
 import { TextSelectionToolbar } from "@/components/chat/text-selection-toolbar";
 import { AudioPlayButton, AudioProgressBar } from "@/components/ui/audio-player";
+import { LearningRecommendations } from "@/components/ui/learning-recommendations";
 import type { LearningPhase } from "@/hooks/use-learning-state";
 import type { Curriculum } from "@/lib/types/learning";
 import type { useAudioPlayer } from "@/hooks/use-audio-player";
@@ -201,6 +202,7 @@ interface MainContentProps {
   audioPlayer?: ReturnType<typeof useAudioPlayer>;
   activeSubtopicTitle?: string;
   onRegenerate?: (feedback?: string) => void;
+  topicId?: number | null;
 }
 
 function ContentSkeleton() {
@@ -363,6 +365,7 @@ export function MainContent({
   audioPlayer,
   activeSubtopicTitle,
   onRegenerate,
+  topicId,
 }: MainContentProps) {
   const articleRef = useRef<HTMLElement>(null);
   const { prev, next } = useSubtopicNav(curriculum, activeModuleId, activeSubtopicId);
@@ -505,6 +508,9 @@ export function MainContent({
             )}
           </div>
         )}
+
+        {/* Learning recommendations */}
+        {topicId && <LearningRecommendations topicId={topicId} />}
 
         {/* Backtracking hint */}
         {isBacktracking && (

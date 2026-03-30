@@ -51,6 +51,7 @@ export const curricula = pgTable("curricula", {
     .notNull()
     .references(() => topics.id, { onDelete: "cascade" }),
   structure: jsonb("structure").notNull(),
+  modifications: jsonb("modifications").notNull().default([]),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
