@@ -184,6 +184,23 @@ export async function saveModuleContent(
   }
 }
 
+// ── Module Audio ────────────────────────────────────────
+
+export async function findAudio(topicId: number, moduleId: number) {
+  const result = await db
+    .select({ audioUrl: moduleContent.audioUrl, paragraphTimings: moduleContent.paragraphTimings })
+    .from(moduleContent)
+    .where(and(eq(moduleContent.topicId, topicId), eq(moduleContent.moduleId, moduleId)))
+    .limit(1);
+  return result[0] ?? null;
+}
+
+export async function saveAudio(topicId: number, moduleId: number, audioUrl: string, paragraphTimings: unknown) {
+  await db.update(moduleContent)
+    .set({ audioUrl, paragraphTimings })
+    .where(and(eq(moduleContent.topicId, topicId), eq(moduleContent.moduleId, moduleId)));
+}
+
 // ── Module Quizzes ──────────────────────────────────────
 
 export async function findModuleQuiz(

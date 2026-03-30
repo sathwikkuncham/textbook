@@ -1,14 +1,178 @@
 "use client";
 
-import { useRef, useMemo } from "react";
+import React, { useRef, useMemo, memo } from "react";
 import { BookOpen, ChevronLeft, ChevronRight } from "lucide-react";
+import { cn } from "@/lib/utils";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { MermaidDiagram } from "@/components/ui/mermaid-diagram";
 import { TextSelectionToolbar } from "@/components/chat/text-selection-toolbar";
+import { AudioPlayButton, AudioProgressBar } from "@/components/ui/audio-player";
 import type { LearningPhase } from "@/hooks/use-learning-state";
 import type { Curriculum } from "@/lib/types/learning";
+import type { useAudioPlayer } from "@/hooks/use-audio-player";
+
+// ── Section splitting ──────────────────────────────────────
+
+interface ContentSection {
+  index: number;
+  title: string;
+  body: string;
+}
+
+function splitContentSections(markdown: string): { preamble: string; sections: ContentSection[] } {
+  const sectionRegex = /^(###\s+(\d+)\.\s+(.+))$/gm;
+  const splits: { index: number; title: string; headerLine: string; start: number }[] = [];
+
+  let match;
+  while ((match = sectionRegex.exec(markdown)) !== null) {
+    splits.push({
+      index: parseInt(match[2], 10) - 1,
+      title: match[3].trim(),
+      headerLine: match[1],
+      start: match.index,
+    });
+  }
+
+  if (splits.length === 0) {
+    return { preamble: markdown, sections: [] };
+  }
+
+  const preamble = markdown.slice(0, splits[0].start).trim();
+  const sections: ContentSection[] = splits.map((split, i) => {
+    const bodyStart = split.start + split.headerLine.length;
+    const bodyEnd = i + 1 < splits.length ? splits[i + 1].start : markdown.length;
+    return {
+      index: split.index,
+      title: split.title,
+      body: markdown.slice(bodyStart, bodyEnd).trim(),
+    };
+  });
+
+  return { preamble, sections };
+}
+
+// ── Markdown component map (shared) ────────────────────────
+
+const markdownComponents = {
+  h1: ({ children }: { children?: React.ReactNode }) => (
+    <h1 className="mb-6 border-b border-border pb-3 font-serif text-xl font-bold tracking-tight text-foreground md:text-2xl">
+      {children}
+    </h1>
+  ),
+  h2: ({ children }: { children?: React.ReactNode }) => (
+    <h2 className="mb-4 mt-10 border-b border-border/50 pb-2 font-serif text-lg font-semibold tracking-tight text-foreground md:text-xl">
+      {children}
+    </h2>
+  ),
+  h3: ({ children }: { children?: React.ReactNode }) => {
+    const text = String(children);
+    const isSectionHeader =
+      /^\d+\.\s/.test(text) ||
+      [
+        "Why This Matters",
+        "Core Idea",
+        "Visualizing It",
+        "Real-World Analogy",
+        "Concrete Example",
+        "Common Pitfalls",
+        "Key Takeaway",
+      ].some((s) => text.includes(s));
+
+    if (isSectionHeader) {
+      return (
+        <h3 className="mb-3 mt-6 text-base font-semibold text-primary">
+          {children}
+        </h3>
+      );
+    }
+    return (
+      <h3 className="mb-2 mt-4 text-base font-semibold text-foreground">
+        {children}
+      </h3>
+    );
+  },
+  p: ({ children }: { children?: React.ReactNode }) => (
+    <p className="mb-4 leading-relaxed text-foreground/90">{children}</p>
+  ),
+  strong: ({ children }: { children?: React.ReactNode }) => (
+    <strong className="font-semibold text-foreground">{children}</strong>
+  ),
+  ul: ({ children }: { children?: React.ReactNode }) => (
+    <ul className="mb-4 ml-6 list-disc space-y-1 text-foreground/90">{children}</ul>
+  ),
+  ol: ({ children }: { children?: React.ReactNode }) => (
+    <ol className="mb-4 ml-6 list-decimal space-y-1 text-foreground/90">{children}</ol>
+  ),
+  li: ({ children }: { children?: React.ReactNode }) => (
+    <li className="leading-7">{children}</li>
+  ),
+  blockquote: ({ children }: { children?: React.ReactNode }) => (
+    <blockquote className="mb-4 border-l-4 border-primary/30 pl-4 italic text-muted-foreground">
+      {children}
+    </blockquote>
+  ),
+  code: ({ className, children }: { className?: string; children?: React.ReactNode }) => {
+    const isMermaid = className?.includes("language-mermaid");
+    if (isMermaid) {
+      const chart = String(children).trim();
+      return <MermaidDiagram chart={chart} />;
+    }
+
+    const isBlock = className?.includes("language-");
+    if (isBlock) {
+      return (
+        <code className="block whitespace-pre font-mono text-[13px] leading-[1.45] text-foreground">
+          {children}
+        </code>
+      );
+    }
+    return (
+      <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-sm text-foreground">
+        {children}
+      </code>
+    );
+  },
+  pre: ({ children }: { children?: React.ReactNode }) => {
+    const child = children as React.ReactElement<{ className?: string }>;
+    if (child?.props?.className?.includes("language-mermaid")) {
+      return <>{children}</>;
+    }
+    return (
+      <pre className="mb-4 overflow-x-auto rounded-lg border border-border bg-muted/50 p-4 font-mono text-[13px] leading-[1.45]">
+        {children}
+      </pre>
+    );
+  },
+  table: ({ children }: { children?: React.ReactNode }) => (
+    <div className="mb-4 overflow-x-auto">
+      <table className="w-full border-collapse text-sm">{children}</table>
+    </div>
+  ),
+  thead: ({ children }: { children?: React.ReactNode }) => (
+    <thead className="border-b border-border bg-muted/50">{children}</thead>
+  ),
+  th: ({ children }: { children?: React.ReactNode }) => (
+    <th className="px-3 py-2 text-left font-semibold text-foreground">{children}</th>
+  ),
+  td: ({ children }: { children?: React.ReactNode }) => (
+    <td className="border-b border-border/30 px-3 py-2 text-foreground/90">{children}</td>
+  ),
+  hr: () => <hr className="my-8 border-border" />,
+};
+
+// ── Memoized section body ──────────────────────────────────
+
+const MemoizedSectionBody = memo(function MemoizedSectionBody({ markdown }: { markdown: string }) {
+  return (
+    <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
+      {markdown}
+    </ReactMarkdown>
+  );
+});
+
+// ── Sub-components ─────────────────────────────────────────
 
 interface SubtopicNavInfo {
   moduleId: number;
@@ -29,35 +193,30 @@ interface MainContentProps {
   activeModuleId?: number | null;
   activeSubtopicId?: string | null;
   onNavigateSubtopic?: (moduleId: number, subtopicId: string) => void;
+  activeSectionIndex?: number | null;
+  audioPlayer?: ReturnType<typeof useAudioPlayer>;
 }
 
 function ContentSkeleton() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-4 md:px-8 md:py-6">
-      {/* Heading */}
       <div className="mb-6 border-b border-border pb-3">
         <div className="h-7 w-1/2 animate-pulse rounded bg-muted" />
       </div>
-      {/* Paragraph block */}
       <div className="space-y-3">
         <div className="h-4 w-full animate-pulse rounded bg-muted" />
         <div className="h-4 w-11/12 animate-pulse rounded bg-muted" />
         <div className="h-4 w-4/5 animate-pulse rounded bg-muted" />
         <div className="h-4 w-full animate-pulse rounded bg-muted" />
       </div>
-      {/* Subheading */}
       <div className="mb-3 mt-10 h-6 w-2/5 animate-pulse rounded bg-muted" />
-      {/* More paragraphs */}
       <div className="space-y-3">
         <div className="h-4 w-full animate-pulse rounded bg-muted" />
         <div className="h-4 w-10/12 animate-pulse rounded bg-muted" />
         <div className="h-4 w-9/12 animate-pulse rounded bg-muted" />
       </div>
-      {/* Code block */}
       <div className="mt-4 h-32 w-full animate-pulse rounded-lg border border-border bg-muted/50" />
-      {/* Another heading */}
       <div className="mb-3 mt-8 h-5 w-1/3 animate-pulse rounded bg-muted" />
-      {/* Final paragraphs */}
       <div className="space-y-3">
         <div className="h-4 w-full animate-pulse rounded bg-muted" />
         <div className="h-4 w-11/12 animate-pulse rounded bg-muted" />
@@ -104,7 +263,6 @@ function useSubtopicNav(
       return { prev: null, next: null, current: null };
     }
 
-    // Flatten all subtopics across all modules
     const flat: SubtopicNavInfo[] = [];
     for (const mod of curriculum.modules) {
       for (const sub of mod.subtopics) {
@@ -121,9 +279,7 @@ function useSubtopicNav(
       (s) => s.moduleId === activeModuleId && s.subtopicId === activeSubtopicId
     );
 
-    const currentLabel = currentIdx >= 0
-      ? `${flat[currentIdx].moduleTitle}`
-      : null;
+    const currentLabel = currentIdx >= 0 ? `${flat[currentIdx].moduleTitle}` : null;
 
     return {
       prev: currentIdx > 0 ? flat[currentIdx - 1] : null,
@@ -183,6 +339,8 @@ function SubtopicNavBar({
   );
 }
 
+// ── Main component ─────────────────────────────────────────
+
 export function MainContent({
   phase,
   content,
@@ -195,9 +353,16 @@ export function MainContent({
   activeModuleId,
   activeSubtopicId,
   onNavigateSubtopic,
+  activeSectionIndex,
+  audioPlayer,
 }: MainContentProps) {
   const articleRef = useRef<HTMLElement>(null);
   const { prev, next } = useSubtopicNav(curriculum, activeModuleId, activeSubtopicId);
+
+  const { preamble, sections } = useMemo(
+    () => (content ? splitContentSections(content) : { preamble: "", sections: [] }),
+    [content]
+  );
 
   if (error) return <ErrorState error={error} />;
 
@@ -223,142 +388,57 @@ export function MainContent({
           onAction={(action, text) => onTextSelectionAction(action, text)}
         />
       )}
-      <article ref={articleRef} className="mx-auto max-w-4xl px-4 py-4 md:px-8 md:py-6">
-        <ReactMarkdown
-          remarkPlugins={[remarkGfm]}
-          components={{
-            h1: ({ children }) => (
-              <h1 className="mb-6 border-b border-border pb-3 font-serif text-xl font-bold tracking-tight text-foreground md:text-2xl">
-                {children}
-              </h1>
-            ),
-            h2: ({ children }) => (
-              <h2 className="mb-4 mt-10 border-b border-border/50 pb-2 font-serif text-lg font-semibold tracking-tight text-foreground md:text-xl">
-                {children}
-              </h2>
-            ),
-            h3: ({ children }) => {
-              const text = String(children);
-              const isSectionHeader =
-                /^\d+\.\s/.test(text) ||
-                [
-                  "Why This Matters",
-                  "Core Idea",
-                  "Visualizing It",
-                  "Real-World Analogy",
-                  "Concrete Example",
-                  "Common Pitfalls",
-                  "Key Takeaway",
-                ].some((s) => text.includes(s));
+      <article ref={articleRef} className="mx-auto max-w-4xl px-4 pb-20 pt-4 md:px-8 md:pt-6">
+        {/* Audio listen button */}
+        {audioPlayer && (
+          <div className="mb-4 flex items-center justify-end">
+            <AudioPlayButton
+              isPlaying={audioPlayer.isPlaying}
+              isLoading={audioPlayer.isLoading}
+              onToggle={audioPlayer.toggle}
+            />
+          </div>
+        )}
 
-              if (isSectionHeader) {
-                return (
-                  <h3 className="mb-3 mt-6 text-base font-semibold text-primary">
-                    {children}
-                  </h3>
-                );
-              }
-              return (
-                <h3 className="mb-2 mt-4 text-base font-semibold text-foreground">
-                  {children}
-                </h3>
-              );
-            },
-            p: ({ children }) => (
-              <p className="mb-4 leading-relaxed text-foreground/90">{children}</p>
-            ),
-            strong: ({ children }) => (
-              <strong className="font-semibold text-foreground">
-                {children}
-              </strong>
-            ),
-            ul: ({ children }) => (
-              <ul className="mb-4 ml-6 list-disc space-y-1 text-foreground/90">
-                {children}
-              </ul>
-            ),
-            ol: ({ children }) => (
-              <ol className="mb-4 ml-6 list-decimal space-y-1 text-foreground/90">
-                {children}
-              </ol>
-            ),
-            li: ({ children }) => (
-              <li className="leading-7">{children}</li>
-            ),
-            blockquote: ({ children }) => (
-              <blockquote className="mb-4 border-l-4 border-primary/30 pl-4 italic text-muted-foreground">
-                {children}
-              </blockquote>
-            ),
-            code: ({ className, children }) => {
-              const isMermaid = className?.includes("language-mermaid");
-              if (isMermaid) {
-                const chart = String(children).trim();
-                return <MermaidDiagram chart={chart} />;
-              }
+        {/* Audio progress bar */}
+        {audioPlayer && (audioPlayer.isPlaying || audioPlayer.duration > 0) && (
+          <AudioProgressBar
+            isPlaying={audioPlayer.isPlaying}
+            isLoading={audioPlayer.isLoading}
+            hasAudio={audioPlayer.hasAudio}
+            progress={audioPlayer.progress}
+            currentTime={audioPlayer.currentTime}
+            duration={audioPlayer.duration}
+            onToggle={audioPlayer.toggle}
+          />
+        )}
 
-              const isBlock = className?.includes("language-");
-              if (isBlock) {
-                return (
-                  <code className="block whitespace-pre font-mono text-[13px] leading-[1.45] text-foreground">
-                    {children}
-                  </code>
-                );
-              }
-              return (
-                <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-sm text-foreground">
-                  {children}
-                </code>
-              );
-            },
-            pre: ({ children }) => {
-              const child = children as React.ReactElement<{ className?: string }>;
-              if (
-                child?.props?.className?.includes("language-mermaid")
-              ) {
-                return <>{children}</>;
-              }
-              return (
-                <pre className="mb-4 overflow-x-auto rounded-lg border border-border bg-muted/50 p-4 font-mono text-[13px] leading-[1.45]">
-                  {children}
-                </pre>
-              );
-            },
-            table: ({ children }) => (
-              <div className="mb-4 overflow-x-auto">
-                <table className="w-full border-collapse text-sm">
-                  {children}
-                </table>
-              </div>
-            ),
-            thead: ({ children }) => (
-              <thead className="border-b border-border bg-muted/50">
-                {children}
-              </thead>
-            ),
-            th: ({ children }) => (
-              <th className="px-3 py-2 text-left font-semibold text-foreground">
-                {children}
-              </th>
-            ),
-            td: ({ children }) => (
-              <td className="border-b border-border/30 px-3 py-2 text-foreground/90">
-                {children}
-              </td>
-            ),
-            hr: () => <hr className="my-8 border-border" />,
-          }}
-        >
-          {content}
-        </ReactMarkdown>
+        {/* Preamble (h1/h2 title before sections) */}
+        {preamble && <MemoizedSectionBody markdown={preamble} />}
+
+        {/* Section-based rendering */}
+        {sections.map((section) => (
+          <div
+            key={section.index}
+            className={cn(
+              "transition-all duration-500",
+              activeSectionIndex === section.index &&
+                "rounded-r-lg border-l-2 border-primary bg-primary/5 -ml-4 pl-4"
+            )}
+          >
+            <h3 className="mb-3 mt-6 text-base font-semibold text-primary">
+              {section.index + 1}. {section.title}
+            </h3>
+            <MemoizedSectionBody markdown={section.body} />
+          </div>
+        ))}
+
+        {/* Fallback: render as single block if no sections detected */}
+        {sections.length === 0 && content && <MemoizedSectionBody markdown={content} />}
 
         {/* Prev / Next navigation */}
         {onNavigateSubtopic && (
-          <SubtopicNavBar
-            prev={prev}
-            next={next}
-            onNavigate={onNavigateSubtopic}
-          />
+          <SubtopicNavBar prev={prev} next={next} onNavigate={onNavigateSubtopic} />
         )}
       </article>
     </ScrollArea>

@@ -1,6 +1,8 @@
 "use client";
 
 import { useCallback, useState, useMemo, useRef } from "react";
+import { useAudioPlayer } from "@/hooks/use-audio-player";
+import { AudioPlayButton, AudioProgressBar } from "@/components/ui/audio-player";
 import { X } from "lucide-react";
 import { SidebarLeft } from "./sidebar-left";
 import { MainContent } from "./main-content";
@@ -73,6 +75,18 @@ export function PanelLayout({
     return undefined;
   }, [learning.curriculum, learning.activeSubtopicId]);
 
+  // Compute the DB key for audio (same formula as content API)
+  const activeDbKey = useMemo(() => {
+    if (!learning.curriculum || !learning.activeModuleId || !learning.activeSubtopicId) return null;
+    const mod = learning.curriculum.modules.find(m => m.id === learning.activeModuleId);
+    if (!mod) return null;
+    const subIdx = mod.subtopics.findIndex(s => s.id === learning.activeSubtopicId);
+    if (subIdx < 0) return null;
+    return learning.activeModuleId * 100 + subIdx;
+  }, [learning.curriculum, learning.activeModuleId, learning.activeSubtopicId]);
+
+  const audioPlayer = useAudioPlayer(learning.topicId, activeDbKey);
+
   // Swipe-down-to-close for mobile drawers
   const touchStartY = useRef(0);
   const touchStartX = useRef(0);
@@ -110,6 +124,8 @@ export function PanelLayout({
           activeModuleId={learning.activeModuleId}
           activeSubtopicId={learning.activeSubtopicId}
           onNavigateSubtopic={learning.navigateToSubtopic}
+          activeSectionIndex={audioPlayer.isPlaying ? audioPlayer.currentSectionIndex : null}
+          audioPlayer={audioPlayer}
           quizContent={
             assessment.mode !== "idle"
               ? (() => {

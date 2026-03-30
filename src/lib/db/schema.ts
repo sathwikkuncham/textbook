@@ -64,6 +64,8 @@ export const moduleContent = pgTable(
     moduleId: integer("module_id").notNull(),
     content: text("content").notNull(),
     diagrams: text("diagrams"),
+    audioUrl: text("audio_url"),
+    paragraphTimings: jsonb("paragraph_timings"),
     createdAt: timestamp("created_at").notNull().defaultNow(),
   },
   (table) => [
