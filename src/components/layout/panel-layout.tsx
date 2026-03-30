@@ -123,7 +123,13 @@ export function PanelLayout({
           curriculum={learning.curriculum}
           activeModuleId={learning.activeModuleId}
           activeSubtopicId={learning.activeSubtopicId}
+          activeSubtopicTitle={activeSubtopicTitle}
           onNavigateSubtopic={learning.navigateToSubtopic}
+          onRegenerate={
+            learning.activeModuleId && learning.activeSubtopicId
+              ? (feedback?: string) => learning.regenerateSubtopic(learning.activeModuleId!, learning.activeSubtopicId!, feedback)
+              : undefined
+          }
           activeSectionIndex={audioPlayer.isPlaying ? audioPlayer.currentSectionIndex : null}
           audioPlayer={audioPlayer}
           quizContent={

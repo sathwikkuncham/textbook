@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useRef, useMemo, memo } from "react";
-import { BookOpen, ChevronLeft, ChevronRight } from "lucide-react";
+import React, { useRef, useMemo, memo, useState } from "react";
+import { BookOpen, ChevronLeft, ChevronRight, RefreshCw } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -78,6 +78,10 @@ const markdownComponents = {
         "Concrete Example",
         "Common Pitfalls",
         "Key Takeaway",
+        "Connecting the Dots",
+        "The Full Picture",
+        "In Practice",
+        "Bringing It Together",
       ].some((s) => text.includes(s));
 
     if (isSectionHeader) {
@@ -195,6 +199,8 @@ interface MainContentProps {
   onNavigateSubtopic?: (moduleId: number, subtopicId: string) => void;
   activeSectionIndex?: number | null;
   audioPlayer?: ReturnType<typeof useAudioPlayer>;
+  activeSubtopicTitle?: string;
+  onRegenerate?: (feedback?: string) => void;
 }
 
 function ContentSkeleton() {
@@ -355,9 +361,23 @@ export function MainContent({
   onNavigateSubtopic,
   activeSectionIndex,
   audioPlayer,
+  activeSubtopicTitle,
+  onRegenerate,
 }: MainContentProps) {
   const articleRef = useRef<HTMLElement>(null);
   const { prev, next } = useSubtopicNav(curriculum, activeModuleId, activeSubtopicId);
+
+  const subtopicPosition = useMemo(() => {
+    if (!curriculum || !activeModuleId || !activeSubtopicId) return null;
+    const mod = curriculum.modules.find((m) => m.id === activeModuleId);
+    if (!mod) return null;
+    const idx = mod.subtopics.findIndex((s) => s.id === activeSubtopicId);
+    if (idx < 0) return null;
+    return { current: idx + 1, total: mod.subtopics.length };
+  }, [curriculum, activeModuleId, activeSubtopicId]);
+
+  const [showFeedback, setShowFeedback] = useState(false);
+  const [feedbackText, setFeedbackText] = useState("");
 
   const { preamble, sections } = useMemo(
     () => (content ? splitContentSections(content) : { preamble: "", sections: [] }),
@@ -389,17 +409,6 @@ export function MainContent({
         />
       )}
       <article ref={articleRef} className="mx-auto max-w-4xl px-4 pb-20 pt-4 md:px-8 md:pt-6">
-        {/* Audio listen button */}
-        {audioPlayer && (
-          <div className="mb-4 flex items-center justify-end">
-            <AudioPlayButton
-              isPlaying={audioPlayer.isPlaying}
-              isLoading={audioPlayer.isLoading}
-              onToggle={audioPlayer.toggle}
-            />
-          </div>
-        )}
-
         {/* Audio progress bar */}
         {audioPlayer && (audioPlayer.isPlaying || audioPlayer.duration > 0) && (
           <AudioProgressBar
@@ -413,8 +422,78 @@ export function MainContent({
           />
         )}
 
-        {/* Preamble (h1/h2 title before sections) */}
-        {preamble && <MemoizedSectionBody markdown={preamble} />}
+        {/* Subtopic header */}
+        {activeModuleTitle && activeSubtopicTitle && subtopicPosition && (
+          <div className="mb-8">
+            <div className="flex flex-wrap items-center justify-between gap-y-2">
+              <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                Module {activeModuleId} <span className="mx-1 text-border">/</span> Subtopic {subtopicPosition.current} of {subtopicPosition.total}
+              </p>
+              <div className="flex items-center gap-2">
+                {onRegenerate && !isLoading && (
+                  <button
+                    onClick={() => setShowFeedback((prev) => !prev)}
+                    className="flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-xs font-medium text-muted-foreground transition-all hover:border-primary/30 hover:text-primary"
+                  >
+                    <RefreshCw className="size-3" />
+                    Regenerate
+                  </button>
+                )}
+                {audioPlayer && (
+                  <AudioPlayButton
+                    isPlaying={audioPlayer.isPlaying}
+                    isLoading={audioPlayer.isLoading}
+                    onToggle={audioPlayer.toggle}
+                  />
+                )}
+              </div>
+            </div>
+            <h1 className="mt-3 font-serif text-2xl font-bold tracking-tight text-foreground md:text-3xl">
+              {activeSubtopicTitle}
+            </h1>
+            <p className="mt-1.5 text-sm text-muted-foreground">
+              {activeModuleTitle}
+            </p>
+            <div className="mt-4 h-px bg-border" />
+
+            {/* Regenerate feedback */}
+            {showFeedback && onRegenerate && (
+              <div className="mt-4 space-y-2">
+                <textarea
+                  value={feedbackText}
+                  onChange={(e) => setFeedbackText(e.target.value)}
+                  placeholder="What should be different? (optional)"
+                  className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/50 focus:border-primary/50 focus:outline-none focus:ring-1 focus:ring-primary/20"
+                  rows={2}
+                />
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => {
+                      onRegenerate(feedbackText || undefined);
+                      setShowFeedback(false);
+                      setFeedbackText("");
+                    }}
+                    className="rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+                  >
+                    Regenerate content
+                  </button>
+                  <button
+                    onClick={() => {
+                      setShowFeedback(false);
+                      setFeedbackText("");
+                    }}
+                    className="rounded-lg px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Preamble — only render if no subtopic header (fallback for content without sections) */}
+        {preamble && !activeSubtopicTitle && <MemoizedSectionBody markdown={preamble} />}
 
         {/* Section-based rendering */}
         {sections.map((section) => (

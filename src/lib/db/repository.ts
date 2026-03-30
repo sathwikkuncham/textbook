@@ -201,6 +201,12 @@ export async function saveAudio(topicId: number, moduleId: number, audioUrl: str
     .where(and(eq(moduleContent.topicId, topicId), eq(moduleContent.moduleId, moduleId)));
 }
 
+export async function clearAudio(topicId: number, moduleId: number) {
+  await db.update(moduleContent)
+    .set({ audioUrl: null, paragraphTimings: null })
+    .where(and(eq(moduleContent.topicId, topicId), eq(moduleContent.moduleId, moduleId)));
+}
+
 // ── Module Quizzes ──────────────────────────────────────
 
 export async function findModuleQuiz(

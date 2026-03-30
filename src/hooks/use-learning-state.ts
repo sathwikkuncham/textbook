@@ -371,6 +371,54 @@ export function useLearningState() {
     [state.topic, setError]
   );
 
+  const regenerateSubtopic = useCallback(
+    async (moduleId: number, subtopicId: string, feedback?: string) => {
+      if (!state.topic) return;
+
+      setState((prev) => ({
+        ...prev,
+        moduleContent: null,
+        moduleDiagrams: null,
+        isLoading: true,
+        error: null,
+      }));
+
+      try {
+        const res = await fetch("/api/learn/content", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            topic: state.topic,
+            slug: state.topicSlug,
+            moduleId,
+            subtopicId,
+            forceRegenerate: true,
+            feedback,
+          }),
+        });
+        const data = await res.json();
+        if (!data.success) throw new Error(data.error);
+
+        setState((prev) => ({
+          ...prev,
+          moduleContent: data.content,
+          moduleDiagrams: data.diagrams,
+          isLoading: false,
+        }));
+
+        requestAnimationFrame(() => {
+          const article = document.querySelector("article");
+          if (article) article.scrollTo({ top: 0, behavior: "smooth" });
+        });
+      } catch (err) {
+        setError(
+          err instanceof Error ? err.message : "Failed to regenerate content"
+        );
+      }
+    },
+    [state.topic, state.topicSlug, setError]
+  );
+
   const getActiveModule = useCallback((): Module | null => {
     if (!state.curriculum || !state.activeModuleId) return null;
     return (
@@ -408,6 +456,7 @@ export function useLearningState() {
     loadExistingTopic,
     loadModuleContent,
     navigateToSubtopic,
+    regenerateSubtopic,
     getActiveModule,
     setPhase,
     setError,

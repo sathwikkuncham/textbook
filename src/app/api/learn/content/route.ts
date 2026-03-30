@@ -7,17 +7,20 @@ import {
   findModuleContent,
   findSourceStructure,
   saveModuleContent,
+  clearAudio,
 } from "@/lib/db/repository";
 import { createContentComposer } from "@/agents/content-composer";
 import { createDiagramSpecialist } from "@/agents/diagram-specialist";
 import { createFetchPDFSectionTool } from "@/agents/tools/fetch-pdf-section";
+import { createFetchPreviousSubtopicTool } from "@/agents/tools/fetch-previous-subtopic";
 import { runAgent } from "@/agents/runner";
+import type { BaseTool } from "@google/adk";
 
 export const maxDuration = 120;
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
-  const { topic, slug: providedSlug, moduleId, subtopicId } = body;
+  const { topic, slug: providedSlug, moduleId, subtopicId, forceRegenerate, feedback } = body;
 
   if (!topic || moduleId === undefined) {
     return NextResponse.json(
@@ -68,9 +71,9 @@ export async function POST(request: NextRequest) {
   const subtopicIndex = module.subtopics.findIndex((s) => s.id === subtopic.id);
   const dbKey = moduleId * 100 + subtopicIndex;
 
-  // Check cache
+  // Check cache (skip if regenerating)
   const cached = await findModuleContent(topicRecord.id, dbKey);
-  if (cached) {
+  if (cached && !forceRegenerate) {
     return NextResponse.json({
       success: true,
       topicSlug,
@@ -81,6 +84,11 @@ export async function POST(request: NextRequest) {
       diagrams: cached.diagrams,
       cached: true,
     });
+  }
+
+  // Clear audio cache if regenerating
+  if (forceRegenerate) {
+    await clearAudio(topicRecord.id, dbKey);
   }
 
   const research = await findResearchByTopicId(topicRecord.id);
@@ -100,21 +108,40 @@ export async function POST(request: NextRequest) {
     .slice(0, 6000)
     .replace(/[{}]/g, "");
 
+  // Compute subtopic position within the module
+  const totalSubtopics = module.subtopics.length;
+  const isFirst = subtopicIndex === 0;
+  const isLast = subtopicIndex === totalSubtopics - 1 && totalSubtopics > 1;
+  const position = isFirst ? "first" : isLast ? "last" : "middle";
+
+  const moduleSubtopicList = module.subtopics
+    .map((s, i) => `${s.id}: ${s.title}${i === subtopicIndex ? " (CURRENT)" : ""}`)
+    .join("\n");
+
   try {
-    // Check if source-based and prepare tools
-    let composerOptions: Parameters<typeof createContentComposer>[5];
+    // Build tools array — agent decides what context it needs
+    const tools: BaseTool[] = [];
+    let sourceTitle: string | undefined;
+
+    // Source material tool (for PDF-based topics)
     if (topicRecord.sourceType !== "topic_only") {
       const structure = await findSourceStructure(topicRecord.id);
       if (structure) {
-        const fetchTool = createFetchPDFSectionTool(
-          topicRecord.id,
-          topicSlug
-        );
-        composerOptions = {
-          sourceTitle: structure.rawToc.title,
-          tools: [fetchTool],
-        };
+        tools.push(createFetchPDFSectionTool(topicRecord.id, topicSlug));
+        sourceTitle = structure.rawToc.title;
       }
+    }
+
+    // Previous subtopic tool (for continuity — not available for first subtopic)
+    if (!isFirst) {
+      tools.push(
+        createFetchPreviousSubtopicTool(
+          topicRecord.id,
+          moduleId,
+          subtopicIndex,
+          module.subtopics
+        )
+      );
     }
 
     const contentComposer = createContentComposer(
@@ -123,7 +150,15 @@ export async function POST(request: NextRequest) {
       module.title,
       subtopicDesc,
       researchContext,
-      composerOptions
+      {
+        sourceTitle,
+        tools: tools.length > 0 ? tools : undefined,
+        position: position as "first" | "middle" | "last",
+        subtopicIndex,
+        totalSubtopics,
+        teachingApproach: subtopic.teaching_approach,
+        moduleSubtopicList,
+      }
     );
 
     const diagramSpecialist = createDiagramSpecialist(
@@ -132,11 +167,19 @@ export async function POST(request: NextRequest) {
       subtopicDesc
     );
 
-    const contentMessage = `Write comprehensive, in-depth teaching content for this ONE subtopic only. Give it a full page of depth — this is the only subtopic the learner will read right now.\n\nModule: ${module.title}\nSubtopic: ${subtopicDesc}\n\nWrite all 7 sections with full depth. Target 1500-2000 words total.`;
+    const contentMessage = position === "first"
+      ? `Write comprehensive, in-depth teaching content for this ONE subtopic only. Give it a full page of depth — this is the only subtopic the learner will read right now.\n\nModule: ${module.title}\nSubtopic: ${subtopicDesc}\n\nWrite all 7 sections with full depth. Target 1500-2000 words total.`
+      : `Write comprehensive, in-depth teaching content for this ONE subtopic only. Build naturally on what the learner has already covered in this module.\n\nModule: ${module.title}\nSubtopic: ${subtopicDesc}\n\nUse the fetchPreviousSubtopic tool to read previous subtopics for context and continuity. Write all 7 sections with full depth. Target 1500-2000 words total.`;
+
+    const feedbackSuffix = feedback
+      ? `\n\nIMPORTANT — The learner requested this content be regenerated with this feedback: "${feedback}". Address their concerns in the new version.`
+      : "";
+    const finalContentMessage = contentMessage + feedbackSuffix;
+
     const diagramMessage = `Create a Mermaid diagram for this subtopic:\n${subtopicDesc}`;
 
     const [contentResult, diagramResult] = await Promise.all([
-      runAgent(contentComposer, contentMessage),
+      runAgent(contentComposer, finalContentMessage),
       runAgent(diagramSpecialist, diagramMessage),
     ]);
 

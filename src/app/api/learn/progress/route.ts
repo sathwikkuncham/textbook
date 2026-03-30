@@ -4,6 +4,7 @@ import {
   updateSubtopicProgress,
   getTopicCheckpoints,
   updateTopic,
+  findCurriculumByTopicId,
 } from "@/lib/db/repository";
 
 export async function GET(request: NextRequest) {
@@ -56,11 +57,14 @@ export async function POST(request: NextRequest) {
 
   await updateSubtopicProgress(topicId, moduleId ?? 0, subtopicId, status);
 
-  // Recalculate completion percent
+  // Recalculate completion percent using curriculum's total subtopics
   const progressRows = await getSubtopicProgress(topicId);
   const completed = progressRows.filter((p) => p.status === "completed").length;
-  const total = progressRows.length;
-  const completionPercent = total > 0 ? Math.round((completed / total) * 100) : 0;
+  const curriculum = await findCurriculumByTopicId(topicId);
+  const totalSubtopics = curriculum
+    ? curriculum.modules.reduce((sum, m) => sum + m.subtopics.length, 0)
+    : progressRows.length;
+  const completionPercent = totalSubtopics > 0 ? Math.round((completed / totalSubtopics) * 100) : 0;
 
   await updateTopic(topicId, { completionPercent });
 
