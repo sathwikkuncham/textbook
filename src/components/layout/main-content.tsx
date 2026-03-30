@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useMemo, memo, useState } from "react";
+import React, { useRef, useMemo, memo, useState, useEffect } from "react";
 import { BookOpen, ChevronLeft, ChevronRight, RefreshCw } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ReactMarkdown from "react-markdown";
@@ -377,6 +377,20 @@ export function MainContent({
   }, [curriculum, activeModuleId, activeSubtopicId]);
 
   const [showFeedback, setShowFeedback] = useState(false);
+
+  // Track backward navigation (revisiting earlier modules)
+  const prevModuleRef = useRef<number | null>(null);
+  const [isBacktracking, setIsBacktracking] = useState(false);
+
+  useEffect(() => {
+    if (activeModuleId == null) return;
+    if (prevModuleRef.current !== null && activeModuleId < prevModuleRef.current) {
+      setIsBacktracking(true);
+    } else {
+      setIsBacktracking(false);
+    }
+    prevModuleRef.current = activeModuleId;
+  }, [activeModuleId]);
   const [feedbackText, setFeedbackText] = useState("");
 
   const { preamble, sections } = useMemo(
@@ -489,6 +503,20 @@ export function MainContent({
                 </div>
               </div>
             )}
+          </div>
+        )}
+
+        {/* Backtracking hint */}
+        {isBacktracking && (
+          <div className="mb-4 flex items-center gap-2 rounded-lg border border-primary/20 bg-primary/5 px-4 py-2.5 text-sm text-muted-foreground">
+            <ChevronLeft className="size-4 shrink-0 text-primary" />
+            <span>Revisiting earlier material — use the chat to ask about anything that needs clarification.</span>
+            <button
+              onClick={() => setIsBacktracking(false)}
+              className="ml-auto shrink-0 text-xs text-muted-foreground/60 hover:text-foreground"
+            >
+              Dismiss
+            </button>
           </div>
         )}
 

@@ -2,6 +2,7 @@
 
 import { useCallback, useState, useMemo, useRef } from "react";
 import { useAudioPlayer } from "@/hooks/use-audio-player";
+import { useEngagementTracker } from "@/hooks/use-engagement-tracker";
 import { AudioPlayButton, AudioProgressBar } from "@/components/ui/audio-player";
 import { X } from "lucide-react";
 import { SidebarLeft } from "./sidebar-left";
@@ -86,6 +87,13 @@ export function PanelLayout({
   }, [learning.curriculum, learning.activeModuleId, learning.activeSubtopicId]);
 
   const audioPlayer = useAudioPlayer(learning.topicId, activeDbKey);
+
+  useEngagementTracker({
+    topicId: learning.topicId,
+    activeModuleId: learning.activeModuleId,
+    activeSubtopicId: learning.activeSubtopicId,
+    curriculum: learning.curriculum,
+  });
 
   // Swipe-down-to-close for mobile drawers
   const touchStartY = useRef(0);

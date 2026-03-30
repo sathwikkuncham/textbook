@@ -10,11 +10,16 @@ interface ChatTutorParams {
   subtopicContent: string;
   sourceTitle?: string;
   tools?: BaseTool[];
+  learnerContext?: string;
 }
 
 export function createChatTutor(params: ChatTutorParams) {
   const sourceInstruction = params.sourceTitle
     ? `\n\nYou are teaching from the source: "${params.sourceTitle}". You have access to the \`fetchPDFSection\` tool to retrieve additional content from the book when the learner asks about topics beyond what is currently displayed. Reference the source naturally: "As the authors explain..." or "In the book, this is covered in..."`
+    : "";
+
+  const learnerAwarenessBlock = params.learnerContext
+    ? `\n## Learner Profile\n\nBased on this learner's interaction history:\n${params.learnerContext}\n\n**How to use this:**\n- If their weak areas overlap with the current subtopic, proactively offer to explain those concepts in more depth\n- Match your explanation style to their preferred approach (e.g., more analogies for analogy-driven learners, more worked examples for example-first learners)\n- If their pace is slow, be more patient and granular in explanations. If fast, be more concise and offer deeper dives instead\n- If they have a heavy "simplify" help-seeking pattern, default to simpler language without waiting to be asked`
     : "";
 
   return new LlmAgent({
@@ -37,6 +42,7 @@ Here is the content the learner is currently reading:
 ${params.subtopicContent}
 ---
 ${sourceInstruction}
+${learnerAwarenessBlock}
 
 ## How to Respond
 

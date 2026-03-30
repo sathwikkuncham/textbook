@@ -120,12 +120,28 @@ export async function POST(request: NextRequest) {
     questionResults,
   };
 
-  // Log signal for learner model
+  // Extract per-concept performance for learner model
+  const conceptResults: Record<string, { correct: number; total: number; bloomLevels: string[] }> = {};
+  for (let i = 0; i < questions.length; i++) {
+    const q = questions[i];
+    const r = questionResults[i];
+    const concepts = q.concepts_tested ?? [];
+    for (const concept of concepts) {
+      if (!conceptResults[concept]) {
+        conceptResults[concept] = { correct: 0, total: 0, bloomLevels: [] };
+      }
+      conceptResults[concept].total++;
+      if (r.isCorrect) conceptResults[concept].correct++;
+      if (q.bloom_level) conceptResults[concept].bloomLevels.push(q.bloom_level);
+    }
+  }
+
+  // Log signal with concept-level detail for learner model
   logLearnerSignal({
     topicId,
     moduleId,
     signalType: passed ? "quiz_completed" : "quiz_failed",
-    data: { score, passed, attemptCount },
+    data: { score, passed, attemptCount, conceptResults },
   }).catch(console.error);
 
   // Trigger learner model update (fire-and-forget)

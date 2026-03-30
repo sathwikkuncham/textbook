@@ -10,6 +10,7 @@ import {
   updateChatSessionTitle,
   appendChatMessage,
   logLearnerSignal,
+  findLearnerInsights,
 } from "@/lib/db/repository";
 import { createChatTutor } from "@/agents/chat-tutor";
 import { createFetchPDFSectionTool } from "@/agents/tools/fetch-pdf-section";
@@ -136,6 +137,24 @@ export async function POST(request: NextRequest) {
     }
   }
 
+  // Fetch learner model for personalized tutoring
+  let learnerContext: string | undefined;
+  if (topicRecord) {
+    const insights = await findLearnerInsights(topicRecord.id);
+    if (insights) {
+      const weakAreas = insights.weakAreas as string[];
+      const style = insights.learningStyle as Record<string, unknown>;
+      const engagement = insights.engagementProfile as Record<string, unknown>;
+      learnerContext = [
+        weakAreas.length > 0 ? `Weak areas: ${weakAreas.join(", ")}` : null,
+        style?.preferredApproach ? `Preferred learning approach: ${style.preferredApproach}` : null,
+        style?.paceCategory ? `Learning pace: ${style.paceCategory}` : null,
+        style?.helpSeekingPattern ? `Help-seeking pattern: ${style.helpSeekingPattern}` : null,
+        engagement?.chatFrequency ? `Chat engagement: ${engagement.chatFrequency}` : null,
+      ].filter(Boolean).join("\n");
+    }
+  }
+
   // Build the chat message with context
   let fullMessage = "";
 
@@ -168,6 +187,7 @@ export async function POST(request: NextRequest) {
     subtopicContent: subtopicContent.slice(0, 6000),
     sourceTitle,
     tools,
+    learnerContext,
   });
 
   // Stream the response via SSE
