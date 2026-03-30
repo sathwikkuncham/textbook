@@ -331,6 +331,8 @@ export function useLearningState() {
         ...prev,
         activeModuleId: moduleId,
         activeSubtopicId: subtopicId,
+        moduleContent: null,
+        moduleDiagrams: null,
         isLoading: true,
         error: null,
       }));
