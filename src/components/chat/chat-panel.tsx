@@ -17,6 +17,7 @@ interface ChatPanelProps {
   subtopicId: string | null;
   subtopicTitle?: string;
   className?: string;
+  headerActions?: React.ReactNode;
   pendingAction?: {
     action: string;
     selectedText: string;
@@ -33,6 +34,7 @@ export function ChatPanel({
   subtopicTitle,
   pendingAction,
   className,
+  headerActions,
   onPendingActionConsumed,
 }: ChatPanelProps) {
   const [inputValue, setInputValue] = useState("");
@@ -106,15 +108,18 @@ export function ChatPanel({
             AI Chat
           </span>
         </div>
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          onClick={startNewSession}
-          disabled={isDisabled}
-          title="New conversation"
-        >
-          <Plus className="size-4" />
-        </Button>
+        <div className="flex items-center gap-0.5">
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            onClick={startNewSession}
+            disabled={isDisabled}
+            title="New conversation"
+          >
+            <Plus className="size-4" />
+          </Button>
+          {headerActions}
+        </div>
       </div>
 
       {/* Session selector */}

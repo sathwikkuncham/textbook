@@ -4,7 +4,7 @@ import { useCallback, useState, useMemo, useRef } from "react";
 import { useAudioPlayer } from "@/hooks/use-audio-player";
 import { useEngagementTracker } from "@/hooks/use-engagement-tracker";
 import { AudioPlayButton, AudioProgressBar } from "@/components/ui/audio-player";
-import { X } from "lucide-react";
+import { X, Columns2, Maximize2, Minimize2 } from "lucide-react";
 import { SidebarLeft } from "./sidebar-left";
 import { MainContent } from "./main-content";
 import { ChatPanel } from "@/components/chat/chat-panel";
@@ -38,6 +38,8 @@ export function PanelLayout({
   assessment,
   isMobile = false,
 }: PanelLayoutProps) {
+  const [chatMode, setChatMode] = useState<"drawer" | "wide" | "popout">("drawer");
+
   const [pendingAction, setPendingAction] = useState<{
     action: string;
     selectedText: string;
@@ -197,7 +199,9 @@ export function PanelLayout({
         <div
           className={cn(
             "fixed inset-0 z-40",
-            isMobile ? "bg-black/40" : "bg-black/20 backdrop-blur-[2px]"
+            isMobile ? "bg-black/40"
+              : chatMode === "popout" && rightSidebarOpen ? "bg-black/40 backdrop-blur-[3px]"
+              : "bg-black/20 backdrop-blur-[2px]"
           )}
           style={{ top: 48 }}
           onClick={() => {
@@ -262,7 +266,7 @@ export function PanelLayout({
         />
       </div>
 
-      {/* Right chat drawer — fixed position */}
+      {/* Right chat drawer — fixed position, supports drawer/wide/popout modes */}
       <div
         onTouchStart={isMobile ? handleDrawerTouchStart : undefined}
         onTouchEnd={isMobile ? makeDrawerTouchEnd(() => onRightSidebarOpenChange(false)) : undefined}
@@ -270,7 +274,9 @@ export function PanelLayout({
           "fixed z-50 flex flex-col overflow-hidden border border-border bg-card",
           isMobile
             ? "inset-x-0 rounded-t-2xl shadow-[0_-10px_40px_-10px_rgba(26,22,20,0.15)]"
-            : "w-[440px] rounded-2xl shadow-[0_10px_40px_-10px_rgba(26,22,20,0.15),0_20px_50px_-10px_rgba(26,22,20,0.08)]",
+            : chatMode === "popout"
+              ? "rounded-2xl shadow-[0_10px_60px_-10px_rgba(26,22,20,0.25),0_20px_80px_-10px_rgba(26,22,20,0.12)]"
+              : "rounded-2xl shadow-[0_10px_40px_-10px_rgba(26,22,20,0.15),0_20px_50px_-10px_rgba(26,22,20,0.08)]",
           !rightSidebarOpen && "pointer-events-none"
         )}
         style={isMobile ? {
@@ -281,12 +287,21 @@ export function PanelLayout({
           transform: rightSidebarOpen ? "translateY(0)" : "translateY(100%)",
           opacity: rightSidebarOpen ? 1 : 0,
           transition: "transform 300ms ease-out, opacity 200ms ease-out",
+        } : chatMode === "popout" ? {
+          top: 60,
+          bottom: 36,
+          left: "10%",
+          right: "10%",
+          opacity: rightSidebarOpen ? 1 : 0,
+          transform: rightSidebarOpen ? "scale(1)" : "scale(0.95)",
+          transition: "opacity 200ms ease-out, transform 200ms ease-out",
         } : {
           top: 60,
           bottom: 36,
-          right: rightSidebarOpen ? 12 : -460,
+          width: chatMode === "wide" ? 640 : 440,
+          right: rightSidebarOpen ? 12 : -(chatMode === "wide" ? 660 : 460),
           opacity: rightSidebarOpen ? 1 : 0,
-          transition: "right 300ms ease-out, opacity 200ms ease-out",
+          transition: "right 300ms ease-out, opacity 200ms ease-out, width 200ms ease-out",
         }}
       >
         {isMobile && (
@@ -310,6 +325,44 @@ export function PanelLayout({
           subtopicTitle={activeSubtopicTitle}
           pendingAction={pendingAction}
           onPendingActionConsumed={clearPendingAction}
+          headerActions={!isMobile ? (
+            <div className="flex items-center gap-0.5">
+              <button
+                onClick={() => setChatMode(chatMode === "wide" ? "drawer" : "wide")}
+                className={cn(
+                  "rounded-md p-1.5 transition-colors",
+                  chatMode === "wide"
+                    ? "bg-accent text-foreground"
+                    : "text-muted-foreground hover:bg-accent hover:text-foreground"
+                )}
+                title={chatMode === "wide" ? "Narrow view" : "Wide view"}
+              >
+                <Columns2 className="size-3.5" />
+              </button>
+              <button
+                onClick={() => setChatMode(chatMode === "popout" ? "drawer" : "popout")}
+                className={cn(
+                  "rounded-md p-1.5 transition-colors",
+                  chatMode === "popout"
+                    ? "bg-accent text-foreground"
+                    : "text-muted-foreground hover:bg-accent hover:text-foreground"
+                )}
+                title={chatMode === "popout" ? "Back to sidebar" : "Pop out"}
+              >
+                {chatMode === "popout" ? <Minimize2 className="size-3.5" /> : <Maximize2 className="size-3.5" />}
+              </button>
+              <button
+                onClick={() => {
+                  setChatMode("drawer");
+                  onRightSidebarOpenChange(false);
+                }}
+                className="rounded-md p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground"
+                title="Close"
+              >
+                <X className="size-3.5" />
+              </button>
+            </div>
+          ) : undefined}
         />
       </div>
     </>
