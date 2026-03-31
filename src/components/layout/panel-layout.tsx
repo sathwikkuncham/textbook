@@ -262,10 +262,10 @@ export function PanelLayout({
         onTouchStart={isMobile ? handleDrawerTouchStart : undefined}
         onTouchEnd={isMobile ? makeDrawerTouchEnd(() => onRightSidebarOpenChange(false)) : undefined}
         className={cn(
-          "fixed z-50 overflow-hidden border border-border bg-card",
+          "fixed z-50 flex flex-col overflow-hidden border border-border bg-card",
           isMobile
             ? "inset-x-0 rounded-t-2xl shadow-[0_-10px_40px_-10px_rgba(26,22,20,0.15)]"
-            : "w-[380px] rounded-2xl shadow-[0_10px_40px_-10px_rgba(26,22,20,0.15),0_20px_50px_-10px_rgba(26,22,20,0.08)]",
+            : "w-[440px] rounded-2xl shadow-[0_10px_40px_-10px_rgba(26,22,20,0.15),0_20px_50px_-10px_rgba(26,22,20,0.08)]",
           !rightSidebarOpen && "pointer-events-none"
         )}
         style={isMobile ? {
@@ -279,7 +279,7 @@ export function PanelLayout({
         } : {
           top: 60,
           bottom: 36,
-          right: rightSidebarOpen ? 12 : -392,
+          right: rightSidebarOpen ? 12 : -460,
           opacity: rightSidebarOpen ? 1 : 0,
           transition: "right 300ms ease-out, opacity 200ms ease-out",
         }}
@@ -296,6 +296,7 @@ export function PanelLayout({
           </div>
         )}
         <ChatPanel
+          className="min-h-0 flex-1"
           topicId={learning.topicId}
           topic={learning.topic}
           topicSlug={learning.topicSlug}

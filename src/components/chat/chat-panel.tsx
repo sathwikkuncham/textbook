@@ -16,6 +16,7 @@ interface ChatPanelProps {
   moduleId: number | null;
   subtopicId: string | null;
   subtopicTitle?: string;
+  className?: string;
   pendingAction?: {
     action: string;
     selectedText: string;
@@ -31,6 +32,7 @@ export function ChatPanel({
   subtopicId,
   subtopicTitle,
   pendingAction,
+  className,
   onPendingActionConsumed,
 }: ChatPanelProps) {
   const [inputValue, setInputValue] = useState("");
@@ -95,7 +97,7 @@ export function ChatPanel({
   const activeSession = sessions.find((s) => s.id === activeSessionId);
 
   return (
-    <div className="flex h-full flex-col bg-sidebar">
+    <div className={cn("flex h-full flex-col bg-sidebar", className)}>
       {/* Header with session controls */}
       <div className="flex items-center justify-between border-b border-sidebar-border px-3 py-2">
         <div className="flex items-center gap-2">
