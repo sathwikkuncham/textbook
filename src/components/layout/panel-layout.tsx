@@ -76,14 +76,19 @@ export function PanelLayout({
   // Swipe-down-to-close for mobile drawers
   const touchStartY = useRef(0);
   const touchStartX = useRef(0);
+  const scrollAtTop = useRef(false);
 
   const handleDrawerTouchStart = useCallback((e: React.TouchEvent) => {
     touchStartY.current = e.touches[0].clientY;
     touchStartX.current = e.touches[0].clientX;
+    // Find the nearest scroll viewport and check if it's scrolled to the top
+    const viewport = (e.target as HTMLElement).closest('[data-slot="scroll-area-viewport"]');
+    scrollAtTop.current = !viewport || viewport.scrollTop <= 0;
   }, []);
 
   const makeDrawerTouchEnd = useCallback((close: () => void) => {
     return (e: React.TouchEvent) => {
+      if (!scrollAtTop.current) return;
       const deltaY = e.changedTouches[0].clientY - touchStartY.current;
       const deltaX = Math.abs(e.changedTouches[0].clientX - touchStartX.current);
       // Swipe down: vertical > 80px and dominates horizontal
