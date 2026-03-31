@@ -22,7 +22,7 @@ const TYPE_LABELS: Record<string, string> = {
   adjust_teaching_approach: "Change teaching style",
 };
 
-export function LearningRecommendations({ topicId }: { topicId: number | null }) {
+export function LearningRecommendations({ topicId, onCurriculumChange }: { topicId: number | null; onCurriculumChange?: () => void }) {
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
   const [dismissed, setDismissed] = useState<Set<string>>(new Set());
 
@@ -67,8 +67,9 @@ export function LearningRecommendations({ topicId }: { topicId: number | null })
         });
 
         if (action === "accept") {
-          // Reload the page to reflect curriculum changes
-          window.location.reload();
+          if (onCurriculumChange) {
+            onCurriculumChange();
+          }
         }
       } catch {
         // Revert optimistic update on failure

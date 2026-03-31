@@ -203,6 +203,7 @@ interface MainContentProps {
   activeSubtopicTitle?: string;
   onRegenerate?: (feedback?: string) => void;
   topicId?: number | null;
+  onCurriculumChange?: () => void;
 }
 
 function ContentSkeleton() {
@@ -366,6 +367,7 @@ export function MainContent({
   activeSubtopicTitle,
   onRegenerate,
   topicId,
+  onCurriculumChange,
 }: MainContentProps) {
   const articleRef = useRef<HTMLElement>(null);
   const { prev, next } = useSubtopicNav(curriculum, activeModuleId, activeSubtopicId);
@@ -510,7 +512,7 @@ export function MainContent({
         )}
 
         {/* Learning recommendations */}
-        {topicId && <LearningRecommendations topicId={topicId} />}
+        {topicId && <LearningRecommendations topicId={topicId} onCurriculumChange={onCurriculumChange} />}
 
         {/* Backtracking hint */}
         {isBacktracking && (

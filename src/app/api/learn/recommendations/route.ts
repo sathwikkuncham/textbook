@@ -4,8 +4,7 @@ import {
   updateModificationStatus,
   findCurriculumByTopicId,
   saveCurriculum,
-  findModuleContent,
-  clearAudio,
+  deleteModuleContent,
   updateSubtopicProgress,
 } from "@/lib/db/repository";
 import type { Curriculum } from "@/lib/types/learning";
@@ -127,12 +126,7 @@ async function applyModification(
         );
         if (subIdx >= 0) {
           const dbKey = mod.targetModuleId * 100 + subIdx;
-          // Clear content cache — will regenerate on next visit
-          const existing = await findModuleContent(topicId, dbKey);
-          if (existing) {
-            // We can't delete rows easily, but we can clear audio
-            await clearAudio(topicId, dbKey);
-          }
+          await deleteModuleContent(topicId, dbKey);
         }
       }
       break;

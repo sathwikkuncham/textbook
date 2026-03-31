@@ -15,8 +15,8 @@ export async function POST(request: NextRequest) {
   try {
     await logLearnerSignal({
       topicId,
-      moduleId: moduleId ?? null,
-      subtopicId: subtopicId ?? null,
+      moduleId: moduleId ?? undefined,
+      subtopicId: subtopicId ?? undefined,
       signalType,
       data: data ?? {},
     });

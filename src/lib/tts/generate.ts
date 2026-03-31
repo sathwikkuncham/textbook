@@ -52,7 +52,7 @@ function stripMarkdown(text: string): string {
 export function extractSections(markdown: string): ContentSection[] {
   // Split on ### N. headers (e.g., "### 1. Why This Matters")
   const sectionRegex = /^###\s+(\d+)\.\s+(.+)$/gm;
-  const splits: { index: number; title: string; start: number }[] = [];
+  const splits: { index: number; title: string; start: number; matchStart: number }[] = [];
 
   let match;
   while ((match = sectionRegex.exec(markdown)) !== null) {
@@ -60,6 +60,7 @@ export function extractSections(markdown: string): ContentSection[] {
       index: parseInt(match[1], 10) - 1, // 0-based: "### 1." -> index 0
       title: match[2].trim(),
       start: match.index + match[0].length,
+      matchStart: match.index,
     });
   }
 
@@ -68,7 +69,7 @@ export function extractSections(markdown: string): ContentSection[] {
   const sections: ContentSection[] = [];
   for (let i = 0; i < splits.length; i++) {
     const { index, title, start } = splits[i];
-    const end = i + 1 < splits.length ? splits[i + 1].start - splits[i + 1].title.length - 10 : markdown.length;
+    const end = i + 1 < splits.length ? splits[i + 1].matchStart : markdown.length;
     const rawBody = markdown.slice(start, end).trim();
 
     if (SKIP_SECTIONS.some((s) => title.includes(s))) continue;

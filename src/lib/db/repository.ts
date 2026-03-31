@@ -243,6 +243,12 @@ export async function saveModuleContent(
   }
 }
 
+export async function deleteModuleContent(topicId: number, moduleId: number) {
+  await db.delete(moduleContent).where(
+    and(eq(moduleContent.topicId, topicId), eq(moduleContent.moduleId, moduleId))
+  );
+}
+
 // ── Module Audio ────────────────────────────────────────
 
 export async function findAudio(topicId: number, moduleId: number) {

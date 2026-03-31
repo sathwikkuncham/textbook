@@ -16,7 +16,7 @@ import { LEITNER_INTERVALS } from "@/lib/types/learning";
 import { createLearningOrchestrator } from "@/agents/learning-orchestrator";
 import { runAgent } from "@/agents/runner";
 
-async function triggerOrchestrator(topicId: number, triggerEvent: string, origin: string) {
+async function triggerOrchestrator(topicId: number, triggerEvent: string) {
   const orchestrator = createLearningOrchestrator(topicId, triggerEvent);
   await runAgent(
     orchestrator,
@@ -164,9 +164,9 @@ export async function POST(request: NextRequest) {
   // Trigger orchestrator for curriculum adaptation (fire-and-forget)
   // Only on quiz failure (2nd+ attempt) or module completion (passed)
   if (!passed && attemptCount >= 2) {
-    triggerOrchestrator(topicId, `Quiz failed for module ${moduleId} (attempt ${attemptCount}, score ${score}%). Learner has failed this module ${attemptCount} times.`, request.nextUrl.origin).catch(console.error);
+    triggerOrchestrator(topicId, `Quiz failed for module ${moduleId} (attempt ${attemptCount}, score ${score}%). Learner has failed this module ${attemptCount} times.`).catch(console.error);
   } else if (passed) {
-    triggerOrchestrator(topicId, `Module ${moduleId} completed with score ${score}%. This is attempt ${attemptCount}.`, request.nextUrl.origin).catch(console.error);
+    triggerOrchestrator(topicId, `Module ${moduleId} completed with score ${score}%. This is attempt ${attemptCount}.`).catch(console.error);
   }
 
   return NextResponse.json({ success: true, result });

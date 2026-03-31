@@ -138,7 +138,8 @@ export function useEngagementTracker({
             signalType: "time_on_subtopic",
             data: { durationSeconds },
           });
-          navigator.sendBeacon("/api/learn/signals", payload);
+          const blob = new Blob([payload], { type: "application/json" });
+          navigator.sendBeacon("/api/learn/signals", blob);
         }
       }
     };

@@ -36,6 +36,7 @@ export function useAudioPlayer(topicId: number | null, moduleId: number | null) 
   const currentSectionIdxRef = useRef<number>(-1);
   const activeKeyRef = useRef<string | null>(null);
   const isAdvancingRef = useRef(false);
+  const failureCountRef = useRef(0);
 
   const destroyAudio = useCallback(() => {
     if (audioRef.current) {
@@ -52,6 +53,7 @@ export function useAudioPlayer(topicId: number | null, moduleId: number | null) 
     sectionDurationsRef.current = [];
     currentSectionIdxRef.current = -1;
     isAdvancingRef.current = false;
+    failureCountRef.current = 0;
     setState({
       isPlaying: false,
       isLoading: false,
@@ -164,6 +166,11 @@ export function useAudioPlayer(topicId: number | null, moduleId: number | null) 
 
     audio.addEventListener("error", () => {
       // Skip failed section, try next
+      failureCountRef.current++;
+      if (failureCountRef.current >= 3) {
+        setState((prev) => ({ ...prev, isPlaying: false, isLoading: false }));
+        return;
+      }
       if (!isAdvancingRef.current) {
         isAdvancingRef.current = true;
         playSection(sectionArrayIdx + 1).finally(() => {
@@ -174,8 +181,14 @@ export function useAudioPlayer(topicId: number | null, moduleId: number | null) 
 
     try {
       await audio.play();
+      failureCountRef.current = 0; // Reset on success
     } catch {
       // Autoplay blocked — skip to next
+      failureCountRef.current++;
+      if (failureCountRef.current >= 3) {
+        setState((prev) => ({ ...prev, isPlaying: false, isLoading: false }));
+        return;
+      }
       if (!isAdvancingRef.current) {
         isAdvancingRef.current = true;
         playSection(sectionArrayIdx + 1).finally(() => {

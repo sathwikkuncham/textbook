@@ -97,7 +97,7 @@ export function ChatPanel({
   const activeSession = sessions.find((s) => s.id === activeSessionId);
 
   return (
-    <div className={cn("flex h-full flex-col bg-sidebar", className)}>
+    <div className={cn("flex flex-col bg-sidebar", className)}>
       {/* Header with session controls */}
       <div className="flex items-center justify-between border-b border-sidebar-border px-3 py-2">
         <div className="flex items-center gap-2">
@@ -176,7 +176,7 @@ export function ChatPanel({
       )}
 
       {/* Messages */}
-      <ScrollArea className="flex-1">
+      <ScrollArea className="min-h-0 flex-1 overflow-hidden">
         <div className="space-y-3 p-3">
           {isDisabled && (
             <div className="flex h-40 items-center justify-center">

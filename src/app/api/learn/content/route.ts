@@ -9,6 +9,7 @@ import {
   saveModuleContent,
   clearAudio,
   saveContentEvaluation,
+  getContentEvaluations,
   findLearnerInsights,
 } from "@/lib/db/repository";
 import { createContentComposer } from "@/agents/content-composer";
@@ -33,8 +34,11 @@ async function evaluateContentAsync(
     const cleaned = evalResult.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
     const evaluation = JSON.parse(cleaned);
 
+    const existingEvals = await getContentEvaluations(topicId, dbKey);
+    const attempt = existingEvals.length + 1;
+
     await saveContentEvaluation({
-      topicId, moduleId, subtopicId, dbKey, attempt: 1,
+      topicId, moduleId, subtopicId, dbKey, attempt,
       clarityScore: evaluation.clarityScore ?? 0,
       completenessScore: evaluation.completenessScore ?? 0,
       continuityScore: evaluation.continuityScore ?? null,

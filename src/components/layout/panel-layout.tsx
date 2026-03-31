@@ -133,6 +133,11 @@ export function PanelLayout({
           activeSubtopicId={learning.activeSubtopicId}
           activeSubtopicTitle={activeSubtopicTitle}
           topicId={learning.topicId}
+          onCurriculumChange={() => {
+            if (learning.topicSlug) {
+              learning.loadTopicBySlug(learning.topicSlug);
+            }
+          }}
           onNavigateSubtopic={learning.navigateToSubtopic}
           onRegenerate={
             learning.activeModuleId && learning.activeSubtopicId
