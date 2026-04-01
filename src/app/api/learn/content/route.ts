@@ -16,7 +16,7 @@ import {
 import { createContentComposer } from "@/agents/content-composer";
 import { createContentEvaluator } from "@/agents/content-evaluator";
 import { createDiagramSpecialist } from "@/agents/diagram-specialist";
-import { createFetchPDFSectionTool } from "@/agents/tools/fetch-pdf-section";
+import { createFetchSourceContentTool } from "@/agents/tools/fetch-source-content";
 import { createFetchPreviousSubtopicTool } from "@/agents/tools/fetch-previous-subtopic";
 import { runAgent } from "@/agents/runner";
 import type { BaseTool } from "@google/adk";
@@ -168,7 +168,7 @@ export async function POST(request: NextRequest) {
     if (topicRecord.sourceType !== "topic_only") {
       const structure = await findSourceStructure(topicRecord.id);
       if (structure) {
-        tools.push(createFetchPDFSectionTool(topicRecord.id, topicSlug));
+        tools.push(createFetchSourceContentTool(topicRecord.id, topicSlug, topicRecord.sourceType, topicRecord.sourcePath ?? ""));
         sourceTitle = structure.rawToc.title;
       }
     }

@@ -224,6 +224,7 @@ export interface TocChapter {
   pageStart: number;
   pageEnd: number;
   sections: TocSection[];
+  sourceUrl?: string;
 }
 
 export interface SourceToc {

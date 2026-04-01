@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase, STORAGE_BUCKET } from "@/lib/supabase/client";
-import { discoverPDFStructure, discoverURLStructure } from "@/lib/pdf/extractor";
+import { discoverPDFStructure } from "@/lib/pdf/extractor";
+import { createWebExplorer } from "@/agents/web-explorer";
+import { runAgent } from "@/agents/runner";
 import {
   findTopicBySlug,
   findSourceStructure,
@@ -9,7 +11,7 @@ import {
 import { generateSlug } from "@/lib/types/learning";
 import type { SourceToc, PageCalibration } from "@/lib/types/learning";
 
-export const maxDuration = 120;
+export const maxDuration = 180;
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
@@ -55,9 +57,13 @@ export async function POST(request: NextRequest) {
 
   // Branch by source type
   if (topicRecord.sourceType === "url") {
-    // URL-based discovery using Gemini urlContext
+    // URL-based discovery using WebExplorer agent
     try {
-      const agentResult = await discoverURLStructure(topicRecord.sourcePath);
+      const explorer = createWebExplorer(topicRecord.id, topicRecord.sourcePath);
+      const agentResult = await runAgent(
+        explorer,
+        `Explore ${topicRecord.sourcePath} and build a comprehensive site map. Read the main page, follow relevant links, and cache all content.`
+      );
 
       let parsed: Record<string, unknown>;
       try {
@@ -80,6 +86,7 @@ export async function POST(request: NextRequest) {
           title: ch.title as string,
           pageStart: (ch.pageStart as number) ?? 1,
           pageEnd: (ch.pageEnd as number) ?? 1,
+          sourceUrl: ch.sourceUrl as string | undefined,
           sections: ((ch.sections as Array<Record<string, unknown>>) ?? []).map((s) => ({
             id: s.id as string,
             title: s.title as string,
@@ -93,7 +100,7 @@ export async function POST(request: NextRequest) {
       const calibration: PageCalibration = {
         pdfPageOffset: 0,
         anchors: [],
-        totalPdfPages: 1,
+        totalPdfPages: sourceToc.totalPages ?? 1,
       };
 
       await saveSourceStructure(topicRecord.id, sourceToc, calibration);

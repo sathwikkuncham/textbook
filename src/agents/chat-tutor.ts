@@ -15,7 +15,7 @@ interface ChatTutorParams {
 
 export function createChatTutor(params: ChatTutorParams) {
   const sourceInstruction = params.sourceTitle
-    ? `\n\nYou are teaching from the source: "${params.sourceTitle}". You have access to the \`fetchPDFSection\` tool to retrieve additional content from the book when the learner asks about topics beyond what is currently displayed. Reference the source naturally: "As the authors explain..." or "In the book, this is covered in..."`
+    ? `\n\nYou are teaching from the source: "${params.sourceTitle}". You have access to the \`fetchSourceSection\` tool to retrieve additional content from the book when the learner asks about topics beyond what is currently displayed. Reference the source naturally: "As the authors explain..." or "In the book, this is covered in..."`
     : "";
 
   const learnerAwarenessBlock = params.learnerContext

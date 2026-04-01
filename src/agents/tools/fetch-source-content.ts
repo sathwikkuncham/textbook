@@ -1,11 +1,7 @@
-/**
- * @deprecated Use createFetchSourceContentTool from ./fetch-source-content.ts instead.
- * This tool is PDF-only. The unified tool handles both PDFs and URLs.
- */
 import { FunctionTool } from "@google/adk";
 import { z } from "zod";
 import { supabase, STORAGE_BUCKET } from "@/lib/supabase/client";
-import { extractPDFSection } from "@/lib/pdf/extractor";
+import { extractPDFSection, extractURLSection } from "@/lib/pdf/extractor";
 import {
   findSourceStructure,
   findCachedPageText,
@@ -13,14 +9,20 @@ import {
   findTopicBySlug,
 } from "@/lib/db/repository";
 
-export function createFetchPDFSectionTool(
+/**
+ * Unified source content tool — works for both PDFs and URLs.
+ * Agents call fetchSourceSection("section title") without knowing the source type.
+ */
+export function createFetchSourceContentTool(
   topicId: number,
-  topicSlug: string
+  topicSlug: string,
+  sourceType: string,
+  sourcePath: string
 ) {
   return new FunctionTool({
-    name: "fetchPDFSection",
+    name: "fetchSourceSection",
     description:
-      "Fetches text content from a specific section of the source PDF. Use this to reference the original source material when teaching.",
+      "Fetches text content from a specific section of the source material (PDF, URL, or documentation). Use this to reference the original source when teaching.",
     parameters: z.object({
       sectionTitle: z
         .string()
@@ -28,11 +30,6 @@ export function createFetchPDFSectionTool(
     }),
     execute: async ({ sectionTitle }) => {
       try {
-        const topicRecord = await findTopicBySlug(topicSlug);
-        if (!topicRecord?.sourcePath) {
-          return { error: "No source file found" };
-        }
-
         const sourceStructure = await findSourceStructure(topicId);
         if (!sourceStructure) {
           return { error: "Source structure not found" };
@@ -41,11 +38,12 @@ export function createFetchPDFSectionTool(
         const toc = sourceStructure.rawToc;
         const calibration = sourceStructure.calibration;
 
-        // Find matching section
+        // Find matching section in TOC
         let sectionKey = "";
         let resolvedTitle = sectionTitle;
         let pageStart: number | null = null;
         let pageEnd: number | null = null;
+        let chapterSourceUrl: string | undefined;
         const searchTerm = sectionTitle.toLowerCase();
 
         for (const chapter of toc.chapters) {
@@ -54,6 +52,7 @@ export function createFetchPDFSectionTool(
             resolvedTitle = chapter.title;
             pageStart = chapter.pageStart;
             pageEnd = chapter.pageEnd;
+            chapterSourceUrl = chapter.sourceUrl;
             break;
           }
           for (const section of chapter.sections) {
@@ -62,6 +61,7 @@ export function createFetchPDFSectionTool(
               resolvedTitle = section.title;
               pageStart = section.pageStart;
               pageEnd = section.pageEnd;
+              chapterSourceUrl = chapter.sourceUrl;
               break;
             }
           }
@@ -69,45 +69,53 @@ export function createFetchPDFSectionTool(
         }
 
         if (!sectionKey) {
-          const available = toc.chapters
-            .map((ch) => ch.title)
-            .join(", ");
+          const available = toc.chapters.map((ch) => ch.title).join(", ");
           return {
             error: `Section "${sectionTitle}" not found. Available: ${available}`,
           };
         }
 
-        // Check cache
+        // Check cache first
         const cached = await findCachedPageText(topicId, sectionKey);
         if (cached) {
           return { text: cached, source: sectionKey, cached: true };
         }
 
-        // Download PDF and extract section via Gemini
-        const { data: fileData } = await supabase.storage
-          .from(STORAGE_BUCKET)
-          .download(topicRecord.sourcePath);
+        // Extract based on source type
+        let text: string;
 
-        if (!fileData) {
-          return { error: "Failed to download PDF" };
+        if (sourceType === "pdf") {
+          // PDF: download from Supabase Storage, extract via Gemini PDF parser
+          const topicRecord = await findTopicBySlug(topicSlug);
+          if (!topicRecord?.sourcePath) {
+            return { error: "No source file found" };
+          }
+
+          const { data: fileData } = await supabase.storage
+            .from(STORAGE_BUCKET)
+            .download(topicRecord.sourcePath);
+
+          if (!fileData) {
+            return { error: "Failed to download source file" };
+          }
+
+          const buffer = Buffer.from(await fileData.arrayBuffer());
+          const pageHint =
+            pageStart !== null && pageEnd !== null
+              ? {
+                  start: pageStart + calibration.pdfPageOffset,
+                  end: pageEnd + calibration.pdfPageOffset,
+                }
+              : undefined;
+
+          text = await extractPDFSection(buffer, resolvedTitle, pageHint);
+        } else {
+          // URL: read via Gemini urlContext
+          const urlToFetch = chapterSourceUrl || sourcePath;
+          text = await extractURLSection(urlToFetch, resolvedTitle);
         }
 
-        const buffer = Buffer.from(await fileData.arrayBuffer());
-        const pageHint =
-          pageStart !== null && pageEnd !== null
-            ? {
-                start: pageStart + calibration.pdfPageOffset,
-                end: pageEnd + calibration.pdfPageOffset,
-              }
-            : undefined;
-
-        const text = await extractPDFSection(
-          buffer,
-          resolvedTitle,
-          pageHint
-        );
-
-        // Cache
+        // Cache the result
         await cachePageText(
           topicId,
           sectionKey,

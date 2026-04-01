@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase, STORAGE_BUCKET } from "@/lib/supabase/client";
-import { extractPDFSection } from "@/lib/pdf/extractor";
+import { extractPDFSection, extractURLSection } from "@/lib/pdf/extractor";
 import {
   findTopicBySlug,
   findSourceStructure,
@@ -100,35 +100,40 @@ export async function POST(request: NextRequest) {
     });
   }
 
-  // Download PDF from Supabase
-  const { data: fileData, error: downloadError } = await supabase.storage
-    .from(STORAGE_BUCKET)
-    .download(topicRecord.sourcePath);
-
-  if (downloadError || !fileData) {
-    return NextResponse.json(
-      { error: `Download failed: ${downloadError?.message}` },
-      { status: 500 }
-    );
-  }
-
-  const buffer = Buffer.from(await fileData.arrayBuffer());
-
   try {
-    // Use Gemini to extract the section content directly from the PDF
-    const pageHint =
-      pageStart !== null && pageEnd !== null
-        ? {
-            start: pageStart + calibration.pdfPageOffset,
-            end: pageEnd + calibration.pdfPageOffset,
-          }
-        : undefined;
+    let extractedText: string;
 
-    const extractedText = await extractPDFSection(
-      buffer,
-      resolvedTitle,
-      pageHint
-    );
+    if (topicRecord.sourceType === "url") {
+      // URL: find the chapter's sourceUrl, extract section via Gemini urlContext
+      const matchedChapter = toc.chapters.find((ch) =>
+        ch.id === resolvedSectionKey || ch.sections.some((s) => s.id === resolvedSectionKey)
+      );
+      const urlToFetch = matchedChapter?.sourceUrl || topicRecord.sourcePath;
+      extractedText = await extractURLSection(urlToFetch, resolvedTitle);
+    } else {
+      // PDF: download from Supabase, extract via Gemini PDF parser
+      const { data: fileData, error: downloadError } = await supabase.storage
+        .from(STORAGE_BUCKET)
+        .download(topicRecord.sourcePath);
+
+      if (downloadError || !fileData) {
+        return NextResponse.json(
+          { error: `Download failed: ${downloadError?.message}` },
+          { status: 500 }
+        );
+      }
+
+      const buffer = Buffer.from(await fileData.arrayBuffer());
+      const pageHint =
+        pageStart !== null && pageEnd !== null
+          ? {
+              start: pageStart + calibration.pdfPageOffset,
+              end: pageEnd + calibration.pdfPageOffset,
+            }
+          : undefined;
+
+      extractedText = await extractPDFSection(buffer, resolvedTitle, pageHint);
+    }
 
     // Cache for future use
     await cachePageText(

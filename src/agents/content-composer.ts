@@ -160,9 +160,9 @@ export function createContentComposer(
     ? `
 ## Source Material — CRITICAL
 
-You are teaching from: "${options.sourceTitle}". You have the \`fetchPDFSection\` tool.
+You are teaching from: "${options.sourceTitle}". You have the \`fetchSourceSection\` tool.
 
-MANDATORY: You MUST call fetchPDFSection to read the relevant chapter/section BEFORE writing. Do NOT write from memory or research alone — the source text is the primary authority.
+MANDATORY: You MUST call fetchSourceSection to read the relevant chapter/section BEFORE writing. Do NOT write from memory or research alone — the source text is the primary authority.
 
 Source-grounded teaching rules:
 - Follow the source's SPECIFIC progression of arguments, not a generic version

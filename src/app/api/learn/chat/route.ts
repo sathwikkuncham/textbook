@@ -13,7 +13,7 @@ import {
   findLearnerInsights,
 } from "@/lib/db/repository";
 import { createChatTutor } from "@/agents/chat-tutor";
-import { createFetchPDFSectionTool } from "@/agents/tools/fetch-pdf-section";
+import { createFetchSourceContentTool } from "@/agents/tools/fetch-source-content";
 import { createFetchPreviousSubtopicTool } from "@/agents/tools/fetch-previous-subtopic";
 import { streamAgentText } from "@/agents/runner";
 import { generateSlug } from "@/lib/types/learning";
@@ -118,7 +118,7 @@ export async function POST(request: NextRequest) {
     const structure = await findSourceStructure(topicRecord.id);
     if (structure) {
       sourceTitle = structure.rawToc.title;
-      tools = [createFetchPDFSectionTool(topicRecord.id, topicSlug)];
+      tools = [createFetchSourceContentTool(topicRecord.id, topicSlug, topicRecord.sourceType, topicRecord.sourcePath ?? "")];
     }
   }
 
