@@ -5,6 +5,7 @@ import {
   createTopic,
   findResearchByTopicId,
   saveResearch,
+  updateLearnerIntent,
 } from "@/lib/db/repository";
 import { createResearchPipeline } from "@/agents/pipelines/research-pipeline";
 import { runAgent } from "@/agents/runner";
@@ -14,7 +15,7 @@ export const maxDuration = 120;
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
-  const { topic, level, goal, timeCommitment } = body;
+  const { topic, level, goal, timeCommitment, learnerIntent } = body;
 
   if (!topic || !level || !goal) {
     return NextResponse.json(
@@ -37,6 +38,11 @@ export async function POST(request: NextRequest) {
       timeCommitment: timeCommitment ?? "standard",
       category,
     });
+  }
+
+  // Save learner intent if provided
+  if (learnerIntent) {
+    await updateLearnerIntent(topicRecord.id, learnerIntent);
   }
 
   const cached = await findResearchByTopicId(topicRecord.id);

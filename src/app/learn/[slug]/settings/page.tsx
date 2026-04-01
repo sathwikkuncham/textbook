@@ -21,6 +21,13 @@ interface TopicSettings {
   timeCommitment: string;
   sourceType: string;
   totalModules: number;
+  learnerIntent?: {
+    purpose?: string;
+    priorKnowledge?: string;
+    desiredDepth?: string;
+    timeAvailable?: string;
+    focusAreas?: string[];
+  } | null;
 }
 
 export default function SettingsPage() {
@@ -54,6 +61,7 @@ export default function SettingsPage() {
             timeCommitment: topic.timeCommitment ?? "standard",
             sourceType: topic.sourceType ?? "topic_only",
             totalModules: topic.totalModules,
+            learnerIntent: topic.learnerIntent ?? null,
           });
           setLevel(topic.level);
           setGoal(topic.goal);
@@ -172,6 +180,35 @@ export default function SettingsPage() {
 
       <main className="mx-auto max-w-2xl px-4 py-6 md:px-6 md:py-8">
         <div className="space-y-6">
+          {/* Interview Profile (if exists) */}
+          {original.learnerIntent && (
+            <section className="rounded-lg border border-primary/20 bg-primary/5 p-6">
+              <h2 className="mb-4 font-serif text-base font-semibold text-foreground">
+                Your Learning Profile
+              </h2>
+              <div className="space-y-2 text-sm">
+                {original.learnerIntent.purpose && (
+                  <p><span className="font-medium text-muted-foreground">Purpose:</span> {original.learnerIntent.purpose}</p>
+                )}
+                {original.learnerIntent.priorKnowledge && (
+                  <p><span className="font-medium text-muted-foreground">Background:</span> {original.learnerIntent.priorKnowledge}</p>
+                )}
+                {original.learnerIntent.desiredDepth && (
+                  <p><span className="font-medium text-muted-foreground">Depth:</span> {original.learnerIntent.desiredDepth}</p>
+                )}
+                {original.learnerIntent.timeAvailable && (
+                  <p><span className="font-medium text-muted-foreground">Time:</span> {original.learnerIntent.timeAvailable}</p>
+                )}
+                {original.learnerIntent.focusAreas && original.learnerIntent.focusAreas.length > 0 && (
+                  <p><span className="font-medium text-muted-foreground">Focus:</span> {original.learnerIntent.focusAreas.join(", ")}</p>
+                )}
+              </div>
+              <p className="mt-3 text-xs text-muted-foreground">
+                This profile was captured during your intake interview and shapes your curriculum and content.
+              </p>
+            </section>
+          )}
+
           {/* Learning Preferences */}
           <section className="rounded-lg border border-border bg-card p-6">
             <h2 className="mb-4 font-serif text-base font-semibold text-foreground">

@@ -14,7 +14,14 @@ export interface ContentSection {
   text: string;
 }
 
-const SKIP_SECTIONS = ["Visualizing It"];
+/** Skip sections that are primarily visual (diagrams/tables with little readable text) */
+function shouldSkipForAudio(rawBody: string): boolean {
+  const hasMermaid = /~~~mermaid|```mermaid/i.test(rawBody);
+  const hasTable = /\|.*\|.*\|/m.test(rawBody);
+  if (!hasMermaid && !hasTable) return false;
+  const strippedText = stripMarkdown(rawBody);
+  return strippedText.length < 50;
+}
 
 function stripMarkdown(text: string): string {
   let t = text;
@@ -72,7 +79,7 @@ export function extractSections(markdown: string): ContentSection[] {
     const end = i + 1 < splits.length ? splits[i + 1].matchStart : markdown.length;
     const rawBody = markdown.slice(start, end).trim();
 
-    if (SKIP_SECTIONS.some((s) => title.includes(s))) continue;
+    if (shouldSkipForAudio(rawBody)) continue;
 
     const text = stripMarkdown(rawBody);
     if (text.length > 10) {

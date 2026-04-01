@@ -29,6 +29,7 @@ export const topics = pgTable(
     category: varchar("category", { length: 100 }).notNull().default("general"),
     sourceType: varchar("source_type", { length: 20 }).notNull().default("topic_only"),
     sourcePath: text("source_path"),
+    learnerIntent: jsonb("learner_intent"),
     createdAt: timestamp("created_at").notNull().defaultNow(),
     lastSession: timestamp("last_session").notNull().defaultNow(),
   },

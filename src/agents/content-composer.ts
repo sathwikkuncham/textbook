@@ -58,53 +58,18 @@ import type { BaseTool } from "@google/adk";
 
 type SubtopicPosition = "first" | "middle" | "last";
 
-function getSectionTemplate(position: SubtopicPosition, isFirstModule: boolean = true): string {
-  const section1First = isFirstModule
-    ? `### 1. Why This Matters
-2-3 narrative paragraphs. Hook the reader with a concrete, visceral scenario. Never start with a definition.`
-    : `### 1. Why This Matters
-2-3 narrative paragraphs. Bridge from the previous module's conclusion, then introduce why this new module's theme matters. Do NOT open with "Imagine you are..." — the learner is already invested in the topic. Instead, connect to what they already know and reveal what new dimension they are about to explore.`;
-
-  const section1 = {
-    first: section1First,
-    middle: `### 1. Connecting the Dots
-1-2 paragraphs that bridge from what the learner just covered. Reference the previous subtopic's key insight naturally. Then transition to why THIS subtopic matters next. Do NOT open with a standalone scenario like "Imagine you are..." — the learner is already engaged in the module's narrative arc.`,
-    last: `### 1. The Full Picture
-1-2 paragraphs that frame this final subtopic as the culmination of the module. Reference how the previous subtopics built toward this moment. Convey that after this, the learner will have complete understanding of the module's theme.`,
-  };
-
-  const section4 = {
-    first: `### 4. Real-World Analogy
-Concrete analogy from everyday life. State where it breaks down.`,
-    middle: `### 4. In Practice
-Show how this concept applies in a real-world setting. You may extend an analogy from a previous subtopic if it fits naturally, or introduce a new one. State any limitations.`,
-    last: `### 4. Bringing It Together
-Connect the concepts from all subtopics in this module through a single cohesive scenario or extended example. Show how they work together in practice. State any limitations.`,
-  };
-
-  return `CRITICAL: Every subtopic you write MUST contain exactly these 7 sections in this exact order. Do not skip, merge, or reorder any section:
-
-${section1[position]}
-
-### 2. Core Idea
-3-5 narrative paragraphs building the concept layer by layer from first principles.${position !== "first" ? " Build on previously established concepts — do NOT re-explain what was covered in earlier subtopics." : ""}
-
-### 3. Visualizing It
-Use one of these formats:
-- **Mermaid diagram** inside a fenced mermaid code block — for flows, hierarchies, relationships, state transitions, sequences
-- **Markdown table** — for comparisons, reference data, specifications
-Prefer top-down (TD) Mermaid layouts. Keep diagrams compact (max 8-10 nodes). Never use ASCII art. NEVER use HTML tags in Mermaid node labels — use short plain text only.
-
-${section4[position]}
-
-### 5. Concrete Example
-Fully worked example with specific numbers, step by step.${position !== "first" ? " Where natural, build on or extend examples from previous subtopics." : ""}
-
-### 6. Common Pitfalls
-2-3 misconceptions in narrative form. What people believe, why it seems reasonable, the correct understanding.
-
-### 7. Key Takeaway
-1-2 sentences. The ONE thing to remember.`;
+function getPositionGuidance(position: SubtopicPosition, isFirstModule: boolean): string {
+  if (position === "first" && isFirstModule) {
+    return `This is the OPENING subtopic of the first module. The learner is encountering this topic for the first time. Open with a motivating scenario, question, or hook that draws them in and makes them care about what follows.`;
+  }
+  if (position === "first" && !isFirstModule) {
+    return `This is the OPENING subtopic of a new module, but the learner has completed earlier modules. Open by bridging from what they already know — connect this new module's theme to what was established before. Do NOT start as if the learner is encountering the topic for the first time.`;
+  }
+  if (position === "last") {
+    return `This is the FINAL subtopic of this module. Open by framing this as the culmination — reference how the previous subtopics built toward this moment. The ending should synthesize the module's arc.`;
+  }
+  // middle
+  return `This subtopic BUILDS on what the learner just covered. Open by connecting to the previous subtopic's key insight. Do NOT open with a standalone scenario — the learner is already engaged in the narrative.`;
 }
 
 function getTeachingApproachGuidance(approach: string): string {
@@ -114,25 +79,25 @@ function getTeachingApproachGuidance(approach: string): string {
 - Start from the most fundamental axiom or definition
 - Build each layer explicitly, showing WHY before WHAT
 - Make the reasoning chain visible: "Because X, therefore Y"
-- The Core Idea section should feel like constructing a proof`;
+- The core explanation should feel like constructing a proof`;
     case "analogy-driven":
       return `Use an "analogy-driven" approach:
-- Lead section 1 with a powerful analogy that grounds the entire subtopic
-- Thread the analogy through multiple sections
+- Lead with a powerful analogy that grounds the entire subtopic
+- Thread the analogy through the explanation
 - Use the analogy to make abstract concepts tangible
-- The Core Idea should reference the analogy while building precise understanding`;
+- Build precise understanding ON TOP of the analogy`;
     case "example-first":
       return `Use an "example-first" approach:
-- Open section 1 with a specific, concrete example or scenario BEFORE explaining the theory
+- Open with a specific, concrete example or scenario BEFORE explaining the theory
 - Let the example create curiosity: "Here is what happens... but WHY?"
-- The Core Idea should then explain the theory that makes the example make sense
+- Then explain the theory that makes the example make sense
 - Work from specific to general`;
     case "visual":
       return `Use a "visual" approach:
-- Make the Visualizing It section (section 3) the centerpiece
-- Reference the diagram or table in surrounding sections
+- Make a diagram or table the centerpiece of the explanation
+- Reference the visual in surrounding sections
 - Use spatial language: "as you can see in the diagram above..."
-- The Core Idea should build toward the visualization`;
+- Build the explanation toward and around the visualization`;
     default:
       return "";
   }
@@ -145,10 +110,9 @@ function getContinuityInstruction(position: SubtopicPosition, isFirstModule: boo
 
 You have access to the **fetchPreviousSubtopic** tool which can read subtopics from PREVIOUS modules.
 
-This is the FIRST subtopic of a new module, but the learner has completed earlier modules. You MUST:
-- Read the KEY TAKEAWAY (last section) of the final subtopic from the previous module
-- Open your "Why This Matters" section by bridging from that foundation — connect this new module's theme to what was established before
-- Example: "In the previous module, we established that [key insight]. Now we turn to a fundamentally different question: [new module's theme]..."
+This is the first subtopic of a new module, but the learner has completed earlier modules. You MUST:
+- Read the final subtopic from the previous module to understand where the learner's knowledge sits
+- Bridge from that foundation in your opening
 - Do NOT start as if the learner is encountering this topic for the first time`
     : "";
 
@@ -160,12 +124,11 @@ This is the FIRST subtopic of a new module, but the learner has completed earlie
 
 You have access to the **fetchPreviousSubtopic** tool. It can read subtopics from the current module AND from previous modules. Use it to maintain narrative continuity:
 
-- Read at minimum the immediately preceding subtopic to understand where the learner's knowledge currently sits
+- Read at minimum the immediately preceding subtopic
 - Reference specific concepts, analogies, or examples from earlier subtopics where it strengthens your explanation
 - Extend or build on previous analogies when they naturally apply
-- Use connecting language: "Now that we understand X...", "Building on the staging pipeline from the previous section..."
 - Do NOT re-explain concepts the learner has already covered — reference them, don't re-teach them
-- You CAN reference concepts from previous modules when relevant: "Recall from our reliability discussion in Module 1..."
+- You CAN reference concepts from previous modules when relevant
 
 You decide which previous subtopics to read. At minimum, read the most recent one.${position === "last" ? " As the final subtopic, read ALL previous subtopics in this module to synthesize." : ""}`;
 }
@@ -189,6 +152,9 @@ export function createContentComposer(
   }
 ) {
   const position: SubtopicPosition = options?.position ?? "first";
+  const isFirstModule = (options?.moduleId ?? 1) === 1;
+
+  const positionGuidance = getPositionGuidance(position, isFirstModule);
 
   const sourceInstruction = options?.sourceTitle
     ? `
@@ -200,21 +166,18 @@ MANDATORY: You MUST call fetchPDFSection to read the relevant chapter/section BE
 
 Source-grounded teaching rules:
 - Follow the source's SPECIFIC progression of arguments, not a generic version
-- Use the source's OWN examples. If Kleppmann uses Twitter's fan-out, YOU use Twitter's fan-out with the same numbers
-- Preserve the author's terminology exactly: if the book says "impedance mismatch," you say "impedance mismatch"
-- Include the author's specific comparisons (e.g., MongoDB vs CouchDB vs RethinkDB, not generic "NoSQL databases")
-- Reference specific numbers, benchmarks, and statistics from the source (e.g., "MTTF of 10-50 years", "10,000 disks means one failure per day")
-- Include the author's caveats and nuances — do not simplify away complexity for an intermediate learner
+- Use the source's OWN examples. If the book uses Twitter's fan-out, YOU use Twitter's fan-out with the same numbers
+- Preserve the author's terminology exactly
+- Include the author's specific comparisons, numbers, benchmarks, and statistics
+- Include the author's caveats and nuances — do not simplify away complexity
 - You may ADD analogies, visualizations, and worked examples ON TOP of the source, but never REPLACE the source's arguments with generic ones
-- Reference the source naturally: "As ${options.sourceTitle.split(",")[0]} explains..." or "The authors point out that..."
-- The 7-section format structures YOUR explanation of the source, it doesn't replace the source`
+- Reference the source naturally: "As ${options.sourceTitle.split(",")[0]} explains..." or "The authors point out that..."`
     : "";
 
   const teachingApproachBlock = options?.teachingApproach
     ? `\n## Teaching Approach\n\n${getTeachingApproachGuidance(options.teachingApproach)}`
     : "";
 
-  const isFirstModule = (options?.moduleId ?? 1) === 1;
   const continuityBlock = getContinuityInstruction(position, isFirstModule);
 
   const moduleMapBlock = options?.moduleSubtopicList
@@ -225,8 +188,6 @@ Source-grounded teaching rules:
     ? `\n## Learner Adaptation\n\nThis learner's profile:\n${options.learnerContext}\n\nAdapt your teaching: if they struggle with application, include MORE worked examples. If they prefer analogies, lead with stronger analogies. If their pace is slow, be more granular. If fast, be more concise on basics and deeper on edges.`
     : "";
 
-  const sectionTemplate = getSectionTemplate(position, isFirstModule);
-
   return new LlmAgent({
     name: "ContentComposer",
     model: MODELS.PRO,
@@ -235,7 +196,33 @@ Source-grounded teaching rules:
     tools: options?.tools,
     instruction: `You are a senior professor with 15 years of teaching experience. You write deeply engaging educational content that builds genuine understanding from first principles using the Feynman Technique.
 
-${sectionTemplate}
+## Content Structure
+
+Structure your explanation in whatever way teaches this concept most effectively for this learner. You decide the sections — there is no fixed template.
+
+Guidelines:
+- Use ### N. Title format for each section (numbered sequentially starting at 1)
+- Choose section titles that are SPECIFIC to this concept, not generic
+- Use 3-7 sections total — as many as the concept genuinely needs, no more
+- Every subtopic needs at minimum: a motivating opening, a core explanation, and a brief synthesis at the end
+
+When to include specific elements:
+- Include a visualization (mermaid diagram or table) ONLY if it genuinely clarifies what prose cannot
+- Include a worked example ONLY if the concept involves a process, calculation, or multi-step decision
+- Include an analogy ONLY if the concept is abstract enough that a concrete parallel genuinely helps
+- Address misconceptions ONLY if commonly held, real misconceptions exist for this concept
+- Include trade-off analysis when the concept involves choosing between approaches
+
+What NOT to do:
+- Do not force an analogy for a concept that is already concrete and graspable
+- Do not force a "Common Pitfalls" section if no genuine misconceptions exist
+- Do not pad sections to hit a word count
+- Do not repeat the same idea across multiple sections
+- Do not use generic section titles like "Why This Matters" or "Key Takeaway" every time — make titles specific to the concept
+
+## Position in Module
+
+${positionGuidance}
 
 IMPORTANT: Write narrative prose. Never open a section with bullet points. Target 1500-2500 words per subtopic — cover the material with depth, not superficially. Use active voice. Define jargon on first use. Include specific numbers, benchmarks, and statistics wherever the source or research provides them.
 CRITICAL FORMATTING RULE: NEVER use backtick characters in your output — not for inline code, not for code blocks. Instead, use **bold** for function names, variable names, and technical terms (e.g., **useState**, **useEffect**). For code blocks, use indented text or describe the code in prose. This is a strict requirement of the rendering system.
@@ -243,7 +230,7 @@ ${sourceInstruction}${teachingApproachBlock}${continuityBlock}${moduleMapBlock}$
 
 ## Reference Example
 
-Below is an example of the EXACT format, depth, and quality your output must match. Study it carefully and produce output of identical structure and caliber:
+Below is an example showing the quality, depth, and prose style your output should match. This example uses 7 sections because that concept warranted it — your content may use fewer or different sections depending on what the concept needs:
 
 ${FEW_SHOT_EXAMPLE}
 
@@ -254,13 +241,13 @@ Topic: ${topic}
 Module: ${moduleTitle}
 Learner level: ${level}
 
-Subtopics to cover (write each one with all 7 sections):
+Subtopic to cover:
 ${subtopicsList}
 
 Research context:
 ${researchContext}
 
-CRITICAL: Match the example's format, depth, and prose quality exactly. Every subtopic needs all 7 sections.`,
+Structure the content in whatever way teaches this concept most effectively. Match the example's prose quality and depth, not its specific section structure.`,
     outputKey: "module_content",
   });
 }

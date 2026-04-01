@@ -69,21 +69,7 @@ const markdownComponents = {
   ),
   h3: ({ children }: { children?: React.ReactNode }) => {
     const text = String(children);
-    const isSectionHeader =
-      /^\d+\.\s/.test(text) ||
-      [
-        "Why This Matters",
-        "Core Idea",
-        "Visualizing It",
-        "Real-World Analogy",
-        "Concrete Example",
-        "Common Pitfalls",
-        "Key Takeaway",
-        "Connecting the Dots",
-        "The Full Picture",
-        "In Practice",
-        "Bringing It Together",
-      ].some((s) => text.includes(s));
+    const isSectionHeader = /^\d+\.\s/.test(text);
 
     if (isSectionHeader) {
       return (

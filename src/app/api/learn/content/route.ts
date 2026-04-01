@@ -11,6 +11,7 @@ import {
   saveContentEvaluation,
   getContentEvaluations,
   findLearnerInsights,
+  findLearnerIntent,
 } from "@/lib/db/repository";
 import { createContentComposer } from "@/agents/content-composer";
 import { createContentEvaluator } from "@/agents/content-evaluator";
@@ -198,19 +199,32 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Fetch learner model for adaptive content (if available)
-    let learnerContext: string | undefined;
+    // Fetch learner model + intent for adaptive content
+    const contextParts: string[] = [];
+
+    // Learner intent from interview
+    const learnerIntent = await findLearnerIntent(topicRecord.id);
+    if (learnerIntent) {
+      const intent = learnerIntent as Record<string, unknown>;
+      if (intent.purpose) contextParts.push(`Purpose: ${intent.purpose}`);
+      if (intent.priorKnowledge) contextParts.push(`Prior knowledge: ${intent.priorKnowledge}`);
+      if (intent.desiredDepth) contextParts.push(`Desired depth: ${intent.desiredDepth}`);
+      const focusAreas = intent.focusAreas as string[] | undefined;
+      if (focusAreas?.length) contextParts.push(`Focus areas: ${focusAreas.join(", ")}`);
+    }
+
+    // Learner model from quiz/chat analysis
     const learnerInsights = await findLearnerInsights(topicRecord.id);
     if (learnerInsights) {
       const weakAreas = learnerInsights.weakAreas as string[];
       const style = learnerInsights.learningStyle as Record<string, unknown>;
-      learnerContext = [
-        weakAreas.length > 0 ? `Weak areas: ${weakAreas.join(", ")}` : null,
-        style?.preferredApproach ? `Preferred approach: ${style.preferredApproach}` : null,
-        style?.paceCategory ? `Pace: ${style.paceCategory}` : null,
-        style?.helpSeekingPattern ? `Help-seeking: ${style.helpSeekingPattern}` : null,
-      ].filter(Boolean).join("\n");
+      if (weakAreas.length > 0) contextParts.push(`Weak areas: ${weakAreas.join(", ")}`);
+      if (style?.preferredApproach) contextParts.push(`Preferred approach: ${style.preferredApproach}`);
+      if (style?.paceCategory) contextParts.push(`Pace: ${style.paceCategory}`);
+      if (style?.helpSeekingPattern) contextParts.push(`Help-seeking: ${style.helpSeekingPattern}`);
     }
+
+    const learnerContext = contextParts.length > 0 ? contextParts.join("\n") : undefined;
 
     const contentComposer = createContentComposer(
       topic,
@@ -238,8 +252,8 @@ export async function POST(request: NextRequest) {
     );
 
     const contentMessage = position === "first"
-      ? `Write comprehensive, in-depth teaching content for this ONE subtopic only. Give it a full page of depth — this is the only subtopic the learner will read right now.\n\nModule: ${module.title}\nSubtopic: ${subtopicDesc}\n\nWrite all 7 sections with full depth. Target 1500-2000 words total.`
-      : `Write comprehensive, in-depth teaching content for this ONE subtopic only. Build naturally on what the learner has already covered in this module.\n\nModule: ${module.title}\nSubtopic: ${subtopicDesc}\n\nUse the fetchPreviousSubtopic tool to read previous subtopics for context and continuity. Write all 7 sections with full depth. Target 1500-2000 words total.`;
+      ? `Write comprehensive, in-depth teaching content for this ONE subtopic only. Give it a full page of depth — this is the only subtopic the learner will read right now.\n\nModule: ${module.title}\nSubtopic: ${subtopicDesc}\n\nStructure the content in whatever way teaches this concept most effectively. Use ### N. Title format for sections.`
+      : `Write comprehensive, in-depth teaching content for this ONE subtopic only. Build naturally on what the learner has already covered in this module.\n\nModule: ${module.title}\nSubtopic: ${subtopicDesc}\n\nUse the fetchPreviousSubtopic tool to read previous subtopics for context and continuity. Structure the content in whatever way teaches this concept most effectively. Use ### N. Title format for sections.`;
 
     const feedbackSuffix = feedback
       ? `\n\nIMPORTANT — The learner requested this content be regenerated with this feedback: "${feedback}". Address their concerns in the new version.`

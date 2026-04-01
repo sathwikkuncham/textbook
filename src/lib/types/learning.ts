@@ -61,6 +61,16 @@ export interface ResearchCache {
   applications: ResearchApplications;
 }
 
+export interface LearnerIntentProfile {
+  sourceType: string;
+  purpose: string;
+  priorKnowledge: string;
+  desiredDepth: string;
+  timeAvailable: string;
+  focusAreas: string[];
+  rawTranscript: Array<{ role: "user" | "assistant"; content: string }>;
+}
+
 export interface Subtopic {
   id: string;
   title: string;

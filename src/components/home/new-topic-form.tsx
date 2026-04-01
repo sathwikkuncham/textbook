@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import {
   Play,
@@ -9,18 +9,14 @@ import {
   Link,
   FileText,
   X,
+  Send,
+  Check,
+  RotateCcw,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Separator } from "@/components/ui/separator";
 import { generateSlug } from "@/lib/types/learning";
-import type { SourceType } from "@/lib/types/learning";
+import type { SourceType, LearnerIntentProfile } from "@/lib/types/learning";
+import { useInterview } from "@/hooks/use-interview";
 
 const SOURCE_TABS: Array<{
   value: SourceType;
@@ -35,31 +31,37 @@ const SOURCE_TABS: Array<{
 export function NewTopicForm() {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const [topic, setTopic] = useState("");
-  const [level, setLevel] = useState("intermediate");
-  const [goal, setGoal] = useState("general understanding");
-  const [timeCommitment, setTimeCommitment] = useState("standard");
   const [sourceType, setSourceType] = useState<SourceType>("topic_only");
   const [sourceFile, setSourceFile] = useState<File | null>(null);
   const [sourceUrl, setSourceUrl] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [phase, setPhase] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [inputValue, setInputValue] = useState("");
+  const [isPipelineRunning, setIsPipelineRunning] = useState(false);
+  const [pipelinePhase, setPipelinePhase] = useState<string | null>(null);
+  const [formError, setFormError] = useState<string | null>(null);
+
+  const interview = useInterview();
+
+  // Auto-scroll messages
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [interview.messages.length]);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       if (file.type !== "application/pdf") {
-        setError("Only PDF files are supported");
+        setFormError("Only PDF files are supported");
         return;
       }
       if (file.size > 50 * 1024 * 1024) {
-        setError("File must be under 50MB");
+        setFormError("File must be under 50MB");
         return;
       }
       setSourceFile(file);
-      setError(null);
+      setFormError(null);
       if (!topic.trim()) {
         const name = file.name.replace(/\.pdf$/i, "").replace(/[-_]/g, " ");
         setTopic(name);
@@ -67,31 +69,61 @@ export function NewTopicForm() {
     }
   };
 
-  const handleStart = async () => {
-    if (!topic.trim() || isLoading) return;
-
+  const handleStartInterview = () => {
+    if (!topic.trim()) return;
     if (sourceType === "pdf" && !sourceFile) {
-      setError("Please select a PDF file");
+      setFormError("Please select a PDF file");
       return;
     }
     if (sourceType === "url" && !sourceUrl.trim()) {
-      setError("Please enter a URL");
+      setFormError("Please enter a URL");
       return;
     }
 
-    setIsLoading(true);
-    setError(null);
+    const sourceMeta =
+      sourceType === "pdf" && sourceFile
+        ? { type: "pdf", name: sourceFile.name }
+        : sourceType === "url" && sourceUrl.trim()
+          ? { type: "url", url: sourceUrl.trim() }
+          : undefined;
+
+    interview.sendMessage(
+      `I want to learn about: ${topic.trim()}${sourceType === "pdf" ? ` (from a PDF: ${sourceFile?.name})` : sourceType === "url" ? ` (from URL: ${sourceUrl.trim()})` : ""}`,
+      sourceMeta
+    );
+  };
+
+  const handleSendMessage = () => {
+    const trimmed = inputValue.trim();
+    if (!trimmed || interview.isLoading) return;
+    interview.sendMessage(trimmed);
+    setInputValue("");
+  };
+
+  const deriveLevel = (profile: LearnerIntentProfile): string => {
+    const depth = (profile.desiredDepth ?? "").toLowerCase();
+    const prior = (profile.priorKnowledge ?? "").toLowerCase();
+    if (depth.includes("overview") || prior.includes("none") || prior.includes("beginner")) return "beginner";
+    if (depth.includes("deep") || depth.includes("exhaust") || depth.includes("expert")) return "advanced";
+    return "intermediate";
+  };
+
+  const handleConfirmAndStart = async () => {
+    if (!interview.profile || isPipelineRunning) return;
+
+    setIsPipelineRunning(true);
+    setFormError(null);
+    const derivedLevel = deriveLevel(interview.profile);
 
     try {
       if (sourceType === "pdf" && sourceFile) {
-        // Source-based flow: upload → discover → scope review
-        setPhase("Uploading PDF...");
+        setPipelinePhase("Uploading PDF...");
         const formData = new FormData();
         formData.append("file", sourceFile);
         formData.append("topic", topic.trim());
-        formData.append("level", level);
-        formData.append("goal", goal);
-        formData.append("timeCommitment", timeCommitment);
+        formData.append("level", derivedLevel);
+        formData.append("goal", interview.profile.purpose || "general understanding");
+        formData.append("timeCommitment", "standard");
         formData.append("sourceType", "pdf");
 
         const uploadRes = await fetch("/api/learn/source/upload", {
@@ -101,7 +133,17 @@ export function NewTopicForm() {
         const uploadData = await uploadRes.json();
         if (!uploadData.success) throw new Error(uploadData.error);
 
-        setPhase("Analyzing document structure...");
+        // Save learner intent to the topic record
+        await fetch("/api/learn/interview", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            topicId: uploadData.topicId,
+            profile: interview.profile,
+          }),
+        });
+
+        setPipelinePhase("Analyzing document structure...");
         const discoverRes = await fetch("/api/learn/source/discover", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -113,67 +155,69 @@ export function NewTopicForm() {
         const slug = generateSlug(topic.trim());
         router.push(`/learn/${slug}/scope`);
       } else if (sourceType === "url") {
-        // URL-based flow: create topic → set URL source → discover → scope review
-        setPhase("Setting up topic...");
+        setPipelinePhase("Setting up topic...");
         const researchRes = await fetch("/api/learn/research", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             topic: topic.trim(),
-            level,
-            goal,
-            timeCommitment,
+            level: derivedLevel,
+            goal: interview.profile.purpose || "general understanding",
+            timeCommitment: "standard",
+            learnerIntent: interview.profile,
           }),
         });
         if (!researchRes.ok) throw new Error("Failed to create topic");
+        const researchData = await researchRes.json();
+        const derivedTopic = researchData.topic ?? topic.trim();
+        const derivedSlug = researchData.topicSlug;
 
         await fetch("/api/learn/source/set-source", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            topic: topic.trim(),
+            topic: derivedTopic,
             sourceType: "url",
             sourcePath: sourceUrl.trim(),
           }),
         });
 
-        setPhase("Reading URL content...");
+        setPipelinePhase("Reading URL content...");
         const discoverRes = await fetch("/api/learn/source/discover", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ topic: topic.trim() }),
+          body: JSON.stringify({ topic: derivedTopic, slug: derivedSlug }),
         });
         const discoverData = await discoverRes.json();
         if (!discoverData.success) throw new Error(discoverData.error);
 
-        const slug = generateSlug(topic.trim());
-        router.push(`/learn/${slug}/scope`);
+        router.push(`/learn/${derivedSlug}/scope`);
       } else {
-        // Topic-only flow: research → curriculum → learn
-        setPhase("Researching topic...");
+        setPipelinePhase("Researching topic...");
         const researchRes = await fetch("/api/learn/research", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             topic: topic.trim(),
-            level,
-            goal,
-            timeCommitment,
+            level: derivedLevel,
+            goal: interview.profile.purpose || "general understanding",
+            timeCommitment: "standard",
+            learnerIntent: interview.profile,
           }),
         });
         if (!researchRes.ok) throw new Error("Research failed");
         const researchData = await researchRes.json();
 
-        setPhase("Designing curriculum...");
+        setPipelinePhase("Designing curriculum...");
         const currRes = await fetch("/api/learn/curriculum", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             topic: topic.trim(),
             slug: researchData.topicSlug,
-            level,
-            goal,
-            timeCommitment,
+            level: derivedLevel,
+            goal: interview.profile.purpose || "general understanding",
+            timeCommitment: "standard",
           }),
         });
         const currData = await currRes.json();
@@ -182,201 +226,206 @@ export function NewTopicForm() {
         router.push(`/learn/${researchData.topicSlug}`);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong");
-      setIsLoading(false);
-      setPhase(null);
+      setFormError(err instanceof Error ? err.message : "Something went wrong");
+      setIsPipelineRunning(false);
+      setPipelinePhase(null);
     }
   };
 
-  return (
-    <div className="space-y-4">
-      <div>
-        <label className="mb-1.5 block text-sm text-muted-foreground">
-          What do you want to learn?
-        </label>
-        <input
-          type="text"
-          value={topic}
-          onChange={(e) => setTopic(e.target.value)}
-          onKeyDown={(e) =>
-            e.key === "Enter" && sourceType === "topic_only" && handleStart()
-          }
-          placeholder="e.g. Kubernetes, Machine Learning, C Programming..."
-          disabled={isLoading}
-          className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50"
-        />
-      </div>
-
-      <div>
-        <label className="mb-1.5 block text-sm text-muted-foreground">
-          Source Material
-        </label>
-        <div className="flex gap-1 rounded-md border border-border p-1">
-          {SOURCE_TABS.map((tab) => {
-            const Icon = tab.icon;
-            const isActive = sourceType === tab.value;
-            return (
-              <button
-                key={tab.value}
-                onClick={() => {
-                  setSourceType(tab.value);
-                  setError(null);
-                }}
-                disabled={isLoading}
-                className={`flex flex-1 items-center justify-center gap-1.5 rounded px-3 py-1.5 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 ${
-                  isActive
-                    ? "bg-primary text-primary-foreground"
-                    : "text-muted-foreground hover:bg-muted"
-                }`}
-              >
-                <Icon className="size-3.5" />
-                {tab.label}
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
-      {sourceType === "pdf" && (
+  // Phase: Initial input
+  if (interview.phase === "idle") {
+    return (
+      <div className="space-y-4">
         <div>
-          {sourceFile ? (
-            <div className="flex items-center gap-2 rounded-md border border-border bg-muted/50 px-3 py-2 overflow-hidden">
-              <Upload className="size-4 shrink-0 text-primary" />
-              <span className="min-w-0 flex-1 truncate text-sm text-foreground">
-                {sourceFile.name}
-              </span>
-              <span className="shrink-0 text-xs text-muted-foreground">
-                {(sourceFile.size / 1024 / 1024).toFixed(1)}MB
-              </span>
-              <button
-                onClick={() => {
-                  setSourceFile(null);
-                  if (fileInputRef.current) fileInputRef.current.value = "";
-                }}
-                className="rounded p-0.5 hover:bg-muted"
-              >
-                <X className="size-3.5 text-muted-foreground" />
-              </button>
-            </div>
-          ) : (
-            <button
-              onClick={() => fileInputRef.current?.click()}
-              disabled={isLoading}
-              className="flex w-full items-center justify-center gap-2 rounded-md border-2 border-dashed border-border py-6 text-sm text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground disabled:opacity-50"
-            >
-              <Upload className="size-5" />
-              Click to upload PDF (max 50MB)
-            </button>
-          )}
+          <label className="mb-1.5 block text-sm text-muted-foreground">
+            What do you want to learn?
+          </label>
           <input
-            ref={fileInputRef}
-            type="file"
-            accept=".pdf"
-            onChange={handleFileSelect}
-            className="hidden"
+            type="text"
+            value={topic}
+            onChange={(e) => setTopic(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleStartInterview()}
+            placeholder="e.g. Kubernetes, a research paper, DDIA textbook..."
+            className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
           />
         </div>
-      )}
 
-      {sourceType === "url" && (
         <div>
+          <label className="mb-1.5 block text-sm text-muted-foreground">
+            Source Material
+          </label>
+          <div className="flex gap-1 rounded-md border border-border p-1">
+            {SOURCE_TABS.map((tab) => {
+              const Icon = tab.icon;
+              const isActive = sourceType === tab.value;
+              return (
+                <button
+                  key={tab.value}
+                  onClick={() => {
+                    setSourceType(tab.value);
+                    setFormError(null);
+                  }}
+                  className={`flex flex-1 items-center justify-center gap-1.5 rounded px-3 py-1.5 text-xs font-medium transition-colors ${
+                    isActive
+                      ? "bg-primary text-primary-foreground"
+                      : "text-muted-foreground hover:bg-muted"
+                  }`}
+                >
+                  <Icon className="size-3.5" />
+                  {tab.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {sourceType === "pdf" && (
+          <div>
+            {sourceFile ? (
+              <div className="flex items-center gap-2 overflow-hidden rounded-md border border-border bg-muted/50 px-3 py-2">
+                <Upload className="size-4 shrink-0 text-primary" />
+                <span className="min-w-0 flex-1 truncate text-sm">{sourceFile.name}</span>
+                <span className="shrink-0 text-xs text-muted-foreground">
+                  {(sourceFile.size / 1024 / 1024).toFixed(1)}MB
+                </span>
+                <button onClick={() => { setSourceFile(null); if (fileInputRef.current) fileInputRef.current.value = ""; }} className="rounded p-0.5 hover:bg-muted">
+                  <X className="size-3.5 text-muted-foreground" />
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                className="flex w-full items-center justify-center gap-2 rounded-md border-2 border-dashed border-border py-6 text-sm text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
+              >
+                <Upload className="size-5" />
+                Click to upload PDF (max 50MB)
+              </button>
+            )}
+            <input ref={fileInputRef} type="file" accept=".pdf" onChange={handleFileSelect} className="hidden" />
+          </div>
+        )}
+
+        {sourceType === "url" && (
           <input
             type="url"
             value={sourceUrl}
             onChange={(e) => setSourceUrl(e.target.value)}
             placeholder="https://docs.example.com/guide"
-            disabled={isLoading}
-            className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50"
+            className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
           />
-        </div>
-      )}
-
-      <Separator />
-
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-        <div>
-          <label className="mb-1.5 block text-xs text-muted-foreground">
-            Level
-          </label>
-          <Select
-            value={level}
-            onValueChange={setLevel}
-            disabled={isLoading}
-          >
-            <SelectTrigger className="h-9 text-sm">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="beginner">Beginner</SelectItem>
-              <SelectItem value="intermediate">Intermediate</SelectItem>
-              <SelectItem value="advanced">Advanced</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div>
-          <label className="mb-1.5 block text-xs text-muted-foreground">
-            Goal
-          </label>
-          <Select value={goal} onValueChange={setGoal} disabled={isLoading}>
-            <SelectTrigger className="h-9 text-sm">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="general understanding">General</SelectItem>
-              <SelectItem value="professional development">
-                Professional
-              </SelectItem>
-              <SelectItem value="interview preparation">
-                Interview Prep
-              </SelectItem>
-              <SelectItem value="curiosity">Curiosity</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div>
-          <label className="mb-1.5 block text-xs text-muted-foreground">
-            Time
-          </label>
-          <Select
-            value={timeCommitment}
-            onValueChange={setTimeCommitment}
-            disabled={isLoading}
-          >
-            <SelectTrigger className="h-9 text-sm">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="quick">Quick (~30 min)</SelectItem>
-              <SelectItem value="standard">Standard (2-4 hr)</SelectItem>
-              <SelectItem value="deep">Deep Dive (8+ hr)</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
-
-      {error && <p className="text-sm text-destructive">{error}</p>}
-
-      <Button
-        onClick={handleStart}
-        disabled={!topic.trim() || isLoading}
-        className="w-full gap-2"
-      >
-        {isLoading ? (
-          <>
-            <Loader2 className="size-4 animate-spin" />
-            {phase}
-          </>
-        ) : (
-          <>
-            <Play className="size-4" />
-            {sourceType === "topic_only"
-              ? "Start Learning"
-              : "Analyze & Review Structure"}
-          </>
         )}
-      </Button>
-    </div>
-  );
+
+        {formError && <p className="text-sm text-destructive">{formError}</p>}
+
+        <Button onClick={handleStartInterview} disabled={!topic.trim()} className="w-full gap-2">
+          <Play className="size-4" />
+          Continue
+        </Button>
+      </div>
+    );
+  }
+
+  // Phase: Interview conversation
+  if (interview.phase === "active" || interview.phase === "confirming") {
+    return (
+      <div className="flex flex-col" style={{ maxHeight: "60vh" }}>
+        {/* Messages */}
+        <div className="flex-1 space-y-3 overflow-y-auto px-1 py-2" style={{ minHeight: 120, maxHeight: "45vh" }}>
+          {interview.messages.map((msg) => (
+            <div
+              key={msg.id}
+              className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
+            >
+              <div
+                className={`max-w-[85%] rounded-lg px-3 py-2 text-sm ${
+                  msg.role === "user"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-muted text-foreground"
+                }`}
+              >
+                {msg.content}
+              </div>
+            </div>
+          ))}
+          {interview.isLoading && (
+            <div className="flex justify-start">
+              <div className="rounded-lg bg-muted px-3 py-2">
+                <Loader2 className="size-4 animate-spin text-muted-foreground" />
+              </div>
+            </div>
+          )}
+          <div ref={messagesEndRef} />
+        </div>
+
+        {/* Profile confirmation card */}
+        {interview.phase === "confirming" && interview.profile && (
+          <div className="mt-3 rounded-lg border border-primary/20 bg-primary/5 p-3">
+            <p className="mb-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+              Your Learning Profile
+            </p>
+            <div className="space-y-1 text-sm">
+              {interview.profile.purpose && (
+                <p><span className="text-muted-foreground">Purpose:</span> {interview.profile.purpose}</p>
+              )}
+              {interview.profile.priorKnowledge && (
+                <p><span className="text-muted-foreground">Background:</span> {interview.profile.priorKnowledge}</p>
+              )}
+              {interview.profile.desiredDepth && (
+                <p><span className="text-muted-foreground">Depth:</span> {interview.profile.desiredDepth}</p>
+              )}
+              {interview.profile.timeAvailable && (
+                <p><span className="text-muted-foreground">Time:</span> {interview.profile.timeAvailable}</p>
+              )}
+              {interview.profile.focusAreas.length > 0 && (
+                <p><span className="text-muted-foreground">Focus:</span> {interview.profile.focusAreas.join(", ")}</p>
+              )}
+            </div>
+            <div className="mt-3 flex gap-2">
+              <Button onClick={handleConfirmAndStart} disabled={isPipelineRunning} className="flex-1 gap-2" size="sm">
+                {isPipelineRunning ? (
+                  <>
+                    <Loader2 className="size-3.5 animate-spin" />
+                    {pipelinePhase}
+                  </>
+                ) : (
+                  <>
+                    <Check className="size-3.5" />
+                    Start Learning
+                  </>
+                )}
+              </Button>
+              <Button onClick={interview.reset} variant="outline" size="sm" disabled={isPipelineRunning}>
+                <RotateCcw className="size-3.5" />
+              </Button>
+            </div>
+            {formError && <p className="mt-2 text-xs text-destructive">{formError}</p>}
+          </div>
+        )}
+
+        {/* Input (only if not confirming) */}
+        {interview.phase === "active" && (
+          <div className="mt-3 flex items-end gap-2">
+            <input
+              type="text"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
+              placeholder="Type your answer..."
+              disabled={interview.isLoading}
+              className="h-9 flex-1 rounded-md border border-input bg-background px-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50"
+            />
+            <Button onClick={handleSendMessage} disabled={!inputValue.trim() || interview.isLoading} size="sm" className="h-9 px-3">
+              <Send className="size-3.5" />
+            </Button>
+          </div>
+        )}
+
+        {interview.error && (
+          <p className="mt-2 text-sm text-destructive">{interview.error}</p>
+        )}
+      </div>
+    );
+  }
+
+  return null;
 }

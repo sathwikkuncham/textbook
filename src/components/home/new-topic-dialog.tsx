@@ -20,7 +20,7 @@ export function NewTopicDialog() {
           New Learning Path
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent className="sm:max-w-xl">
         <DialogHeader>
           <DialogTitle className="font-serif">
             Start a New Learning Path

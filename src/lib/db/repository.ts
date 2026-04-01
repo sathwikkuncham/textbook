@@ -64,6 +64,19 @@ export async function updateTopic(
   await db.update(topics).set(data).where(eq(topics.id, topicId));
 }
 
+export async function updateLearnerIntent(topicId: number, intent: unknown) {
+  await db.update(topics).set({ learnerIntent: intent }).where(eq(topics.id, topicId));
+}
+
+export async function findLearnerIntent(topicId: number) {
+  const result = await db
+    .select({ learnerIntent: topics.learnerIntent })
+    .from(topics)
+    .where(eq(topics.id, topicId))
+    .limit(1);
+  return result[0]?.learnerIntent ?? null;
+}
+
 export async function getAllTopics() {
   return db.select().from(topics).orderBy(topics.lastSession);
 }
