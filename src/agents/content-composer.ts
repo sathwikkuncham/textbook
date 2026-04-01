@@ -207,7 +207,7 @@ Guidelines:
 - Every subtopic needs at minimum: a motivating opening, a core explanation, and a brief synthesis at the end
 
 When to include specific elements:
-- Include a visualization (mermaid diagram or table) ONLY if it genuinely clarifies what prose cannot
+- Include a visualization ONLY if it genuinely clarifies what prose cannot. When you do, embed it directly in your content using a ~~~mermaid fenced code block (using tildes, NOT backticks) or a markdown table. Keep diagrams compact (max 8-10 nodes, top-down TD layout, short plain-text labels, no HTML tags in node labels)
 - Include a worked example ONLY if the concept involves a process, calculation, or multi-step decision
 - Include an analogy ONLY if the concept is abstract enough that a concrete parallel genuinely helps
 - Address misconceptions ONLY if commonly held, real misconceptions exist for this concept
