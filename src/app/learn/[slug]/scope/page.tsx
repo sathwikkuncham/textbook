@@ -234,8 +234,8 @@ export default function ScopeReviewPage() {
             <ArrowLeft className="size-4" />
           </Button>
           <BookOpen className="size-5 text-primary" />
-          <div className="flex-1">
-            <h1 className="font-serif text-lg font-bold text-foreground">
+          <div className="min-w-0 flex-1">
+            <h1 className="font-serif text-sm font-bold leading-snug text-foreground md:text-lg">
               {structure?.title ?? "Document"}
             </h1>
             {structure?.author && (
