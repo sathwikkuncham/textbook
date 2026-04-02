@@ -1,6 +1,7 @@
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { cn } from "@/lib/utils";
+import { MermaidDiagram } from "@/components/ui/mermaid-diagram";
 
 interface ChatMessageProps {
   role: "user" | "assistant";
@@ -40,6 +41,12 @@ export function ChatMessage({ role, content, isStreaming }: ChatMessageProps) {
                   <strong className="font-semibold">{children}</strong>
                 ),
                 code: ({ className, children }) => {
+                  const text = String(children).replace(/\n$/, "");
+                  const isMermaid = className?.includes("language-mermaid")
+                    || /^(graph\s+(TD|TB|BT|RL|LR)|flowchart\s|sequenceDiagram|classDiagram|stateDiagram|erDiagram|gantt|pie|gitgraph)/m.test(text);
+                  if (isMermaid && text.includes("\n")) {
+                    return <MermaidDiagram chart={text} />;
+                  }
                   const isBlock = className?.includes("language-");
                   if (isBlock) {
                     return (
