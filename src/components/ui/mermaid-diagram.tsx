@@ -74,7 +74,7 @@ async function initMermaid(resolvedTheme: string | undefined) {
     theme: "base",
     themeVariables: getThemeVariables(),
     flowchart: {
-      htmlLabels: false,
+      htmlLabels: true,
       curve: "basis",
       padding: 12,
     },
@@ -125,6 +125,36 @@ function remapStyleColors(chart: string, isDark: boolean): string {
   return result;
 }
 
+/**
+ * Sanitize mermaid chart text so special characters inside node labels
+ * and edge labels don't break the parser.
+ *
+ * Mermaid treats &, <, > as special. We need to escape them inside
+ * bracket-delimited labels: [...], {...}, (...), |...|
+ */
+function sanitizeMermaidChart(chart: string): string {
+  let result = chart
+    .replace(/<br\s*\/?>/gi, "\\n")
+    .replace(/<[^>]+>/g, "")
+    .replace(/`/g, "'");
+
+  // Escape &, <, > inside node labels [...], {...}, (...) and edge labels |...|
+  // Use a regex to find label content and escape within it
+  result = result.replace(
+    /(\[|{|\(|\|)([^\]})|\n]+?)(\]|}|\)|\|)/g,
+    (_match, open: string, content: string, close: string) => {
+      // Don't double-escape
+      const escaped = content
+        .replace(/&(?!amp;|lt;|gt;|quot;|#\d+;)/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+      return `${open}${escaped}${close}`;
+    }
+  );
+
+  return result;
+}
+
 export function MermaidDiagram({ chart, caption }: MermaidDiagramProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [svg, setSvg] = useState<string>("");
@@ -144,10 +174,7 @@ export function MermaidDiagram({ chart, caption }: MermaidDiagramProps) {
 
         const isDark = resolvedTheme === "dark";
         const sanitized = remapStyleColors(
-          chart
-            .replace(/<br\s*\/?>/gi, "\\n")
-            .replace(/<[^>]+>/g, "")
-            .replace(/`/g, "'"),
+          sanitizeMermaidChart(chart),
           isDark
         );
 
