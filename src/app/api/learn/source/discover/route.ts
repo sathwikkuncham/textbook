@@ -7,6 +7,7 @@ import {
   findTopicBySlug,
   findSourceStructure,
   saveSourceStructure,
+  updatePipelinePhase,
 } from "@/lib/db/repository";
 import { generateSlug } from "@/lib/types/learning";
 import type { SourceToc, PageCalibration } from "@/lib/types/learning";
@@ -104,6 +105,7 @@ export async function POST(request: NextRequest) {
       };
 
       await saveSourceStructure(topicRecord.id, sourceToc, calibration);
+      await updatePipelinePhase(topicRecord.id, "source_discovered");
 
       return NextResponse.json({
         success: true,
@@ -200,6 +202,7 @@ export async function POST(request: NextRequest) {
     };
 
     await saveSourceStructure(topicRecord.id, sourceToc, calibration);
+    await updatePipelinePhase(topicRecord.id, "source_discovered");
 
     return NextResponse.json({
       success: true,

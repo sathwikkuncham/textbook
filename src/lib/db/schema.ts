@@ -30,6 +30,8 @@ export const topics = pgTable(
     sourceType: varchar("source_type", { length: 20 }).notNull().default("topic_only"),
     sourcePath: text("source_path"),
     learnerIntent: jsonb("learner_intent"),
+    pipelinePhase: varchar("pipeline_phase", { length: 30 }).notNull().default("ready"),
+    lastPosition: jsonb("last_position"),
     createdAt: timestamp("created_at").notNull().defaultNow(),
     lastSession: timestamp("last_session").notNull().defaultNow(),
   },
@@ -70,6 +72,8 @@ export const moduleContent = pgTable(
     paragraphTimings: jsonb("paragraph_timings"),
     qualityScore: real("quality_score"),
     generationAttempts: integer("generation_attempts").notNull().default(1),
+    previousContent: text("previous_content"),
+    previousDiagrams: text("previous_diagrams"),
     createdAt: timestamp("created_at").notNull().defaultNow(),
   },
   (table) => [

@@ -124,6 +124,7 @@ export async function POST(request: NextRequest) {
       content: cached.content,
       diagrams: cached.diagrams,
       cached: true,
+      hasPreviousVersion: !!cached.previousContent,
     });
   }
 
@@ -268,7 +269,7 @@ export async function POST(request: NextRequest) {
     ]);
 
     // Save content immediately — don't block the user
-    await saveModuleContent(topicRecord.id, dbKey, initialContent, diagramResult);
+    await saveModuleContent(topicRecord.id, dbKey, initialContent, diagramResult, !!forceRegenerate);
 
     // Run quality evaluation asynchronously (fire-and-forget)
     // Scores are logged for analytics; regeneration happens only via explicit user request
@@ -285,6 +286,7 @@ export async function POST(request: NextRequest) {
       subtopicId: subtopic.id,
       content: initialContent,
       diagrams: diagramResult,
+      hasPreviousVersion: !!forceRegenerate,
     });
   } catch (error) {
     console.error("[content-api] Generation failed:", error);

@@ -9,6 +9,7 @@ import {
   saveCurriculum,
   updateTopic,
   findLearnerIntent,
+  updatePipelinePhase,
 } from "@/lib/db/repository";
 import { createCurriculumArchitect } from "@/agents/curriculum-architect";
 import { runAgent } from "@/agents/runner";
@@ -111,6 +112,7 @@ export async function POST(request: NextRequest) {
       estimatedMinutes: curriculum.estimated_total_minutes,
       lastSession: new Date(),
     });
+    await updatePipelinePhase(topicRecord.id, "ready");
 
     return NextResponse.json({
       success: true,

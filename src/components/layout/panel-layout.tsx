@@ -151,6 +151,12 @@ export function PanelLayout({
               ? (feedback?: string) => learning.regenerateSubtopic(learning.activeModuleId!, learning.activeSubtopicId!, feedback)
               : undefined
           }
+          onRollback={
+            learning.hasPreviousVersion && learning.activeModuleId
+              ? () => learning.rollbackContent(learning.activeModuleId!)
+              : undefined
+          }
+          hasPreviousVersion={learning.hasPreviousVersion}
           activeSectionIndex={audioPlayer.isPlaying ? audioPlayer.currentSectionIndex : null}
           audioPlayer={audioPlayer}
           quizContent={

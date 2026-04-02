@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { runInterview } from "@/agents/interview-agent";
-import { updateLearnerIntent } from "@/lib/db/repository";
+import { updateLearnerIntent, updatePipelinePhase } from "@/lib/db/repository";
 
 export const maxDuration = 30;
 
@@ -58,6 +58,7 @@ export async function PUT(request: NextRequest) {
 
   try {
     await updateLearnerIntent(topicId, profile);
+    await updatePipelinePhase(topicId, "interviewed");
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("[interview-api] Save failed:", error);

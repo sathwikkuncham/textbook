@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef, useMemo, memo, useState, useEffect } from "react";
-import { BookOpen, ChevronLeft, ChevronRight, RefreshCw } from "lucide-react";
+import { BookOpen, ChevronLeft, ChevronRight, RefreshCw, Undo2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -188,6 +188,8 @@ interface MainContentProps {
   audioPlayer?: ReturnType<typeof useAudioPlayer>;
   activeSubtopicTitle?: string;
   onRegenerate?: (feedback?: string) => void;
+  onRollback?: () => void;
+  hasPreviousVersion?: boolean;
   topicId?: number | null;
   onCurriculumChange?: () => void;
 }
@@ -352,6 +354,8 @@ export function MainContent({
   audioPlayer,
   activeSubtopicTitle,
   onRegenerate,
+  onRollback,
+  hasPreviousVersion,
   topicId,
   onCurriculumChange,
 }: MainContentProps) {
@@ -435,6 +439,15 @@ export function MainContent({
                 Module {activeModuleId} <span className="mx-1 text-border">/</span> Subtopic {subtopicPosition.current} of {subtopicPosition.total}
               </p>
               <div className="flex items-center gap-2">
+                {hasPreviousVersion && onRollback && !isLoading && (
+                  <button
+                    onClick={onRollback}
+                    className="flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-xs font-medium text-muted-foreground transition-all hover:border-amber-500/30 hover:text-amber-600"
+                  >
+                    <Undo2 className="size-3" />
+                    Undo
+                  </button>
+                )}
                 {onRegenerate && !isLoading && (
                   <button
                     onClick={() => setShowFeedback((prev) => !prev)}

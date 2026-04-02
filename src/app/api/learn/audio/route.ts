@@ -33,13 +33,11 @@ export async function GET(request: NextRequest) {
   try {
     // Check DB for cached section audio
     const cached = await findAudio(topicId, moduleId);
-    if (cached?.audioUrl && Array.isArray(cached.paragraphTimings) && cached.paragraphTimings.length > 0) {
-      return NextResponse.json({
-        sections: cached.paragraphTimings as SectionAudio[],
-      });
-    }
+    const existingSections = (cached?.audioUrl && Array.isArray(cached.paragraphTimings))
+      ? cached.paragraphTimings as SectionAudio[]
+      : [];
 
-    // Fetch the content to generate audio from
+    // Fetch the content to determine what sections are needed
     const content = await findModuleContent(topicId, moduleId);
     if (!content) {
       return NextResponse.json(
@@ -48,7 +46,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Extract sections (skips "Visualizing It")
+    // Extract all sections from content
     const contentSections = extractSections(content.content);
     if (contentSections.length === 0) {
       return NextResponse.json(
@@ -57,9 +55,18 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Generate audio for all sections in parallel
-    const audioResults = await Promise.all(
-      contentSections.map(async (section) => {
+    // Determine which sections are already cached
+    const existingIndices = new Set(existingSections.map((s) => s.index));
+    const missingSections = contentSections.filter((s) => !existingIndices.has(s.index));
+
+    // If all sections are cached, return immediately
+    if (missingSections.length === 0 && existingSections.length > 0) {
+      return NextResponse.json({ sections: existingSections });
+    }
+
+    // Generate audio only for missing sections using Promise.allSettled
+    const results = await Promise.allSettled(
+      missingSections.map(async (section) => {
         const { buffer } = await generateAudio(section.text);
         const storagePath = `audio/${topicId}/${moduleId}/section-${section.index}.wav`;
 
@@ -86,10 +93,28 @@ export async function GET(request: NextRequest) {
       })
     );
 
-    // Save to DB
-    await saveAudio(topicId, moduleId, "sections", audioResults);
+    // Collect succeeded sections
+    const newSections = results
+      .filter((r): r is PromiseFulfilledResult<SectionAudio> => r.status === "fulfilled")
+      .map((r) => r.value);
 
-    return NextResponse.json({ sections: audioResults });
+    const failedCount = results.filter((r) => r.status === "rejected").length;
+
+    // Merge with existing and sort by index
+    const allSections = [...existingSections, ...newSections].sort(
+      (a, b) => a.index - b.index
+    );
+
+    // Save whatever we have (even if partial)
+    if (allSections.length > 0) {
+      await saveAudio(topicId, moduleId, "sections", allSections);
+    }
+
+    return NextResponse.json({
+      sections: allSections,
+      partial: failedCount > 0,
+      failedCount,
+    });
   } catch (error) {
     console.error("[audio-api] Generation failed:", error);
     const message = error instanceof Error ? error.message : "Audio generation failed";

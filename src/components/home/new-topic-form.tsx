@@ -42,7 +42,7 @@ export function NewTopicForm() {
   const [pipelinePhase, setPipelinePhase] = useState<string | null>(null);
   const [formError, setFormError] = useState<string | null>(null);
 
-  const interview = useInterview();
+  const interview = useInterview(topic.trim() || undefined);
 
   // Auto-scroll messages
   useEffect(() => {
@@ -114,116 +114,149 @@ export function NewTopicForm() {
     setIsPipelineRunning(true);
     setFormError(null);
     const derivedLevel = deriveLevel(interview.profile);
+    const topicName = topic.trim();
+    const goal = interview.profile.purpose || "general understanding";
+
+    // Check if topic already exists (retry scenario)
+    const slug = generateSlug(topicName);
+    let existingState: { pipelinePhase?: string; hasResearch?: boolean; hasCurriculum?: boolean; hasSourceStructure?: boolean } | null = null;
+    try {
+      const stateRes = await fetch(`/api/learn/topic-state?slug=${slug}`);
+      if (stateRes.ok) existingState = await stateRes.json();
+    } catch {
+      // Topic doesn't exist yet — normal first-time flow
+    }
 
     try {
       if (sourceType === "pdf" && sourceFile) {
-        setPipelinePhase("Uploading PDF...");
-        const formData = new FormData();
-        formData.append("file", sourceFile);
-        formData.append("topic", topic.trim());
-        formData.append("level", derivedLevel);
-        formData.append("goal", interview.profile.purpose || "general understanding");
-        formData.append("timeCommitment", "standard");
-        formData.append("sourceType", "pdf");
+        // PDF flow: upload → interview save → discover → scope page
+        if (!existingState?.hasSourceStructure) {
+          if (!existingState) {
+            setPipelinePhase("Uploading PDF...");
+            const formData = new FormData();
+            formData.append("file", sourceFile);
+            formData.append("topic", topicName);
+            formData.append("level", derivedLevel);
+            formData.append("goal", goal);
+            formData.append("timeCommitment", "standard");
+            formData.append("sourceType", "pdf");
 
-        const uploadRes = await fetch("/api/learn/source/upload", {
-          method: "POST",
-          body: formData,
-        });
-        const uploadData = await uploadRes.json();
-        if (!uploadData.success) throw new Error(uploadData.error);
+            const uploadRes = await fetch("/api/learn/source/upload", {
+              method: "POST",
+              body: formData,
+            });
+            const uploadData = await uploadRes.json();
+            if (!uploadData.success) throw new Error(uploadData.error);
 
-        // Save learner intent to the topic record
-        await fetch("/api/learn/interview", {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            topicId: uploadData.topicId,
-            profile: interview.profile,
-          }),
-        });
+            await fetch("/api/learn/interview", {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                topicId: uploadData.topicId,
+                profile: interview.profile,
+              }),
+            });
+          }
 
-        setPipelinePhase("Analyzing document structure...");
-        const discoverRes = await fetch("/api/learn/source/discover", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ topic: topic.trim() }),
-        });
-        const discoverData = await discoverRes.json();
-        if (!discoverData.success) throw new Error(discoverData.error);
+          setPipelinePhase("Analyzing document structure...");
+          const discoverRes = await fetch("/api/learn/source/discover", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ topic: topicName }),
+          });
+          const discoverData = await discoverRes.json();
+          if (!discoverData.success) throw new Error(discoverData.error);
+        }
 
-        const slug = generateSlug(topic.trim());
         router.push(`/learn/${slug}/scope`);
       } else if (sourceType === "url") {
-        setPipelinePhase("Setting up topic...");
-        const researchRes = await fetch("/api/learn/research", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            topic: topic.trim(),
-            level: derivedLevel,
-            goal: interview.profile.purpose || "general understanding",
-            timeCommitment: "standard",
-            learnerIntent: interview.profile,
-          }),
-        });
-        if (!researchRes.ok) throw new Error("Failed to create topic");
-        const researchData = await researchRes.json();
-        const derivedTopic = researchData.topic ?? topic.trim();
-        const derivedSlug = researchData.topicSlug;
+        // URL flow: research → set-source → discover → scope page
+        let derivedSlug = slug;
 
-        await fetch("/api/learn/source/set-source", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            topic: derivedTopic,
-            sourceType: "url",
-            sourcePath: sourceUrl.trim(),
-          }),
-        });
+        if (!existingState?.hasResearch) {
+          setPipelinePhase("Setting up topic...");
+          const researchRes = await fetch("/api/learn/research", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              topic: topicName,
+              level: derivedLevel,
+              goal,
+              timeCommitment: "standard",
+              learnerIntent: interview.profile,
+            }),
+          });
+          if (!researchRes.ok) throw new Error("Failed to create topic");
+          const researchData = await researchRes.json();
+          derivedSlug = researchData.topicSlug;
 
-        setPipelinePhase("Reading URL content...");
-        const discoverRes = await fetch("/api/learn/source/discover", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ topic: derivedTopic, slug: derivedSlug }),
-        });
-        const discoverData = await discoverRes.json();
-        if (!discoverData.success) throw new Error(discoverData.error);
+          await fetch("/api/learn/source/set-source", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              topic: researchData.topic ?? topicName,
+              sourceType: "url",
+              sourcePath: sourceUrl.trim(),
+            }),
+          });
+        }
+
+        if (!existingState?.hasSourceStructure) {
+          setPipelinePhase("Reading URL content...");
+          const discoverRes = await fetch("/api/learn/source/discover", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ topic: topicName, slug: derivedSlug }),
+          });
+          const discoverData = await discoverRes.json();
+          if (!discoverData.success) throw new Error(discoverData.error);
+        }
 
         router.push(`/learn/${derivedSlug}/scope`);
       } else {
-        setPipelinePhase("Researching topic...");
+        // Topic-only flow: research → curriculum → learning page
+        let topicSlug = slug;
+
+        if (!existingState?.hasResearch) {
+          setPipelinePhase("Researching topic...");
+        } else {
+          setPipelinePhase("Resuming...");
+        }
+
         const researchRes = await fetch("/api/learn/research", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            topic: topic.trim(),
+            topic: topicName,
             level: derivedLevel,
-            goal: interview.profile.purpose || "general understanding",
+            goal,
             timeCommitment: "standard",
             learnerIntent: interview.profile,
           }),
         });
         if (!researchRes.ok) throw new Error("Research failed");
         const researchData = await researchRes.json();
+        topicSlug = researchData.topicSlug;
 
-        setPipelinePhase("Designing curriculum...");
+        if (!existingState?.hasCurriculum) {
+          setPipelinePhase("Designing curriculum...");
+        }
+
         const currRes = await fetch("/api/learn/curriculum", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            topic: topic.trim(),
-            slug: researchData.topicSlug,
+            topic: topicName,
+            slug: topicSlug,
             level: derivedLevel,
-            goal: interview.profile.purpose || "general understanding",
+            goal,
             timeCommitment: "standard",
           }),
         });
         const currData = await currRes.json();
         if (!currData.success) throw new Error(currData.error);
 
-        router.push(`/learn/${researchData.topicSlug}`);
+        router.push(`/learn/${topicSlug}`);
       }
     } catch (err) {
       setFormError(err instanceof Error ? err.message : "Something went wrong");

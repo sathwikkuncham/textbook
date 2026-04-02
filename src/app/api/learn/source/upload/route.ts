@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase, STORAGE_BUCKET } from "@/lib/supabase/client";
 import { generateSlug } from "@/lib/types/learning";
-import { findTopicBySlug, createTopic } from "@/lib/db/repository";
+import { findTopicBySlug, createTopic, updatePipelinePhase } from "@/lib/db/repository";
 
 export async function POST(request: NextRequest) {
   const formData = await request.formData();
@@ -61,6 +61,8 @@ export async function POST(request: NextRequest) {
       sourcePath: fileName,
     })
     .where(eq(topics.id, topicRecord.id));
+
+  await updatePipelinePhase(topicRecord.id, "created");
 
   return NextResponse.json({
     success: true,

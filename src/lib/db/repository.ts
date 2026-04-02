@@ -59,9 +59,29 @@ export async function updateTopic(
     currentSubtopic: number;
     totalTimeMinutes: number;
     lastSession: Date;
+    pipelinePhase: string;
+    lastPosition: unknown;
   }>
 ) {
   await db.update(topics).set(data).where(eq(topics.id, topicId));
+}
+
+export async function updatePipelinePhase(topicId: number, phase: string) {
+  await db.update(topics).set({ pipelinePhase: phase }).where(eq(topics.id, topicId));
+}
+
+export async function updateLastPosition(
+  topicId: number,
+  moduleId: number,
+  subtopicId: string
+) {
+  await db
+    .update(topics)
+    .set({
+      lastPosition: { moduleId, subtopicId },
+      lastSession: new Date(),
+    })
+    .where(eq(topics.id, topicId));
 }
 
 export async function updateLearnerIntent(topicId: number, intent: unknown) {
@@ -237,14 +257,20 @@ export async function saveModuleContent(
   topicId: number,
   moduleId: number,
   content: string,
-  diagrams: string
+  diagrams: string,
+  preservePrevious = false
 ) {
   const existing = await findModuleContent(topicId, moduleId);
 
   if (existing) {
+    const updateData: Record<string, unknown> = { content, diagrams };
+    if (preservePrevious && existing.content) {
+      updateData.previousContent = existing.content;
+      updateData.previousDiagrams = existing.diagrams;
+    }
     await db
       .update(moduleContent)
-      .set({ content, diagrams })
+      .set(updateData)
       .where(eq(moduleContent.id, existing.id));
   } else {
     await db.insert(moduleContent).values({
@@ -254,6 +280,24 @@ export async function saveModuleContent(
       diagrams,
     });
   }
+}
+
+export async function rollbackModuleContent(topicId: number, moduleId: number) {
+  const existing = await findModuleContent(topicId, moduleId);
+  if (!existing?.previousContent) return false;
+
+  await db
+    .update(moduleContent)
+    .set({
+      content: existing.previousContent,
+      diagrams: existing.previousDiagrams,
+      previousContent: null,
+      previousDiagrams: null,
+      audioUrl: null,
+      paragraphTimings: null,
+    })
+    .where(eq(moduleContent.id, existing.id));
+  return true;
 }
 
 export async function deleteModuleContent(topicId: number, moduleId: number) {

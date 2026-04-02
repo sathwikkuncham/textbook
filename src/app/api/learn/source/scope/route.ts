@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { findTopicBySlug, updateUserScope } from "@/lib/db/repository";
+import { findTopicBySlug, updateUserScope, updatePipelinePhase } from "@/lib/db/repository";
 import { generateSlug } from "@/lib/types/learning";
 import type { UserScopeSelection } from "@/lib/types/learning";
 
@@ -36,6 +36,7 @@ export async function POST(request: NextRequest) {
   }
 
   await updateUserScope(topicRecord.id, scope);
+  await updatePipelinePhase(topicRecord.id, "scope_selected");
 
   return NextResponse.json({
     success: true,

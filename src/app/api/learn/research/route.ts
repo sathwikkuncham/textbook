@@ -6,6 +6,7 @@ import {
   findResearchByTopicId,
   saveResearch,
   updateLearnerIntent,
+  updatePipelinePhase,
 } from "@/lib/db/repository";
 import { createResearchPipeline } from "@/agents/pipelines/research-pipeline";
 import { runAgent } from "@/agents/runner";
@@ -38,11 +39,13 @@ export async function POST(request: NextRequest) {
       timeCommitment: timeCommitment ?? "standard",
       category,
     });
+    await updatePipelinePhase(topicRecord.id, "created");
   }
 
   // Save learner intent if provided
   if (learnerIntent) {
     await updateLearnerIntent(topicRecord.id, learnerIntent);
+    await updatePipelinePhase(topicRecord.id, "interviewed");
   }
 
   const cached = await findResearchByTopicId(topicRecord.id);
@@ -77,6 +80,7 @@ export async function POST(request: NextRequest) {
     } as unknown as import("@/lib/types/learning").ResearchCache;
 
     await saveResearch(topicRecord.id, researchData);
+    await updatePipelinePhase(topicRecord.id, "researched");
 
     return NextResponse.json({
       success: true,

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter, useParams } from "next/navigation";
 import {
   BookOpen,
@@ -114,6 +114,26 @@ export default function ScopeReviewPage() {
 
     loadStructure();
   }, [slug]);
+
+  // Debounced auto-save scope selections (2s after last change)
+  const initialLoadDone = useRef(false);
+  useEffect(() => {
+    // Skip auto-save during initial load
+    if (!structure || isLoading) return;
+    if (!initialLoadDone.current) {
+      initialLoadDone.current = true;
+      return;
+    }
+    const topicName = slug.replace(/-/g, " ");
+    const timer = setTimeout(() => {
+      fetch("/api/learn/source/scope", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ topic: topicName, slug, scope }),
+      }).catch(() => {});
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, [scope, structure, isLoading, slug]);
 
   const selectAll = () => {
     if (!structure) return;

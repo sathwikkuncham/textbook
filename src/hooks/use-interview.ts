@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import type { LearnerIntentProfile } from "@/lib/types/learning";
 
 interface InterviewMessage {
@@ -11,12 +11,76 @@ interface InterviewMessage {
 
 type InterviewPhase = "idle" | "active" | "confirming" | "complete";
 
-export function useInterview() {
+const STORAGE_PREFIX = "interview:";
+const EXPIRY_MS = 24 * 60 * 60 * 1000; // 24 hours
+
+interface StoredInterview {
+  messages: InterviewMessage[];
+  phase: InterviewPhase;
+  profile: LearnerIntentProfile | null;
+  timestamp: number;
+}
+
+function getStorageKey(topicName: string) {
+  return `${STORAGE_PREFIX}${topicName}`;
+}
+
+function loadFromStorage(topicName: string): StoredInterview | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = localStorage.getItem(getStorageKey(topicName));
+    if (!raw) return null;
+    const stored = JSON.parse(raw) as StoredInterview;
+    if (Date.now() - stored.timestamp > EXPIRY_MS) {
+      localStorage.removeItem(getStorageKey(topicName));
+      return null;
+    }
+    return stored;
+  } catch {
+    return null;
+  }
+}
+
+function saveToStorage(topicName: string, data: Omit<StoredInterview, "timestamp">) {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.setItem(
+      getStorageKey(topicName),
+      JSON.stringify({ ...data, timestamp: Date.now() })
+    );
+  } catch {
+    // localStorage full or unavailable — non-critical
+  }
+}
+
+function clearStorage(topicName: string) {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.removeItem(getStorageKey(topicName));
+  } catch {
+    // non-critical
+  }
+}
+
+export function useInterview(topicName?: string) {
   const [messages, setMessages] = useState<InterviewMessage[]>([]);
   const [phase, setPhase] = useState<InterviewPhase>("idle");
   const [isLoading, setIsLoading] = useState(false);
   const [profile, setProfile] = useState<LearnerIntentProfile | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const restoredRef = useRef(false);
+
+  // Restore from localStorage on mount
+  useEffect(() => {
+    if (!topicName || restoredRef.current) return;
+    restoredRef.current = true;
+    const stored = loadFromStorage(topicName);
+    if (stored && stored.phase !== "idle" && stored.phase !== "complete") {
+      setMessages(stored.messages);
+      setPhase(stored.phase);
+      setProfile(stored.profile);
+    }
+  }, [topicName]);
 
   const sendMessage = useCallback(
     async (
@@ -65,9 +129,9 @@ export function useInterview() {
           content: data.text,
         };
 
-        setMessages((prev) => [...prev, assistantMsg]);
-
         const allMsgs = [...updatedMessages, assistantMsg];
+        setMessages(allMsgs);
+
         const buildProfile = (prof?: Record<string, unknown>): LearnerIntentProfile => ({
           sourceType: (prof?.sourceType as string) ?? "topic",
           purpose: (prof?.purpose as string) ?? "",
@@ -78,13 +142,28 @@ export function useInterview() {
           rawTranscript: allMsgs.map((m) => ({ role: m.role, content: m.content })),
         });
 
+        let newPhase: InterviewPhase = "active";
+        let newProfile: LearnerIntentProfile | null = null;
+
         if (data.done && data.profile) {
-          setProfile(buildProfile(data.profile));
-          setPhase("confirming");
+          newProfile = buildProfile(data.profile);
+          newPhase = "confirming";
+          setProfile(newProfile);
+          setPhase(newPhase);
         } else if (allMsgs.length >= MAX_MESSAGES) {
-          // Safety valve: force a default profile if interview runs too long
-          setProfile(buildProfile());
-          setPhase("confirming");
+          newProfile = buildProfile();
+          newPhase = "confirming";
+          setProfile(newProfile);
+          setPhase(newPhase);
+        }
+
+        // Persist to localStorage
+        if (topicName) {
+          saveToStorage(topicName, {
+            messages: allMsgs,
+            phase: newPhase !== "active" ? newPhase : phase === "idle" ? "active" : phase,
+            profile: newProfile,
+          });
         }
       } catch (err) {
         setError(err instanceof Error ? err.message : "Something went wrong");
@@ -92,12 +171,13 @@ export function useInterview() {
         setIsLoading(false);
       }
     },
-    [messages, isLoading, phase]
+    [messages, isLoading, phase, topicName]
   );
 
   const confirmProfile = useCallback(() => {
     setPhase("complete");
-  }, []);
+    if (topicName) clearStorage(topicName);
+  }, [topicName]);
 
   const reset = useCallback(() => {
     setMessages([]);
@@ -105,7 +185,8 @@ export function useInterview() {
     setProfile(null);
     setError(null);
     setIsLoading(false);
-  }, []);
+    if (topicName) clearStorage(topicName);
+  }, [topicName]);
 
   return {
     messages,

@@ -31,6 +31,7 @@ interface LearningState {
   activeSubtopicId: string | null;
   moduleContent: string | null;
   moduleDiagrams: string | null;
+  hasPreviousVersion: boolean;
   isLoading: boolean;
   error: string | null;
   existingTopics: TopicSummary[];
@@ -47,6 +48,7 @@ export function useLearningState() {
     activeSubtopicId: null,
     moduleContent: null,
     moduleDiagrams: null,
+    hasPreviousVersion: false,
     isLoading: false,
     error: null,
     existingTopics: [],
@@ -121,23 +123,43 @@ export function useLearningState() {
         const firstModule = currData.curriculum.modules[0];
         const firstSubtopic = firstModule?.subtopics[0];
 
+        // Resume from saved position if available
+        const savedPosition = topicInfo.lastPosition as { moduleId: number; subtopicId: string } | null;
+        let resumeModuleId = firstModule?.id ?? 1;
+        let resumeSubtopicId = firstSubtopic?.id ?? null;
+
+        if (savedPosition) {
+          const savedModule = currData.curriculum.modules.find(
+            (m: { id: number }) => m.id === savedPosition.moduleId
+          );
+          if (savedModule) {
+            const savedSubtopic = savedModule.subtopics.find(
+              (s: { id: string }) => s.id === savedPosition.subtopicId
+            );
+            if (savedSubtopic) {
+              resumeModuleId = savedPosition.moduleId;
+              resumeSubtopicId = savedPosition.subtopicId;
+            }
+          }
+        }
+
         setState((prev) => ({
           ...prev,
           curriculum: currData.curriculum,
-          activeModuleId: firstModule?.id ?? 1,
-          activeSubtopicId: firstSubtopic?.id ?? null,
+          activeModuleId: resumeModuleId,
+          activeSubtopicId: resumeSubtopicId,
         }));
 
-        // Auto-load the first subtopic content so the user never sees an empty state
-        if (firstModule && firstSubtopic) {
+        // Auto-load the resume subtopic content so the user never sees an empty state
+        if (resumeModuleId && resumeSubtopicId) {
           const contentRes = await fetch("/api/learn/content", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               topic: topicInfo.displayName,
               slug: topicInfo.slug,
-              moduleId: firstModule.id,
-              subtopicId: firstSubtopic.id,
+              moduleId: resumeModuleId,
+              subtopicId: resumeSubtopicId,
             }),
           });
           const contentData = await contentRes.json();
@@ -146,6 +168,7 @@ export function useLearningState() {
               ...prev,
               moduleContent: contentData.content,
               moduleDiagrams: contentData.diagrams,
+              hasPreviousVersion: !!contentData.hasPreviousVersion,
               isLoading: false,
             }));
             return;
@@ -320,6 +343,7 @@ export function useLearningState() {
           ...prev,
           moduleContent: data.content,
           moduleDiagrams: data.diagrams,
+          hasPreviousVersion: !!data.hasPreviousVersion,
           isLoading: false,
         }));
       } catch (err) {
@@ -337,6 +361,15 @@ export function useLearningState() {
     async (moduleId: number, subtopicId: string) => {
       if (!state.topic || navigatingRef.current) return;
       navigatingRef.current = true;
+
+      // Fire-and-forget: persist last position for resume on reload
+      if (state.topicSlug) {
+        fetch("/api/learn/position", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ slug: state.topicSlug, moduleId, subtopicId }),
+        }).catch(() => {});
+      }
 
       setState((prev) => ({
         ...prev,
@@ -366,6 +399,7 @@ export function useLearningState() {
           ...prev,
           moduleContent: data.content,
           moduleDiagrams: data.diagrams,
+          hasPreviousVersion: !!data.hasPreviousVersion,
           isLoading: false,
         }));
 
@@ -416,6 +450,7 @@ export function useLearningState() {
           ...prev,
           moduleContent: data.content,
           moduleDiagrams: data.diagrams,
+          hasPreviousVersion: !!data.hasPreviousVersion,
           isLoading: false,
         }));
 
@@ -430,6 +465,37 @@ export function useLearningState() {
       }
     },
     [state.topic, state.topicSlug, setError]
+  );
+
+  const rollbackContent = useCallback(
+    async (moduleId: number) => {
+      if (!state.topicSlug) return;
+
+      setState((prev) => ({ ...prev, isLoading: true, error: null }));
+
+      try {
+        const res = await fetch("/api/learn/content/rollback", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ slug: state.topicSlug, moduleId }),
+        });
+        const data = await res.json();
+        if (!data.success) throw new Error(data.error);
+
+        setState((prev) => ({
+          ...prev,
+          moduleContent: data.content,
+          moduleDiagrams: data.diagrams,
+          hasPreviousVersion: false,
+          isLoading: false,
+        }));
+      } catch (err) {
+        setError(
+          err instanceof Error ? err.message : "Failed to rollback content"
+        );
+      }
+    },
+    [state.topicSlug, setError]
   );
 
   const getActiveModule = useCallback((): Module | null => {
@@ -457,6 +523,7 @@ export function useLearningState() {
       activeSubtopicId: null,
       moduleContent: null,
       moduleDiagrams: null,
+      hasPreviousVersion: false,
       isLoading: false,
       error: null,
     }));
@@ -470,6 +537,7 @@ export function useLearningState() {
     loadModuleContent,
     navigateToSubtopic,
     regenerateSubtopic,
+    rollbackContent,
     getActiveModule,
     setPhase,
     setError,
