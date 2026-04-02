@@ -235,11 +235,17 @@ export default function ScopeReviewPage() {
           </Button>
           <BookOpen className="size-5 text-primary" />
           <div className="min-w-0 flex-1">
-            <h1 className="font-serif text-sm font-bold leading-snug text-foreground md:text-lg">
+            <h1
+              className="line-clamp-2 font-serif text-sm font-bold leading-snug text-foreground md:line-clamp-3 md:text-lg"
+              title={structure?.title}
+            >
               {structure?.title ?? "Document"}
             </h1>
             {structure?.author && (
-              <p className="text-xs text-muted-foreground">
+              <p
+                className="line-clamp-1 text-xs text-muted-foreground"
+                title={`${structure.author} · ${structure.totalPages ?? "?"} pages`}
+              >
                 {structure.author} &middot;{" "}
                 {structure.totalPages ?? "?"} pages
               </p>
