@@ -19,6 +19,7 @@ import { createDiagramSpecialist } from "@/agents/diagram-specialist";
 import { createFetchSourceContentTool } from "@/agents/tools/fetch-source-content";
 import { createFetchPreviousSubtopicTool } from "@/agents/tools/fetch-previous-subtopic";
 import { runAgent } from "@/agents/runner";
+import { embedGeneratedContent } from "@/lib/embeddings/pipeline";
 import type { BaseTool } from "@google/adk";
 
 async function evaluateContentAsync(
@@ -270,6 +271,14 @@ export async function POST(request: NextRequest) {
 
     // Save content immediately — don't block the user
     await saveModuleContent(topicRecord.id, dbKey, initialContent, diagramResult, !!forceRegenerate);
+
+    // Embed content for semantic search (fire-and-forget)
+    embedGeneratedContent(
+      topicRecord.id, dbKey, initialContent,
+      topic, module.title, subtopic.title
+    ).catch((err) => {
+      console.warn("[content] Embedding failed:", err);
+    });
 
     // Run quality evaluation asynchronously (fire-and-forget)
     // Scores are logged for analytics; regeneration happens only via explicit user request

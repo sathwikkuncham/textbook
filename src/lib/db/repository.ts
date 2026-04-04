@@ -717,6 +717,20 @@ export async function deleteDocumentChunks(topicId: number): Promise<void> {
   await db.delete(documentChunks).where(eq(documentChunks.topicId, topicId));
 }
 
+export async function deleteChunksBySectionKey(
+  topicId: number,
+  sectionKey: string
+): Promise<void> {
+  await db
+    .delete(documentChunks)
+    .where(
+      and(
+        eq(documentChunks.topicId, topicId),
+        eq(documentChunks.sectionKey, sectionKey)
+      )
+    );
+}
+
 export async function getChunksBySection(
   topicId: number,
   sectionKey: string

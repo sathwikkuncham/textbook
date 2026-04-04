@@ -116,7 +116,7 @@ export async function POST(request: NextRequest) {
 
   // Semantic context: retrieve relevant source chunks for the user's question
   let sourceContext = "";
-  if (topicRecord && topicRecord.sourceType !== "topic_only") {
+  if (topicRecord) {
     const hasChunks = await hasDocumentChunks(topicRecord.id);
     if (hasChunks) {
       try {

@@ -3,7 +3,9 @@ import {
   findTopicBySlug,
   rollbackModuleContent,
   findModuleContent,
+  findCurriculumByTopicId,
 } from "@/lib/db/repository";
+import { embedGeneratedContent } from "@/lib/embeddings/pipeline";
 import { generateSlug } from "@/lib/types/learning";
 
 export async function POST(request: NextRequest) {
@@ -39,6 +41,25 @@ export async function POST(request: NextRequest) {
 
   // Return the restored content
   const restored = await findModuleContent(topicRecord.id, moduleId);
+
+  // Re-embed the restored content (fire-and-forget)
+  if (restored?.content) {
+    const curriculum = await findCurriculumByTopicId(topicRecord.id);
+    const mod = curriculum?.modules.find(
+      (m) => m.id === Math.floor(moduleId / 100)
+    );
+    const subtopicIndex = moduleId % 100;
+    const sub = mod?.subtopics[subtopicIndex];
+
+    embedGeneratedContent(
+      topicRecord.id, moduleId, restored.content,
+      topicRecord.displayName,
+      mod?.title ?? "Module",
+      sub?.title ?? "Subtopic"
+    ).catch((err) => {
+      console.warn("[rollback] Re-embedding failed:", err);
+    });
+  }
 
   return NextResponse.json({
     success: true,

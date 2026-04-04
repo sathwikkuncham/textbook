@@ -5,6 +5,7 @@ import {
   findTopicBySlug,
   insertDocumentChunks,
   deleteDocumentChunks,
+  deleteChunksBySectionKey,
   hasDocumentChunks,
 } from "@/lib/db/repository";
 import { supabase, STORAGE_BUCKET } from "@/lib/supabase/client";
@@ -308,4 +309,67 @@ export async function runEmbeddingPipeline(
     sectionsSkipped,
     errors,
   };
+}
+
+/**
+ * Embed a single piece of generated teaching content into document_chunks.
+ * Called fire-and-forget after content generation or rollback.
+ *
+ * Uses section_key format "content:{dbKey}" to distinguish from source chunks
+ * (which use TOC-derived keys like "ch1.s2").
+ */
+export async function embedGeneratedContent(
+  topicId: number,
+  dbKey: number,
+  content: string,
+  topicName: string,
+  moduleTitle: string,
+  subtopicTitle: string
+): Promise<void> {
+  const sectionKey = `content:${dbKey}`;
+
+  const chunks = chunkAllSections([
+    {
+      text: content,
+      metadata: {
+        sectionKey,
+        chapterTitle: moduleTitle,
+        sectionTitle: subtopicTitle,
+        pageStart: 0,
+        pageEnd: 0,
+        sourceTitle: topicName,
+      },
+    },
+  ]);
+
+  if (chunks.length === 0) return;
+
+  const textsToEmbed = chunks.map(
+    (c) => c.contextPrefix + "\n" + c.content
+  );
+  const embeddings = await batchEmbedDocuments(textsToEmbed);
+
+  // Delete old chunks for this specific subtopic, then insert new
+  await deleteChunksBySectionKey(topicId, sectionKey);
+
+  // Offset chunk_index by dbKey * 1000 to avoid collisions with source chunks
+  // and other content chunks. Source chunks use globalIndex 0-999,
+  // content:101 uses 101000+, content:201 uses 201000+, etc.
+  const indexOffset = dbKey * 1000;
+
+  await insertDocumentChunks(
+    chunks.map((chunk, i) => ({
+      topicId,
+      chunkIndex: indexOffset + i,
+      content: chunk.content,
+      embedding: embeddings[i],
+      sectionKey,
+      chapterTitle: chunk.metadata.chapterTitle,
+      sectionTitle: chunk.metadata.sectionTitle,
+      pageStart: null,
+      pageEnd: null,
+      contextPrefix: chunk.contextPrefix,
+      tokenCount: chunk.tokenCount,
+    }))
+  );
 }
