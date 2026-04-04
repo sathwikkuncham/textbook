@@ -171,6 +171,15 @@ export default function ScopeReviewPage() {
         body: JSON.stringify({ topic: topicName, slug, scope }),
       });
 
+      // Trigger embedding pipeline (fire-and-forget, runs in background)
+      fetch("/api/learn/source/embed", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ topic: topicName, slug }),
+      }).catch((err) => {
+        console.warn("[scope] Embedding trigger failed:", err);
+      });
+
       // Run research (supplementary)
       setPhase("Researching broader context...");
       await fetch("/api/learn/research", {

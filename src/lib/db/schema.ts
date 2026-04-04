@@ -231,6 +231,33 @@ export const sourcePageCache = pgTable(
   ]
 );
 
+export const documentChunks = pgTable(
+  "document_chunks",
+  {
+    id: serial("id").primaryKey(),
+    topicId: integer("topic_id")
+      .notNull()
+      .references(() => topics.id, { onDelete: "cascade" }),
+    chunkIndex: integer("chunk_index").notNull(),
+    content: text("content").notNull(),
+    // embedding column is halfvec(3072) — managed via raw SQL, not Drizzle
+    sectionKey: varchar("section_key", { length: 255 }).notNull(),
+    chapterTitle: text("chapter_title"),
+    sectionTitle: text("section_title"),
+    pageStart: integer("page_start"),
+    pageEnd: integer("page_end"),
+    contextPrefix: text("context_prefix"),
+    tokenCount: integer("token_count"),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+  },
+  (table) => [
+    uniqueIndex("document_chunks_topic_chunk_idx").on(
+      table.topicId,
+      table.chunkIndex
+    ),
+  ]
+);
+
 export const learnerInsights = pgTable(
   "learner_insights",
   {

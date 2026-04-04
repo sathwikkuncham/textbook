@@ -6,6 +6,8 @@ import {
   findSourceStructure,
   findCachedPageText,
   cachePageText,
+  hasDocumentChunks,
+  getChunksBySection,
 } from "@/lib/db/repository";
 import { generateSlug } from "@/lib/types/learning";
 
@@ -98,6 +100,22 @@ export async function POST(request: NextRequest) {
       text: cached,
       cached: true,
     });
+  }
+
+  // Check document chunks (vector store) before expensive Gemini extraction
+  const chunksExist = await hasDocumentChunks(topicRecord.id);
+  if (chunksExist) {
+    const chunks = await getChunksBySection(topicRecord.id, resolvedSectionKey);
+    if (chunks.length > 0) {
+      const text = chunks.map((c) => c.content).join("\n\n");
+      return NextResponse.json({
+        success: true,
+        sectionKey: resolvedSectionKey,
+        text,
+        cached: true,
+        retrieval: "vector",
+      });
+    }
   }
 
   try {

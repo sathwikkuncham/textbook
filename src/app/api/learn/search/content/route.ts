@@ -4,7 +4,9 @@ import {
   searchModuleContentFTS,
   getAllTopics,
   getAllCurricula,
+  searchChunksGlobal,
 } from "@/lib/db/repository";
+import { embedQuery } from "@/lib/embeddings/client";
 import type { Curriculum } from "@/lib/types/learning";
 
 interface SearchResult {
@@ -122,6 +124,63 @@ export async function GET(request: NextRequest) {
           }
         }
       }
+    }
+
+    // 3. Semantic search over embedded source material
+    try {
+      const queryEmbedding = await embedQuery(query);
+      const vectorResults = await searchChunksGlobal(queryEmbedding, 10, 0.35);
+
+      for (const vr of vectorResults) {
+        const topic = topicMap.get(vr.topicId);
+        if (!topic) continue;
+
+        const curriculum = curriculaMap.get(vr.topicId);
+        if (!curriculum?.modules) continue;
+
+        // Try to map source section back to a curriculum subtopic
+        let matchedModuleId = 0;
+        let matchedSubtopicId = "";
+        let matchedModuleTitle = "Source Material";
+        let matchedSubtopicTitle = vr.chapterTitle ?? "Source";
+
+        for (const mod of curriculum.modules) {
+          for (const sub of mod.subtopics) {
+            const subLower = sub.title.toLowerCase();
+            const chapterLower = (vr.chapterTitle ?? "").toLowerCase();
+            if (
+              chapterLower.includes(subLower) ||
+              subLower.includes(chapterLower)
+            ) {
+              matchedModuleId = mod.id;
+              matchedSubtopicId = sub.id;
+              matchedModuleTitle = mod.title;
+              matchedSubtopicTitle = sub.title;
+              break;
+            }
+          }
+          if (matchedModuleId) break;
+        }
+
+        const key = `${topic.slug}-source-${vr.sectionKey}`;
+        if (!seen.has(key)) {
+          seen.add(key);
+          const snippet = vr.content.slice(0, 150).replace(/\n/g, " ") + "...";
+          results.push({
+            topicSlug: topic.slug,
+            topicName: topic.displayName,
+            moduleId: matchedModuleId,
+            moduleTitle: matchedModuleTitle,
+            subtopicId: matchedSubtopicId || vr.sectionKey,
+            subtopicTitle: matchedSubtopicTitle,
+            snippet: `[Source] ${snippet}`,
+            matchIndex: 0,
+          });
+        }
+      }
+    } catch (err) {
+      // Vector search is best-effort — don't fail the entire search
+      console.warn("[search] Vector search failed:", err);
     }
 
     return NextResponse.json({ results: results.slice(0, 20) });

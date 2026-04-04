@@ -10,6 +10,7 @@ import {
   checkpoints,
   sourceStructures,
   sourcePageCache,
+  documentChunks,
   spacedRepetition,
   chatSessions,
   chatHistory,
@@ -643,6 +644,230 @@ export async function cachePageText(
       extractedText,
     });
   }
+}
+
+// ── Document Chunks (Vector Embeddings) ──────────────────
+
+export async function hasDocumentChunks(topicId: number): Promise<boolean> {
+  const result = await db
+    .select({ id: documentChunks.id })
+    .from(documentChunks)
+    .where(eq(documentChunks.topicId, topicId))
+    .limit(1);
+  return result.length > 0;
+}
+
+export async function getDocumentChunkCount(
+  topicId: number
+): Promise<number> {
+  const result = await db
+    .select({ id: documentChunks.id })
+    .from(documentChunks)
+    .where(eq(documentChunks.topicId, topicId));
+  return result.length;
+}
+
+export async function insertDocumentChunks(
+  chunks: Array<{
+    topicId: number;
+    chunkIndex: number;
+    content: string;
+    embedding: number[];
+    sectionKey: string;
+    chapterTitle: string | null;
+    sectionTitle: string | null;
+    pageStart: number | null;
+    pageEnd: number | null;
+    contextPrefix: string;
+    tokenCount: number;
+  }>
+): Promise<void> {
+  const BATCH = 50;
+  for (let i = 0; i < chunks.length; i += BATCH) {
+    const batch = chunks.slice(i, i + BATCH);
+    for (const chunk of batch) {
+      const embeddingStr = `[${chunk.embedding.join(",")}]`;
+      await db.execute(sql`
+        INSERT INTO document_chunks
+          (topic_id, chunk_index, content, embedding, section_key, chapter_title, section_title, page_start, page_end, context_prefix, token_count, created_at)
+        VALUES (
+          ${chunk.topicId}, ${chunk.chunkIndex}, ${chunk.content},
+          ${embeddingStr}::halfvec(3072),
+          ${chunk.sectionKey}, ${chunk.chapterTitle}, ${chunk.sectionTitle},
+          ${chunk.pageStart}, ${chunk.pageEnd}, ${chunk.contextPrefix},
+          ${chunk.tokenCount}, NOW()
+        )
+        ON CONFLICT (topic_id, chunk_index) DO UPDATE SET
+          content = EXCLUDED.content,
+          embedding = EXCLUDED.embedding,
+          section_key = EXCLUDED.section_key,
+          chapter_title = EXCLUDED.chapter_title,
+          section_title = EXCLUDED.section_title,
+          page_start = EXCLUDED.page_start,
+          page_end = EXCLUDED.page_end,
+          context_prefix = EXCLUDED.context_prefix,
+          token_count = EXCLUDED.token_count,
+          created_at = EXCLUDED.created_at
+      `);
+    }
+  }
+}
+
+export async function deleteDocumentChunks(topicId: number): Promise<void> {
+  await db.delete(documentChunks).where(eq(documentChunks.topicId, topicId));
+}
+
+export async function getChunksBySection(
+  topicId: number,
+  sectionKey: string
+): Promise<Array<{ content: string; chunkIndex: number }>> {
+  return db
+    .select({
+      content: documentChunks.content,
+      chunkIndex: documentChunks.chunkIndex,
+    })
+    .from(documentChunks)
+    .where(
+      and(
+        eq(documentChunks.topicId, topicId),
+        eq(documentChunks.sectionKey, sectionKey)
+      )
+    )
+    .orderBy(asc(documentChunks.chunkIndex));
+}
+
+export async function searchChunksBySimilarity(
+  topicId: number,
+  queryEmbedding: number[],
+  limit: number = 5,
+  threshold: number = 0.3
+): Promise<
+  Array<{
+    id: number;
+    content: string;
+    sectionKey: string;
+    chapterTitle: string | null;
+    sectionTitle: string | null;
+    similarity: number;
+  }>
+> {
+  const embeddingStr = `[${queryEmbedding.join(",")}]`;
+  const result = await db.execute(sql`
+    SELECT id, content, section_key AS "sectionKey",
+           chapter_title AS "chapterTitle", section_title AS "sectionTitle",
+           1 - (embedding <=> ${embeddingStr}::halfvec(3072)) AS similarity
+    FROM document_chunks
+    WHERE topic_id = ${topicId}
+      AND 1 - (embedding <=> ${embeddingStr}::halfvec(3072)) > ${threshold}
+    ORDER BY embedding <=> ${embeddingStr}::halfvec(3072)
+    LIMIT ${limit}
+  `);
+  return result as unknown as Array<{
+    id: number;
+    content: string;
+    sectionKey: string;
+    chapterTitle: string | null;
+    sectionTitle: string | null;
+    similarity: number;
+  }>;
+}
+
+export async function searchChunksGlobal(
+  queryEmbedding: number[],
+  limit: number = 20,
+  threshold: number = 0.35
+): Promise<
+  Array<{
+    id: number;
+    topicId: number;
+    content: string;
+    sectionKey: string;
+    chapterTitle: string | null;
+    sectionTitle: string | null;
+    similarity: number;
+  }>
+> {
+  const embeddingStr = `[${queryEmbedding.join(",")}]`;
+  const result = await db.execute(sql`
+    SELECT id, topic_id AS "topicId", content, section_key AS "sectionKey",
+           chapter_title AS "chapterTitle", section_title AS "sectionTitle",
+           1 - (embedding <=> ${embeddingStr}::halfvec(3072)) AS similarity
+    FROM document_chunks
+    WHERE 1 - (embedding <=> ${embeddingStr}::halfvec(3072)) > ${threshold}
+    ORDER BY embedding <=> ${embeddingStr}::halfvec(3072)
+    LIMIT ${limit}
+  `);
+  return result as unknown as Array<{
+    id: number;
+    topicId: number;
+    content: string;
+    sectionKey: string;
+    chapterTitle: string | null;
+    sectionTitle: string | null;
+    similarity: number;
+  }>;
+}
+
+export async function hybridSearchChunks(
+  topicId: number | null,
+  queryEmbedding: number[],
+  queryText: string,
+  limit: number = 10
+): Promise<
+  Array<{
+    id: number;
+    topicId: number;
+    content: string;
+    sectionKey: string;
+    chapterTitle: string | null;
+    sectionTitle: string | null;
+    score: number;
+  }>
+> {
+  const embeddingStr = `[${queryEmbedding.join(",")}]`;
+  const topicFilter =
+    topicId !== null ? sql`AND topic_id = ${topicId}` : sql``;
+  const result = await db.execute(sql`
+    WITH semantic AS (
+      SELECT id, topic_id, content, section_key, chapter_title, section_title,
+             ROW_NUMBER() OVER (ORDER BY embedding <=> ${embeddingStr}::halfvec(3072)) AS rank
+      FROM document_chunks
+      WHERE 1 - (embedding <=> ${embeddingStr}::halfvec(3072)) > 0.25
+        ${topicFilter}
+      ORDER BY embedding <=> ${embeddingStr}::halfvec(3072)
+      LIMIT 50
+    ),
+    keyword AS (
+      SELECT id, topic_id, content, section_key, chapter_title, section_title,
+             ROW_NUMBER() OVER (ORDER BY ts_rank(to_tsvector('english', content), plainto_tsquery('english', ${queryText})) DESC) AS rank
+      FROM document_chunks
+      WHERE to_tsvector('english', content) @@ plainto_tsquery('english', ${queryText})
+        ${topicFilter}
+      ORDER BY ts_rank(to_tsvector('english', content), plainto_tsquery('english', ${queryText})) DESC
+      LIMIT 50
+    )
+    SELECT
+      COALESCE(s.id, k.id) AS id,
+      COALESCE(s.topic_id, k.topic_id) AS "topicId",
+      COALESCE(s.content, k.content) AS content,
+      COALESCE(s.section_key, k.section_key) AS "sectionKey",
+      COALESCE(s.chapter_title, k.chapter_title) AS "chapterTitle",
+      COALESCE(s.section_title, k.section_title) AS "sectionTitle",
+      COALESCE(1.0/(60+s.rank), 0.0) + COALESCE(1.0/(60+k.rank), 0.0) AS score
+    FROM semantic s
+    FULL OUTER JOIN keyword k ON s.id = k.id
+    ORDER BY score DESC
+    LIMIT ${limit}
+  `);
+  return result as unknown as Array<{
+    id: number;
+    topicId: number;
+    content: string;
+    sectionKey: string;
+    chapterTitle: string | null;
+    sectionTitle: string | null;
+    score: number;
+  }>;
 }
 
 // ── Chat Sessions & History ───────────────────────────

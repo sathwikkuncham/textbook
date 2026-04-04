@@ -11,7 +11,10 @@ import {
   appendChatMessage,
   logLearnerSignal,
   findLearnerInsights,
+  hasDocumentChunks,
+  searchChunksBySimilarity,
 } from "@/lib/db/repository";
+import { embedQuery } from "@/lib/embeddings/client";
 import { createChatTutor } from "@/agents/chat-tutor";
 import { createFetchSourceContentTool } from "@/agents/tools/fetch-source-content";
 import { createFetchPreviousSubtopicTool } from "@/agents/tools/fetch-previous-subtopic";
@@ -111,6 +114,34 @@ export async function POST(request: NextRequest) {
     }
   }
 
+  // Semantic context: retrieve relevant source chunks for the user's question
+  let sourceContext = "";
+  if (topicRecord && topicRecord.sourceType !== "topic_only") {
+    const hasChunks = await hasDocumentChunks(topicRecord.id);
+    if (hasChunks) {
+      try {
+        const queryText = selectedText || message;
+        const queryEmbedding = await embedQuery(queryText);
+        const relevantChunks = await searchChunksBySimilarity(
+          topicRecord.id,
+          queryEmbedding,
+          5,
+          0.3
+        );
+        if (relevantChunks.length > 0) {
+          sourceContext = relevantChunks
+            .map(
+              (c) =>
+                `[${c.chapterTitle}${c.sectionTitle ? " > " + c.sectionTitle : ""}]\n${c.content}`
+            )
+            .join("\n\n---\n\n");
+        }
+      } catch (err) {
+        console.warn("[chat] Semantic search failed, continuing without:", err);
+      }
+    }
+  }
+
   // Prepare tools for source-based topics
   let tools;
   let sourceTitle;
@@ -178,13 +209,20 @@ export async function POST(request: NextRequest) {
     fullMessage += `Learner's question: ${message}`;
   }
 
+  // Combine subtopic content with semantically retrieved source material
+  const combinedContent = sourceContext
+    ? subtopicContent.slice(0, 4000) +
+      "\n\n---\nRelevant source material:\n" +
+      sourceContext.slice(0, 4000)
+    : subtopicContent.slice(0, 6000);
+
   // Create the tutor agent
   const tutor = createChatTutor({
     topic: topic ?? "Unknown",
     level: curriculum?.level ?? "intermediate",
     moduleTitle: module?.title ?? "Unknown Module",
     subtopicTitle: subtopic?.title ?? "Unknown Subtopic",
-    subtopicContent: subtopicContent.slice(0, 6000),
+    subtopicContent: combinedContent,
     sourceTitle,
     tools,
     learnerContext,

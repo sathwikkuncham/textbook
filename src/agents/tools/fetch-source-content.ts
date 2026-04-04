@@ -7,6 +7,8 @@ import {
   findCachedPageText,
   cachePageText,
   findTopicBySlug,
+  hasDocumentChunks,
+  getChunksBySection,
 } from "@/lib/db/repository";
 
 /**
@@ -75,10 +77,20 @@ export function createFetchSourceContentTool(
           };
         }
 
-        // Check cache first
+        // Priority 1: Check document_chunks (embedded vectors — cheapest)
+        const chunksExist = await hasDocumentChunks(topicId);
+        if (chunksExist) {
+          const chunks = await getChunksBySection(topicId, sectionKey);
+          if (chunks.length > 0) {
+            const text = chunks.map((c) => c.content).join("\n\n");
+            return { text, source: sectionKey, cached: true, retrieval: "vector" };
+          }
+        }
+
+        // Priority 2: Check sourcePageCache
         const cached = await findCachedPageText(topicId, sectionKey);
         if (cached) {
-          return { text: cached, source: sectionKey, cached: true };
+          return { text: cached, source: sectionKey, cached: true, retrieval: "cache" };
         }
 
         // Extract based on source type
@@ -124,7 +136,7 @@ export function createFetchSourceContentTool(
           text
         );
 
-        return { text, source: sectionKey, cached: false };
+        return { text, source: sectionKey, cached: false, retrieval: "gemini" };
       } catch (err) {
         return {
           error: err instanceof Error ? err.message : "Fetch failed",
