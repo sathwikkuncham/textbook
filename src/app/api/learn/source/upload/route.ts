@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { supabase, STORAGE_BUCKET } from "@/lib/supabase/client";
 import { generateSlug } from "@/lib/types/learning";
 import { findTopicBySlug, createTopic, updatePipelinePhase } from "@/lib/db/repository";
+import { deriveTopicName } from "@/agents/topic-namer";
 
 export async function POST(request: NextRequest) {
   const formData = await request.formData();
@@ -20,7 +21,23 @@ export async function POST(request: NextRequest) {
   }
 
   const providedSlug = formData.get("slug") as string | null;
-  const topicSlug = providedSlug || generateSlug(topic);
+  let topicSlug: string;
+  let displayName: string;
+
+  if (providedSlug) {
+    topicSlug = providedSlug;
+    displayName = topic;
+  } else {
+    // Derive a clean, concise topic name — same as URL and topic-only flows
+    const { name: derivedName, category: _category } = await deriveTopicName(
+      topic,
+      level || "intermediate",
+      goal || "general understanding"
+    );
+    topicSlug = generateSlug(derivedName);
+    displayName = derivedName;
+  }
+
   const fileName = `${topicSlug}/${Date.now()}-${file.name}`;
 
   const buffer = Buffer.from(await file.arrayBuffer());
@@ -43,7 +60,7 @@ export async function POST(request: NextRequest) {
   if (!topicRecord) {
     topicRecord = await createTopic({
       slug: topicSlug,
-      displayName: topic,
+      displayName: displayName,
       level: level || "intermediate",
       goal: goal || "general understanding",
       timeCommitment: timeCommitment || "standard",

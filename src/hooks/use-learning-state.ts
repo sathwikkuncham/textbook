@@ -263,7 +263,7 @@ export function useLearningState() {
         const researchRes = await fetch("/api/learn/research", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ topic, level, goal, timeCommitment }),
+          body: JSON.stringify({ topic, slug: topicSlug, level, goal, timeCommitment }),
         });
         if (!researchRes.ok) throw new Error("Research failed");
         const researchData = await researchRes.json();

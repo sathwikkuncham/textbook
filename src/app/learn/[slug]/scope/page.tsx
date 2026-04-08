@@ -187,6 +187,7 @@ export default function ScopeReviewPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           topic: topicName,
+          slug,
           level: topicInfo.level,
           goal: topicInfo.goal,
         }),

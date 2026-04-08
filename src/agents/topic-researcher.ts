@@ -1,7 +1,7 @@
 import { LlmAgent, GOOGLE_SEARCH } from "@google/adk";
 import { MODELS } from "./models";
 
-export function createFoundationsResearcher(topic: string, level: string, goal: string) {
+export function createFoundationsResearcher(topic: string, level: string, goal: string, interviewContext?: string) {
   return new LlmAgent({
     name: "FoundationsResearcher",
     model: MODELS.FLASH,
@@ -13,6 +13,7 @@ export function createFoundationsResearcher(topic: string, level: string, goal: 
 Research the fundamentals, first principles, concept dependency graph, prerequisites, and common misconceptions for: **${topic}**
 
 The learner's knowledge level is **${level}** and their goal is **${goal}**.
+${interviewContext ? `\n## Learner Profile (from intake interview)\n\n${interviewContext}\n\nUse this profile to focus your research on the learner's specific interests and adjust depth to their prior knowledge.` : ""}
 
 ## Research Process
 
@@ -49,7 +50,7 @@ Use Google Search to gather current, accurate information. Do not rely solely on
   });
 }
 
-export function createApplicationsResearcher(topic: string, level: string, goal: string) {
+export function createApplicationsResearcher(topic: string, level: string, goal: string, interviewContext?: string) {
   return new LlmAgent({
     name: "ApplicationsResearcher",
     model: MODELS.FLASH,
@@ -61,6 +62,7 @@ export function createApplicationsResearcher(topic: string, level: string, goal:
 Research real-world applications, practical examples, the best analogies, canonical worked examples, and high-quality learning resources for: **${topic}**
 
 The learner's knowledge level is **${level}** and their goal is **${goal}**.
+${interviewContext ? `\n## Learner Profile (from intake interview)\n\n${interviewContext}\n\nUse this profile to focus your research on the learner's specific interests and adjust depth to their prior knowledge.` : ""}
 
 ## Research Focus
 

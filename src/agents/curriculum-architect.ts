@@ -9,17 +9,17 @@ interface SourceContext {
 
 export function createCurriculumArchitect(
   topic: string,
-  level: string,
   goal: string,
-  timeCommitment: string,
+  interviewContext: string,
   source?: SourceContext
 ) {
-  const moduleGuidance =
-    timeCommitment === "quick"
-      ? "Design 2-3 modules for a quick overview (~30-60 minutes total)."
-      : timeCommitment === "deep"
-        ? "Design 7-10+ modules for a comprehensive deep dive (8+ hours total)."
-        : "Design 4-6 modules for a standard learning experience (2-4 hours total).";
+  const moduleGuidance = `Read the learner's profile below and determine the appropriate scope:
+- If they want a quick overview or have very limited time: Design 2-3 modules (~30-60 minutes total).
+- If they want standard depth or moderate time: Design 4-6 modules (~2-4 hours total).
+- If they want deep/exhaustive study or have unlimited time: Design 7-10+ modules (8+ hours total).
+- If they are studying a large source text chapter-by-chapter: Scale modules proportionally to content.
+
+Use your judgment based on the full learner profile, not just time alone.`;
 
   const sourceGuidance = source
     ? `
@@ -58,9 +58,11 @@ CRITICAL RULES for source-based curriculum:
 ## Your Task
 
 Design a complete learning curriculum for: **${topic}**
-Learner level: **${level}**
 Learning goal: **${goal}**
-Time commitment: **${timeCommitment}**
+
+## Learner Profile (from intake interview)
+
+${interviewContext}
 
 ${moduleGuidance}
 ${sourceGuidance}
@@ -95,7 +97,7 @@ Return ONLY a valid JSON object (no markdown, no code fences, no explanation) wi
 {
   "topic": "${topic}",
   "topic_slug": "topic-slug-here",
-  "level": "${level}",
+  "level": "inferred from learner profile",
   "goal": "${goal}",
   "estimated_total_minutes": 240,
   "modules": [

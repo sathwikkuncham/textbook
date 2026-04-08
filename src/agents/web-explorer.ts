@@ -6,7 +6,7 @@ import { createReadURLTool } from "./tools/read-url";
  * Web Explorer agent — discovers and caches content from a URL and its linked pages.
  * Used during topic discovery for URL-based sources.
  */
-export function createWebExplorer(topicId: number, startingUrl: string) {
+export function createWebExplorer(topicId: number, startingUrl: string, focusAreas?: string[]) {
   return new LlmAgent({
     name: "WebExplorer",
     model: MODELS.FLASH,
@@ -34,6 +34,7 @@ export function createWebExplorer(topicId: number, startingUrl: string) {
 - Skip media files, downloads, and non-HTML links
 - If a linked page is behind a paywall or requires authentication, note it but don't fail
 - Stop exploring if content becomes clearly off-topic
+${focusAreas?.length ? `\n## Learner Focus Areas\n\nThe learner is specifically interested in: ${focusAreas.join(", ")}.\nPrioritize links and content related to these areas. Deprioritize content that is clearly unrelated to these interests.` : ""}
 
 ## Output Format
 

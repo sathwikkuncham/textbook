@@ -11,6 +11,7 @@ import {
   appendChatMessage,
   logLearnerSignal,
   findLearnerInsights,
+  findLearnerIntent,
   hasDocumentChunks,
   searchChunksBySimilarity,
 } from "@/lib/db/repository";
@@ -20,6 +21,7 @@ import { createFetchSourceContentTool } from "@/agents/tools/fetch-source-conten
 import { createFetchPreviousSubtopicTool } from "@/agents/tools/fetch-previous-subtopic";
 import { streamAgentText } from "@/agents/runner";
 import { generateSlug } from "@/lib/types/learning";
+import { formatInterviewForAgent } from "@/lib/interview-context";
 
 export const maxDuration = 120;
 
@@ -171,19 +173,28 @@ export async function POST(request: NextRequest) {
   // Fetch learner model for personalized tutoring
   let learnerContext: string | undefined;
   if (topicRecord) {
+    const contextParts: string[] = [];
+
+    // Original interview intent
+    const learnerIntent = await findLearnerIntent(topicRecord.id);
+    if (learnerIntent) {
+      contextParts.push(formatInterviewForAgent(learnerIntent as Record<string, unknown>));
+    }
+
+    // Learned insights from quiz/chat analysis
     const insights = await findLearnerInsights(topicRecord.id);
     if (insights) {
       const weakAreas = insights.weakAreas as string[];
       const style = insights.learningStyle as Record<string, unknown>;
       const engagement = insights.engagementProfile as Record<string, unknown>;
-      learnerContext = [
-        weakAreas.length > 0 ? `Weak areas: ${weakAreas.join(", ")}` : null,
-        style?.preferredApproach ? `Preferred learning approach: ${style.preferredApproach}` : null,
-        style?.paceCategory ? `Learning pace: ${style.paceCategory}` : null,
-        style?.helpSeekingPattern ? `Help-seeking pattern: ${style.helpSeekingPattern}` : null,
-        engagement?.chatFrequency ? `Chat engagement: ${engagement.chatFrequency}` : null,
-      ].filter(Boolean).join("\n");
+      if (weakAreas.length > 0) contextParts.push(`Weak areas: ${weakAreas.join(", ")}`);
+      if (style?.preferredApproach) contextParts.push(`Preferred learning approach: ${style.preferredApproach}`);
+      if (style?.paceCategory) contextParts.push(`Learning pace: ${style.paceCategory}`);
+      if (style?.helpSeekingPattern) contextParts.push(`Help-seeking pattern: ${style.helpSeekingPattern}`);
+      if (engagement?.chatFrequency) contextParts.push(`Chat engagement: ${engagement.chatFrequency}`);
     }
+
+    learnerContext = contextParts.length > 0 ? contextParts.join("\n") : undefined;
   }
 
   // Build the chat message with context

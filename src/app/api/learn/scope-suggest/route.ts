@@ -3,8 +3,10 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import {
   findTopicBySlug,
   findSourceStructure,
+  findLearnerIntent,
 } from "@/lib/db/repository";
 import { generateSlug } from "@/lib/types/learning";
+import { formatInterviewForAgent } from "@/lib/interview-context";
 
 const genAI = new GoogleGenerativeAI(
   process.env.GOOGLE_GENAI_API_KEY ?? ""
@@ -31,6 +33,11 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  const learnerIntent = await findLearnerIntent(topicRecord.id);
+  const interviewContext = learnerIntent
+    ? formatInterviewForAgent(learnerIntent as Record<string, unknown>)
+    : null;
+
   const structure = await findSourceStructure(topicRecord.id);
   if (!structure) {
     return NextResponse.json(
@@ -49,8 +56,7 @@ export async function POST(request: NextRequest) {
 
   const prompt = `You are an expert learning advisor. A learner wants to study "${toc.title}" by ${toc.author ?? "unknown"}.
 
-Their level: ${level ?? "beginner"}
-Their goal: ${goal ?? "general understanding"}
+${interviewContext ? `Learner profile:\n${interviewContext}` : `Their level: ${level ?? "beginner"}\nTheir goal: ${goal ?? "general understanding"}`}
 
 Here is the table of contents:
 ${chapterList}

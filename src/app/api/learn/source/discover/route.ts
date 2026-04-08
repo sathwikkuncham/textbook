@@ -8,6 +8,7 @@ import {
   findSourceStructure,
   saveSourceStructure,
   updatePipelinePhase,
+  findLearnerIntent,
 } from "@/lib/db/repository";
 import { generateSlug } from "@/lib/types/learning";
 import type { SourceToc, PageCalibration } from "@/lib/types/learning";
@@ -60,7 +61,11 @@ export async function POST(request: NextRequest) {
   if (topicRecord.sourceType === "url") {
     // URL-based discovery using WebExplorer agent
     try {
-      const explorer = createWebExplorer(topicRecord.id, topicRecord.sourcePath);
+      const learnerIntent = await findLearnerIntent(topicRecord.id);
+      const focusAreas = learnerIntent
+        ? (learnerIntent as Record<string, unknown>).focusAreas as string[] | undefined
+        : undefined;
+      const explorer = createWebExplorer(topicRecord.id, topicRecord.sourcePath, focusAreas ?? undefined);
       const agentResult = await runAgent(
         explorer,
         `Explore ${topicRecord.sourcePath} and build a comprehensive site map. Read the main page, follow relevant links, and cache all content.`

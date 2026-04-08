@@ -11,12 +11,13 @@ import {
 import { createResearchPipeline } from "@/agents/pipelines/research-pipeline";
 import { runAgent } from "@/agents/runner";
 import { deriveTopicName } from "@/agents/topic-namer";
+import { formatInterviewForAgent } from "@/lib/interview-context";
 
 export const maxDuration = 120;
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
-  const { topic, level, goal, timeCommitment, learnerIntent } = body;
+  const { topic, slug: providedSlug, level, goal, timeCommitment, learnerIntent } = body;
 
   if (!topic || !level || !goal) {
     return NextResponse.json(
@@ -25,21 +26,30 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  // Derive a clean topic name and category from the raw user input
-  const { name: derivedName, category } = await deriveTopicName(topic, level, goal);
-  const topicSlug = generateSlug(derivedName);
+  // If a slug is provided, find the existing topic directly.
+  // Otherwise derive a clean topic name for first-time creation.
+  let topicSlug: string;
+  let topicRecord = providedSlug
+    ? await findTopicBySlug(providedSlug)
+    : null;
 
-  let topicRecord = await findTopicBySlug(topicSlug);
-  if (!topicRecord) {
-    topicRecord = await createTopic({
-      slug: topicSlug,
-      displayName: derivedName,
-      level,
-      goal,
-      timeCommitment: timeCommitment ?? "standard",
-      category,
-    });
-    await updatePipelinePhase(topicRecord.id, "created");
+  if (topicRecord) {
+    topicSlug = providedSlug!;
+  } else {
+    const { name: derivedName, category } = await deriveTopicName(topic, level, goal);
+    topicSlug = generateSlug(derivedName);
+    topicRecord = await findTopicBySlug(topicSlug);
+    if (!topicRecord) {
+      topicRecord = await createTopic({
+        slug: topicSlug,
+        displayName: derivedName,
+        level,
+        goal,
+        timeCommitment: timeCommitment ?? "standard",
+        category,
+      });
+      await updatePipelinePhase(topicRecord.id, "created");
+    }
   }
 
   // Save learner intent if provided
@@ -60,11 +70,15 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const pipeline = createResearchPipeline(topic, level, goal);
+    const interviewContext = learnerIntent
+      ? formatInterviewForAgent(learnerIntent as Record<string, unknown>)
+      : undefined;
+
+    const pipeline = createResearchPipeline(topic, level, goal, interviewContext);
 
     const result = await runAgent(
       pipeline,
-      `Research the topic "${topic}" thoroughly. The learner is at ${level} level with the goal of ${goal}. Provide comprehensive research findings.`
+      `Research the topic "${topic}" thoroughly. Provide comprehensive research findings.`
     );
 
     let foundations = null;

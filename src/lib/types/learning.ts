@@ -260,10 +260,22 @@ export interface ScopingInput {
 }
 
 export function generateSlug(topic: string): string {
-  return topic
+  let slug = topic
     .toLowerCase()
     .replace(/[^a-z0-9\s-]/g, "")
     .replace(/\s+/g, "-")
     .replace(/-+/g, "-")
     .trim();
+
+  // Truncate at word boundary to fit varchar(255) with margin
+  const MAX_SLUG_LENGTH = 200;
+  if (slug.length > MAX_SLUG_LENGTH) {
+    slug = slug.slice(0, MAX_SLUG_LENGTH);
+    const lastHyphen = slug.lastIndexOf("-");
+    if (lastHyphen > MAX_SLUG_LENGTH / 2) {
+      slug = slug.slice(0, lastHyphen);
+    }
+  }
+
+  return slug;
 }

@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { generateSlug } from "@/lib/types/learning";
 import type { SourceType, LearnerIntentProfile } from "@/lib/types/learning";
 import { useInterview } from "@/hooks/use-interview";
+import { deriveDisplayLevel, deriveDisplayTimeCommitment } from "@/lib/interview-context";
 
 const SOURCE_TABS: Array<{
   value: SourceType;
@@ -100,20 +101,13 @@ export function NewTopicForm() {
     setInputValue("");
   };
 
-  const deriveLevel = (profile: LearnerIntentProfile): string => {
-    const depth = (profile.desiredDepth ?? "").toLowerCase();
-    const prior = (profile.priorKnowledge ?? "").toLowerCase();
-    if (depth.includes("overview") || prior.includes("none") || prior.includes("beginner")) return "beginner";
-    if (depth.includes("deep") || depth.includes("exhaust") || depth.includes("expert")) return "advanced";
-    return "intermediate";
-  };
-
   const handleConfirmAndStart = async () => {
     if (!interview.profile || isPipelineRunning) return;
 
     setIsPipelineRunning(true);
     setFormError(null);
-    const derivedLevel = deriveLevel(interview.profile);
+    const derivedLevel = deriveDisplayLevel(interview.profile);
+    const derivedTimeCommitment = deriveDisplayTimeCommitment(interview.profile);
     const topicName = topic.trim();
     const goal = interview.profile.purpose || "general understanding";
 
@@ -130,6 +124,8 @@ export function NewTopicForm() {
     try {
       if (sourceType === "pdf" && sourceFile) {
         // PDF flow: upload → interview save → discover → scope page
+        let pdfSlug = slug;
+
         if (!existingState?.hasSourceStructure) {
           if (!existingState) {
             setPipelinePhase("Uploading PDF...");
@@ -138,7 +134,7 @@ export function NewTopicForm() {
             formData.append("topic", topicName);
             formData.append("level", derivedLevel);
             formData.append("goal", goal);
-            formData.append("timeCommitment", "standard");
+            formData.append("timeCommitment", derivedTimeCommitment);
             formData.append("sourceType", "pdf");
 
             const uploadRes = await fetch("/api/learn/source/upload", {
@@ -147,6 +143,7 @@ export function NewTopicForm() {
             });
             const uploadData = await uploadRes.json();
             if (!uploadData.success) throw new Error(uploadData.error);
+            pdfSlug = uploadData.topicSlug;
 
             await fetch("/api/learn/interview", {
               method: "PUT",
@@ -162,13 +159,13 @@ export function NewTopicForm() {
           const discoverRes = await fetch("/api/learn/source/discover", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ topic: topicName }),
+            body: JSON.stringify({ topic: topicName, slug: pdfSlug }),
           });
           const discoverData = await discoverRes.json();
           if (!discoverData.success) throw new Error(discoverData.error);
         }
 
-        router.push(`/learn/${slug}/scope`);
+        router.push(`/learn/${pdfSlug}/scope`);
       } else if (sourceType === "url") {
         // URL flow: research → set-source → discover → scope page
         let derivedSlug = slug;
@@ -182,7 +179,7 @@ export function NewTopicForm() {
               topic: topicName,
               level: derivedLevel,
               goal,
-              timeCommitment: "standard",
+              timeCommitment: derivedTimeCommitment,
               learnerIntent: interview.profile,
             }),
           });
@@ -233,7 +230,7 @@ export function NewTopicForm() {
             topic: topicName,
             level: derivedLevel,
             goal,
-            timeCommitment: "standard",
+            timeCommitment: derivedTimeCommitment,
             learnerIntent: interview.profile,
           }),
         });
@@ -253,7 +250,7 @@ export function NewTopicForm() {
             slug: topicSlug,
             level: derivedLevel,
             goal,
-            timeCommitment: "standard",
+            timeCommitment: derivedTimeCommitment,
           }),
         });
         const currData = await currRes.json();

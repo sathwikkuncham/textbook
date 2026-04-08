@@ -7,10 +7,11 @@ import {
 export function createResearchPipeline(
   topic: string,
   level: string,
-  goal: string
+  goal: string,
+  interviewContext?: string
 ) {
-  const foundationsResearcher = createFoundationsResearcher(topic, level, goal);
-  const applicationsResearcher = createApplicationsResearcher(topic, level, goal);
+  const foundationsResearcher = createFoundationsResearcher(topic, level, goal, interviewContext);
+  const applicationsResearcher = createApplicationsResearcher(topic, level, goal, interviewContext);
 
   return new ParallelAgent({
     name: "ResearchPipeline",

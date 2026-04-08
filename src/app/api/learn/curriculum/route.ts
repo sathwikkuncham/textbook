@@ -13,6 +13,7 @@ import {
 } from "@/lib/db/repository";
 import { createCurriculumArchitect } from "@/agents/curriculum-architect";
 import { runAgent } from "@/agents/runner";
+import { formatInterviewForAgent } from "@/lib/interview-context";
 
 export const maxDuration = 60;
 
@@ -72,24 +73,22 @@ export async function POST(request: NextRequest) {
     // Fetch learner intent for adaptive curriculum design
     const learnerIntent = await findLearnerIntent(topicRecord.id);
 
+    const interviewContext = learnerIntent
+      ? formatInterviewForAgent(learnerIntent as Record<string, unknown>)
+      : `Purpose: ${goal}`;
+
     const architect = createCurriculumArchitect(
       topic,
-      level,
       goal,
-      timeCommitment,
+      interviewContext,
       sourceContext
     );
 
     const researchContext = JSON.stringify(research, null, 2);
 
-    // Include learner intent in the message if available
-    const intentContext = learnerIntent
-      ? `\n\nLearner Profile (from intake interview):\n${JSON.stringify(learnerIntent, null, 2).replace(/[{}]/g, "")}\n\nAdapt the curriculum to this learner's specific needs, depth, and focus areas.`
-      : "";
-
     const result = await runAgent(
       architect,
-      `Design a curriculum for "${topic}". Here is the research context:\n\n${researchContext}${intentContext}`
+      `Design a curriculum for "${topic}". Here is the research context:\n\n${researchContext}`
     );
 
     let curriculum: Curriculum;
