@@ -44,14 +44,36 @@ export async function extractPDFWithGemini(
 export async function discoverPDFStructure(
   buffer: Buffer
 ): Promise<string> {
-  const prompt = `Analyze this PDF document. Focus on the Table of Contents, Preface, and Introduction.
+  const { PDFDocument } = await import("pdf-lib");
+  const sourcePdf = await PDFDocument.load(buffer);
+  const totalPages = sourcePdf.getPageCount();
 
+  // For large PDFs, extract only the front matter (first 60 pages)
+  // which contains the TOC, preface, and enough to discover structure.
+  // Gemini has a 1000-page PDF input limit.
+  let discoveryBuffer: Buffer;
+  if (totalPages > 200) {
+    const extractedPdf = await PDFDocument.create();
+    const pagesToExtract = Math.min(60, totalPages);
+    const copiedPages = await extractedPdf.copyPages(
+      sourcePdf,
+      Array.from({ length: pagesToExtract }, (_, i) => i)
+    );
+    copiedPages.forEach((page) => extractedPdf.addPage(page));
+    const extractedBytes = await extractedPdf.save();
+    discoveryBuffer = Buffer.from(extractedBytes);
+  } else {
+    discoveryBuffer = buffer;
+  }
+
+  const prompt = `Analyze this PDF document. Focus on the Table of Contents, Preface, and Introduction.
+${totalPages > 200 ? `\nNOTE: This is the first 60 pages of a ${totalPages}-page document, extracted for TOC discovery. The full document has ${totalPages} pages total. Use the TOC to determine chapter boundaries for the ENTIRE book.\n` : ""}
 Extract the complete document structure and return ONLY valid JSON (no markdown, no code fences):
 
 {
   "title": "Book Title",
   "author": "Author Name(s)",
-  "totalPages": 289,
+  "totalPages": ${totalPages},
   "chapters": [
     {
       "id": "ch1",
@@ -74,7 +96,7 @@ Extract the complete document structure and return ONLY valid JSON (no markdown,
     "anchors": [
       { "printedPage": 1, "pdfIndex": 1 }
     ],
-    "totalPdfPages": 289
+    "totalPdfPages": ${totalPages}
   },
   "notes": "Any observations"
 }
@@ -87,7 +109,7 @@ CRITICAL INSTRUCTIONS:
 5. If sections have no page numbers in the TOC, estimate based on chapter boundaries
 6. If there is no formal TOC, extract chapter titles from the document structure`;
 
-  return extractPDFWithGemini(buffer, prompt);
+  return extractPDFWithGemini(discoveryBuffer, prompt);
 }
 
 /**
@@ -99,6 +121,31 @@ export async function extractPDFSection(
   sectionTitle: string,
   pageHint?: { start: number; end: number }
 ): Promise<string> {
+  const { PDFDocument } = await import("pdf-lib");
+  const sourcePdf = await PDFDocument.load(buffer);
+  const totalPages = sourcePdf.getPageCount();
+
+  // For large PDFs with a page hint, extract only the relevant pages
+  // plus a small margin. This avoids sending the full book to Gemini
+  // for each section and stays under the 1000-page API limit.
+  let sectionBuffer: Buffer;
+  if (pageHint && totalPages > 200) {
+    const extractedPdf = await PDFDocument.create();
+    // Add margin of 5 pages on each side for context
+    const startPage = Math.max(0, pageHint.start - 5);
+    const endPage = Math.min(totalPages - 1, pageHint.end + 5);
+    const pageIndices = Array.from(
+      { length: endPage - startPage + 1 },
+      (_, i) => startPage + i
+    );
+    const copiedPages = await extractedPdf.copyPages(sourcePdf, pageIndices);
+    copiedPages.forEach((page) => extractedPdf.addPage(page));
+    const extractedBytes = await extractedPdf.save();
+    sectionBuffer = Buffer.from(extractedBytes);
+  } else {
+    sectionBuffer = buffer;
+  }
+
   const pageContext = pageHint
     ? `The section is expected around pages ${pageHint.start}-${pageHint.end} (printed page numbers).`
     : "";
@@ -113,7 +160,7 @@ Return the full text of this section, preserving:
 
 Do NOT summarize. Return the actual content from the book for this section.`;
 
-  return extractPDFWithGemini(buffer, prompt);
+  return extractPDFWithGemini(sectionBuffer, prompt);
 }
 
 // ── URL Extraction via Gemini urlContext ─────────────────

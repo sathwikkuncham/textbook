@@ -1,7 +1,9 @@
-import { ParallelAgent } from "@google/adk";
 import { createContentComposer } from "../content-composer";
-import { createDiagramSpecialist } from "../diagram-specialist";
 
+/**
+ * @deprecated Content generation is now handled directly in the content route
+ * with inline evaluation and revision. This pipeline wrapper is no longer used.
+ */
 export function createContentPipeline(
   topic: string,
   level: string,
@@ -9,23 +11,11 @@ export function createContentPipeline(
   subtopicsList: string,
   researchContext: string
 ) {
-  const contentComposer = createContentComposer(
+  return createContentComposer(
     topic,
     level,
     moduleTitle,
     subtopicsList,
     researchContext
   );
-
-  const diagramSpecialist = createDiagramSpecialist(
-    topic,
-    moduleTitle,
-    subtopicsList
-  );
-
-  return new ParallelAgent({
-    name: "ContentPipeline",
-    description: "Runs content composer and diagram specialist in parallel",
-    subAgents: [contentComposer, diagramSpecialist],
-  });
 }

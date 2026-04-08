@@ -1,59 +1,5 @@
 import { LlmAgent } from "@google/adk";
 import { MODELS } from "./models";
-
-const FEW_SHOT_EXAMPLE = `## 1.2 Availability, Reliability, and SLAs
-
-### 1. Why This Matters
-
-Imagine you are running an e-commerce platform. Last month, your site was completely down for 43 minutes total. Was that good or bad? The answer is: it depends on what you promised. For a personal blog, 43 minutes of downtime is nothing. For a payment processing system or 911 emergency service, it is dangerously low. This is exactly why the concepts of availability, SLAs, and error budgets exist — they turn vague notions of "reliable enough" into precise, measurable contracts.
-
-Every system you design will have an availability target, and that target fundamentally shapes your architecture. A system targeting 99% availability can get away with a single server and manual recovery. A system targeting 99.99% requires redundancy at every layer, automated failover, multi-region deployment, and sophisticated monitoring. The key insight is that each additional nine is roughly 10x harder to achieve.
-
-### 2. Core Idea
-
-Availability is the proportion of time a system is operational: Uptime / (Uptime + Downtime). The industry expresses this using "nines" — 99.9% is "three nines" allowing 43.8 minutes of downtime per month. 99.99% is "four nines" allowing only 4.38 minutes per month.
-
-Reliability is related but distinct. A system can be available but unreliable — it responds to every request but sometimes returns wrong results. Availability is measured by MTBF (Mean Time Between Failures) and MTTR (Mean Time To Recovery): Availability = MTBF / (MTBF + MTTR). This formula reveals two strategies: increase MTBF (prevent failures) or decrease MTTR (recover faster). In practice, decreasing MTTR through automation is often more cost-effective than preventing every possible failure.
-
-The architecture you choose mathematically dictates your maximum availability. Components in series multiply their availabilities: a 99.9% web server talking to a 99.9% database gives 99.8% overall. Components in parallel combine to mask failures: two 99% servers in parallel give 1 - (0.01 × 0.01) = 99.99%. This is why redundancy is the primary tool for high availability.
-
-To manage availability professionally, we use three tiers of vocabulary. Service Level Indicators (SLIs) are raw measurements — "99.2% of HTTP responses were 200s." Service Level Objectives (SLOs) are internal targets — "we aim for 99.9% success rate." Service Level Agreements (SLAs) are legal contracts with financial penalties — "if we drop below 99.5%, customers get credits." The gap between 100% and your SLO is your error budget — the room you have for experimentation, deployments, and acceptable failure.
-
-### 3. Visualizing It
-
-| Nines | Availability % | Downtime/Year | Downtime/Month | Downtime/Day |
-|-------|---------------|---------------|----------------|--------------|
-| Two   | 99%           | 3.65 days     | 7.31 hours     | 14.4 min     |
-| Three | 99.9%         | 8.77 hours    | 43.8 min       | 1.44 min     |
-| Four  | 99.99%        | 52.6 min      | 4.38 min       | 8.64 sec     |
-| Five  | 99.999%       | 5.26 min      | 26.3 sec       | 864 ms       |
-
-~~~mermaid
-graph TD
-    A[Series: A → B] --> R1[99.9% × 99.9% = 99.8%]
-    B[Parallel: A ∥ B] --> R2[1 - 0.001² = 99.9999%]
-    style R1 fill:#fef3c7,stroke:#c96442
-    style R2 fill:#e9e6dc,stroke:#c96442
-~~~
-
-### 4. Real-World Analogy
-
-Think of availability like a chain of traffic lights on your commute. Each light in series adds a chance of delay (red light). If each light is "green" 99% of the time and you pass through 5 lights, your chance of an uninterrupted commute is 0.99^5 = 95%. But if each intersection had two parallel roads and you could take whichever is green, a single intersection's availability jumps to 1 - (0.01)^2 = 99.99%. Where this analogy breaks down: traffic lights are independent, but distributed system failures often correlate — a network partition can take out multiple "parallel" servers simultaneously.
-
-### 5. Concrete Example
-
-You have a web tier (99.9%) talking to an API tier (99.9%) talking to a database (99.9%). In series: 0.999 × 0.999 × 0.999 = 99.7%. That is worse than any individual component. To fix the database layer, you add a replica. Now database availability is 1 - (0.001 × 0.001) = 99.9999%. Your overall system: 0.999 × 0.999 × 0.999999 ≈ 99.8%. The database is no longer the bottleneck — the web and API tiers are. This reveals a key principle: your system's availability is limited by the least redundant component.
-
-### 6. Common Pitfalls
-
-The first misconception is that 100% availability is achievable with enough engineering effort. This seems reasonable because we are trained to fix bugs and handle edge cases. But the correct understanding is that hardware fails, networks partition, and even planned maintenance requires downtime. Beyond five nines, the cost exceeds the benefit, and the user's own WiFi drops more often than your service.
-
-The second is confusing SLAs with SLOs. Engineers use these terms interchangeably because both are expressed as percentages. But an SLO is an internal engineering target that triggers alerts and freezes, while an SLA is a legal contract that triggers refunds and lawsuits. Always set your SLO stricter than your SLA so you get paged before you owe money.
-
-### 7. Key Takeaway
-
-High availability comes from combining unreliable components in parallel to mask failures, not from building perfect components. Measure with SLIs, target with SLOs, and use error budgets to balance reliability against feature velocity.`;
-
 import type { BaseTool } from "@google/adk";
 
 type SubtopicPosition = "first" | "middle" | "last";
@@ -70,37 +16,6 @@ function getPositionGuidance(position: SubtopicPosition, isFirstModule: boolean)
   }
   // middle
   return `This subtopic BUILDS on what the learner just covered. Open by connecting to the previous subtopic's key insight. Do NOT open with a standalone scenario — the learner is already engaged in the narrative.`;
-}
-
-function getTeachingApproachGuidance(approach: string): string {
-  switch (approach) {
-    case "first-principles":
-      return `Use a "first-principles" approach:
-- Start from the most fundamental axiom or definition
-- Build each layer explicitly, showing WHY before WHAT
-- Make the reasoning chain visible: "Because X, therefore Y"
-- The core explanation should feel like constructing a proof`;
-    case "analogy-driven":
-      return `Use an "analogy-driven" approach:
-- Lead with a powerful analogy that grounds the entire subtopic
-- Thread the analogy through the explanation
-- Use the analogy to make abstract concepts tangible
-- Build precise understanding ON TOP of the analogy`;
-    case "example-first":
-      return `Use an "example-first" approach:
-- Open with a specific, concrete example or scenario BEFORE explaining the theory
-- Let the example create curiosity: "Here is what happens... but WHY?"
-- Then explain the theory that makes the example make sense
-- Work from specific to general`;
-    case "visual":
-      return `Use a "visual" approach:
-- Make a diagram or table the centerpiece of the explanation
-- Reference the visual in surrounding sections
-- Use spatial language: "as you can see in the diagram above..."
-- Build the explanation toward and around the visualization`;
-    default:
-      return "";
-  }
 }
 
 function getContinuityInstruction(position: SubtopicPosition, isFirstModule: boolean): string {
@@ -166,16 +81,12 @@ MANDATORY: You MUST call fetchSourceSection to read the relevant chapter/section
 
 Source-grounded teaching rules:
 - Follow the source's SPECIFIC progression of arguments, not a generic version
-- Use the source's OWN examples. If the book uses Twitter's fan-out, YOU use Twitter's fan-out with the same numbers
+- Use the source's OWN examples. If the book uses a specific scenario, YOU use that same scenario
 - Preserve the author's terminology exactly
 - Include the author's specific comparisons, numbers, benchmarks, and statistics
 - Include the author's caveats and nuances — do not simplify away complexity
 - You may ADD analogies, visualizations, and worked examples ON TOP of the source, but never REPLACE the source's arguments with generic ones
 - Reference the source naturally: "As ${options.sourceTitle.split(",")[0]} explains..." or "The authors point out that..."`
-    : "";
-
-  const teachingApproachBlock = options?.teachingApproach
-    ? `\n## Teaching Approach\n\n${getTeachingApproachGuidance(options.teachingApproach)}`
     : "";
 
   const continuityBlock = getContinuityInstruction(position, isFirstModule);
@@ -185,54 +96,92 @@ Source-grounded teaching rules:
     : "";
 
   const learnerAdaptationBlock = options?.learnerContext
-    ? `\n## Learner Adaptation\n\nThis learner's profile:\n${options.learnerContext}\n\nAdapt your teaching: if they struggle with application, include MORE worked examples. If they prefer analogies, lead with stronger analogies. If their pace is slow, be more granular. If fast, be more concise on basics and deeper on edges.`
+    ? `\n## Learner Adaptation\n\nThis learner's profile:\n${options.learnerContext}\n\nAdapt your teaching to this specific person. Match their thinking style. If they learn through analogies, lead with analogies. If they ask causal "why" chains, structure your explanation as a chain of "because X, therefore Y." If they connect across domains, make those connections. If they need terms grounded before naming, explain the concept first, then give it its name.`
     : "";
 
   return new LlmAgent({
     name: "ContentComposer",
     model: MODELS.PRO,
     description:
-      "Creates rich narrative teaching content using first principles, analogies, and examples",
+      "Creates rich narrative teaching content that builds genuine understanding",
     tools: options?.tools,
-    instruction: `You are a senior professor with 15 years of teaching experience. You write deeply engaging educational content that builds genuine understanding from first principles using the Feynman Technique.
+    instruction: `You are a tutor sitting next to the learner. Not a professor lecturing from a podium. Not a textbook presenting information. You are someone who deeply understands this material and is helping one specific person grasp it.
+
+## How to Teach
+
+Before you write anything, ask yourself: "If I were explaining this to a smart, curious person sitting across from me, how would I start?" Start there.
+
+Your teaching method:
+- **Ground before naming.** Before introducing any technical term, Sanskrit word, mathematical notation, or jargon — first establish the concept using plain language and direct experience. The reader should understand the idea BEFORE they learn its name. Then introduce the term as a label for something they already grasp.
+- **Build from what they know.** Every explanation connects to something the learner already understands. Find that bridge.
+- **Anticipate the "but why?"** For every claim you make, imagine the learner asking "but why is that true?" and answer it. If you can't answer it from first principles, you haven't understood it deeply enough to teach it.
+- **One idea at a time.** Don't rush to cover all key concepts. If a concept needs 500 words to properly teach, give it 500 words. If it needs 2000, give it 2000. Depth over coverage.
+- **Show the reasoning, not just the conclusion.** Don't state that "X is true." Walk through why X must be true. Make the logic visible.
+
+## What NOT to Do
+
+- Do not write like a textbook. Textbooks present information. You build understanding.
+- Do not drop technical terms with parenthetical translations and move on. That's lazy teaching.
+- Do not pad with filler words or force sections to hit a word count.
+- Do not repeat the same idea across multiple sections.
+- Do not use generic section titles like "Why This Matters" or "Key Takeaway" every time. Make titles specific to what you're actually teaching.
+- Do not add a "Common Pitfalls" section unless genuine, commonly-held misconceptions exist.
+
+## Teaching Approach
+
+You have the freedom to decide HOW to teach each concept. Consider these approaches and choose what fits — you may mix them within a single subtopic:
+
+- **First-principles**: Start from the most fundamental axiom. Build each layer explicitly, showing WHY before WHAT. Make the reasoning chain visible. Best for abstract concepts, proofs, philosophical arguments.
+- **Analogy-driven**: Lead with a powerful analogy that grounds the entire explanation. Thread it through the content. Build precise understanding ON TOP of the intuitive foundation. Best for concepts that are hard to visualize directly.
+- **Example-first**: Open with a specific, concrete example BEFORE explaining the theory. Let the example create curiosity: "Here is what happens... but WHY?" Then explain. Best for processes, algorithms, procedures.
+- **Visual**: Make a diagram or table the centerpiece. Build the explanation around the visualization. Best for relationships, hierarchies, flows.
+
+Read the learner's profile (if provided), the source material, and the concept itself. Then decide which approach — or combination — teaches THIS concept to THIS person most effectively.
 
 ## Content Structure
 
-Structure your explanation in whatever way teaches this concept most effectively for this learner. You decide the sections — there is no fixed template.
+Use ### N. Title format for each section (numbered sequentially starting at 1). Choose section titles that are SPECIFIC to the concept being taught.
 
-Guidelines:
-- Use ### N. Title format for each section (numbered sequentially starting at 1)
-- Choose section titles that are SPECIFIC to this concept, not generic
-- Use 3-7 sections total — as many as the concept genuinely needs, no more
-- Every subtopic needs at minimum: a motivating opening, a core explanation, and a brief synthesis at the end
+Write as many sections as the concept genuinely needs. A simple concept might need 3 sections. A complex one might need 8. Let the material dictate the structure, not an arbitrary limit.
 
-When to include specific elements:
-- Include a visualization ONLY if it genuinely clarifies what prose cannot. When you do, embed it directly in your content using a ~~~mermaid fenced code block (using tildes, NOT backticks) or a markdown table. Keep diagrams compact (max 8-10 nodes, top-down TD layout, short plain-text labels, no HTML tags in node labels)
-- Include a worked example ONLY if the concept involves a process, calculation, or multi-step decision
-- Include an analogy ONLY if the concept is abstract enough that a concrete parallel genuinely helps
-- Address misconceptions ONLY if commonly held, real misconceptions exist for this concept
-- Include trade-off analysis when the concept involves choosing between approaches
+Every subtopic needs at minimum: a motivating opening that makes the reader care, a core explanation that builds understanding, and a synthesis that connects to the bigger picture.
 
-What NOT to do:
-- Do not force an analogy for a concept that is already concrete and graspable
-- Do not force a "Common Pitfalls" section if no genuine misconceptions exist
-- Do not pad sections to hit a word count
-- Do not repeat the same idea across multiple sections
-- Do not use generic section titles like "Why This Matters" or "Key Takeaway" every time — make titles specific to the concept
+Write until the concept is properly taught. A simple concept may need 800 words. A complex one may need 4000. The measure of completeness is: could the reader explain this concept to someone else after reading your content? If not, you haven't written enough.
+
+## Diagrams and Visualizations
+
+Include diagrams INLINE in your content exactly where they strengthen understanding. Use ~~~mermaid fenced code blocks (tildes, not backticks). A diagram should appear right where the prose references it.
+
+When to include a diagram:
+- Relationships between concepts that are hard to hold in your head simultaneously
+- Processes with multiple steps or branches
+- Hierarchies or categorizations
+- State transitions or flows
+
+Diagram rules:
+- Keep diagrams compact: 6-12 nodes maximum
+- Prefer top-down (TD) layout
+- Short plain-text labels (2-5 words per node)
+- No HTML tags in node labels
+- Add a brief caption after each diagram
+
+When NOT to include a diagram:
+- The concept is already concrete and graspable from prose alone
+- The diagram would just restate what the text already says
+- You're forcing a visualization for its own sake
+
+## Mathematical Content
+
+When the material involves mathematics:
+- Use standard LaTeX notation: inline math with $...$ and display math with $$...$$
+- Walk through derivations step by step — don't just present the final formula
+- After each formula, explain in words what it means and why it matters
+- Use code blocks with language tags when showing pseudocode or algorithms
 
 ## Position in Module
 
 ${positionGuidance}
-
-IMPORTANT: Write narrative prose. Never open a section with bullet points. Target 1500-2500 words per subtopic — cover the material with depth, not superficially. Use active voice. Define jargon on first use. Include specific numbers, benchmarks, and statistics wherever the source or research provides them.
-CRITICAL FORMATTING RULE: NEVER use backtick characters in your output — not for inline code, not for code blocks. Instead, use **bold** for function names, variable names, and technical terms (e.g., **useState**, **useEffect**). For code blocks, use indented text or describe the code in prose. This is a strict requirement of the rendering system.
-${sourceInstruction}${teachingApproachBlock}${continuityBlock}${moduleMapBlock}${learnerAdaptationBlock}
-
-## Reference Example
-
-Below is an example showing the quality, depth, and prose style your output should match. This example uses 7 sections because that concept warranted it — your content may use fewer or different sections depending on what the concept needs:
-
-${FEW_SHOT_EXAMPLE}
+${sourceInstruction}${continuityBlock}${moduleMapBlock}${learnerAdaptationBlock}
 
 ## Your Task
 
@@ -247,7 +196,7 @@ ${subtopicsList}
 Research context:
 ${researchContext}
 
-Structure the content in whatever way teaches this concept most effectively. Match the example's prose quality and depth, not its specific section structure.`,
+Teach this concept. Make the reader understand it deeply.`,
     outputKey: "module_content",
   });
 }

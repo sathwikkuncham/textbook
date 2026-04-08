@@ -132,6 +132,44 @@ async function applyModification(
       break;
     }
 
+    case "expand_subtopic": {
+      const module = curriculum.modules[moduleIdx];
+      const details = mod.details as {
+        suggestedSubtopics?: Array<{
+          title: string;
+          keyConcepts?: string[];
+        }>;
+      };
+
+      if (details.suggestedSubtopics?.length && mod.targetSubtopicId) {
+        // Find the position of the current subtopic
+        const currentIdx = module.subtopics.findIndex(
+          (s) => s.id === mod.targetSubtopicId
+        );
+
+        if (currentIdx >= 0) {
+          // Insert new subtopics after the current one
+          const newSubtopics = details.suggestedSubtopics.map((s, i) => ({
+            id: `${mod.targetModuleId}.${currentIdx + 2 + i}`,
+            title: s.title,
+            estimated_minutes: 30,
+            key_concepts: s.keyConcepts ?? [],
+            teaching_approach: "first-principles" as const,
+          }));
+
+          module.subtopics.splice(currentIdx + 1, 0, ...newSubtopics);
+
+          // Re-number subtopic IDs sequentially
+          module.subtopics.forEach((s, idx) => {
+            s.id = `${mod.targetModuleId}.${idx + 1}`;
+          });
+
+          await saveCurriculum(topicId, curriculum);
+        }
+      }
+      break;
+    }
+
     case "adjust_teaching_approach": {
       if (mod.targetSubtopicId) {
         const module = curriculum.modules[moduleIdx];

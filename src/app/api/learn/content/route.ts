@@ -13,53 +13,19 @@ import {
   findLearnerInsights,
   findLearnerIntent,
   getLatestVersionNumber,
+  getRecentObservations,
 } from "@/lib/db/repository";
 import { createContentComposer } from "@/agents/content-composer";
 import { createContentEvaluator } from "@/agents/content-evaluator";
-import { createDiagramSpecialist } from "@/agents/diagram-specialist";
 import { createFetchSourceContentTool } from "@/agents/tools/fetch-source-content";
 import { createFetchPreviousSubtopicTool } from "@/agents/tools/fetch-previous-subtopic";
+import { createFetchResearchContextTool } from "@/agents/tools/fetch-research-context";
+import { createSignalSubtopicExpansionTool } from "@/agents/tools/signal-subtopic-expansion";
 import { runAgent } from "@/agents/runner";
 import { embedGeneratedContent } from "@/lib/embeddings/pipeline";
 import type { BaseTool } from "@google/adk";
 
-async function evaluateContentAsync(
-  topicId: number, moduleId: number, subtopicId: string, subtopicTitle: string,
-  dbKey: number, content: string, position: "first" | "middle" | "last", level: string
-) {
-  const evaluator = createContentEvaluator(topicId, subtopicTitle, position, level);
-  const evalResult = await runAgent(
-    evaluator,
-    `Evaluate this teaching content for subtopic "${subtopicTitle}":\n\n${content}`
-  );
-
-  try {
-    const cleaned = evalResult.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
-    const evaluation = JSON.parse(cleaned);
-
-    const existingEvals = await getContentEvaluations(topicId, dbKey);
-    const attempt = existingEvals.length + 1;
-
-    await saveContentEvaluation({
-      topicId, moduleId, subtopicId, dbKey, attempt,
-      clarityScore: evaluation.clarityScore ?? 0,
-      completenessScore: evaluation.completenessScore ?? 0,
-      continuityScore: evaluation.continuityScore ?? null,
-      exampleQualityScore: evaluation.exampleQualityScore ?? 0,
-      accuracyScore: evaluation.accuracyScore ?? 0,
-      overallScore: evaluation.overallScore ?? 0,
-      verdict: evaluation.verdict ?? "pass",
-      issues: evaluation.issues ?? [],
-      suggestions: evaluation.suggestions ?? [],
-    });
-
-    console.log(`[content-eval] ${subtopicId}: score ${evaluation.overallScore}/100 — ${evaluation.verdict}`);
-  } catch {
-    console.warn(`[content-eval] Failed to parse evaluation for ${subtopicId}`);
-  }
-}
-
-export const maxDuration = 180;
+export const maxDuration = 300;
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
@@ -203,6 +169,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Research context tool — agent can pull full research on demand
+    tools.push(createFetchResearchContextTool(topicRecord.id));
+
+    // Subtopic expansion tool — agent can signal when scope is too broad
+    tools.push(createSignalSubtopicExpansionTool(topicRecord.id, moduleId, subtopic.id));
+
     // Fetch learner model + intent for adaptive content
     const contextParts: string[] = [];
 
@@ -228,6 +200,14 @@ export async function POST(request: NextRequest) {
       if (style?.helpSeekingPattern) contextParts.push(`Help-seeking: ${style.helpSeekingPattern}`);
     }
 
+    // Learner observations from chat interactions
+    const observations = await getRecentObservations(topicRecord.id, 25);
+    if (observations.length > 0) {
+      contextParts.push(
+        `\nLearning pattern observations (from chat interactions):\n${observations.map((o) => `- ${o.observation}`).join("\n")}`
+      );
+    }
+
     const learnerContext = contextParts.length > 0 ? contextParts.join("\n") : undefined;
 
     const contentComposer = createContentComposer(
@@ -249,45 +229,61 @@ export async function POST(request: NextRequest) {
       }
     );
 
-    const diagramSpecialist = createDiagramSpecialist(
-      topic,
-      module.title,
-      subtopicDesc
-    );
-
     const contentMessage = position === "first"
-      ? `Write comprehensive, in-depth teaching content for this ONE subtopic only. Give it a full page of depth — this is the only subtopic the learner will read right now.\n\nModule: ${module.title}\nSubtopic: ${subtopicDesc}\n\nStructure the content in whatever way teaches this concept most effectively. Use ### N. Title format for sections.`
-      : `Write comprehensive, in-depth teaching content for this ONE subtopic only. Build naturally on what the learner has already covered in this module.\n\nModule: ${module.title}\nSubtopic: ${subtopicDesc}\n\nUse the fetchPreviousSubtopic tool to read previous subtopics for context and continuity. Structure the content in whatever way teaches this concept most effectively. Use ### N. Title format for sections.`;
+      ? `Teach this subtopic. This is the only subtopic the learner will read right now — give it the depth it deserves.\n\nModule: ${module.title}\nSubtopic: ${subtopicDesc}\n\nInclude diagrams inline wherever they genuinely help understanding.`
+      : `Teach this subtopic. Build naturally on what the learner has already covered.\n\nModule: ${module.title}\nSubtopic: ${subtopicDesc}\n\nUse the fetchPreviousSubtopic tool to read previous subtopics for context and continuity. Include diagrams inline wherever they genuinely help understanding.`;
 
     const feedbackSuffix = feedback
       ? `\n\nIMPORTANT — The learner requested this content be regenerated with this feedback: "${feedback}". Address their concerns in the new version.`
       : "";
     const finalContentMessage = contentMessage + feedbackSuffix;
 
-    const diagramMessage = `Create a Mermaid diagram for this subtopic:\n${subtopicDesc}`;
+    // Pass 1: Generate content (diagrams included inline by the same agent)
+    let finalContent = await runAgent(contentComposer, finalContentMessage);
 
-    const [initialContent, diagramResult] = await Promise.all([
-      runAgent(contentComposer, finalContentMessage),
-      runAgent(diagramSpecialist, diagramMessage),
-    ]);
+    // Pass 2: Synchronous evaluation — if issues found, revise once
+    try {
+      const evaluator = createContentEvaluator(topicRecord.id, subtopic.title, position as "first" | "middle" | "last", curriculum.level);
+      const evalResult = await runAgent(evaluator, `Evaluate this teaching content for subtopic "${subtopic.title}":\n\n${finalContent}`);
+      const evalCleaned = evalResult.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
+      const evaluation = JSON.parse(evalCleaned);
 
-    // Save content immediately — don't block the user
-    await saveModuleContent(topicRecord.id, dbKey, initialContent, diagramResult, !!forceRegenerate, feedback ?? null);
+      if (evaluation.overallScore < 75 && evaluation.issues?.length > 0) {
+        // Revision pass — feed specific issues back to the composer
+        const revisionMessage = `Your previous version of this content was evaluated and needs improvement.\n\nIssues found:\n${evaluation.issues.map((i: string) => `- ${i}`).join("\n")}\n\nSuggestions:\n${(evaluation.suggestions ?? []).map((s: string) => `- ${s}`).join("\n")}\n\nHere is your previous content:\n\n${finalContent}\n\nRevise it to address these issues. Keep what works, fix what doesn't.`;
+        finalContent = await runAgent(contentComposer, revisionMessage);
+      }
+
+      // Log evaluation (fire-and-forget)
+      const existingEvals = await getContentEvaluations(topicRecord.id, dbKey);
+      const attempt = existingEvals.length + 1;
+      saveContentEvaluation({
+        topicId: topicRecord.id, moduleId, subtopicId: subtopic.id, dbKey, attempt,
+        clarityScore: evaluation.clarityScore ?? 0,
+        completenessScore: evaluation.completenessScore ?? 0,
+        continuityScore: evaluation.continuityScore ?? null,
+        exampleQualityScore: evaluation.exampleQualityScore ?? 0,
+        accuracyScore: evaluation.accuracyScore ?? 0,
+        overallScore: evaluation.overallScore ?? 0,
+        verdict: evaluation.verdict ?? "unknown",
+        issues: evaluation.issues ?? [],
+        suggestions: evaluation.suggestions ?? [],
+      }).catch(console.error);
+    } catch {
+      // Evaluation failed — proceed with first pass content
+      console.warn("[content] Evaluation/revision pass failed, using first pass");
+    }
+
+    // Save final content (diagrams are inline, pass empty string for legacy diagrams column)
+    await saveModuleContent(topicRecord.id, dbKey, finalContent, "", !!forceRegenerate, feedback ?? null);
 
     // Embed content for semantic search (fire-and-forget)
     embedGeneratedContent(
-      topicRecord.id, dbKey, initialContent,
+      topicRecord.id, dbKey, finalContent,
       topic, module.title, subtopic.title
     ).catch((err) => {
       console.warn("[content] Embedding failed:", err);
     });
-
-    // Run quality evaluation asynchronously (fire-and-forget)
-    // Scores are logged for analytics; regeneration happens only via explicit user request
-    evaluateContentAsync(
-      topicRecord.id, moduleId, subtopic.id, subtopic.title, dbKey,
-      initialContent, position as "first" | "middle" | "last", curriculum.level
-    ).catch(console.error);
 
     return NextResponse.json({
       success: true,
@@ -295,8 +291,8 @@ export async function POST(request: NextRequest) {
       topicId: topicRecord.id,
       moduleId,
       subtopicId: subtopic.id,
-      content: initialContent,
-      diagrams: diagramResult,
+      content: finalContent,
+      diagrams: "",
       hasPreviousVersion: !!forceRegenerate,
       currentVersion: await getLatestVersionNumber(topicRecord.id, dbKey),
     });

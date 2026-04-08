@@ -88,7 +88,7 @@ For each subtopic define:
 - Specific concepts it covers
 - Key concepts list
 - Estimated learning time (10-30 minutes per subtopic)
-- Teaching approach: "first-principles" | "analogy-driven" | "example-first" | "visual"
+- Do NOT specify a teaching approach — the content agent will decide how to teach each concept based on the learner and the material
 
 ## Output Format
 

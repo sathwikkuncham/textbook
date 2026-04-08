@@ -1,5 +1,8 @@
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
+import "katex/dist/katex.min.css";
 import { cn } from "@/lib/utils";
 import { MermaidDiagram } from "@/components/ui/mermaid-diagram";
 
@@ -32,7 +35,7 @@ export function ChatMessage({ role, content, isStreaming }: ChatMessageProps) {
         ) : (
           <div className="prose-sm">
             <ReactMarkdown
-              remarkPlugins={[remarkGfm]}
+              remarkPlugins={[remarkGfm, remarkMath]} rehypePlugins={[rehypeKatex]}
               components={{
                 p: ({ children }) => (
                   <p className="mb-2 last:mb-0 leading-relaxed">{children}</p>

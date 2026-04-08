@@ -18,6 +18,7 @@ import {
   learnerSignals,
   contentEvaluations,
   contentVersions,
+  learnerObservations,
 } from "./schema";
 import type {
   Curriculum,
@@ -1163,6 +1164,32 @@ export async function saveContentVersion(data: {
 
 export async function deleteContentVersion(versionId: number) {
   await db.delete(contentVersions).where(eq(contentVersions.id, versionId));
+}
+
+// ── Learner Observations ──────────────────────────────
+
+export async function appendLearnerObservation(data: {
+  topicId: number;
+  moduleId?: number;
+  subtopicId?: string;
+  observation: string;
+}) {
+  await db.insert(learnerObservations).values(data);
+}
+
+export async function getRecentObservations(
+  topicId: number,
+  limit: number = 25
+) {
+  return db
+    .select({
+      observation: learnerObservations.observation,
+      createdAt: learnerObservations.createdAt,
+    })
+    .from(learnerObservations)
+    .where(eq(learnerObservations.topicId, topicId))
+    .orderBy(desc(learnerObservations.createdAt))
+    .limit(limit);
 }
 
 // ── Topic Deletion ────────────────────────────────────

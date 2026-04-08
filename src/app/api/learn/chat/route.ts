@@ -14,6 +14,8 @@ import {
   findLearnerIntent,
   hasDocumentChunks,
   searchChunksBySimilarity,
+  appendLearnerObservation,
+  getRecentObservations,
 } from "@/lib/db/repository";
 import { embedQuery } from "@/lib/embeddings/client";
 import { createChatTutor } from "@/agents/chat-tutor";
@@ -22,6 +24,7 @@ import { createFetchPreviousSubtopicTool } from "@/agents/tools/fetch-previous-s
 import { streamAgentText } from "@/agents/runner";
 import { generateSlug } from "@/lib/types/learning";
 import { formatInterviewForAgent } from "@/lib/interview-context";
+import { extractObservation } from "@/lib/learner-observer";
 
 export const maxDuration = 120;
 
@@ -271,6 +274,30 @@ export async function POST(request: NextRequest) {
             signalType: "chat_action",
             data: { action, selectedText: selectedText?.slice(0, 200) },
           }).catch(console.error);
+        }
+
+        // Extract learner observation from this exchange (fire-and-forget)
+        if (topicId) {
+          (async () => {
+            try {
+              const existing = await getRecentObservations(topicId, 10);
+              const observation = await extractObservation(
+                fullMessage,
+                fullResponse,
+                existing.map((o) => o.observation)
+              );
+              if (observation) {
+                await appendLearnerObservation({
+                  topicId,
+                  moduleId: moduleId ?? undefined,
+                  subtopicId: subtopicId ?? undefined,
+                  observation,
+                });
+              }
+            } catch {
+              // non-critical
+            }
+          })();
         }
 
         controller.enqueue(

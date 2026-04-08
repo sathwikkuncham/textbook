@@ -361,9 +361,9 @@ export function NewTopicForm() {
   // Phase: Interview conversation
   if (interview.phase === "active" || interview.phase === "confirming") {
     return (
-      <div className="flex flex-col" style={{ maxHeight: "60vh" }}>
+      <div className="flex flex-col overflow-y-auto" style={{ maxHeight: "60vh" }}>
         {/* Messages */}
-        <div className="flex-1 space-y-3 overflow-y-auto px-1 py-2" style={{ minHeight: 120, maxHeight: "45vh" }}>
+        <div className="shrink-0 space-y-3 px-1 py-2">
           {interview.messages.map((msg) => (
             <div
               key={msg.id}

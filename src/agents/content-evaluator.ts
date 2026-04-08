@@ -12,9 +12,9 @@ export function createContentEvaluator(
     name: "ContentEvaluator",
     model: MODELS.FLASH,
     description:
-      "Evaluates teaching content quality across clarity, completeness, continuity, examples, and accuracy",
+      "Evaluates teaching content quality — checks both information quality and whether it actually builds understanding",
     tools: [createFetchResearchContextTool(topicId)],
-    instruction: `You are a senior content quality evaluator for educational materials. You evaluate teaching content that was generated for a ${learnerLevel}-level learner.
+    instruction: `You are evaluating teaching content written for a ${learnerLevel}-level learner. Your job is to determine whether this content actually TEACHES or merely PRESENTS INFORMATION.
 
 ## Content Being Evaluated
 
@@ -24,48 +24,50 @@ Position in module: ${position} (${position === "first" ? "opening subtopic" : p
 ## Evaluation Process
 
 1. First, use fetchResearchContext to get the original research findings for accuracy verification.
-2. Then evaluate the content across five dimensions.
+2. Then evaluate across six dimensions.
 
-## Five Evaluation Dimensions
+## Six Evaluation Dimensions
 
 ### 1. Clarity (0-100)
-- Is the prose readable and well-structured?
-- Are concepts explained progressively (simple → complex)?
+- Is the prose readable and conversational (not academic or textbook-like)?
+- Are concepts explained progressively (simple to complex)?
 - Is jargon defined on first use?
-- Are sentences active voice, not passive?
-- Score below 70 if: text is dense/academic, jargon undefined, or explanations jump between difficulty levels
+- Does it use active voice?
+- Score below 70 if: text is dense/academic, jargon undefined, or reads like a reference document
 
-### 2. Completeness (0-100)
+### 2. Understanding (0-100) — THE MOST IMPORTANT DIMENSION
+- Does the content build understanding from scratch, or does it just present information?
+- Are technical terms grounded in plain language BEFORE being named?
+- Would the reader need to ask a follow-up question to understand any paragraph?
+- Does the explanation show the reasoning (WHY), not just the conclusion (WHAT)?
+- Does each concept connect to something the reader already knows?
+- Score below 70 if: terms are dropped with parenthetical translations, conclusions stated without reasoning, or content reads like a textbook summary
+
+### 3. Completeness (0-100)
 - Does the content fully explain the concept from motivation through synthesis?
-- Is there sufficient depth for this learner's stated level?
+- Is there sufficient depth for this learner's level?
 - Are there logical gaps where the explanation jumps over needed steps?
-- Does it include visualization or examples ONLY where they add genuine value (not forced)?
-- Is the total content at least 800 words? (shorter indicates insufficient depth)
-- Does it contain at least one concrete example with specific numbers or a step-by-step walkthrough?
-- Does the opening section provide motivation for WHY this concept matters?
-- Score below 70 if: total content under 800 words, no concrete examples exist, key concepts mentioned but not explained, or logical gaps exist
+- Does the opening section provide motivation?
+- Score below 70 if: key concepts mentioned but not explained, logical gaps exist, or content is superficial
 
-### 3. Continuity (0-100) — only for middle/last positions
-- Does the opening section reference and build on previous subtopics?
+### 4. Continuity (0-100) — only for middle/last positions
+- Does the opening reference and build on previous subtopics?
 - Does it avoid re-explaining concepts covered earlier?
-- Does it use connecting language ("Building on...", "Now that we understand...")?
 - For last position: does it synthesize the module arc?
-- Score below 70 if: opening starts with a standalone scenario for middle/last position (should build on previous), or it re-explains already-covered concepts
+- Score below 70 if: opens standalone for middle/last position, or re-explains already-covered concepts
 - Set to null for first-position subtopics
 
-### 4. Example Quality (0-100)
-- Are worked examples concrete with specific numbers?
-- Do analogies have stated limitations ("where this breaks down")?
-- Are examples relatable to the target learner level?
-- Are analogies and examples included only when they genuinely add value?
-- Score below 70 if: examples are abstract/vague, numbers are generic, or analogies lack limitation statements
+### 5. Example Quality (0-100)
+- Are examples concrete with specific details?
+- Do analogies have stated limitations?
+- Are examples relatable to the target learner?
+- Are diagrams placed where they genuinely help (not forced)?
+- Score below 70 if: examples abstract/vague, analogies without limitation, or forced visualizations
 
-### 5. Accuracy (0-100)
+### 6. Accuracy (0-100)
 - Cross-reference against research context (use fetchResearchContext)
-- Are facts correct?
-- Are claims supported by the research findings?
-- Are misconceptions correctly identified (if any are addressed)?
-- Score below 70 if: any factual error, or content contradicts research findings
+- Are facts correct and claims supported?
+- Score below 70 if: any factual error or contradiction with research
 
 ## Output Format
 
@@ -73,19 +75,20 @@ Return ONLY a valid JSON object (no markdown, no code fences):
 
 {
   "clarityScore": 85,
+  "understandingScore": 78,
   "completenessScore": 90,
   "continuityScore": 75,
   "exampleQualityScore": 80,
   "accuracyScore": 92,
-  "overallScore": 84,
+  "overallScore": 83,
   "verdict": "pass",
-  "issues": ["Continuity: opening does not reference the previous subtopic's key concept"],
-  "suggestions": ["Add a transition that connects to the previous subtopic's key takeaway"]
+  "issues": ["Understanding: Section 3 drops 'Pravritti-Dharma' with a parenthetical translation without grounding the concept first"],
+  "suggestions": ["Explain the concept of engaging-with-the-world vs withdrawing-from-the-world before introducing the Sanskrit term"]
 }
 
 Overall score = average of all applicable dimensions.
-Verdict: "pass" if overallScore >= 70, "needs_improvement" otherwise.
-Issues and suggestions must be SPECIFIC and ACTIONABLE — never generic like "improve clarity."`,
+Verdict: "pass" if overallScore >= 75, "needs_improvement" otherwise.
+Issues and suggestions must be SPECIFIC and ACTIONABLE — cite the exact section and problem.`,
     outputKey: "evaluation",
   });
 }

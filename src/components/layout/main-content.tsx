@@ -5,6 +5,9 @@ import { BookOpen, ChevronLeft, ChevronRight, RefreshCw, History, X, Trash2, Rot
 import { cn } from "@/lib/utils";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
+import "katex/dist/katex.min.css";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { MermaidDiagram } from "@/components/ui/mermaid-diagram";
 import { TextSelectionToolbar } from "@/components/chat/text-selection-toolbar";
@@ -157,7 +160,7 @@ const markdownComponents = {
 
 const MemoizedSectionBody = memo(function MemoizedSectionBody({ markdown }: { markdown: string }) {
   return (
-    <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
+    <ReactMarkdown remarkPlugins={[remarkGfm, remarkMath]} rehypePlugins={[rehypeKatex]} components={markdownComponents}>
       {markdown}
     </ReactMarkdown>
   );
@@ -689,7 +692,7 @@ export function MainContent({
                     )}
                     {previewVersion === v.id && (
                       <div className="mt-3 max-h-60 overflow-y-auto rounded-lg border border-border bg-background p-4 text-sm">
-                        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                        <ReactMarkdown remarkPlugins={[remarkGfm, remarkMath]} rehypePlugins={[rehypeKatex]}>
                           {v.content.slice(0, 2000)}
                         </ReactMarkdown>
                         {v.content.length > 2000 && (

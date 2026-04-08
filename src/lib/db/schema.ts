@@ -310,6 +310,17 @@ export const learnerSignals = pgTable("learner_signals", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
+export const learnerObservations = pgTable("learner_observations", {
+  id: serial("id").primaryKey(),
+  topicId: integer("topic_id")
+    .notNull()
+    .references(() => topics.id, { onDelete: "cascade" }),
+  moduleId: integer("module_id"),
+  subtopicId: varchar("subtopic_id", { length: 20 }),
+  observation: text("observation").notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
 export const contentEvaluations = pgTable("content_evaluations", {
   id: serial("id").primaryKey(),
   topicId: integer("topic_id")
