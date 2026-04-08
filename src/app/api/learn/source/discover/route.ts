@@ -12,7 +12,7 @@ import {
 import { generateSlug } from "@/lib/types/learning";
 import type { SourceToc, PageCalibration } from "@/lib/types/learning";
 
-export const maxDuration = 180;
+export const maxDuration = 300;
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
