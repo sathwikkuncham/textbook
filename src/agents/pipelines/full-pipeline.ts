@@ -6,14 +6,13 @@ export function createLearningPipeline(
   topic: string,
   level: string,
   goal: string,
-  timeCommitment: string
+  interviewContext: string
 ) {
-  const researchPipeline = createResearchPipeline(topic, level, goal);
+  const researchPipeline = createResearchPipeline(topic, level, goal, interviewContext);
   const curriculumArchitect = createCurriculumArchitect(
     topic,
-    level,
     goal,
-    timeCommitment
+    interviewContext
   );
 
   return new SequentialAgent({
