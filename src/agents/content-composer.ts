@@ -164,6 +164,9 @@ Diagram rules:
 - Short plain-text labels (2-5 words per node)
 - No HTML tags in node labels
 - Add a brief caption after each diagram
+- CRITICAL: Use ONLY standard Mermaid ASCII arrow syntax. Valid arrows: --> (directed), --- (undirected), <--> (bidirectional), ==> (thick), -.-> (dotted). NEVER use unicode arrows (→, ←, ⟶, ⟵, ↔, ⇒). They will break the renderer.
+- Node labels with special characters must be quoted: A["Label with special chars"]
+- Subgraph titles must be plain text without special characters
 
 When NOT to include a diagram:
 - The concept is already concrete and graspable from prose alone

@@ -67,6 +67,14 @@ export function PanelLayout({
     [learning, onLeftSidebarOpenChange]
   );
 
+  const handleGenerateModule = useCallback(
+    (moduleId: number) => {
+      learning.generateModule(moduleId);
+      onLeftSidebarOpenChange(false);
+    },
+    [learning, onLeftSidebarOpenChange]
+  );
+
   const activeSubtopicTitle = useMemo(() => {
     if (!learning.curriculum || !learning.activeSubtopicId) return undefined;
     for (const mod of learning.curriculum.modules) {
@@ -167,6 +175,8 @@ export function PanelLayout({
           activeModuleIdForVersions={learning.activeDbKey}
           activeSectionIndex={audioPlayer.isPlaying ? audioPlayer.currentSectionIndex : null}
           audioPlayer={audioPlayer}
+          onGenerateModule={handleGenerateModule}
+          generationProgress={learning.generationProgress}
           quizContent={
             assessment.mode !== "idle"
               ? (() => {
@@ -282,6 +292,12 @@ export function PanelLayout({
             assessment.startQuiz(moduleId);
             onLeftSidebarOpenChange(false);
           }}
+          onGenerateModule={handleGenerateModule}
+          onSelectModule={(moduleId) => {
+            learning.selectModule(moduleId);
+            onLeftSidebarOpenChange(false);
+          }}
+          generationProgress={learning.generationProgress}
         />
       </div>
 

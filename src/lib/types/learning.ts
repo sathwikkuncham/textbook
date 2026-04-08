@@ -86,12 +86,25 @@ export interface Checkpoint {
   question_types: string[];
 }
 
+/** What the curriculum architect produces — orchestrator input */
+export interface ModulePlan {
+  goal: string;
+  concepts: string[];
+  sourceRefs?: string[];
+  prerequisites: string[];
+}
+
 export interface Module {
   id: number;
   title: string;
   estimated_minutes: number;
   description: string;
+  /** Present on new-style modules; orchestrator uses this to generate sections */
+  plan?: ModulePlan;
+  /** Empty until orchestrator runs for new-style modules; pre-filled for legacy */
   subtopics: Subtopic[];
+  /** Whether the orchestrator has generated content for this module */
+  generated?: boolean;
   checkpoint: Checkpoint;
 }
 

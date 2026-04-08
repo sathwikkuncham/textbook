@@ -40,6 +40,14 @@ export function MobileWorkspace({
     [learning]
   );
 
+  const handleGenerateModule = useCallback(
+    (moduleId: number) => {
+      learning.generateModule(moduleId);
+      setActiveTab("learn");
+    },
+    [learning]
+  );
+
   const handleTextSelectionAction = useCallback(
     (action: string, selectedText: string) => {
       setPendingAction({ action, selectedText });
@@ -133,6 +141,12 @@ export function MobileWorkspace({
               assessment.startQuiz(moduleId);
               setActiveTab("learn");
             }}
+            onGenerateModule={handleGenerateModule}
+            onSelectModule={(moduleId) => {
+              learning.selectModule(moduleId);
+              setActiveTab("learn");
+            }}
+            generationProgress={learning.generationProgress}
           />
         </div>
       </div>
@@ -151,6 +165,8 @@ export function MobileWorkspace({
             activeSubtopicId={learning.activeSubtopicId}
             onNavigateSubtopic={learning.navigateToSubtopic}
             quizContent={quizContent}
+            onGenerateModule={handleGenerateModule}
+            generationProgress={learning.generationProgress}
           />
         </div>
       </div>

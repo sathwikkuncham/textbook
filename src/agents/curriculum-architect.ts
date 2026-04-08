@@ -42,10 +42,10 @@ Excluded chapters: ${source.scope.excluded.length > 0 ? source.scope.excluded.jo
 CRITICAL RULES for source-based curriculum:
 1. Each selected chapter should map to AT LEAST one module. Do NOT merge multiple chapters into a single module unless they are very short (under 10 pages each).
 2. Large chapters (30+ pages) should be split into 2-3 modules.
-3. Chapters marked [deep] should get 4-5 subtopics with 25-30 minutes each.
+3. Chapters marked [deep] should list more concepts and reference more sections.
 4. Follow the source document's chapter order — do not reorder unless there is a strong pedagogical reason.
 5. The total number of modules should be proportional to the number of selected chapters. If 12 chapters are selected, expect 10-15 modules minimum.
-6. Each subtopic should map to a specific section or concept range within the chapter.
+6. Each module's sourceRefs should list the specific chapters/sections it draws from.
 7. Time estimates should reflect the actual page count — a 30-page chapter needs at least 60-90 minutes of study time, not 15 minutes.`
     : "";
 
@@ -53,7 +53,7 @@ CRITICAL RULES for source-based curriculum:
     name: "CurriculumArchitect",
     model: MODELS.FLASH,
     description: "Designs optimal learning paths from research output",
-    instruction: `You are an expert instructional designer who creates optimal learning paths. Transform research findings into a carefully sequenced curriculum that respects concept dependencies, builds complexity progressively, and includes meaningful assessment checkpoints.
+    instruction: `You are an expert instructional designer who creates optimal learning paths. Transform research findings into a carefully sequenced curriculum with MODULE PLANS — high-level goals and concept lists that give a content generation agent full agency over how to teach.
 
 ## Your Task
 
@@ -71,24 +71,37 @@ ${sourceGuidance}
 
 The research findings will be provided in the user message. Use them thoroughly to inform your curriculum design.
 
+## CRITICAL: What You Produce
+
+You produce MODULE PLANS, not detailed subtopics. Each module has:
+- A **goal**: what the learner should be able to do/understand after completing this module
+- A **concepts** list: the concepts to cover (unordered — the content agent decides sequencing and pacing)
+- Optional **sourceRefs**: which source chapters/sections to draw from
+- **prerequisites**: which earlier module concepts this module depends on
+
+You do NOT define section boundaries, teaching approaches, or how to split concepts into subtopics. A separate orchestrator agent will generate the actual sections with full agency over pacing, depth, and structure.
+
+## CRITICAL RULE: "From Scratch" Means From Scratch
+
+Even if the learner claims PhD-level expertise or decades of experience, you MUST include ALL foundational concepts in your module plans. The learner's prior knowledge informs:
+- **PACE**: Move through material faster for experienced learners
+- **RIGOR**: Include formal proofs, mathematical depth, advanced nuance
+
+It does NOT mean skipping content. If they said "from scratch," respect that absolutely. An experienced learner reading about algorithms still needs "what is an algorithm" and "what is correctness" — you just teach it at expert pace with formal rigor instead of gentle introduction.
+
+List concepts comprehensively. The orchestrator will decide how deeply to cover each one based on the learner's profile.
+
 ## Module Design Principles
 
 - Group concepts into modules ordered by progressive complexity
-- Each module should have a coherent theme and clear purpose
+- Each module should have a coherent theme and clear purpose — the goal should be specific and testable
 - Begin every module description with why it matters
-- Build from simple to complex within each module
+- Build from simple to complex across modules
 - End every module with a checkpoint assessment (70% pass threshold)
-- Keep modules roughly balanced in scope (2-4 subtopics each)
 - Respect dependency boundaries absolutely — no module should require knowledge from a later module
 - No concept is taught before its prerequisites
-
-## Subtopic Design
-
-For each subtopic define:
-- Specific concepts it covers
-- Key concepts list
-- Estimated learning time (10-30 minutes per subtopic)
-- Do NOT specify a teaching approach — the content agent will decide how to teach each concept based on the learner and the material
+- List concepts generously — it's better to list 8-12 concepts than 3-4. The orchestrator will decide how deeply to cover each one
+- The concepts list is a guide, not a contract. The orchestrator may expand, merge, or reorder concepts as needed during generation
 
 ## Output Format
 
@@ -104,17 +117,16 @@ Return ONLY a valid JSON object (no markdown, no code fences, no explanation) wi
     {
       "id": 1,
       "title": "Module Title",
-      "estimated_minutes": 55,
+      "estimated_minutes": 120,
       "description": "What this module covers and why it matters",
-      "subtopics": [
-        {
-          "id": "1.1",
-          "title": "Subtopic Title",
-          "estimated_minutes": 15,
-          "key_concepts": ["concept1", "concept2"],
-          "teaching_approach": "first-principles"
-        }
-      ],
+      "plan": {
+        "goal": "Specific testable goal — what the learner can do after this module",
+        "concepts": ["concept1", "concept2", "concept3", "concept4", "concept5"],
+        "sourceRefs": ["Chapter 1: Title", "Chapter 2: Title"],
+        "prerequisites": []
+      },
+      "subtopics": [],
+      "generated": false,
       "checkpoint": {
         "type": "quiz",
         "num_questions": 5,
@@ -123,7 +135,9 @@ Return ONLY a valid JSON object (no markdown, no code fences, no explanation) wi
       }
     }
   ]
-}`,
+}
+
+Important: subtopics MUST be an empty array and generated MUST be false. The orchestrator agent will fill these in during content generation.`,
     outputKey: "curriculum",
   });
 }

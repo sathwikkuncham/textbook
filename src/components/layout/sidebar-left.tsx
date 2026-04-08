@@ -8,11 +8,14 @@ import {
   CheckCircle2,
   Loader2,
   ClipboardCheck,
+  Lock,
+  Sparkles,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import type { Curriculum } from "@/lib/types/learning";
+import type { ModuleGenerationProgress } from "@/hooks/use-learning-state";
 import { cn } from "@/lib/utils";
 
 interface CheckpointStatus {
@@ -31,6 +34,9 @@ interface SidebarLeftProps {
   isLoading: boolean;
   onSubtopicClick: (moduleId: number, subtopicId: string) => void;
   onStartQuiz?: (moduleId: number) => void;
+  onGenerateModule?: (moduleId: number) => void;
+  onSelectModule?: (moduleId: number) => void;
+  generationProgress?: ModuleGenerationProgress | null;
 }
 
 export function SidebarLeft({
@@ -43,6 +49,9 @@ export function SidebarLeft({
   isLoading,
   onSubtopicClick,
   onStartQuiz,
+  onGenerateModule,
+  onSelectModule,
+  generationProgress,
 }: SidebarLeftProps) {
   const [expandedModules, setExpandedModules] = useState<Set<number>>(
     new Set([1])
@@ -108,6 +117,16 @@ export function SidebarLeft({
           {curriculum.modules.map((module) => {
             const isExpanded = expandedModules.has(module.id);
             const isLoaded = module.id === loadedModuleId;
+            const isUngenerated = !!module.plan && !module.generated;
+            const isGenerating = generationProgress?.moduleId === module.id
+              && (generationProgress.status === "planning" || generationProgress.status === "generating");
+
+            // Check if this module is locked (previous module not generated yet)
+            const moduleIdx = curriculum.modules.findIndex((m) => m.id === module.id);
+            const prevModule = moduleIdx > 0 ? curriculum.modules[moduleIdx - 1] : null;
+            const isPrevUngenerated = prevModule?.plan && !prevModule?.generated;
+            const isLocked = isUngenerated && isPrevUngenerated && moduleIdx > 0;
+
             const completedCount = module.subtopics.filter((s) =>
               completedSubtopics.has(s.id)
             ).length;
@@ -134,7 +153,13 @@ export function SidebarLeft({
               >
                 {/* Module header */}
                 <button
-                  onClick={() => toggleModule(module.id)}
+                  onClick={() => {
+                    toggleModule(module.id);
+                    // For ungenerated modules, select the module to show plan in main content
+                    if (isUngenerated && !isLocked && onSelectModule) {
+                      onSelectModule(module.id);
+                    }
+                  }}
                   className={cn(
                     "flex w-full items-start gap-2 rounded-lg px-3 py-2.5 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50",
                     isLoaded
@@ -149,7 +174,13 @@ export function SidebarLeft({
                   )}
 
                   {/* Module status icon */}
-                  {cp?.passed ? (
+                  {isGenerating ? (
+                    <Loader2 className="mt-0.5 size-4 shrink-0 animate-spin text-primary" />
+                  ) : isLocked ? (
+                    <Lock className="mt-0.5 size-4 shrink-0 text-muted-foreground/30" />
+                  ) : isUngenerated ? (
+                    <Sparkles className="mt-0.5 size-4 shrink-0 text-primary/60" />
+                  ) : cp?.passed ? (
                     <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-green-600 dark:text-green-400" />
                   ) : completedCount > 0 ? (
                     <div className="relative mt-0.5 flex size-4 shrink-0 items-center justify-center">
@@ -194,94 +225,176 @@ export function SidebarLeft({
                   </div>
 
                   {!isExpanded && (
-                    <span
-                      className={cn(
-                        "mt-0.5 shrink-0 rounded-md px-1.5 py-0.5 text-xs tabular-nums",
-                        cp?.passed
-                          ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
-                          : completedCount > 0
-                            ? "bg-primary/10 text-primary"
-                            : "text-muted-foreground"
-                      )}
-                    >
-                      {completedCount}/{totalCount}
-                    </span>
+                    isUngenerated ? (
+                      isGenerating ? (
+                        <Loader2 className="mt-0.5 size-3.5 shrink-0 animate-spin text-primary" />
+                      ) : (
+                        <span className="mt-0.5 shrink-0 rounded-md bg-primary/10 px-1.5 py-0.5 text-[10px] font-medium text-primary">
+                          {isLocked ? "Locked" : "Ready"}
+                        </span>
+                      )
+                    ) : (
+                      <span
+                        className={cn(
+                          "mt-0.5 shrink-0 rounded-md px-1.5 py-0.5 text-xs tabular-nums",
+                          cp?.passed
+                            ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+                            : completedCount > 0
+                              ? "bg-primary/10 text-primary"
+                              : "text-muted-foreground"
+                        )}
+                      >
+                        {completedCount}/{totalCount}
+                      </span>
+                    )
                   )}
                 </button>
 
                 {/* Expanded content */}
                 {isExpanded && (
                   <div className="overflow-hidden pb-2">
-                    {/* Subtopics */}
-                    <div className="ml-5 overflow-hidden border-l-2 border-sidebar-border pl-2">
-                      {module.subtopics.map((subtopic) => {
-                        const isSubActive =
-                          subtopic.id === activeSubtopicId;
-                        const isCompleted =
-                          completedSubtopics.has(subtopic.id);
-
-                        return (
-                          <button
-                            key={subtopic.id}
-                            onClick={() =>
-                              onSubtopicClick(module.id, subtopic.id)
-                            }
-                            className={cn(
-                              "flex w-full items-start gap-2 overflow-hidden rounded-md px-2.5 py-2 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50",
-                              isSubActive
-                                ? "bg-primary/10 text-foreground font-medium"
-                                : "text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
-                            )}
-                          >
-                            {isCompleted ? (
-                              <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-green-600 dark:text-green-400" />
-                            ) : isSubActive && isLoading ? (
-                              <Loader2 className="mt-0.5 size-4 shrink-0 animate-spin text-primary" />
-                            ) : (
-                              <Circle className="mt-0.5 size-4 shrink-0 text-muted-foreground/30" />
-                            )}
-                            <span className="min-w-0 flex-1 text-sm">
-                              {subtopic.title}
-                            </span>
-                            <span className="mt-0.5 shrink-0 text-xs tabular-nums text-muted-foreground">
-                              {subtopic.estimated_minutes}m
-                            </span>
-                          </button>
-                        );
-                      })}
-                    </div>
-
-                    {/* Checkpoint */}
-                    {(() => {
-                      if (cp?.passed) {
-                        return (
-                          <div className="mx-3 mt-2 flex items-center gap-2 rounded-lg border border-green-200 bg-green-50 px-3 py-2 dark:border-green-800 dark:bg-green-900/20">
-                            <CheckCircle2 className="size-4 shrink-0 text-green-600 dark:text-green-400" />
-                            <span className="text-sm font-medium text-green-700 dark:text-green-400">
-                              Passed ({cp.score}%)
-                            </span>
-                          </div>
-                        );
-                      }
-                      if (allSubtopicsCompleted && onStartQuiz) {
-                        return (
-                          <div className="mx-3 mt-2">
-                            <Button
-                              variant={cp ? "outline" : "default"}
-                              size="sm"
-                              className="w-full gap-2"
-                              onClick={() => onStartQuiz(module.id)}
+                    {/* Ungenerated module — show plan + generate button */}
+                    {isUngenerated && module.plan ? (
+                      <div className="mx-3 space-y-2">
+                        <p className="text-xs leading-relaxed text-muted-foreground">
+                          <span className="font-medium text-foreground/80">Goal:</span>{" "}
+                          {module.plan.goal}
+                        </p>
+                        <div className="flex flex-wrap gap-1">
+                          {module.plan.concepts.slice(0, 8).map((c) => (
+                            <span
+                              key={c}
+                              className="rounded-md bg-muted px-1.5 py-0.5 text-[11px] text-muted-foreground"
                             >
-                              <ClipboardCheck className="size-4" />
-                              {cp
-                                ? `Retry Quiz (${cp.attemptCount})`
-                                : "Take Quiz"}
-                            </Button>
+                              {c}
+                            </span>
+                          ))}
+                          {module.plan.concepts.length > 8 && (
+                            <span className="text-[11px] text-muted-foreground/60">
+                              +{module.plan.concepts.length - 8} more
+                            </span>
+                          )}
+                        </div>
+
+                        {isGenerating && generationProgress ? (
+                          <div className="space-y-1.5 rounded-lg border border-primary/20 bg-primary/5 p-2.5">
+                            <div className="flex items-center gap-2">
+                              <Loader2 className="size-3.5 animate-spin text-primary" />
+                              <span className="text-xs font-medium text-primary">
+                                {generationProgress.status === "planning"
+                                  ? "Planning sections..."
+                                  : `Generating section ${generationProgress.currentSection}${generationProgress.totalEstimate > 0 ? ` of ~${generationProgress.totalEstimate}` : ""}...`}
+                              </span>
+                            </div>
+                            {generationProgress.currentSectionTitle && (
+                              <p className="text-xs text-muted-foreground">
+                                {generationProgress.currentSectionTitle}
+                              </p>
+                            )}
+                            {generationProgress.completedSections.length > 0 && (
+                              <div className="mt-1 space-y-0.5">
+                                {generationProgress.completedSections.map((s, i) => (
+                                  <div key={i} className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                                    <CheckCircle2 className="size-3 text-green-600 dark:text-green-400" />
+                                    {s.title}
+                                  </div>
+                                ))}
+                              </div>
+                            )}
                           </div>
-                        );
-                      }
-                      return null;
-                    })()}
+                        ) : isLocked ? (
+                          <div className="flex items-center gap-2 rounded-lg border border-border bg-muted/30 px-3 py-2">
+                            <Lock className="size-3.5 text-muted-foreground/50" />
+                            <span className="text-xs text-muted-foreground/60">
+                              Complete the previous module first
+                            </span>
+                          </div>
+                        ) : onGenerateModule ? (
+                          <Button
+                            variant="default"
+                            size="sm"
+                            className="w-full gap-2"
+                            onClick={() => onGenerateModule(module.id)}
+                          >
+                            <Sparkles className="size-3.5" />
+                            Generate Module
+                          </Button>
+                        ) : null}
+                      </div>
+                    ) : (
+                      <>
+                        {/* Subtopics — shown for generated modules */}
+                        <div className="ml-5 overflow-hidden border-l-2 border-sidebar-border pl-2">
+                          {module.subtopics.map((subtopic) => {
+                            const isSubActive =
+                              subtopic.id === activeSubtopicId;
+                            const isCompleted =
+                              completedSubtopics.has(subtopic.id);
+
+                            return (
+                              <button
+                                key={subtopic.id}
+                                onClick={() =>
+                                  onSubtopicClick(module.id, subtopic.id)
+                                }
+                                className={cn(
+                                  "flex w-full items-start gap-2 overflow-hidden rounded-md px-2.5 py-2 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50",
+                                  isSubActive
+                                    ? "bg-primary/10 text-foreground font-medium"
+                                    : "text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
+                                )}
+                              >
+                                {isCompleted ? (
+                                  <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-green-600 dark:text-green-400" />
+                                ) : isSubActive && isLoading ? (
+                                  <Loader2 className="mt-0.5 size-4 shrink-0 animate-spin text-primary" />
+                                ) : (
+                                  <Circle className="mt-0.5 size-4 shrink-0 text-muted-foreground/30" />
+                                )}
+                                <span className="min-w-0 flex-1 text-sm">
+                                  {subtopic.title}
+                                </span>
+                                <span className="mt-0.5 shrink-0 text-xs tabular-nums text-muted-foreground">
+                                  {subtopic.estimated_minutes}m
+                                </span>
+                              </button>
+                            );
+                          })}
+                        </div>
+
+                        {/* Checkpoint */}
+                        {(() => {
+                          if (cp?.passed) {
+                            return (
+                              <div className="mx-3 mt-2 flex items-center gap-2 rounded-lg border border-green-200 bg-green-50 px-3 py-2 dark:border-green-800 dark:bg-green-900/20">
+                                <CheckCircle2 className="size-4 shrink-0 text-green-600 dark:text-green-400" />
+                                <span className="text-sm font-medium text-green-700 dark:text-green-400">
+                                  Passed ({cp.score}%)
+                                </span>
+                              </div>
+                            );
+                          }
+                          if (allSubtopicsCompleted && onStartQuiz) {
+                            return (
+                              <div className="mx-3 mt-2">
+                                <Button
+                                  variant={cp ? "outline" : "default"}
+                                  size="sm"
+                                  className="w-full gap-2"
+                                  onClick={() => onStartQuiz(module.id)}
+                                >
+                                  <ClipboardCheck className="size-4" />
+                                  {cp
+                                    ? `Retry Quiz (${cp.attemptCount})`
+                                    : "Take Quiz"}
+                                </Button>
+                              </div>
+                            );
+                          }
+                          return null;
+                        })()}
+                      </>
+                    )}
                   </div>
                 )}
               </div>

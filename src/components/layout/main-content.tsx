@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef, useMemo, memo, useState, useEffect } from "react";
-import { BookOpen, ChevronLeft, ChevronRight, RefreshCw, History, X, Trash2, RotateCcw } from "lucide-react";
+import { BookOpen, ChevronLeft, ChevronRight, RefreshCw, History, X, Trash2, RotateCcw, Sparkles, Loader2, CheckCircle2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -13,8 +13,8 @@ import { MermaidDiagram } from "@/components/ui/mermaid-diagram";
 import { TextSelectionToolbar } from "@/components/chat/text-selection-toolbar";
 import { AudioPlayButton, AudioProgressBar } from "@/components/ui/audio-player";
 import { LearningRecommendations } from "@/components/ui/learning-recommendations";
-import type { LearningPhase } from "@/hooks/use-learning-state";
-import type { Curriculum } from "@/lib/types/learning";
+import type { LearningPhase, ModuleGenerationProgress } from "@/hooks/use-learning-state";
+import type { Curriculum, Module } from "@/lib/types/learning";
 import type { useAudioPlayer } from "@/hooks/use-audio-player";
 
 // ── Section splitting ──────────────────────────────────────
@@ -199,6 +199,173 @@ interface MainContentProps {
   activeModuleIdForVersions?: number | null;
   topicId?: number | null;
   onCurriculumChange?: () => void;
+  onGenerateModule?: (moduleId: number) => void;
+  generationProgress?: ModuleGenerationProgress | null;
+}
+
+function ModulePlanView({
+  module,
+  onGenerate,
+  generationProgress,
+}: {
+  module: Module;
+  onGenerate?: () => void;
+  generationProgress?: ModuleGenerationProgress | null;
+}) {
+  const isGenerating = generationProgress?.moduleId === module.id
+    && (generationProgress.status === "planning" || generationProgress.status === "generating");
+  const hasError = generationProgress?.moduleId === module.id && generationProgress?.status === "error";
+
+  // During generation: progress is the hero. Plan info is minimal context at top.
+  if ((isGenerating || hasError) && generationProgress && module.plan) {
+    return (
+      <div className="flex h-full flex-col items-center justify-center px-4 py-8">
+        <div className="w-full max-w-lg">
+          {/* Compact module context */}
+          <p className="text-center text-xs font-medium uppercase tracking-wider text-muted-foreground">
+            Module {module.id}
+          </p>
+          <h2 className="mt-1 text-center font-serif text-lg font-bold tracking-tight text-foreground">
+            {module.title}
+          </h2>
+
+          {/* Progress — the hero */}
+          {hasError ? (
+            <div className="mt-8 rounded-xl border border-destructive/20 bg-destructive/5 p-5 text-center">
+              <p className="text-sm text-destructive">{generationProgress.error}</p>
+              {onGenerate && (
+                <button
+                  onClick={onGenerate}
+                  className="mt-4 rounded-lg bg-primary px-5 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+                >
+                  Retry
+                </button>
+              )}
+            </div>
+          ) : (
+            <div className="mt-8">
+              {/* Current activity */}
+              <div className="flex flex-col items-center">
+                <div className="flex size-12 items-center justify-center rounded-full bg-primary/10">
+                  <Loader2 className="size-5 animate-spin text-primary" />
+                </div>
+                <p className="mt-3 text-sm font-medium text-foreground">
+                  {generationProgress.status === "planning"
+                    ? "Planning sections..."
+                    : `Writing section ${generationProgress.currentSection}${generationProgress.totalEstimate > 0 ? ` of ~${generationProgress.totalEstimate}` : ""}`}
+                </p>
+                {generationProgress.currentSectionTitle && generationProgress.status !== "planning" && (
+                  <p className="mt-1 text-center text-sm text-muted-foreground">
+                    {generationProgress.currentSectionTitle}
+                  </p>
+                )}
+              </div>
+
+              {/* Completed sections — visual stepper */}
+              {generationProgress.completedSections.length > 0 && (
+                <div className="mt-8 space-y-0">
+                  {generationProgress.completedSections.map((s, i) => (
+                    <div key={i} className="flex items-center gap-3 py-2.5">
+                      <div className="flex size-6 shrink-0 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30">
+                        <CheckCircle2 className="size-3.5 text-green-600 dark:text-green-400" />
+                      </div>
+                      <span className="min-w-0 flex-1 text-sm text-foreground/80">{s.title}</span>
+                      <span className="shrink-0 rounded-full bg-muted px-2 py-0.5 text-[11px] tabular-nums text-muted-foreground">
+                        {Math.round(s.score)}%
+                      </span>
+                    </div>
+                  ))}
+                  {/* Current section placeholder */}
+                  <div className="flex items-center gap-3 py-2.5">
+                    <div className="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary/10">
+                      <Loader2 className="size-3 animate-spin text-primary" />
+                    </div>
+                    <span className="min-w-0 flex-1 text-sm text-muted-foreground">
+                      {generationProgress.currentSectionTitle || "Planning..."}
+                    </span>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  // Pre-generation: show plan and generate button
+  if (!module.plan) return null;
+
+  const timeDisplay = module.estimated_minutes >= 60
+    ? `${Math.floor(module.estimated_minutes / 60)}h ${module.estimated_minutes % 60 > 0 ? `${module.estimated_minutes % 60}m` : ""}`
+    : `${module.estimated_minutes}m`;
+
+  return (
+    <div className="flex h-full flex-col items-center justify-center px-4 py-8">
+      <div className="w-full max-w-lg">
+        {/* Module header */}
+        <p className="text-center text-xs font-medium uppercase tracking-wider text-muted-foreground">
+          Module {module.id} <span className="mx-1 text-border">/</span> {timeDisplay}
+        </p>
+        <h1 className="mt-2 text-center font-serif text-2xl font-bold tracking-tight text-foreground md:text-3xl">
+          {module.title}
+        </h1>
+        <p className="mt-2 text-center text-sm leading-relaxed text-muted-foreground">
+          {module.description}
+        </p>
+
+        {/* Generate button — THE hero */}
+        {onGenerate && (
+          <div className="mt-8">
+            <button
+              onClick={onGenerate}
+              className="group flex w-full items-center justify-center gap-2.5 rounded-xl bg-primary px-6 py-3.5 text-sm font-medium text-primary-foreground shadow-sm transition-all hover:bg-primary/90 hover:shadow-[var(--shadow-glow-red)]"
+            >
+              <Sparkles className="size-4 transition-transform group-hover:scale-110" />
+              Generate This Module
+            </button>
+          </div>
+        )}
+
+        {/* Plan details — below the fold, secondary info */}
+        <div className="mt-10 border-t border-border pt-6">
+          {/* Goal */}
+          <p className="border-l-2 border-primary/30 pl-4 text-sm leading-relaxed text-foreground/80">
+            {module.plan.goal}
+          </p>
+
+          {/* Concepts */}
+          <div className="mt-5">
+            <p className="mb-2 text-xs font-medium uppercase tracking-wider text-muted-foreground/60">
+              Topics
+            </p>
+            <div className="flex flex-wrap gap-1.5">
+              {module.plan.concepts.map((c) => (
+                <span
+                  key={c}
+                  className="rounded-md bg-muted/60 px-2 py-1 text-xs text-foreground/70"
+                >
+                  {c}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Source + prereqs */}
+          {((module.plan.sourceRefs && module.plan.sourceRefs.length > 0) || module.plan.prerequisites.length > 0) && (
+            <div className="mt-4 space-y-1 text-xs text-muted-foreground">
+              {module.plan.sourceRefs && module.plan.sourceRefs.length > 0 && (
+                <p>Source: {module.plan.sourceRefs.join(" / ")}</p>
+              )}
+              {module.plan.prerequisites.length > 0 && (
+                <p>Requires: {module.plan.prerequisites.join(", ")}</p>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
 }
 
 function ContentSkeleton() {
@@ -369,6 +536,8 @@ export function MainContent({
   activeModuleIdForVersions,
   topicId,
   onCurriculumChange,
+  onGenerateModule,
+  generationProgress,
 }: MainContentProps) {
   const articleRef = useRef<HTMLElement>(null);
   const { prev, next } = useSubtopicNav(curriculum, activeModuleId, activeSubtopicId);
@@ -464,6 +633,20 @@ export function MainContent({
       <ScrollArea className="h-full">
         <div className="mx-auto max-w-4xl px-4 py-4 md:px-8 md:py-6">{quizContent}</div>
       </ScrollArea>
+    );
+  }
+
+  // Show module plan view for ungenerated modules — full height, centered
+  const activeModuleObj = curriculum?.modules.find((m) => m.id === activeModuleId);
+  const isUngenerated = activeModuleObj?.plan && !activeModuleObj?.generated;
+
+  if (isUngenerated && activeModuleObj) {
+    return (
+      <ModulePlanView
+        module={activeModuleObj}
+        onGenerate={onGenerateModule ? () => onGenerateModule(activeModuleObj.id) : undefined}
+        generationProgress={generationProgress}
+      />
     );
   }
 

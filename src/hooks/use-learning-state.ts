@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef, useMemo } from "react";
+import { useState, useCallback, useRef, useMemo } from "react";
 import type { Curriculum, Module } from "@/lib/types/learning";
 
 export type LearningPhase =
@@ -21,6 +21,16 @@ export interface TopicSummary {
   lastSession: string;
 }
 
+export interface ModuleGenerationProgress {
+  moduleId: number;
+  status: "planning" | "generating" | "complete" | "error";
+  currentSection: number;
+  totalEstimate: number;
+  currentSectionTitle: string;
+  completedSections: Array<{ title: string; score: number }>;
+  error?: string;
+}
+
 interface LearningState {
   phase: LearningPhase;
   topic: string | null;
@@ -36,6 +46,7 @@ interface LearningState {
   isLoading: boolean;
   error: string | null;
   existingTopics: TopicSummary[];
+  generationProgress: ModuleGenerationProgress | null;
 }
 
 export function useLearningState() {
@@ -54,6 +65,7 @@ export function useLearningState() {
     isLoading: false,
     error: null,
     existingTopics: [],
+    generationProgress: null,
   });
 
   // Topics are loaded by the landing page server component, not here
@@ -152,8 +164,14 @@ export function useLearningState() {
           activeSubtopicId: resumeSubtopicId,
         }));
 
+        // For new-style modules without subtopics, don't try to load content
+        const resumeModule = currData.curriculum.modules.find(
+          (m: { id: number }) => m.id === resumeModuleId
+        );
+        const isUngenerated = resumeModule?.plan && !resumeModule?.generated;
+
         // Auto-load the resume subtopic content so the user never sees an empty state
-        if (resumeModuleId && resumeSubtopicId) {
+        if (resumeModuleId && resumeSubtopicId && !isUngenerated) {
           const contentRes = await fetch("/api/learn/content", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -425,7 +443,7 @@ export function useLearningState() {
 
   const regenerateSubtopic = useCallback(
     async (moduleId: number, subtopicId: string, feedback?: string) => {
-      if (!state.topic) return;
+      if (!state.topic || !state.curriculum) return;
 
       setState((prev) => ({
         ...prev,
@@ -436,29 +454,61 @@ export function useLearningState() {
       }));
 
       try {
-        const res = await fetch("/api/learn/content", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            topic: state.topic,
-            slug: state.topicSlug,
-            moduleId,
-            subtopicId,
-            forceRegenerate: true,
-            feedback,
-          }),
-        });
-        const data = await res.json();
-        if (!data.success) throw new Error(data.error);
+        // Check if this is a new-style generated module — use orchestrator-aware regeneration
+        const module = state.curriculum.modules.find((m) => m.id === moduleId);
+        const isOrchestratorModule = module?.plan && module?.generated;
 
-        setState((prev) => ({
-          ...prev,
-          moduleContent: data.content,
-          moduleDiagrams: data.diagrams,
-          hasPreviousVersion: !!data.hasPreviousVersion,
-          currentVersion: data.currentVersion ?? 0,
-          isLoading: false,
-        }));
+        if (isOrchestratorModule) {
+          const sectionIndex = module.subtopics.findIndex((s) => s.id === subtopicId);
+          if (sectionIndex < 0) throw new Error("Section not found");
+
+          const res = await fetch("/api/learn/module/regenerate-section", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              slug: state.topicSlug,
+              moduleId,
+              sectionIndex,
+              feedback,
+            }),
+          });
+          const data = await res.json();
+          if (!data.success) throw new Error(data.error);
+
+          setState((prev) => ({
+            ...prev,
+            moduleContent: data.content,
+            moduleDiagrams: "",
+            hasPreviousVersion: true,
+            currentVersion: (prev.currentVersion ?? 0) + 1,
+            isLoading: false,
+          }));
+        } else {
+          // Legacy per-subtopic regeneration
+          const res = await fetch("/api/learn/content", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              topic: state.topic,
+              slug: state.topicSlug,
+              moduleId,
+              subtopicId,
+              forceRegenerate: true,
+              feedback,
+            }),
+          });
+          const data = await res.json();
+          if (!data.success) throw new Error(data.error);
+
+          setState((prev) => ({
+            ...prev,
+            moduleContent: data.content,
+            moduleDiagrams: data.diagrams,
+            hasPreviousVersion: !!data.hasPreviousVersion,
+            currentVersion: data.currentVersion ?? 0,
+            isLoading: false,
+          }));
+        }
 
         requestAnimationFrame(() => {
           const article = document.querySelector("article");
@@ -470,7 +520,7 @@ export function useLearningState() {
         );
       }
     },
-    [state.topic, state.topicSlug, setError]
+    [state.topic, state.topicSlug, state.curriculum, setError]
   );
 
   const rollbackContent = useCallback(
@@ -540,6 +590,192 @@ export function useLearningState() {
     [state.topicSlug, setError]
   );
 
+  const generateModule = useCallback(
+    async (moduleId: number) => {
+      if (!state.topicSlug || !state.curriculum) return;
+
+      const module = state.curriculum.modules.find((m) => m.id === moduleId);
+      if (!module?.plan || module.generated) return;
+
+      setState((prev) => ({
+        ...prev,
+        activeModuleId: moduleId,
+        activeSubtopicId: null,
+        moduleContent: null,
+        generationProgress: {
+          moduleId,
+          status: "planning",
+          currentSection: 0,
+          totalEstimate: 0,
+          currentSectionTitle: "",
+          completedSections: [],
+        },
+      }));
+
+      try {
+        const res = await fetch("/api/learn/module/generate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ slug: state.topicSlug, moduleId }),
+        });
+
+        if (!res.ok) {
+          const errData = await res.json();
+          throw new Error(errData.error || "Generation failed");
+        }
+
+        const reader = res.body?.getReader();
+        if (!reader) throw new Error("No response stream");
+
+        const decoder = new TextDecoder();
+        let buffer = "";
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split("\n");
+          buffer = lines.pop() ?? "";
+
+          for (const line of lines) {
+            if (!line.startsWith("data: ")) continue;
+            try {
+              const event = JSON.parse(line.slice(6));
+
+              switch (event.type) {
+                case "planning":
+                  setState((prev) => ({
+                    ...prev,
+                    generationProgress: prev.generationProgress
+                      ? { ...prev.generationProgress, status: "planning" }
+                      : null,
+                  }));
+                  break;
+
+                case "section_start":
+                  setState((prev) => ({
+                    ...prev,
+                    generationProgress: prev.generationProgress
+                      ? {
+                          ...prev.generationProgress,
+                          status: "generating",
+                          currentSection: event.sectionNumber,
+                          totalEstimate: event.totalEstimate,
+                          currentSectionTitle: event.title,
+                        }
+                      : null,
+                  }));
+                  break;
+
+                case "section_complete":
+                  setState((prev) => ({
+                    ...prev,
+                    generationProgress: prev.generationProgress
+                      ? {
+                          ...prev.generationProgress,
+                          completedSections: [
+                            ...prev.generationProgress.completedSections,
+                            { title: event.title, score: event.score },
+                          ],
+                        }
+                      : null,
+                  }));
+                  break;
+
+                case "section_revision":
+                  // Just a status update — section is being revised
+                  break;
+
+                case "module_complete":
+                  setState((prev) => ({
+                    ...prev,
+                    generationProgress: prev.generationProgress
+                      ? {
+                          ...prev.generationProgress,
+                          status: "complete",
+                          completedSections: event.sections,
+                        }
+                      : null,
+                  }));
+                  break;
+
+                case "done":
+                  // Server sends updated curriculum after generation
+                  if (event.curriculum) {
+                    const updatedCurriculum = event.curriculum as Curriculum;
+                    const generatedModule = updatedCurriculum.modules.find(
+                      (m) => m.id === moduleId
+                    );
+                    const firstSubtopic = generatedModule?.subtopics[0];
+
+                    setState((prev) => ({
+                      ...prev,
+                      curriculum: updatedCurriculum,
+                      activeSubtopicId: firstSubtopic?.id ?? null,
+                      generationProgress: null,
+                    }));
+
+                    // Auto-load first section content
+                    if (firstSubtopic) {
+                      const contentRes = await fetch("/api/learn/content", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                          topic: state.topic,
+                          slug: state.topicSlug,
+                          moduleId,
+                          subtopicId: firstSubtopic.id,
+                        }),
+                      });
+                      const contentData = await contentRes.json();
+                      if (contentData.success) {
+                        setState((prev) => ({
+                          ...prev,
+                          moduleContent: contentData.content,
+                          moduleDiagrams: contentData.diagrams,
+                          hasPreviousVersion: !!contentData.hasPreviousVersion,
+                          currentVersion: contentData.currentVersion ?? 0,
+                          isLoading: false,
+                        }));
+                      }
+                    }
+                  }
+                  break;
+
+                case "error":
+                  setState((prev) => ({
+                    ...prev,
+                    generationProgress: prev.generationProgress
+                      ? {
+                          ...prev.generationProgress,
+                          status: "error",
+                          error: event.message,
+                        }
+                      : null,
+                    error: event.message,
+                  }));
+                  break;
+              }
+            } catch {
+              // Skip malformed SSE lines
+            }
+          }
+        }
+      } catch (err) {
+        const message = err instanceof Error ? err.message : "Module generation failed";
+        setState((prev) => ({
+          ...prev,
+          generationProgress: prev.generationProgress
+            ? { ...prev.generationProgress, status: "error", error: message }
+            : null,
+          error: message,
+        }));
+      }
+    },
+    [state.topicSlug, state.curriculum, state.topic]
+  );
+
   // Compute the DB key used by module_content and content_versions
   const activeDbKey = useMemo(() => {
     if (!state.curriculum || !state.activeModuleId || !state.activeSubtopicId) return null;
@@ -549,6 +785,18 @@ export function useLearningState() {
     if (idx < 0) return null;
     return state.activeModuleId * 100 + idx;
   }, [state.curriculum, state.activeModuleId, state.activeSubtopicId]);
+
+  const selectModule = useCallback((moduleId: number) => {
+    setState((prev) => ({
+      ...prev,
+      activeModuleId: moduleId,
+      activeSubtopicId: null,
+      moduleContent: null,
+      moduleDiagrams: null,
+      isLoading: false,
+      error: null,
+    }));
+  }, []);
 
   const getActiveModule = useCallback((): Module | null => {
     if (!state.curriculum || !state.activeModuleId) return null;
@@ -579,6 +827,7 @@ export function useLearningState() {
       currentVersion: 0,
       isLoading: false,
       error: null,
+      generationProgress: null,
     }));
   }, []);
 
@@ -592,6 +841,8 @@ export function useLearningState() {
     regenerateSubtopic,
     rollbackContent,
     restoreVersion,
+    generateModule,
+    selectModule,
     activeDbKey,
     getActiveModule,
     setPhase,

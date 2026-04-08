@@ -135,8 +135,29 @@ function remapStyleColors(chart: string, isDark: boolean): string {
 function sanitizeMermaidChart(chart: string): string {
   let result = chart
     .replace(/<br\s*\/?>/gi, "\\n")
-    .replace(/<[^>]+>/g, "")
+    // Strip HTML tags but NOT Mermaid arrows like <--> or <-.->
+    // HTML tags start with a letter or / after <, arrows start with - or .
+    .replace(/<\/?[a-zA-Z][^>]*>/g, "")
     .replace(/`/g, "'");
+
+  // Normalize unicode arrows to Mermaid ASCII arrows (defense in depth)
+  result = result
+    .replace(/⟵\s*>/g, "<-->")
+    .replace(/←+>/g, "<-->")
+    .replace(/<\s*⟶/g, "<-->")
+    .replace(/⟵/g, "<--")
+    .replace(/⟶/g, "-->")
+    .replace(/⟷/g, "<-->")
+    .replace(/→/g, "-->")
+    .replace(/←/g, "<--")
+    .replace(/↔/g, "<-->")
+    .replace(/⇒/g, "==>")
+    .replace(/⇐/g, "<==>")
+    .replace(/⇔/g, "<==>")
+    .replace(/─+>/g, "-->")
+    .replace(/<─+/g, "<--")
+    .replace(/—+>/g, "-->")
+    .replace(/<—+/g, "<--");
 
   // Escape &, <, > inside node labels [...], {...}, (...) and edge labels |...|
   // Use a regex to find label content and escape within it
