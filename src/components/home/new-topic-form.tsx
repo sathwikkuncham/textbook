@@ -190,15 +190,18 @@ export function NewTopicForm() {
           const researchData = await researchRes.json();
           derivedSlug = researchData.topicSlug;
 
-          await fetch("/api/learn/source/set-source", {
+          const setSourceRes = await fetch("/api/learn/source/set-source", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              topic: researchData.topic ?? topicName,
+              topic: topicName,
+              slug: derivedSlug,
               sourceType: "url",
               sourcePath: sourceUrl.trim(),
             }),
           });
+          const setSourceData = await setSourceRes.json();
+          if (!setSourceData.success) throw new Error(setSourceData.error ?? "Failed to set source");
         }
 
         if (!existingState?.hasSourceStructure) {
