@@ -84,6 +84,29 @@ export const moduleContent = pgTable(
   ]
 );
 
+export const contentVersions = pgTable(
+  "content_versions",
+  {
+    id: serial("id").primaryKey(),
+    topicId: integer("topic_id")
+      .notNull()
+      .references(() => topics.id, { onDelete: "cascade" }),
+    moduleId: integer("module_id").notNull(),
+    versionNumber: integer("version_number").notNull(),
+    content: text("content").notNull(),
+    diagrams: text("diagrams"),
+    feedback: text("feedback"),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+  },
+  (table) => [
+    uniqueIndex("content_versions_topic_module_version_idx").on(
+      table.topicId,
+      table.moduleId,
+      table.versionNumber
+    ),
+  ]
+);
+
 export const moduleQuizzes = pgTable(
   "module_quizzes",
   {

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef, useMemo, memo, useState, useEffect } from "react";
-import { BookOpen, ChevronLeft, ChevronRight, RefreshCw, Undo2 } from "lucide-react";
+import { BookOpen, ChevronLeft, ChevronRight, RefreshCw, History, X, Trash2, RotateCcw } from "lucide-react";
 import { cn } from "@/lib/utils";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -189,7 +189,11 @@ interface MainContentProps {
   activeSubtopicTitle?: string;
   onRegenerate?: (feedback?: string) => void;
   onRollback?: () => void;
+  onRestoreVersion?: (versionId: number) => void;
   hasPreviousVersion?: boolean;
+  currentVersion?: number;
+  topicSlug?: string | null;
+  activeModuleIdForVersions?: number | null;
   topicId?: number | null;
   onCurriculumChange?: () => void;
 }
@@ -355,7 +359,11 @@ export function MainContent({
   activeSubtopicTitle,
   onRegenerate,
   onRollback,
+  onRestoreVersion,
   hasPreviousVersion,
+  currentVersion,
+  topicSlug,
+  activeModuleIdForVersions,
   topicId,
   onCurriculumChange,
 }: MainContentProps) {
@@ -372,6 +380,18 @@ export function MainContent({
   }, [curriculum, activeModuleId, activeSubtopicId]);
 
   const [showFeedback, setShowFeedback] = useState(false);
+  const [showVersions, setShowVersions] = useState(false);
+  const [versions, setVersions] = useState<Array<{
+    id: number;
+    versionNumber: number;
+    feedback: string | null;
+    createdAt: string;
+    contentPreview: string;
+    content: string;
+    diagrams: string | null;
+  }>>([]);
+  const [versionsLoading, setVersionsLoading] = useState(false);
+  const [previewVersion, setPreviewVersion] = useState<number | null>(null);
 
   // Track backward navigation (revisiting earlier modules)
   const prevModuleRef = useRef<number | null>(null);
@@ -387,6 +407,47 @@ export function MainContent({
     prevModuleRef.current = activeModuleId;
   }, [activeModuleId]);
   const [feedbackText, setFeedbackText] = useState("");
+
+  const loadVersions = async () => {
+    if (!topicSlug || !activeModuleIdForVersions) return;
+    setVersionsLoading(true);
+    try {
+      const res = await fetch(
+        `/api/learn/content/versions?slug=${topicSlug}&moduleId=${activeModuleIdForVersions}`
+      );
+      const data = await res.json();
+      if (data.success) setVersions(data.versions);
+    } catch {
+      // silently fail
+    } finally {
+      setVersionsLoading(false);
+    }
+  };
+
+  const handleOpenVersions = () => {
+    setShowVersions(true);
+    setPreviewVersion(null);
+    loadVersions();
+  };
+
+  const handleRestoreVersion = (versionId: number) => {
+    if (onRestoreVersion && activeModuleIdForVersions) {
+      onRestoreVersion(versionId);
+      setShowVersions(false);
+      setPreviewVersion(null);
+    }
+  };
+
+  const handleDeleteVersion = async (versionId: number) => {
+    try {
+      await fetch(`/api/learn/content/versions?versionId=${versionId}`, {
+        method: "DELETE",
+      });
+      setVersions((prev) => prev.filter((v) => v.id !== versionId));
+    } catch {
+      // silently fail
+    }
+  };
 
   const { preamble, sections } = useMemo(
     () => (content ? splitContentSections(content) : { preamble: "", sections: [] }),
@@ -410,6 +471,7 @@ export function MainContent({
   if (!content) return <ReadyState />;
 
   return (
+    <>
     <ScrollArea className="h-full">
       {onTextSelectionAction && (
         <TextSelectionToolbar
@@ -439,13 +501,13 @@ export function MainContent({
                 Module {activeModuleId} <span className="mx-1 text-border">/</span> Subtopic {subtopicPosition.current} of {subtopicPosition.total}
               </p>
               <div className="flex items-center gap-2">
-                {hasPreviousVersion && onRollback && !isLoading && (
+                {(currentVersion ?? 0) > 0 && !isLoading && (
                   <button
-                    onClick={onRollback}
-                    className="flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-xs font-medium text-muted-foreground transition-all hover:border-amber-500/30 hover:text-amber-600"
+                    onClick={handleOpenVersions}
+                    className="flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-xs font-medium text-muted-foreground transition-all hover:border-primary/30 hover:text-primary"
                   >
-                    <Undo2 className="size-3" />
-                    Undo
+                    <History className="size-3" />
+                    v{currentVersion}
                   </button>
                 )}
                 {onRegenerate && !isLoading && (
@@ -556,5 +618,93 @@ export function MainContent({
         )}
       </article>
     </ScrollArea>
+
+    {/* Version History Popup */}
+    {showVersions && (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+        <div className="flex max-h-[80vh] w-full max-w-2xl flex-col rounded-xl border border-border bg-card shadow-2xl">
+          <div className="flex items-center justify-between border-b border-border px-5 py-3">
+            <div className="flex items-center gap-2">
+              <History className="size-4 text-primary" />
+              <h2 className="font-serif text-base font-semibold text-foreground">Version History</h2>
+            </div>
+            <button onClick={() => { setShowVersions(false); setPreviewVersion(null); }} className="rounded-lg p-1 text-muted-foreground hover:bg-muted hover:text-foreground">
+              <X className="size-4" />
+            </button>
+          </div>
+
+          <div className="flex-1 overflow-y-auto">
+            {versionsLoading ? (
+              <div className="flex items-center justify-center py-12">
+                <div className="size-5 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+              </div>
+            ) : versions.length === 0 ? (
+              <div className="py-12 text-center text-sm text-muted-foreground">No versions found</div>
+            ) : (
+              <div className="divide-y divide-border">
+                {versions.map((v) => (
+                  <div key={v.id} className="px-5 py-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <span className="rounded bg-primary/10 px-2 py-0.5 text-xs font-semibold text-primary">
+                          v{v.versionNumber}
+                        </span>
+                        <span className="text-xs text-muted-foreground">
+                          {new Date(v.createdAt).toLocaleDateString(undefined, {
+                            month: "short", day: "numeric", hour: "2-digit", minute: "2-digit",
+                          })}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <button
+                          onClick={() => setPreviewVersion(previewVersion === v.id ? null : v.id)}
+                          className="rounded px-2 py-1 text-xs text-muted-foreground hover:bg-muted hover:text-foreground"
+                        >
+                          {previewVersion === v.id ? "Hide" : "Preview"}
+                        </button>
+                        <button
+                          onClick={() => handleRestoreVersion(v.id)}
+                          className="flex items-center gap-1 rounded px-2 py-1 text-xs text-primary hover:bg-primary/10"
+                        >
+                          <RotateCcw className="size-3" />
+                          Restore
+                        </button>
+                        {versions.length > 1 && (
+                          <button
+                            onClick={() => handleDeleteVersion(v.id)}
+                            className="rounded px-2 py-1 text-xs text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                          >
+                            <Trash2 className="size-3" />
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                    {v.feedback && (
+                      <p className="mt-1.5 rounded bg-muted/50 px-2.5 py-1.5 text-xs italic text-muted-foreground">
+                        Feedback: &ldquo;{v.feedback}&rdquo;
+                      </p>
+                    )}
+                    {!v.feedback && v.versionNumber === 1 && (
+                      <p className="mt-1 text-xs text-muted-foreground/60">Original generation</p>
+                    )}
+                    {previewVersion === v.id && (
+                      <div className="mt-3 max-h-60 overflow-y-auto rounded-lg border border-border bg-background p-4 text-sm">
+                        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                          {v.content.slice(0, 2000)}
+                        </ReactMarkdown>
+                        {v.content.length > 2000 && (
+                          <p className="mt-2 text-xs text-muted-foreground">... content truncated for preview</p>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    )}
+    </>
   );
 }

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { ArrowLeft, BookOpen, Save, Loader2, AlertTriangle } from "lucide-react";
+import { ArrowLeft, BookOpen, Save, Loader2, AlertTriangle, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -41,6 +41,8 @@ export default function SettingsPage() {
   const [timeCommitment, setTimeCommitment] = useState("standard");
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [phase, setPhase] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -137,6 +139,27 @@ export default function SettingsPage() {
 
   const handleReviewScope = () => {
     router.push(`/learn/${slug}/scope`);
+  };
+
+  const handleDeleteTopic = async () => {
+    if (!original || isDeleting) return;
+    setIsDeleting(true);
+    setError(null);
+
+    try {
+      const res = await fetch("/api/learn/topics", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ topicId: original.id }),
+      });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.error);
+      router.push("/");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to delete topic");
+      setIsDeleting(false);
+      setShowDeleteConfirm(false);
+    }
   };
 
   if (isLoading) {
@@ -297,6 +320,49 @@ export default function SettingsPage() {
               </Button>
             </section>
           )}
+
+          {/* Danger Zone */}
+          <section className="rounded-lg border border-destructive/30 bg-destructive/5 p-6">
+            <h2 className="mb-2 font-serif text-base font-semibold text-destructive">
+              Danger Zone
+            </h2>
+            <p className="mb-4 text-sm text-muted-foreground">
+              Permanently delete this topic and all its content, progress, and chat history. This action cannot be undone.
+            </p>
+            {showDeleteConfirm ? (
+              <div className="flex items-center gap-3">
+                <Button
+                  variant="destructive"
+                  onClick={handleDeleteTopic}
+                  disabled={isDeleting}
+                  className="gap-2"
+                >
+                  {isDeleting ? (
+                    <Loader2 className="size-4 animate-spin" />
+                  ) : (
+                    <Trash2 className="size-4" />
+                  )}
+                  {isDeleting ? "Deleting..." : "Yes, delete permanently"}
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => setShowDeleteConfirm(false)}
+                  disabled={isDeleting}
+                >
+                  Cancel
+                </Button>
+              </div>
+            ) : (
+              <Button
+                variant="outline"
+                onClick={() => setShowDeleteConfirm(true)}
+                className="gap-2 border-destructive/30 text-destructive hover:bg-destructive/10"
+              >
+                <Trash2 className="size-4" />
+                Delete Topic
+              </Button>
+            )}
+          </section>
 
           {/* Save */}
           <div className="flex gap-3">

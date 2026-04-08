@@ -17,6 +17,7 @@ import {
   learnerInsights,
   learnerSignals,
   contentEvaluations,
+  contentVersions,
 } from "./schema";
 import type {
   Curriculum,
@@ -259,7 +260,8 @@ export async function saveModuleContent(
   moduleId: number,
   content: string,
   diagrams: string,
-  preservePrevious = false
+  preservePrevious = false,
+  feedback: string | null = null
 ) {
   const existing = await findModuleContent(topicId, moduleId);
 
@@ -281,6 +283,17 @@ export async function saveModuleContent(
       diagrams,
     });
   }
+
+  // Save version entry
+  const nextVersion = (await getLatestVersionNumber(topicId, moduleId)) + 1;
+  await saveContentVersion({
+    topicId,
+    moduleId,
+    versionNumber: nextVersion,
+    content,
+    diagrams: diagrams || null,
+    feedback,
+  });
 }
 
 export async function rollbackModuleContent(topicId: number, moduleId: number) {
@@ -1102,4 +1115,59 @@ export async function getContentEvaluations(topicId: number, dbKey: number) {
       )
     )
     .orderBy(asc(contentEvaluations.attempt));
+}
+
+// ── Content Versions ──────────────────────────────────
+
+export async function getContentVersions(topicId: number, moduleId: number) {
+  return db
+    .select()
+    .from(contentVersions)
+    .where(
+      and(
+        eq(contentVersions.topicId, topicId),
+        eq(contentVersions.moduleId, moduleId)
+      )
+    )
+    .orderBy(asc(contentVersions.versionNumber));
+}
+
+export async function getLatestVersionNumber(
+  topicId: number,
+  moduleId: number
+): Promise<number> {
+  const result = await db
+    .select({ versionNumber: contentVersions.versionNumber })
+    .from(contentVersions)
+    .where(
+      and(
+        eq(contentVersions.topicId, topicId),
+        eq(contentVersions.moduleId, moduleId)
+      )
+    )
+    .orderBy(desc(contentVersions.versionNumber))
+    .limit(1);
+  return result[0]?.versionNumber ?? 0;
+}
+
+export async function saveContentVersion(data: {
+  topicId: number;
+  moduleId: number;
+  versionNumber: number;
+  content: string;
+  diagrams: string | null;
+  feedback: string | null;
+}) {
+  await db.insert(contentVersions).values(data);
+}
+
+export async function deleteContentVersion(versionId: number) {
+  await db.delete(contentVersions).where(eq(contentVersions.id, versionId));
+}
+
+// ── Topic Deletion ────────────────────────────────────
+
+export async function deleteTopic(topicId: number) {
+  // All related tables cascade on delete
+  await db.delete(topics).where(eq(topics.id, topicId));
 }

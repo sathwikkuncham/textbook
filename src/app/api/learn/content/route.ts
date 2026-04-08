@@ -12,6 +12,7 @@ import {
   getContentEvaluations,
   findLearnerInsights,
   findLearnerIntent,
+  getLatestVersionNumber,
 } from "@/lib/db/repository";
 import { createContentComposer } from "@/agents/content-composer";
 import { createContentEvaluator } from "@/agents/content-evaluator";
@@ -126,6 +127,7 @@ export async function POST(request: NextRequest) {
       diagrams: cached.diagrams,
       cached: true,
       hasPreviousVersion: !!cached.previousContent,
+      currentVersion: await getLatestVersionNumber(topicRecord.id, dbKey),
     });
   }
 
@@ -270,7 +272,7 @@ export async function POST(request: NextRequest) {
     ]);
 
     // Save content immediately — don't block the user
-    await saveModuleContent(topicRecord.id, dbKey, initialContent, diagramResult, !!forceRegenerate);
+    await saveModuleContent(topicRecord.id, dbKey, initialContent, diagramResult, !!forceRegenerate, feedback ?? null);
 
     // Embed content for semantic search (fire-and-forget)
     embedGeneratedContent(
@@ -296,6 +298,7 @@ export async function POST(request: NextRequest) {
       content: initialContent,
       diagrams: diagramResult,
       hasPreviousVersion: !!forceRegenerate,
+      currentVersion: await getLatestVersionNumber(topicRecord.id, dbKey),
     });
   } catch (error) {
     console.error("[content-api] Generation failed:", error);

@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef } from "react";
+import { useState, useCallback, useEffect, useRef, useMemo } from "react";
 import type { Curriculum, Module } from "@/lib/types/learning";
 
 export type LearningPhase =
@@ -32,6 +32,7 @@ interface LearningState {
   moduleContent: string | null;
   moduleDiagrams: string | null;
   hasPreviousVersion: boolean;
+  currentVersion: number;
   isLoading: boolean;
   error: string | null;
   existingTopics: TopicSummary[];
@@ -49,6 +50,7 @@ export function useLearningState() {
     moduleContent: null,
     moduleDiagrams: null,
     hasPreviousVersion: false,
+    currentVersion: 0,
     isLoading: false,
     error: null,
     existingTopics: [],
@@ -169,6 +171,7 @@ export function useLearningState() {
               moduleContent: contentData.content,
               moduleDiagrams: contentData.diagrams,
               hasPreviousVersion: !!contentData.hasPreviousVersion,
+              currentVersion: contentData.currentVersion ?? 0,
               isLoading: false,
             }));
             return;
@@ -344,6 +347,7 @@ export function useLearningState() {
           moduleContent: data.content,
           moduleDiagrams: data.diagrams,
           hasPreviousVersion: !!data.hasPreviousVersion,
+          currentVersion: data.currentVersion ?? 0,
           isLoading: false,
         }));
       } catch (err) {
@@ -400,6 +404,7 @@ export function useLearningState() {
           moduleContent: data.content,
           moduleDiagrams: data.diagrams,
           hasPreviousVersion: !!data.hasPreviousVersion,
+          currentVersion: data.currentVersion ?? 0,
           isLoading: false,
         }));
 
@@ -451,6 +456,7 @@ export function useLearningState() {
           moduleContent: data.content,
           moduleDiagrams: data.diagrams,
           hasPreviousVersion: !!data.hasPreviousVersion,
+          currentVersion: data.currentVersion ?? 0,
           isLoading: false,
         }));
 
@@ -487,6 +493,7 @@ export function useLearningState() {
           moduleContent: data.content,
           moduleDiagrams: data.diagrams,
           hasPreviousVersion: false,
+          currentVersion: data.currentVersion ?? prev.currentVersion,
           isLoading: false,
         }));
       } catch (err) {
@@ -497,6 +504,51 @@ export function useLearningState() {
     },
     [state.topicSlug, setError]
   );
+
+  const restoreVersion = useCallback(
+    async (moduleId: number, versionId: number) => {
+      if (!state.topicSlug) return;
+
+      setState((prev) => ({ ...prev, isLoading: true, error: null }));
+
+      try {
+        const res = await fetch("/api/learn/content/versions", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            slug: state.topicSlug,
+            moduleId,
+            versionId,
+          }),
+        });
+        const data = await res.json();
+        if (!data.success) throw new Error(data.error);
+
+        setState((prev) => ({
+          ...prev,
+          moduleContent: data.content,
+          moduleDiagrams: data.diagrams,
+          currentVersion: data.currentVersion ?? prev.currentVersion,
+          isLoading: false,
+        }));
+      } catch (err) {
+        setError(
+          err instanceof Error ? err.message : "Failed to restore version"
+        );
+      }
+    },
+    [state.topicSlug, setError]
+  );
+
+  // Compute the DB key used by module_content and content_versions
+  const activeDbKey = useMemo(() => {
+    if (!state.curriculum || !state.activeModuleId || !state.activeSubtopicId) return null;
+    const mod = state.curriculum.modules.find((m) => m.id === state.activeModuleId);
+    if (!mod) return null;
+    const idx = mod.subtopics.findIndex((s) => s.id === state.activeSubtopicId);
+    if (idx < 0) return null;
+    return state.activeModuleId * 100 + idx;
+  }, [state.curriculum, state.activeModuleId, state.activeSubtopicId]);
 
   const getActiveModule = useCallback((): Module | null => {
     if (!state.curriculum || !state.activeModuleId) return null;
@@ -524,6 +576,7 @@ export function useLearningState() {
       moduleContent: null,
       moduleDiagrams: null,
       hasPreviousVersion: false,
+      currentVersion: 0,
       isLoading: false,
       error: null,
     }));
@@ -538,6 +591,8 @@ export function useLearningState() {
     navigateToSubtopic,
     regenerateSubtopic,
     rollbackContent,
+    restoreVersion,
+    activeDbKey,
     getActiveModule,
     setPhase,
     setError,

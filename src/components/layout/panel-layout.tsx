@@ -156,7 +156,15 @@ export function PanelLayout({
               ? () => learning.rollbackContent(learning.activeModuleId!)
               : undefined
           }
+          onRestoreVersion={
+            learning.activeDbKey
+              ? (versionId: number) => learning.restoreVersion(learning.activeDbKey!, versionId)
+              : undefined
+          }
           hasPreviousVersion={learning.hasPreviousVersion}
+          currentVersion={learning.currentVersion}
+          topicSlug={learning.topicSlug}
+          activeModuleIdForVersions={learning.activeDbKey}
           activeSectionIndex={audioPlayer.isPlaying ? audioPlayer.currentSectionIndex : null}
           audioPlayer={audioPlayer}
           quizContent={
