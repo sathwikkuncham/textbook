@@ -127,7 +127,9 @@ export function useChat({ topicId, topic, topicSlug, moduleId, subtopicId }: Use
         id: `temp-${Date.now()}`,
         role: "user",
         content: action && selectedText
-          ? `[${action === "go_deeper" ? "Go Deeper" : action === "simplify" ? "Simplify" : "Explain"}] "${selectedText.slice(0, 200)}${selectedText.length > 200 ? "..." : ""}"`
+          ? action === "chat"
+            ? `> ${selectedText.slice(0, 150)}${selectedText.length > 150 ? "..." : ""}\n\n${message}`
+            : `[${action === "go_deeper" ? "Go Deeper" : action === "simplify" ? "Simplify" : "Explain"}] "${selectedText.slice(0, 200)}${selectedText.length > 200 ? "..." : ""}"`
           : message,
         createdAt: new Date(),
       };

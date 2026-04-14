@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useState, useCallback, useRef } from "react";
-import { BookOpen, Layers, Minimize2 } from "lucide-react";
+import { BookOpen, Layers, Minimize2, MessageSquare } from "lucide-react";
 import { createPortal } from "react-dom";
 
 interface TextSelectionToolbarProps {
   articleRef: React.RefObject<HTMLElement | null>;
-  onAction: (action: "explain" | "go_deeper" | "simplify", selectedText: string) => void;
+  onAction: (action: "explain" | "go_deeper" | "simplify" | "chat", selectedText: string) => void;
 }
 
 interface ToolbarPosition {
@@ -112,7 +112,7 @@ export function TextSelectionToolbar({
     };
   }, [handleSelectionChange, handleKeyDown]);
 
-  const handleAction = (action: "explain" | "go_deeper" | "simplify") => {
+  const handleAction = (action: "explain" | "go_deeper" | "simplify" | "chat") => {
     if (selectedText) {
       onAction(action, selectedText);
       window.getSelection()?.removeAllRanges();
@@ -157,6 +157,14 @@ export function TextSelectionToolbar({
           <Minimize2 className="size-3.5" />
           Simplify
         </button>
+        <div className="mx-0.5 h-5 w-px bg-border" />
+        <button
+          onClick={() => handleAction("chat")}
+          className="flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium text-primary active:bg-primary/10"
+        >
+          <MessageSquare className="size-3.5" />
+          Ask
+        </button>
       </div>,
       document.body
     );
@@ -196,6 +204,14 @@ export function TextSelectionToolbar({
       >
         <Minimize2 className="size-3" />
         Simplify
+      </button>
+      <div className="mx-0.5 h-4 w-px bg-border" />
+      <button
+        onClick={() => handleAction("chat")}
+        className="flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium text-primary transition-colors hover:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+      >
+        <MessageSquare className="size-3" />
+        Ask
       </button>
     </div>,
     document.body

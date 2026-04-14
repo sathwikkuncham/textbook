@@ -213,12 +213,17 @@ export async function POST(request: NextRequest) {
   }
 
   if (action && selectedText) {
-    const actionLabels: Record<string, string> = {
-      explain: "explain this from first principles",
-      go_deeper: "go deeper on this — expand with nuance and edge cases",
-      simplify: "simplify this using everyday language and analogies",
-    };
-    fullMessage += `The learner selected this text from the content: "${selectedText}"\n\nThey want you to: ${actionLabels[action] ?? action}\n\nRespond directly to this request.`;
+    if (action === "chat") {
+      // "Ask" — user typed their own question about selected text
+      fullMessage += `The learner selected this text from the content: "${selectedText}"\n\nTheir question about it: ${message}\n\nRespond to their specific question, using the selected text as context.`;
+    } else {
+      const actionLabels: Record<string, string> = {
+        explain: "explain this from first principles",
+        go_deeper: "go deeper on this — expand with nuance and edge cases",
+        simplify: "simplify this using everyday language and analogies",
+      };
+      fullMessage += `The learner selected this text from the content: "${selectedText}"\n\nThey want you to: ${actionLabels[action] ?? action}\n\nRespond directly to this request.`;
+    }
   } else {
     fullMessage += `Learner's question: ${message}`;
   }

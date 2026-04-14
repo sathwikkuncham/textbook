@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useEffect, useState } from "react";
-import { MessageSquare, Send, Loader2, Plus, ChevronDown } from "lucide-react";
+import { MessageSquare, Send, Loader2, Plus, ChevronDown, X, Quote } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -39,6 +39,7 @@ export function ChatPanel({
 }: ChatPanelProps) {
   const [inputValue, setInputValue] = useState("");
   const [showSessions, setShowSessions] = useState(false);
+  const [quotedText, setQuotedText] = useState<string | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -63,19 +64,34 @@ export function ChatPanel({
   // Handle pending text selection action
   useEffect(() => {
     if (pendingAction && !isStreaming) {
-      sendMessage(
-        pendingAction.selectedText,
-        pendingAction.action,
-        pendingAction.selectedText
-      );
-      onPendingActionConsumed?.();
+      if (pendingAction.action === "chat") {
+        // "Ask about this" — show quote card, let user type their question
+        setQuotedText(pendingAction.selectedText);
+        onPendingActionConsumed?.();
+        // Focus the input after a tick
+        setTimeout(() => textareaRef.current?.focus(), 100);
+      } else {
+        // Explain/Go Deeper/Simplify — auto-send immediately
+        sendMessage(
+          pendingAction.selectedText,
+          pendingAction.action,
+          pendingAction.selectedText
+        );
+        onPendingActionConsumed?.();
+      }
     }
   }, [pendingAction, isStreaming, sendMessage, onPendingActionConsumed]);
 
   const handleSend = () => {
     const trimmed = inputValue.trim();
     if (!trimmed || isStreaming) return;
-    sendMessage(trimmed);
+    if (quotedText) {
+      // Send with the quoted selection as context
+      sendMessage(trimmed, "chat", quotedText);
+      setQuotedText(null);
+    } else {
+      sendMessage(trimmed);
+    }
     setInputValue("");
     if (textareaRef.current) textareaRef.current.style.height = "auto";
   };
@@ -223,6 +239,21 @@ export function ChatPanel({
 
       {/* Input */}
       <div className="border-t border-sidebar-border p-3">
+        {/* Quote card — shown when user selects text and taps "Ask" */}
+        {quotedText && (
+          <div className="mb-2 flex items-start gap-2 rounded-lg border border-primary/20 bg-primary/[0.03] px-3 py-2">
+            <Quote className="mt-0.5 size-3 shrink-0 text-primary/50" />
+            <p className="min-w-0 flex-1 text-xs leading-relaxed text-foreground/70 line-clamp-3">
+              {quotedText}
+            </p>
+            <button
+              onClick={() => setQuotedText(null)}
+              className="shrink-0 rounded p-0.5 text-muted-foreground/50 hover:text-foreground"
+            >
+              <X className="size-3" />
+            </button>
+          </div>
+        )}
         <div className="flex items-end gap-2">
           <textarea
             ref={textareaRef}
