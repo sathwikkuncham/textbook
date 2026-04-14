@@ -73,13 +73,19 @@ export function TextSelectionToolbar({
 
     setSelectedText(text);
 
+    const rect = range.getBoundingClientRect();
     if (isMobile) {
-      // On mobile: show as bottom bar after a brief delay
-      // so the native context menu appears first and doesn't overlap
-      debounceRef.current = setTimeout(() => setVisible(true), 400);
+      // On mobile: float BELOW the selection (native menu is suppressed via contextmenu preventDefault)
+      // Small delay to let selection finalize
+      debounceRef.current = setTimeout(() => {
+        setPosition({
+          top: rect.bottom + 8,
+          left: rect.left + rect.width / 2,
+        });
+        setVisible(true);
+      }, 150);
     } else {
       // On desktop: float above the selection
-      const rect = range.getBoundingClientRect();
       setPosition({
         top: rect.top - 48,
         left: rect.left + rect.width / 2,
@@ -115,34 +121,38 @@ export function TextSelectionToolbar({
     }
   };
 
-  // Mobile: fixed bottom bar
+  // Mobile: floating below selection (native menu suppressed)
   if (isMobile) {
-    if (!visible || !selectedText) return null;
+    if (!visible || !position || !selectedText) return null;
 
     return createPortal(
       <div
         role="toolbar"
         aria-label="Text selection actions"
-        className="fixed inset-x-0 bottom-0 z-50 flex items-center justify-center gap-2 border-t border-border bg-popover px-4 py-3 shadow-[0_-4px_20px_rgba(0,0,0,0.08)]"
-        style={{ paddingBottom: "max(12px, env(safe-area-inset-bottom))" }}
+        className="fixed z-50 flex items-center gap-1 rounded-xl border border-border bg-popover p-1 shadow-lg"
+        style={{
+          top: Math.min(position.top, window.innerHeight - 60),
+          left: Math.max(20, Math.min(position.left, window.innerWidth - 20)),
+          transform: "translateX(-50%)",
+        }}
       >
         <button
           onClick={() => handleAction("explain")}
-          className="flex items-center gap-1.5 rounded-lg bg-muted px-4 py-2 text-sm font-medium text-popover-foreground active:bg-muted/70"
+          className="flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm text-popover-foreground active:bg-muted"
         >
           <BookOpen className="size-3.5" />
           Explain
         </button>
         <button
           onClick={() => handleAction("go_deeper")}
-          className="flex items-center gap-1.5 rounded-lg bg-muted px-4 py-2 text-sm font-medium text-popover-foreground active:bg-muted/70"
+          className="flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm text-popover-foreground active:bg-muted"
         >
           <Layers className="size-3.5" />
           Deeper
         </button>
         <button
           onClick={() => handleAction("simplify")}
-          className="flex items-center gap-1.5 rounded-lg bg-muted px-4 py-2 text-sm font-medium text-popover-foreground active:bg-muted/70"
+          className="flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm text-popover-foreground active:bg-muted"
         >
           <Minimize2 className="size-3.5" />
           Simplify

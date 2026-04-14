@@ -665,7 +665,17 @@ export function MainContent({
           onAction={(action, text) => onTextSelectionAction(action, text)}
         />
       )}
-      <article ref={articleRef} className="mx-auto max-w-4xl px-4 pb-20 pt-4 md:px-8 md:pt-6">
+      <article
+        ref={articleRef}
+        className="mx-auto max-w-4xl px-4 pb-20 pt-4 md:px-8 md:pt-6 [&]:[-webkit-touch-callout:none]"
+        onContextMenu={(e) => {
+          // Suppress native context menu on mobile so our custom toolbar is the only option.
+          // Only suppress when we have our own toolbar; otherwise let native menu work.
+          if (onTextSelectionAction && window.matchMedia("(max-width: 768px)").matches) {
+            e.preventDefault();
+          }
+        }}
+      >
         {/* Audio progress bar */}
         {audioPlayer && (audioPlayer.isPlaying || audioPlayer.duration > 0) && (
           <AudioProgressBar
