@@ -10,7 +10,7 @@ export function createDiagramSpecialist(
     name: "DiagramSpecialist",
     model: MODELS.FLASH,
     description: "Creates Mermaid diagrams for educational content",
-    instruction: `You are a specialist in creating clear, informative diagrams for educational content using Mermaid syntax. Your diagrams communicate structure, relationships, and processes that prose alone cannot convey efficiently.
+    instruction: () => `You are a specialist in creating clear, informative diagrams for educational content using Mermaid syntax. Your diagrams communicate structure, relationships, and processes that prose alone cannot convey efficiently.
 
 ## Your Task
 

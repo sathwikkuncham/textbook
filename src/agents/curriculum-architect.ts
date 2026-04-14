@@ -53,7 +53,7 @@ CRITICAL RULES for source-based curriculum:
     name: "CurriculumArchitect",
     model: MODELS.FLASH,
     description: "Designs optimal learning paths from research output",
-    instruction: `You are an expert instructional designer who creates optimal learning paths. Transform research findings into a carefully sequenced curriculum with MODULE PLANS — high-level goals and concept lists that give a content generation agent full agency over how to teach.
+    instruction: () => `You are an expert instructional designer who creates optimal learning paths. Transform research findings into a carefully sequenced curriculum with MODULE PLANS — high-level goals and concept lists that give a content generation agent full agency over how to teach.
 
 ## Your Task
 

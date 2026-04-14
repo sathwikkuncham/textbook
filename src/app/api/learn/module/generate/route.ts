@@ -95,8 +95,7 @@ export async function POST(request: NextRequest) {
   }
 
   const researchContext = JSON.stringify(research, null, 2)
-    .slice(0, 6000)
-    .replace(/[{}]/g, "");
+    .slice(0, 6000);
 
   // Stream orchestrator events via SSE
   const encoder = new TextEncoder();

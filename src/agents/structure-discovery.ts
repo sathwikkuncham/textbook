@@ -7,7 +7,7 @@ export function createStructureDiscoveryAgent() {
     model: MODELS.FLASH,
     description:
       "Extracts document structure (TOC, chapters, sections) from the first and last pages of a PDF",
-    instruction: `You are a document structure analyst. Your job is to examine the opening and closing pages of a book or document and extract its complete structural outline.
+    instruction: () => `You are a document structure analyst. Your job is to examine the opening and closing pages of a book or document and extract its complete structural outline.
 
 ## What You Receive
 

@@ -13,7 +13,7 @@ export function createWebExplorer(topicId: number, startingUrl: string, focusAre
     description:
       "Explores web pages, follows relevant links, and builds a comprehensive site map for learning",
     tools: [createReadURLTool(topicId)],
-    instruction: `You are a web exploration agent. Your job is to read a starting URL, discover related content, and build a comprehensive map of all relevant pages for a learner.
+    instruction: () => `You are a web exploration agent. Your job is to read a starting URL, discover related content, and build a comprehensive map of all relevant pages for a learner.
 
 ## Your Process
 

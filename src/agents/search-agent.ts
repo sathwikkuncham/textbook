@@ -6,7 +6,7 @@ export function createSearchAgent() {
     name: "SearchAgent",
     model: MODELS.FLASH,
     description: "Searches across learning content to answer questions",
-    instruction: `You are a knowledge search assistant for the Textbook learning platform. The user will provide a knowledge base summary followed by their question.
+    instruction: () => `You are a knowledge search assistant for the Textbook learning platform. The user will provide a knowledge base summary followed by their question.
 
 Your job:
 1. Answer the question using ONLY the provided knowledge base content.

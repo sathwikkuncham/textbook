@@ -25,14 +25,6 @@ import type { BaseTool } from "@google/adk";
 
 export const maxDuration = 300;
 
-/**
- * Sanitize strings for ADK template engine — strips curly braces
- * that would be interpreted as context variables.
- */
-function sanitize(str: string): string {
-  return str.replace(/[{}]/g, "");
-}
-
 export async function POST(request: NextRequest) {
   const body = await request.json();
   const { slug, moduleId, sectionIndex, feedback } = body as {
@@ -111,8 +103,7 @@ export async function POST(request: NextRequest) {
   }
 
   const researchContext = JSON.stringify(research, null, 2)
-    .slice(0, 6000)
-    .replace(/[{}]/g, "");
+    .slice(0, 6000);
 
   const learnerContext = contextParts.length > 0 ? contextParts.join("\n") : undefined;
 
@@ -158,14 +149,14 @@ export async function POST(request: NextRequest) {
 
     // Build module map
     const moduleSubtopicList = module.subtopics
-      .map((s, i) => `${s.id}: ${sanitize(s.title)}${i === sectionIndex ? " (REGENERATING)" : ""}`)
+      .map((s, i) => `${s.id}: ${s.title}${i === sectionIndex ? " (REGENERATING)" : ""}`)
       .join("\n");
 
     const position: "first" | "middle" | "last" =
       sectionIndex === 0 ? "first" :
       sectionIndex === module.subtopics.length - 1 ? "last" : "middle";
 
-    const subtopicDesc = `${targetSection.id}: ${sanitize(targetSection.title)}`;
+    const subtopicDesc = `${targetSection.id}: ${targetSection.title}`;
 
     // Create composer and regenerate
     const composer = createContentComposer(
@@ -187,19 +178,19 @@ export async function POST(request: NextRequest) {
     );
 
     let contentMessage = sectionIndex === 0
-      ? `Teach this section. This is the opening section of the module.\n\nModule: ${sanitize(module.title)}\nSection: ${subtopicDesc}\n\nInclude diagrams inline wherever they genuinely help understanding.`
-      : `Teach this section. Build naturally on what came before.\n\nModule: ${sanitize(module.title)}\nSection: ${subtopicDesc}\n\nUse the fetchPreviousSubtopic tool to read previous sections for context. Include diagrams inline wherever they genuinely help understanding.`;
+      ? `Teach this section. This is the opening section of the module.\n\nModule: ${module.title}\nSection: ${subtopicDesc}\n\nInclude diagrams inline wherever they genuinely help understanding.`
+      : `Teach this section. Build naturally on what came before.\n\nModule: ${module.title}\nSection: ${subtopicDesc}\n\nUse the fetchPreviousSubtopic tool to read previous sections for context. Include diagrams inline wherever they genuinely help understanding.`;
 
     if (feedback) {
-      contentMessage += `\n\nIMPORTANT — The learner requested this content be regenerated with this feedback: "${sanitize(feedback)}". Address their concerns.`;
+      contentMessage += `\n\nIMPORTANT — The learner requested this content be regenerated with this feedback: "${feedback}". Address their concerns.`;
     }
 
     let newContent = await runAgent(composer, contentMessage);
 
     // Evaluate
     try {
-      const evaluator = createContentEvaluator(topicRecord.id, sanitize(targetSection.title), position, curriculum.level);
-      const evalResult = await runAgent(evaluator, `Evaluate this teaching content for "${sanitize(targetSection.title)}":\n\n${newContent}`);
+      const evaluator = createContentEvaluator(topicRecord.id, targetSection.title, position, curriculum.level);
+      const evalResult = await runAgent(evaluator, `Evaluate this teaching content for "${targetSection.title}":\n\n${newContent}`);
       const evalCleaned = evalResult.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
       const evaluation = JSON.parse(evalCleaned);
 
@@ -249,13 +240,13 @@ export async function POST(request: NextRequest) {
       try {
         const continuityEvaluator = createContentEvaluator(
           topicRecord.id,
-          sanitize(downstreamSection.title),
+          downstreamSection.title,
           i === module.subtopics.length - 1 ? "last" : "middle",
           curriculum.level
         );
         const evalResult = await runAgent(
           continuityEvaluator,
-          `Evaluate this teaching content for "${sanitize(downstreamSection.title)}":\n\n${downstreamContent.content}`
+          `Evaluate this teaching content for "${downstreamSection.title}":\n\n${downstreamContent.content}`
         );
         const evalCleaned = evalResult.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
         const evaluation = JSON.parse(evalCleaned);
@@ -273,7 +264,7 @@ export async function POST(request: NextRequest) {
 
           const downstreamComposer = createContentComposer(
             topicRecord.displayName, curriculum.level, module.title,
-            `${downstreamSection.id}: ${sanitize(downstreamSection.title)}`,
+            `${downstreamSection.id}: ${downstreamSection.title}`,
             researchContext,
             {
               sourceTitle,
@@ -287,7 +278,7 @@ export async function POST(request: NextRequest) {
             }
           );
 
-          const downstreamMessage = `Teach this section. The previous section was just regenerated, so build on the new version.\n\nModule: ${sanitize(module.title)}\nSection: ${downstreamSection.id}: ${sanitize(downstreamSection.title)}\n\nUse the fetchPreviousSubtopic tool to read what came before. Include diagrams inline wherever they genuinely help understanding.`;
+          const downstreamMessage = `Teach this section. The previous section was just regenerated, so build on the new version.\n\nModule: ${module.title}\nSection: ${downstreamSection.id}: ${downstreamSection.title}\n\nUse the fetchPreviousSubtopic tool to read what came before. Include diagrams inline wherever they genuinely help understanding.`;
           const newDownstreamContent = await runAgent(downstreamComposer, downstreamMessage);
 
           await clearAudio(topicRecord.id, downstreamDbKey);

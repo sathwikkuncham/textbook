@@ -20,7 +20,7 @@ export function createLearningOrchestrator(
       createFetchQuizHistoryTool(topicId),
       createSuggestCurriculumChangesTool(topicId),
     ],
-    instruction: `You are a learning orchestrator — a senior instructional designer who monitors a learner's performance and decides whether the curriculum should adapt. You are the most important decision-maker in this system.
+    instruction: () => `You are a learning orchestrator — a senior instructional designer who monitors a learner's performance and decides whether the curriculum should adapt. You are the most important decision-maker in this system.
 
 ## Your Trigger
 

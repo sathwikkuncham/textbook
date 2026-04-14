@@ -80,21 +80,21 @@ async function planNextSection(
     name: "ModulePlanner",
     model: MODELS.FLASH,
     description: "Plans the next section of a module",
-    instruction: `You are planning sections for a learning module. Your job is to decide what the NEXT section should cover.
+    instruction: () => `You are planning sections for a learning module. Your job is to decide what the NEXT section should cover.
 
 ## Module
-Title: ${sanitize(moduleTitle)}
-Goal: ${sanitize(plan.goal)}
-All concepts to cover: ${allConcepts.map(sanitize).join(", ")}
+Title: ${moduleTitle}
+Goal: ${plan.goal}
+All concepts to cover: ${allConcepts.join(", ")}
 
 ## Learner Profile
-${sanitize(interviewContext)}
+${interviewContext}
 
 ## What's Been Generated So Far
-${sanitize(previousSummary)}
+${previousSummary}
 
 ## Remaining Concepts
-${remaining.length > 0 ? remaining.map(sanitize).join(", ") : "ALL concepts have been covered"}
+${remaining.length > 0 ? remaining.join(", ") : "ALL concepts have been covered"}
 
 ## Your Decision
 
@@ -138,12 +138,6 @@ Return ONLY valid JSON (no markdown, no explanation):
       estimatedSections: previousSections.length + 1,
     };
   }
-}
-
-// ── ADK Sanitization — strip curly braces that ADK interprets as variables
-
-function sanitize(str: string): string {
-  return str.replace(/[{}]/g, "");
 }
 
 // ── Content Summary — extracts first ~300 words ───────────
@@ -258,16 +252,12 @@ export async function* orchestrateModule(
     const position: "first" | "middle" | "last" = isFirst ? "first" : "middle";
 
     // Build the subtopic description for the content composer
-    // Sanitize ALL dynamic content to prevent ADK template engine from interpreting {word} as variables
-    const safeTitle = sanitize(decision.title);
-    const safeConcepts = (decision.concepts ?? []).map(sanitize);
-    const safeScope = sanitize(decision.scope);
-    const subtopicDesc = `${moduleId}.${sectionNumber}: ${safeTitle} (concepts: ${safeConcepts.join(", ")})`;
+    const subtopicDesc = `${moduleId}.${sectionNumber}: ${decision.title} (concepts: ${(decision.concepts ?? []).join(", ")})`;
 
     // Build module map showing what's been generated
     const moduleSubtopicList = [
-      ...sections.map((s, i) => `${moduleId}.${i + 1}: ${sanitize(s.title)} (completed)`),
-      `${moduleId}.${sectionNumber}: ${safeTitle} (CURRENT)`,
+      ...sections.map((s, i) => `${moduleId}.${i + 1}: ${s.title} (completed)`),
+      `${moduleId}.${sectionNumber}: ${decision.title} (CURRENT)`,
     ].join("\n");
 
     // Create content composer for this section
@@ -290,19 +280,17 @@ export async function* orchestrateModule(
     );
 
     // Build the generation message — give the composer full context about what came before
-    // All dynamic content is sanitized to prevent ADK template variable errors
     const contextSuffix = sections.length > 0
       ? `\n\nThe learner has already read these sections in this module:\n${sections.map((s, i) =>
-          `- Section ${i + 1}: "${sanitize(s.title)}" — ${s.conceptsCovered.map(sanitize).join(", ")}`
+          `- Section ${i + 1}: "${s.title}" — ${s.conceptsCovered.join(", ")}`
         ).join("\n")}\n\nBuild naturally on what was covered. Use the fetchPreviousSubtopic tool to read the actual content for continuity.`
       : "";
 
-    const scopeSuffix = `\n\nScope for this section: ${safeScope}`;
-    const safeModuleTitle = sanitize(moduleTitle);
+    const scopeSuffix = `\n\nScope for this section: ${decision.scope}`;
 
     const contentMessage = isFirst
-      ? `Teach this section. This is the opening section of the module — give it the depth it deserves.\n\nModule: ${safeModuleTitle}\nSection: ${subtopicDesc}\n\nInclude diagrams inline wherever they genuinely help understanding.${scopeSuffix}`
-      : `Teach this section. Build naturally on what the learner has already covered.\n\nModule: ${safeModuleTitle}\nSection: ${subtopicDesc}\n\nInclude diagrams inline wherever they genuinely help understanding.${scopeSuffix}${contextSuffix}`;
+      ? `Teach this section. This is the opening section of the module — give it the depth it deserves.\n\nModule: ${moduleTitle}\nSection: ${subtopicDesc}\n\nInclude diagrams inline wherever they genuinely help understanding.${scopeSuffix}`
+      : `Teach this section. Build naturally on what the learner has already covered.\n\nModule: ${moduleTitle}\nSection: ${subtopicDesc}\n\nInclude diagrams inline wherever they genuinely help understanding.${scopeSuffix}${contextSuffix}`;
 
     // Generate content
     let finalContent = await runAgent(composer, contentMessage);
@@ -312,13 +300,13 @@ export async function* orchestrateModule(
     try {
       const evaluator = createContentEvaluator(
         topicId,
-        safeTitle,
+        decision.title,
         position,
         curriculum.level
       );
       const evalResult = await runAgent(
         evaluator,
-        `Evaluate this teaching content for section "${safeTitle}":\n\n${finalContent}`
+        `Evaluate this teaching content for section "${decision.title}":\n\n${finalContent}`
       );
       const evalCleaned = evalResult.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
       const evaluation = JSON.parse(evalCleaned);

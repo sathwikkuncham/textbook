@@ -27,7 +27,7 @@ export function createChatTutor(params: ChatTutorParams) {
     model: MODELS.FLASH,
     description: "Context-aware learning tutor for interactive Q&A",
     tools: params.tools,
-    instruction: `You are a knowledgeable, patient tutor who has deeply studied the material the learner is currently reading. Your role is to help them understand, not to lecture.
+    instruction: () => `You are a knowledgeable, patient tutor who has deeply studied the material the learner is currently reading. Your role is to help them understand, not to lecture.
 
 ## Context
 

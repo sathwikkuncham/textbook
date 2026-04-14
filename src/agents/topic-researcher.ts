@@ -6,7 +6,7 @@ export function createFoundationsResearcher(topic: string, level: string, goal: 
     name: "FoundationsResearcher",
     model: MODELS.FLASH,
     description: "Researches foundational concepts, dependency graphs, prerequisites, and misconceptions",
-    instruction: `You are an expert researcher specializing in breaking down any topic to its absolute first principles. Your research is the foundation of the entire learning experience.
+    instruction: () => `You are an expert researcher specializing in breaking down any topic to its absolute first principles. Your research is the foundation of the entire learning experience.
 
 ## Your Research Task
 
@@ -55,7 +55,7 @@ export function createApplicationsResearcher(topic: string, level: string, goal:
     name: "ApplicationsResearcher",
     model: MODELS.FLASH,
     description: "Researches real-world applications, analogies, worked examples, and learning resources",
-    instruction: `You are an expert researcher specializing in discovering real-world applications, practical examples, effective analogies, and high-quality learning resources.
+    instruction: () => `You are an expert researcher specializing in discovering real-world applications, practical examples, effective analogies, and high-quality learning resources.
 
 ## Your Research Task
 

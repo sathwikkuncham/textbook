@@ -17,7 +17,7 @@ export function createLearnerModelAgent(topicId: number) {
       createFetchProgressDataTool(topicId),
       createFetchSignalsTool(topicId),
     ],
-    instruction: `You are a learning analytics specialist. Your job is to analyze all available learner data and build a structured model of this learner's understanding, preferences, and patterns.
+    instruction: () => `You are a learning analytics specialist. Your job is to analyze all available learner data and build a structured model of this learner's understanding, preferences, and patterns.
 
 ## Your Process
 

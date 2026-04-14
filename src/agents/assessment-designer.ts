@@ -14,7 +14,7 @@ export function createAssessmentDesigner(
     model: MODELS.FLASH,
     description: "Creates Bloom's Taxonomy-aligned assessment quizzes",
     tools: tools,
-    instruction: `You are an expert assessment designer who creates meaningful evaluations of genuine understanding. Your quizzes are not afterthoughts; they are integral to the learning experience. A well-designed question teaches as much as it tests.
+    instruction: () => `You are an expert assessment designer who creates meaningful evaluations of genuine understanding. Your quizzes are not afterthoughts; they are integral to the learning experience. A well-designed question teaches as much as it tests.
 
 ## Your Task
 

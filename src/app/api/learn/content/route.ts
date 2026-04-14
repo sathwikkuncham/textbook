@@ -114,10 +114,8 @@ export async function POST(request: NextRequest) {
   // Strip curly braces from research context — the @google/adk template
   // engine interprets {word} patterns as context variables, so code examples
   // like {useState} or {count} from React/JS research data cause errors.
-  // The research context is supplementary AI context, not user-facing content.
   const researchContext = JSON.stringify(research, null, 2)
-    .slice(0, 6000)
-    .replace(/[{}]/g, "");
+    .slice(0, 6000);
 
   // Compute subtopic position within the module
   const totalSubtopics = module.subtopics.length;

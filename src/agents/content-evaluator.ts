@@ -14,7 +14,7 @@ export function createContentEvaluator(
     description:
       "Evaluates teaching content quality — checks both information quality and whether it actually builds understanding",
     tools: [createFetchResearchContextTool(topicId)],
-    instruction: `You are evaluating teaching content written for a ${learnerLevel}-level learner. Your job is to determine whether this content actually TEACHES or merely PRESENTS INFORMATION.
+    instruction: () => `You are evaluating teaching content written for a ${learnerLevel}-level learner. Your job is to determine whether this content actually TEACHES or merely PRESENTS INFORMATION.
 
 ## Content Being Evaluated
 
