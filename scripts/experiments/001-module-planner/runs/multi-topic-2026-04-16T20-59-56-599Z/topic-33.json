@@ -1,0 +1,83 @@
+{
+  "topic": {
+    "id": 33,
+    "slug": "advanced-system-design-mastery",
+    "displayName": "Advanced System Design Mastery",
+    "moduleTitle": "The Physics of a Single Machine: Hardware & OS Primitives",
+    "modulePlan": {
+      "goal": "Explain and calculate the impact of hardware latencies and kernel I/O models on software performance.",
+      "concepts": [
+        "L1/L2/L3 Cache Latency vs Main Memory",
+        "Disk Seek vs Sequential I/O (SSD Page/Block mechanics)",
+        "Kernel vs User Space Transitions",
+        "Blocking vs Non-blocking I/O",
+        "Synchronous vs Asynchronous I/O (epoll, io_uring)",
+        "Context Switching and Thread Pool Exhaustion",
+        "Memory Hierarchy and the Latency Numbers every programmer should know",
+        "CPU Concurrency vs Parallelism"
+      ],
+      "sourceRefs": [
+        "Phase 1: The Hardware & OS Layer (The Physics)",
+        "Layer 1: The Foundations"
+      ],
+      "prerequisites": []
+    },
+    "compressedInterview": "Purpose: Professional mastery through first-principles engineering; building a bottom-up mental model of large-scale systems.\nPrior knowledge: Professional Software Engineer; familiar with application logic but needs foundational infrastructure and distributed systems depth.\nDesired depth: Exhaustive / Academic-to-Applied; no shortcuts, focusing on the 'how' and 'why' at the lowest levels.\nTime available: Unrestricted / Intensive (Maximum possible bandwidth)\nFocus areas: Hardware & OS Primitives (Disk I/O, Syscalls, Memory Management, Concurrency), Network Internals (TCP/IP stack, Socket programming, Congestion control), Storage Engine Mechanics (B-Trees, LSM Trees, WAL, Transaction Isolation), Distributed Fundamentals (Time, Consensus, Replication, Partitioning), High-Scale Architectural Patterns (Asynchronous processing, API Gateway, Load Balancing)\nSource type: Comprehensive Curriculum",
+    "rawTranscript": "User: I want to learn about: System design from scratch to advanced. Complete end to end. No rush. No compromises. No shortcuts. Deeper understanding on everything that matters. No surface level explanations. For everything we need to go deeper.\n\nAssistant: That is a great mindset to have—mastery takes time, but it's worth it. To help me tailor this deep dive, could you tell me a bit about your current background? Are you already working as a developer, or are you starting from a different field?\n\nUser: I'm a software engineer. Never got time to touch upon this side and now I have to. Professional requirements but that doesn't mean you need to compromise or rush. You should strictly follow detailed and deeper explanations.\n\nAssistant: Since we're going for total mastery with no shortcuts, how much time can you realistically dedicate to this each week?\n\nUser: I can dedicate any amount of time. Plan for maximum possible time and go deeper and take time to establish. Use first Principles. Build things bottom up. Don't rush to finish or create something.\n\nAssistant: To ensure we truly start from first principles: do you want to begin with the hardware and OS primitives that make distributed systems possible (like disk I/O, syscalls, and network stacks), or would you prefer to start directly at the software architectural level (load balancing, caching strategies, and database internals)?\n\nUser: You decide. I need to understand and start from the most fundamental  which should be built on top of these fundamentals. Bottom up. First principles\n\nAssistant: Understood. If we are building from the absolute bedrock, we have to start where the software meets the metal—at the OS and hardware level—before we ever talk about \"the cloud\" or \"microservices.\"",
+    "productionSubtopicCount": 4,
+    "productionSubtopicTitles": [
+      "The Memory Hierarchy: Caches, Latency, and the Physics of Data Movement",
+      "Persistence Physics: The Mechanical and Electrical Reality of Disk I/O",
+      "The Gatekeeper: System Calls, Context Switching, and the Concurrency Myth",
+      "Modern I/O Paradigms: From Blocking Sockets to io_uring"
+    ],
+    "profileSummary": "Advanced · Exhaustive · Unrestricted time · Bottom-up first principles · 8 concepts"
+  },
+  "runs": [
+    {
+      "runNumber": 1,
+      "latencyMs": 11328,
+      "parsed": {
+        "done": false,
+        "title": "The Physics of Memory: Latency and the Memory Hierarchy",
+        "scope": "Begin at the absolute bedrock: the physical time it takes for an electrical signal to travel between the CPU and memory. Introduce the memory hierarchy from first principles, dissecting L1, L2, L3 caches versus Main Memory to build a rigorous intuition around the 'latency numbers every programmer should know'.",
+        "concepts": [
+          "Memory Hierarchy and the Latency Numbers every programmer should know",
+          "L1/L2/L3 Cache Latency vs Main Memory"
+        ],
+        "estimatedSections": 8
+      },
+      "rawOutput": "{\n  \"done\": false,\n  \"title\": \"The Physics of Memory: Latency and the Memory Hierarchy\",\n  \"scope\": \"Begin at the absolute bedrock: the physical time it takes for an electrical signal to travel between the CPU and memory. Introduce the memory hierarchy from first principles, dissecting L1, L2, L3 caches versus Main Memory to build a rigorous intuition around the 'latency numbers every programmer should know'.\",\n  \"concepts\": [\n    \"Memory Hierarchy and the Latency Numbers every programmer should know\",\n    \"L1/L2/L3 Cache Latency vs Main Memory\"\n  ],\n  \"estimatedSections\": 8\n}"
+    },
+    {
+      "runNumber": 2,
+      "latencyMs": 7723,
+      "parsed": {
+        "done": false,
+        "title": "The Physical Limits of Speed: Memory Hierarchy and Cache Latencies",
+        "scope": "Begin at the absolute bedrock of system performance: the physical distance and time it takes to move data into the CPU. This section will establish the foundational 'latency numbers every programmer should know', exploring the stark performance cliffs between L1, L2, L3 caches, and main memory.",
+        "concepts": [
+          "Memory Hierarchy and the Latency Numbers every programmer should know",
+          "L1/L2/L3 Cache Latency vs Main Memory"
+        ],
+        "estimatedSections": 6
+      },
+      "rawOutput": "{\n  \"done\": false,\n  \"title\": \"The Physical Limits of Speed: Memory Hierarchy and Cache Latencies\",\n  \"scope\": \"Begin at the absolute bedrock of system performance: the physical distance and time it takes to move data into the CPU. This section will establish the foundational 'latency numbers every programmer should know', exploring the stark performance cliffs between L1, L2, L3 caches, and main memory.\",\n  \"concepts\": [\n    \"Memory Hierarchy and the Latency Numbers every programmer should know\",\n    \"L1/L2/L3 Cache Latency vs Main Memory\"\n  ],\n  \"estimatedSections\": 6\n}"
+    },
+    {
+      "runNumber": 3,
+      "latencyMs": 13098,
+      "parsed": {
+        "done": false,
+        "title": "The Physics of Computation: Memory Hierarchy and Caching First Principles",
+        "scope": "Begin at the absolute bedrock: the physical distance between the CPU and data. This section will build a first-principles understanding of the memory hierarchy, detailing L1/L2/L3 cache mechanics versus main memory, and derive the fundamental latency numbers every systems programmer must know.",
+        "concepts": [
+          "Memory Hierarchy and the Latency Numbers every programmer should know",
+          "L1/L2/L3 Cache Latency vs Main Memory"
+        ],
+        "estimatedSections": 7
+      },
+      "rawOutput": "{\n  \"done\": false,\n  \"title\": \"The Physics of Computation: Memory Hierarchy and Caching First Principles\",\n  \"scope\": \"Begin at the absolute bedrock: the physical distance between the CPU and data. This section will build a first-principles understanding of the memory hierarchy, detailing L1/L2/L3 cache mechanics versus main memory, and derive the fundamental latency numbers every systems programmer must know.\",\n  \"concepts\": [\n    \"Memory Hierarchy and the Latency Numbers every programmer should know\",\n    \"L1/L2/L3 Cache Latency vs Main Memory\"\n  ],\n  \"estimatedSections\": 7\n}"
+    }
+  ]
+}

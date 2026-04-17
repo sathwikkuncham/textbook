@@ -1,0 +1,432 @@
+{
+  "topicId": 32,
+  "slug": "transformer-networks-history-and-theory",
+  "displayName": "Transformer Networks: History and Theory",
+  "sourceType": "pdf",
+  "latencyMs": 45737,
+  "rawOutput": "{\n  \"topic\": \"Transformer Networks: History and Theory\",\n  \"topic_slug\": \"transformer-networks-history-and-theory\",\n  \"level\": \"Advanced\",\n  \"goal\": \"Extreme intellectual curiosity and deep conceptual mastery of NLP evolution.\",\n  \"estimated_total_minutes\": 1110,\n  \"modules\": [\n    {\n      \"id\": 1,\n      \"title\": \"The Pre-Computing Era: Seeds of Generative Theory\",\n      \"estimated_minutes\": 90,\n      \"description\": \"Explores the earliest mathematical frameworks for sequence generation and information theory, satisfying the learner's curiosity about pre-computer generative concepts.\",\n      \"plan\": {\n        \"goal\": \"Explain how language can be modeled as a mathematical sequence using early probability theory and information dynamics.\",\n        \"concepts\": [\n          \"Claude Shannon's Information Theory\",\n          \"Entropy and predictability in language\",\n          \"Markov Chains and state transitions\",\n          \"N-gram models for sequence prediction\",\n          \"Stochastic text generation\"\n        ],\n        \"sourceRefs\": [],\n        \"prerequisites\": []\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 5,\n        \"pass_threshold\": 80,\n        \"question_types\": [\"conceptual\", \"application\"]\n      }\n    },\n    {\n      \"id\": 2,\n      \"title\": \"The Sequential Era & The Vanishing Gradient Bottleneck\",\n      \"estimated_minutes\": 120,\n      \"description\": \"A first-principles breakdown of Recurrent Neural Networks (RNNs) and LSTMs. Designed for an engineer to intuitively grasp why sequential processing became an insurmountable hardware and mathematical bottleneck.\",\n      \"plan\": {\n        \"goal\": \"Diagnose the fundamental architectural flaws of RNNs and LSTMs that necessitated a paradigm shift.\",\n        \"concepts\": [\n          \"Recurrent Neural Networks (RNN) architecture\",\n          \"Sequential processing limits and the $O(N)$ sequential operations bottleneck\",\n          \"The Vanishing and Exploding Gradient problem\",\n          \"Long Short-Term Memory (LSTM) cells as a temporary fix\",\n          \"Information compression constraints in fixed-length vectors\",\n          \"Incompatibility of sequential steps with GPU parallelization\"\n        ],\n        \"sourceRefs\": [\n          \"1 Introduction\",\n          \"2 Background\"\n        ],\n        \"prerequisites\": [\n          \"Markov Chains and state transitions\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 6,\n        \"pass_threshold\": 80,\n        \"question_types\": [\"conceptual\", \"application\"]\n      }\n    },\n    {\n      \"id\": 3,\n      \"title\": \"The Bridge: Bahdanau Attention and the Context Vector\",\n      \"estimated_minutes\": 90,\n      \"description\": \"Examines the 2014 introduction of 'attention' as a patch for RNNs, providing the crucial evolutionary link before the full Transformer breakthrough.\",\n      \"plan\": {\n        \"goal\": \"Understand how the first Attention mechanism allowed models to 'look back' over a sequence without discarding recurrence entirely.\",\n        \"concepts\": [\n          \"Encoder-Decoder sequence-to-sequence framework\",\n          \"The information bottleneck in final hidden states\",\n          \"Bahdanau alignment and early attention scores\",\n          \"Dynamic context vectors\",\n          \"Why recurrence + attention was still too computationally expensive\"\n        ],\n        \"sourceRefs\": [\n          \"2 Background\"\n        ],\n        \"prerequisites\": [\n          \"Recurrent Neural Networks (RNN) architecture\",\n          \"Sequential processing limits and the $O(N)$ sequential operations bottleneck\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 4,\n        \"pass_threshold\": 75,\n        \"question_types\": [\"conceptual\"]\n      }\n    },\n    {\n      \"id\": 4,\n      \"title\": \"The Big Bang: 'Attention Is All You Need'\",\n      \"estimated_minutes\": 120,\n      \"description\": \"Deconstructs the core thesis of the 2017 paper. Focuses on the radical shift of dropping recurrence entirely to achieve massive parallelization.\",\n      \"plan\": {\n        \"goal\": \"Articulate the central hypothesis of the Transformer and its high-level macro-architecture.\",\n        \"concepts\": [\n          \"Discarding recurrence and convolutions entirely\",\n          \"The macro Encoder-Decoder stack in Transformers\",\n          \"Parallelizing sequence processing ($O(1)$ sequential operations)\",\n          \"Data flow through the Transformer architecture\",\n          \"Mapping architectural choices to hardware acceleration advantages\"\n        ],\n        \"sourceRefs\": [\n          \"Abstract\",\n          \"1 Introduction\",\n          \"3 Model Architecture\"\n        ],\n        \"prerequisites\": [\n          \"Why recurrence + attention was still too computationally expensive\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 5,\n        \"pass_threshold\": 80,\n        \"question_types\": [\"conceptual\", \"true_false\"]\n      }\n    },\n    {\n      \"id\": 5,\n      \"title\": \"The Math of Meaning: Self-Attention Mechanics (QKV)\",\n      \"estimated_minutes\": 150,\n      \"description\": \"A deep, intuitive engineering dive into how the Transformer calculates relevance. Uses a top-down mathematical approach to explain Query, Key, and Value matrices.\",\n      \"plan\": {\n        \"goal\": \"Calculate and explain the flow of information through the Scaled Dot-Product Attention mechanism.\",\n        \"concepts\": [\n          \"Self-Attention vs. Cross-Attention\",\n          \"The Database Analogy: Queries, Keys, and Values (QKV)\",\n          \"Vector dot products as a measure of semantic similarity\",\n          \"Scaling by the square root of dimensions ($1/\\\\sqrt{d_k}$)\",\n          \"Preventing gradient explosion in Softmax functions\",\n          \"Matrix multiplication for massive parallel batching\"\n        ],\n        \"sourceRefs\": [\n          \"3 Model Architecture\",\n          \"4 Why Self-Attention\",\n          \"Attention Visualizations\"\n        ],\n        \"prerequisites\": [\n          \"Parallelizing sequence processing ($O(1)$ sequential operations)\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 7,\n        \"pass_threshold\": 85,\n        \"question_types\": [\"conceptual\", \"application\"]\n      }\n    },\n    {\n      \"id\": 6,\n      \"title\": \"Parallel Concept Mapping: Multi-Head Attention\",\n      \"estimated_minutes\": 90,\n      \"description\": \"Explains how the model processes grammar, semantics, and context simultaneously by branching the attention mechanism.\",\n      \"plan\": {\n        \"goal\": \"Explain how Multi-Head Attention allows the model to attend to different representation subspaces at different positions.\",\n        \"concepts\": [\n          \"The limitation of a single attention calculation\",\n          \"Linear projections into multiple 'heads'\",\n          \"Parallel attention calculation\",\n          \"Concatenation and final linear transformation\",\n          \"Visualizing multiple linguistic relationships (grammar vs. reference)\"\n        ],\n        \"sourceRefs\": [\n          \"3 Model Architecture\",\n          \"4 Why Self-Attention\",\n          \"Attention Visualizations\"\n        ],\n        \"prerequisites\": [\n          \"The Database Analogy: Queries, Keys, and Values (QKV)\",\n          \"Vector dot products as a measure of semantic similarity\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 4,\n        \"pass_threshold\": 75,\n        \"question_types\": [\"conceptual\"]\n      }\n    },\n    {\n      \"id\": 7,\n      \"title\": \"Restoring Sequence: Positional Encoding\",\n      \"estimated_minutes\": 90,\n      \"description\": \"A focused look at the mathematical 'hack' that allows a purely parallel architecture to understand the order of words.\",\n      \"plan\": {\n        \"goal\": \"Understand how sinusoidal mathematical functions inject sequence order into parallel word embeddings.\",\n        \"concepts\": [\n          \"The permutation invariance of pure attention (loss of sequence)\",\n          \"Absolute vs Relative positional encodings\",\n          \"The mathematical formulation of Sine and Cosine positional waves\",\n          \"Vector addition of positional encodings to token embeddings\",\n          \"Why continuous functions allow extrapolation to longer sequences\"\n        ],\n        \"sourceRefs\": [\n          \"3 Model Architecture\"\n        ],\n        \"prerequisites\": [\n          \"Self-Attention vs. Cross-Attention\",\n          \"Parallelizing sequence processing ($O(1)$ sequential operations)\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 5,\n        \"pass_threshold\": 80,\n        \"question_types\": [\"conceptual\", \"application\"]\n      }\n    },\n    {\n      \"id\": 8,\n      \"title\": \"Training the Beast: Optimization and Hardware Synergy\",\n      \"estimated_minutes\": 120,\n      \"description\": \"Explores the internal network components and training techniques that allow the Transformer to train efficiently on large datasets without collapsing.\",\n      \"plan\": {\n        \"goal\": \"Analyze the optimization techniques, regularizations, and sub-layer mechanics that stabilize Transformer training.\",\n        \"concepts\": [\n          \"Residual (Skip) Connections and bypassing layers\",\n          \"Layer Normalization for stable gradients\",\n          \"Position-wise Feed-Forward Networks (FFNs)\",\n          \"Masked Self-Attention in the Decoder (preventing future peek)\",\n          \"The Adam Optimizer with custom learning rate scheduling\",\n          \"Label Smoothing to prevent overconfidence\",\n          \"Hardware synergy (HBM vs SRAM data movement concepts)\"\n        ],\n        \"sourceRefs\": [\n          \"3 Model Architecture\",\n          \"5 Training\",\n          \"6 Results\"\n        ],\n        \"prerequisites\": [\n          \"The macro Encoder-Decoder stack in Transformers\",\n          \"Concatenation and final linear transformation\",\n          \"Preventing gradient explosion in Softmax functions\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 6,\n        \"pass_threshold\": 80,\n        \"question_types\": [\"conceptual\", \"application\"]\n      }\n    },\n    {\n      \"id\": 9,\n      \"title\": \"The Fallout: Branching Architectures & Scaling Laws\",\n      \"estimated_minutes\": 120,\n      \"description\": \"Traces the evolutionary lineages of the original Transformer (BERT, GPT, T5) and the discovery of mathematical scaling laws that birthed modern LLMs.\",\n      \"plan\": {\n        \"goal\": \"Map the evolution of the Transformer into Encoder-only, Decoder-only, and Seq2Seq lineages, and explain the empirical scaling laws of AI.\",\n        \"concepts\": [\n          \"Encoder-Only lineage (BERT) for deep bidirectional context\",\n          \"Decoder-Only lineage (GPT) for autoregressive generation\",\n          \"Encoder-Decoder lineage (T5) for generalized Seq2Seq\",\n          \"Kaplan's Scaling Laws (Compute, Data, Parameters)\",\n          \"Chinchilla Scaling Laws (Over-parameterization vs Under-training)\"\n        ],\n        \"sourceRefs\": [\n          \"7 Conclusion\",\n          \"References\"\n        ],\n        \"prerequisites\": [\n          \"The macro Encoder-Decoder stack in Transformers\",\n          \"Masked Self-Attention in the Decoder (preventing future peek)\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 5,\n        \"pass_threshold\": 80,\n        \"question_types\": [\"conceptual\", \"application\"]\n      }\n    },\n    {\n      \"id\": 10,\n      \"title\": \"Modern Limits, Innovations & The Horizon\",\n      \"estimated_minutes\": 120,\n      \"description\": \"Explores the current bleeding edge of AI architecture, evaluating the strict limitations of Transformers and the next generation of solutions.\",\n      \"plan\": {\n        \"goal\": \"Evaluate the computational bottlenecks of modern Transformers and analyze emerging architectures aiming to solve them.\",\n        \"concepts\": [\n          \"The Quadratic Context Bottleneck ($O(N^2)$ complexity)\",\n          \"Hardware-aware algorithms: FlashAttention\",\n          \"Advanced position tracking: Rotary Positional Embeddings (RoPE)\",\n          \"Beyond text: Vision Transformers (ViT) and loss of inductive bias\",\n          \"Theoretical limits: Compositionality and logical reasoning circuits\",\n          \"The next paradigm: State Space Models (SSMs) and Mamba\"\n        ],\n        \"sourceRefs\": [\n          \"7 Conclusion\",\n          \"References\"\n        ],\n        \"prerequisites\": [\n          \"The Database Analogy: Queries, Keys, and Values (QKV)\",\n          \"The mathematical formulation of Sine and Cosine positional waves\",\n          \"Sequential processing limits and the $O(N)$ sequential operations bottleneck\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 6,\n        \"pass_threshold\": 80,\n        \"question_types\": [\"conceptual\", \"application\", \"true_false\"]\n      }\n    }\n  ]\n}",
+  "parsed": {
+    "topic": "Transformer Networks: History and Theory",
+    "topic_slug": "transformer-networks-history-and-theory",
+    "level": "Advanced",
+    "goal": "Extreme intellectual curiosity and deep conceptual mastery of NLP evolution.",
+    "estimated_total_minutes": 1110,
+    "modules": [
+      {
+        "id": 1,
+        "title": "The Pre-Computing Era: Seeds of Generative Theory",
+        "estimated_minutes": 90,
+        "description": "Explores the earliest mathematical frameworks for sequence generation and information theory, satisfying the learner's curiosity about pre-computer generative concepts.",
+        "plan": {
+          "goal": "Explain how language can be modeled as a mathematical sequence using early probability theory and information dynamics.",
+          "concepts": [
+            "Claude Shannon's Information Theory",
+            "Entropy and predictability in language",
+            "Markov Chains and state transitions",
+            "N-gram models for sequence prediction",
+            "Stochastic text generation"
+          ],
+          "sourceRefs": [],
+          "prerequisites": []
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 5,
+          "pass_threshold": 80,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 2,
+        "title": "The Sequential Era & The Vanishing Gradient Bottleneck",
+        "estimated_minutes": 120,
+        "description": "A first-principles breakdown of Recurrent Neural Networks (RNNs) and LSTMs. Designed for an engineer to intuitively grasp why sequential processing became an insurmountable hardware and mathematical bottleneck.",
+        "plan": {
+          "goal": "Diagnose the fundamental architectural flaws of RNNs and LSTMs that necessitated a paradigm shift.",
+          "concepts": [
+            "Recurrent Neural Networks (RNN) architecture",
+            "Sequential processing limits and the $O(N)$ sequential operations bottleneck",
+            "The Vanishing and Exploding Gradient problem",
+            "Long Short-Term Memory (LSTM) cells as a temporary fix",
+            "Information compression constraints in fixed-length vectors",
+            "Incompatibility of sequential steps with GPU parallelization"
+          ],
+          "sourceRefs": [
+            "1 Introduction",
+            "2 Background"
+          ],
+          "prerequisites": [
+            "Markov Chains and state transitions"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 6,
+          "pass_threshold": 80,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 3,
+        "title": "The Bridge: Bahdanau Attention and the Context Vector",
+        "estimated_minutes": 90,
+        "description": "Examines the 2014 introduction of 'attention' as a patch for RNNs, providing the crucial evolutionary link before the full Transformer breakthrough.",
+        "plan": {
+          "goal": "Understand how the first Attention mechanism allowed models to 'look back' over a sequence without discarding recurrence entirely.",
+          "concepts": [
+            "Encoder-Decoder sequence-to-sequence framework",
+            "The information bottleneck in final hidden states",
+            "Bahdanau alignment and early attention scores",
+            "Dynamic context vectors",
+            "Why recurrence + attention was still too computationally expensive"
+          ],
+          "sourceRefs": [
+            "2 Background"
+          ],
+          "prerequisites": [
+            "Recurrent Neural Networks (RNN) architecture",
+            "Sequential processing limits and the $O(N)$ sequential operations bottleneck"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 4,
+          "pass_threshold": 75,
+          "question_types": [
+            "conceptual"
+          ]
+        }
+      },
+      {
+        "id": 4,
+        "title": "The Big Bang: 'Attention Is All You Need'",
+        "estimated_minutes": 120,
+        "description": "Deconstructs the core thesis of the 2017 paper. Focuses on the radical shift of dropping recurrence entirely to achieve massive parallelization.",
+        "plan": {
+          "goal": "Articulate the central hypothesis of the Transformer and its high-level macro-architecture.",
+          "concepts": [
+            "Discarding recurrence and convolutions entirely",
+            "The macro Encoder-Decoder stack in Transformers",
+            "Parallelizing sequence processing ($O(1)$ sequential operations)",
+            "Data flow through the Transformer architecture",
+            "Mapping architectural choices to hardware acceleration advantages"
+          ],
+          "sourceRefs": [
+            "Abstract",
+            "1 Introduction",
+            "3 Model Architecture"
+          ],
+          "prerequisites": [
+            "Why recurrence + attention was still too computationally expensive"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 5,
+          "pass_threshold": 80,
+          "question_types": [
+            "conceptual",
+            "true_false"
+          ]
+        }
+      },
+      {
+        "id": 5,
+        "title": "The Math of Meaning: Self-Attention Mechanics (QKV)",
+        "estimated_minutes": 150,
+        "description": "A deep, intuitive engineering dive into how the Transformer calculates relevance. Uses a top-down mathematical approach to explain Query, Key, and Value matrices.",
+        "plan": {
+          "goal": "Calculate and explain the flow of information through the Scaled Dot-Product Attention mechanism.",
+          "concepts": [
+            "Self-Attention vs. Cross-Attention",
+            "The Database Analogy: Queries, Keys, and Values (QKV)",
+            "Vector dot products as a measure of semantic similarity",
+            "Scaling by the square root of dimensions ($1/\\sqrt{d_k}$)",
+            "Preventing gradient explosion in Softmax functions",
+            "Matrix multiplication for massive parallel batching"
+          ],
+          "sourceRefs": [
+            "3 Model Architecture",
+            "4 Why Self-Attention",
+            "Attention Visualizations"
+          ],
+          "prerequisites": [
+            "Parallelizing sequence processing ($O(1)$ sequential operations)"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 7,
+          "pass_threshold": 85,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 6,
+        "title": "Parallel Concept Mapping: Multi-Head Attention",
+        "estimated_minutes": 90,
+        "description": "Explains how the model processes grammar, semantics, and context simultaneously by branching the attention mechanism.",
+        "plan": {
+          "goal": "Explain how Multi-Head Attention allows the model to attend to different representation subspaces at different positions.",
+          "concepts": [
+            "The limitation of a single attention calculation",
+            "Linear projections into multiple 'heads'",
+            "Parallel attention calculation",
+            "Concatenation and final linear transformation",
+            "Visualizing multiple linguistic relationships (grammar vs. reference)"
+          ],
+          "sourceRefs": [
+            "3 Model Architecture",
+            "4 Why Self-Attention",
+            "Attention Visualizations"
+          ],
+          "prerequisites": [
+            "The Database Analogy: Queries, Keys, and Values (QKV)",
+            "Vector dot products as a measure of semantic similarity"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 4,
+          "pass_threshold": 75,
+          "question_types": [
+            "conceptual"
+          ]
+        }
+      },
+      {
+        "id": 7,
+        "title": "Restoring Sequence: Positional Encoding",
+        "estimated_minutes": 90,
+        "description": "A focused look at the mathematical 'hack' that allows a purely parallel architecture to understand the order of words.",
+        "plan": {
+          "goal": "Understand how sinusoidal mathematical functions inject sequence order into parallel word embeddings.",
+          "concepts": [
+            "The permutation invariance of pure attention (loss of sequence)",
+            "Absolute vs Relative positional encodings",
+            "The mathematical formulation of Sine and Cosine positional waves",
+            "Vector addition of positional encodings to token embeddings",
+            "Why continuous functions allow extrapolation to longer sequences"
+          ],
+          "sourceRefs": [
+            "3 Model Architecture"
+          ],
+          "prerequisites": [
+            "Self-Attention vs. Cross-Attention",
+            "Parallelizing sequence processing ($O(1)$ sequential operations)"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 5,
+          "pass_threshold": 80,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 8,
+        "title": "Training the Beast: Optimization and Hardware Synergy",
+        "estimated_minutes": 120,
+        "description": "Explores the internal network components and training techniques that allow the Transformer to train efficiently on large datasets without collapsing.",
+        "plan": {
+          "goal": "Analyze the optimization techniques, regularizations, and sub-layer mechanics that stabilize Transformer training.",
+          "concepts": [
+            "Residual (Skip) Connections and bypassing layers",
+            "Layer Normalization for stable gradients",
+            "Position-wise Feed-Forward Networks (FFNs)",
+            "Masked Self-Attention in the Decoder (preventing future peek)",
+            "The Adam Optimizer with custom learning rate scheduling",
+            "Label Smoothing to prevent overconfidence",
+            "Hardware synergy (HBM vs SRAM data movement concepts)"
+          ],
+          "sourceRefs": [
+            "3 Model Architecture",
+            "5 Training",
+            "6 Results"
+          ],
+          "prerequisites": [
+            "The macro Encoder-Decoder stack in Transformers",
+            "Concatenation and final linear transformation",
+            "Preventing gradient explosion in Softmax functions"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 6,
+          "pass_threshold": 80,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 9,
+        "title": "The Fallout: Branching Architectures & Scaling Laws",
+        "estimated_minutes": 120,
+        "description": "Traces the evolutionary lineages of the original Transformer (BERT, GPT, T5) and the discovery of mathematical scaling laws that birthed modern LLMs.",
+        "plan": {
+          "goal": "Map the evolution of the Transformer into Encoder-only, Decoder-only, and Seq2Seq lineages, and explain the empirical scaling laws of AI.",
+          "concepts": [
+            "Encoder-Only lineage (BERT) for deep bidirectional context",
+            "Decoder-Only lineage (GPT) for autoregressive generation",
+            "Encoder-Decoder lineage (T5) for generalized Seq2Seq",
+            "Kaplan's Scaling Laws (Compute, Data, Parameters)",
+            "Chinchilla Scaling Laws (Over-parameterization vs Under-training)"
+          ],
+          "sourceRefs": [
+            "7 Conclusion",
+            "References"
+          ],
+          "prerequisites": [
+            "The macro Encoder-Decoder stack in Transformers",
+            "Masked Self-Attention in the Decoder (preventing future peek)"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 5,
+          "pass_threshold": 80,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 10,
+        "title": "Modern Limits, Innovations & The Horizon",
+        "estimated_minutes": 120,
+        "description": "Explores the current bleeding edge of AI architecture, evaluating the strict limitations of Transformers and the next generation of solutions.",
+        "plan": {
+          "goal": "Evaluate the computational bottlenecks of modern Transformers and analyze emerging architectures aiming to solve them.",
+          "concepts": [
+            "The Quadratic Context Bottleneck ($O(N^2)$ complexity)",
+            "Hardware-aware algorithms: FlashAttention",
+            "Advanced position tracking: Rotary Positional Embeddings (RoPE)",
+            "Beyond text: Vision Transformers (ViT) and loss of inductive bias",
+            "Theoretical limits: Compositionality and logical reasoning circuits",
+            "The next paradigm: State Space Models (SSMs) and Mamba"
+          ],
+          "sourceRefs": [
+            "7 Conclusion",
+            "References"
+          ],
+          "prerequisites": [
+            "The Database Analogy: Queries, Keys, and Values (QKV)",
+            "The mathematical formulation of Sine and Cosine positional waves",
+            "Sequential processing limits and the $O(N)$ sequential operations bottleneck"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 6,
+          "pass_threshold": 80,
+          "question_types": [
+            "conceptual",
+            "application",
+            "true_false"
+          ]
+        }
+      }
+    ]
+  },
+  "generated": {
+    "moduleCount": 10,
+    "totalMinutes": 1110,
+    "modules": [
+      {
+        "id": 1,
+        "title": "The Pre-Computing Era: Seeds of Generative Theory",
+        "conceptCount": 5,
+        "minutes": 90
+      },
+      {
+        "id": 2,
+        "title": "The Sequential Era & The Vanishing Gradient Bottleneck",
+        "conceptCount": 6,
+        "minutes": 120
+      },
+      {
+        "id": 3,
+        "title": "The Bridge: Bahdanau Attention and the Context Vector",
+        "conceptCount": 5,
+        "minutes": 90
+      },
+      {
+        "id": 4,
+        "title": "The Big Bang: 'Attention Is All You Need'",
+        "conceptCount": 5,
+        "minutes": 120
+      },
+      {
+        "id": 5,
+        "title": "The Math of Meaning: Self-Attention Mechanics (QKV)",
+        "conceptCount": 6,
+        "minutes": 150
+      },
+      {
+        "id": 6,
+        "title": "Parallel Concept Mapping: Multi-Head Attention",
+        "conceptCount": 5,
+        "minutes": 90
+      },
+      {
+        "id": 7,
+        "title": "Restoring Sequence: Positional Encoding",
+        "conceptCount": 5,
+        "minutes": 90
+      },
+      {
+        "id": 8,
+        "title": "Training the Beast: Optimization and Hardware Synergy",
+        "conceptCount": 7,
+        "minutes": 120
+      },
+      {
+        "id": 9,
+        "title": "The Fallout: Branching Architectures & Scaling Laws",
+        "conceptCount": 5,
+        "minutes": 120
+      },
+      {
+        "id": 10,
+        "title": "Modern Limits, Innovations & The Horizon",
+        "conceptCount": 6,
+        "minutes": 120
+      }
+    ]
+  }
+}

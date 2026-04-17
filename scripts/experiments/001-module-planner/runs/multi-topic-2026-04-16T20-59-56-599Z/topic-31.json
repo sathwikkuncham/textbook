@@ -1,0 +1,80 @@
+{
+  "topic": {
+    "id": 31,
+    "slug": "psoriasis-pathophysiology-a-10-mark-answer",
+    "displayName": "Psoriasis Pathophysiology: A 10-Mark Answer",
+    "moduleTitle": "Etiology: Genetics and Environmental Triggers",
+    "modulePlan": {
+      "goal": "Identify and explain the genetic loci and triggers necessary for a high-scoring etiology section in a 10-mark answer.",
+      "concepts": [
+        "PSORS1 locus and HLA-Cw6 association",
+        "Non-PSORS loci (PSORS2-9)",
+        "Genetic polymorphisms in IL23R and TNFAIP3",
+        "Koebner Phenomenon mechanisms",
+        "Streptococcal superantigens and Guttate psoriasis",
+        "Drug-induced psoriasis (Lithium, Beta-blockers, NSAIDs)",
+        "Lifestyle triggers: obesity, smoking, and alcohol"
+      ],
+      "sourceRefs": [
+        "31 Psoriasis (pp. 1120-1200)"
+      ],
+      "prerequisites": []
+    },
+    "compressedInterview": "Purpose: Post-graduate dermatology exam preparation (specifically structured for a 10-mark theory answer)\nPrior knowledge: Dermatology PG student — strong medical foundation, requires high-level immunodermatology details\nDesired depth: Advanced — focusing on molecular pathways (IL-23/Th17 axis), genetic susceptibility (PSORS1-9), and feed-forward mechanisms\nTime available: 4 months (long-term mastery and retention)\nFocus areas: Genetic loci and HLA associations, Trigger-pathophysiology correlation, Molecular feed-forward cycle, Exam-style flowcharts for scoring\nSource type: PDF (iavcl-psoriasis.pdf)",
+    "rawTranscript": "User: I want to learn about: pathophysiology of psoriasis including genetic factors, risk factors, triggering factors and corelating everything in actual pathophyology and give me in easy, understandable and as a 10 mark answer to the questions (from a PDF: iavcl-psoriasis.pdf)\n\nAssistant: It sounds like you're looking for a very structured, exam-ready breakdown—specifically that \"10-mark answer\" style. To help me make this as clear as possible for you, are you a medical student, a nursing student, or perhaps studying another health-related field?\n\nUser: i am dermatology post graduation student\n\nAssistant: That makes sense—since you're a PG student, we can focus on the higher-level immunopathogenesis and specific molecular pathways like the IL-23/Th17 axis that examiners love. How soon is your exam? Also, for your 10-mark answer, would you like me to emphasize the detailed genetic loci (like PSORS1-9) or focus more on the clinical-pathological correlation of the \"feed-forward\" cycle?\n\nUser: both\n\nAssistant: Understood. Since we're covering both the complex genetic loci (like PSORS1 and the HLA-Cw6 association) and the intricate molecular crosstalk for a PG-level answer, I have one last question to make sure this fits your schedule: How much time do you have to master this—are you in \"crunch mode\" for an exam this week, or do you have a few days to digest the complexities? (Also, would you like me to include a schematic \"flowchart\" description that you can easily replicate in your answer script?)\n\nUser: i have exam in 4 months but include flowcharts too\n\nAssistant: I have everything I need to build your study plan. Since you're a PG student with a 4-month window, we can focus on building a high-yield, structured \"10-mark\" framework that integrates those complex genetic details with clear, reproducible flowcharts.",
+    "productionSubtopicCount": 3,
+    "productionSubtopicTitles": [
+      "The Genetic Landscape: PSORS Loci and Major Polymorphisms",
+      "Environmental Catalysts: Physical Trauma and Streptococcal Triggers",
+      "Systemic Modifiers: Pharmacological Triggers and Lifestyle Factors"
+    ],
+    "profileSummary": "Advanced · PG exam-oriented · 4 months · Molecular depth · 7 concepts"
+  },
+  "runs": [
+    {
+      "runNumber": 1,
+      "latencyMs": 9628,
+      "parsed": {
+        "done": false,
+        "title": "Primary Genetic Susceptibility: The PSORS Loci",
+        "scope": "Introduce the foundational genetic basis of psoriasis required for a top-tier PG exam answer. This section will focus extensively on the most critical genetic determinant, the PSORS1 locus, and its strong association with HLA-Cw6 (especially in early-onset disease), followed by a structured overview of the non-PSORS loci (PSORS2-9) to establish the polygenic nature of the disease.",
+        "concepts": [
+          "PSORS1 locus and HLA-Cw6 association",
+          "Non-PSORS loci (PSORS2-9)"
+        ],
+        "estimatedSections": 4
+      },
+      "rawOutput": "{\n  \"done\": false,\n  \"title\": \"Primary Genetic Susceptibility: The PSORS Loci\",\n  \"scope\": \"Introduce the foundational genetic basis of psoriasis required for a top-tier PG exam answer. This section will focus extensively on the most critical genetic determinant, the PSORS1 locus, and its strong association with HLA-Cw6 (especially in early-onset disease), followed by a structured overview of the non-PSORS loci (PSORS2-9) to establish the polygenic nature of the disease.\",\n  \"concepts\": [\n    \"PSORS1 locus and HLA-Cw6 association\",\n    \"Non-PSORS loci (PSORS2-9)\"\n  ],\n  \"estimatedSections\": 4\n}"
+    },
+    {
+      "runNumber": 2,
+      "latencyMs": 7344,
+      "parsed": {
+        "done": false,
+        "title": "Genetic Foundations: PSORS Loci and HLA Associations",
+        "scope": "Introduce the primary genetic architecture of psoriasis, focusing heavily on the foundational PSORS1 locus and its critical HLA-Cw6 association. Provide a structured, high-yield breakdown of the non-PSORS loci (PSORS2-9) to establish the genetic baseline for a 10-mark exam answer.",
+        "concepts": [
+          "PSORS1 locus and HLA-Cw6 association",
+          "Non-PSORS loci (PSORS2-9)"
+        ],
+        "estimatedSections": 4
+      },
+      "rawOutput": "{\n  \"done\": false,\n  \"title\": \"Genetic Foundations: PSORS Loci and HLA Associations\",\n  \"scope\": \"Introduce the primary genetic architecture of psoriasis, focusing heavily on the foundational PSORS1 locus and its critical HLA-Cw6 association. Provide a structured, high-yield breakdown of the non-PSORS loci (PSORS2-9) to establish the genetic baseline for a 10-mark exam answer.\",\n  \"concepts\": [\n    \"PSORS1 locus and HLA-Cw6 association\",\n    \"Non-PSORS loci (PSORS2-9)\"\n  ],\n  \"estimatedSections\": 4\n}"
+    },
+    {
+      "runNumber": 3,
+      "latencyMs": 8854,
+      "parsed": {
+        "done": false,
+        "title": "Genetic Foundations: PSORS Loci and the HLA-Cw6 Association",
+        "scope": "This section establishes the primary genetic basis of psoriasis, crucial for the opening of a 10-mark exam answer. It covers the highly penetrant PSORS1 locus, its strong association with the HLA-Cw6 allele, and provides a structured overview of the non-PSORS loci (PSORS2-9).",
+        "concepts": [
+          "PSORS1 locus and HLA-Cw6 association",
+          "Non-PSORS loci (PSORS2-9)"
+        ],
+        "estimatedSections": 4
+      },
+      "rawOutput": "{\n  \"done\": false,\n  \"title\": \"Genetic Foundations: PSORS Loci and the HLA-Cw6 Association\",\n  \"scope\": \"This section establishes the primary genetic basis of psoriasis, crucial for the opening of a 10-mark exam answer. It covers the highly penetrant PSORS1 locus, its strong association with the HLA-Cw6 allele, and provides a structured overview of the non-PSORS loci (PSORS2-9).\",\n  \"concepts\": [\n    \"PSORS1 locus and HLA-Cw6 association\",\n    \"Non-PSORS loci (PSORS2-9)\"\n  ],\n  \"estimatedSections\": 4\n}"
+    }
+  ]
+}

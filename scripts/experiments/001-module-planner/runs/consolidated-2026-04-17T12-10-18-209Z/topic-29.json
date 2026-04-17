@@ -1,0 +1,152 @@
+{
+  "topic": {
+    "id": 29,
+    "slug": "understanding-large-language-models-llms",
+    "displayName": "Understanding Large Language Models (LLMs)",
+    "moduleTitle": "The Building Blocks: Tokens and Word Maps",
+    "modulePlan": {
+      "goal": "Explain how raw text is converted into a mathematical format the AI can process.",
+      "concepts": [
+        "Tokenization",
+        "Tokens as building blocks",
+        "Numerical IDs for words",
+        "Embeddings (The Map of Meaning)",
+        "Vector space (GPS coordinates for words)",
+        "Semantic relationships (King/Queen example)",
+        "Physical proximity of similar concepts"
+      ],
+      "sourceRefs": [
+        "Phase 1: The Foundation",
+        "Phase 1: The Building Blocks"
+      ],
+      "prerequisites": []
+    },
+    "compressedInterview": "Purpose: Personal curiosity—demystifying the 'magic' of AI for a non-technical learner\nPrior knowledge: Absolute beginner, no coding or technical background\nDesired depth: High-level conceptual (bottom-up logic without math/code)\nTime available: 15-30 minutes\nFocus areas: The training process (how it learns from data), The inference process (what happens after hitting send), How machines 'understand' text patterns\nSource type: Conceptual Exploration",
+    "rawTranscript": "User: I want to learn about: I'm new to the LLM and these models but I am shocked bythe sheer value it is bringing. Why and how is it working and how exactly it understands this. Can you explain in simple words, how I can understand these bottom up?\n\nAssistant: It's an incredible time to dive into this. To help me tailor the explanation for you, what's your background like? Are you coming from a technical or coding side, or should we keep things purely conceptual as we start from the bottom?\n\nUser: Non technical or non coding side. I don't know anything and I saw the chatgpt and shocked to see how accurate result and dunno what exactly happens when I send the request.\n\nAssistant: That makes total sense. To get the depth right for you: are you looking for a quick 15-minute high-level overview of the concepts, or would you like to dive into a more structured \"mini-course\" over a few days to really grasp how it goes from simple text to those \"smart\" answers?\n\nUser: Yes. 15-30 min.\n\nAssistant: Got it. Since we're aiming for a 15–30 minute deep dive for a non-technical background, focusing on the \"bottom-up\" logic is a great way to demystify the magic. One last thing to help me sharpen the focus: are you more curious about how the model was \"taught\" originally (the training phase), or the step-by-step process of what happens inside its \"brain\" the very second you hit send on a message?\n\nUser: Both\n\nAssistant: That's perfect. We'll spend that time looking at how the \"brain\" was built from all the text on the internet and exactly how it predicts the next word to give you those accurate answers.",
+    "productionSubtopicCount": 3,
+    "productionSubtopicTitles": [
+      "From Words to Numbers: What are Tokens?",
+      "The Map of Meaning: Giving Words a Neighborhood",
+      "Word Math: Navigating Relationships"
+    ],
+    "profileSummary": "Beginner · High-level conceptual · 15-30 min · Absolute beginner · 7 concepts"
+  },
+  "byVariant": {
+    "A": {
+      "variant": {
+        "id": "A",
+        "name": "Baseline (current production)",
+        "description": "Exact current prompt, FLASH model, compressed interview context.",
+        "model": "gemini-3-flash-preview"
+      },
+      "runs": [
+        {
+          "runNumber": 1,
+          "latencyMs": 4242,
+          "parsed": {
+            "done": false,
+            "title": "From Words to Numbers: The Power of Tokens",
+            "scope": "Introduce the concept that AI doesn't 'read' text the way humans do. Explain how sentences are chopped into smaller pieces called tokens and how each token is assigned a unique numerical ID so a computer can begin processing it.",
+            "concepts": [
+              "Tokenization",
+              "Tokens as building blocks",
+              "Numerical IDs for words"
+            ],
+            "estimatedSections": 3
+          },
+          "rawOutput": "{\n  \"done\": false,\n  \"title\": \"From Words to Numbers: The Power of Tokens\",\n  \"scope\": \"Introduce the concept that AI doesn't 'read' text the way humans do. Explain how sentences are chopped into smaller pieces called tokens and how each token is assigned a unique numerical ID so a computer can begin processing it.\",\n  \"concepts\": [\"Tokenization\", \"Tokens as building blocks\", \"Numerical IDs for words\"],\n  \"estimatedSections\": 3\n}"
+        },
+        {
+          "runNumber": 2,
+          "latencyMs": 3829,
+          "parsed": {
+            "done": false,
+            "title": "Breaking Language into Pieces: Tokens and IDs",
+            "scope": "Introduce the concept of tokenization as the first step in AI 'reading.' Explain how text is chopped into chunks (tokens) and how these pieces are assigned unique numerical IDs so the computer can process them as data rather than abstract letters.",
+            "concepts": [
+              "Tokenization",
+              "Tokens as building blocks",
+              "Numerical IDs for words"
+            ],
+            "estimatedSections": 3
+          },
+          "rawOutput": "{\n  \"done\": false,\n  \"title\": \"Breaking Language into Pieces: Tokens and IDs\",\n  \"scope\": \"Introduce the concept of tokenization as the first step in AI 'reading.' Explain how text is chopped into chunks (tokens) and how these pieces are assigned unique numerical IDs so the computer can process them as data rather than abstract letters.\",\n  \"concepts\": [\n    \"Tokenization\",\n    \"Tokens as building blocks\",\n    \"Numerical IDs for words\"\n  ],\n  \"estimatedSections\": 3\n}"
+        },
+        {
+          "runNumber": 3,
+          "latencyMs": 3622,
+          "parsed": {
+            "done": false,
+            "title": "From Words to Numbers: The World of Tokens",
+            "scope": "This section introduces the foundational concept of how AI 'reads' text by breaking it down into smaller units called tokens. It explains that computers cannot understand letters or words directly, so they use tokens as building blocks and assign each a unique numerical ID to begin processing information.",
+            "concepts": [
+              "Tokenization",
+              "Tokens as building blocks",
+              "Numerical IDs for words"
+            ],
+            "estimatedSections": 3
+          },
+          "rawOutput": "{\n  \"done\": false,\n  \"title\": \"From Words to Numbers: The World of Tokens\",\n  \"scope\": \"This section introduces the foundational concept of how AI 'reads' text by breaking it down into smaller units called tokens. It explains that computers cannot understand letters or words directly, so they use tokens as building blocks and assign each a unique numerical ID to begin processing information.\",\n  \"concepts\": [\n    \"Tokenization\",\n    \"Tokens as building blocks\",\n    \"Numerical IDs for words\"\n  ],\n  \"estimatedSections\": 3\n}"
+        }
+      ]
+    },
+    "D": {
+      "variant": {
+        "id": "D",
+        "name": "PRO + depth + raw transcript",
+        "description": "Variant C but with the raw interview transcript instead of compressed summary.",
+        "model": "gemini-3.1-pro-preview"
+      },
+      "runs": [
+        {
+          "runNumber": 1,
+          "latencyMs": 9430,
+          "parsed": {
+            "done": false,
+            "title": "Chopping Up Language: Tokens as Building Blocks",
+            "scope": "Explain that AI cannot 'read' words like humans do, but only understands numbers. Introduce how text is chopped up into smaller pieces called tokens, and how each token is assigned a unique numerical ID to create the foundational building blocks of AI language processing.",
+            "concepts": [
+              "Tokenization",
+              "Tokens as building blocks",
+              "Numerical IDs for words"
+            ],
+            "estimatedSections": 2
+          },
+          "rawOutput": "{\n  \"done\": false,\n  \"title\": \"Chopping Up Language: Tokens as Building Blocks\",\n  \"scope\": \"Explain that AI cannot 'read' words like humans do, but only understands numbers. Introduce how text is chopped up into smaller pieces called tokens, and how each token is assigned a unique numerical ID to create the foundational building blocks of AI language processing.\",\n  \"concepts\": [\n    \"Tokenization\",\n    \"Tokens as building blocks\",\n    \"Numerical IDs for words\"\n  ],\n  \"estimatedSections\": 2\n}"
+        },
+        {
+          "runNumber": 2,
+          "latencyMs": 9910,
+          "parsed": {
+            "done": false,
+            "title": "Breaking Down the Text: Tokens and Numerical IDs",
+            "scope": "Introduce how the AI doesn't 'read' words like humans do, but instead chops text into smaller puzzle pieces called tokens. Explain how these tokens are then assigned unique numerical IDs, acting as the fundamental building blocks the computer can actually process.",
+            "concepts": [
+              "Tokenization",
+              "Tokens as building blocks",
+              "Numerical IDs for words"
+            ],
+            "estimatedSections": 2
+          },
+          "rawOutput": "{\n  \"done\": false,\n  \"title\": \"Breaking Down the Text: Tokens and Numerical IDs\",\n  \"scope\": \"Introduce how the AI doesn't 'read' words like humans do, but instead chops text into smaller puzzle pieces called tokens. Explain how these tokens are then assigned unique numerical IDs, acting as the fundamental building blocks the computer can actually process.\",\n  \"concepts\": [\n    \"Tokenization\",\n    \"Tokens as building blocks\",\n    \"Numerical IDs for words\"\n  ],\n  \"estimatedSections\": 2\n}"
+        },
+        {
+          "runNumber": 3,
+          "latencyMs": 7531,
+          "parsed": {
+            "done": false,
+            "title": "Chopping up the Dictionary: Tokens and Numbers",
+            "scope": "Introduce the first step of how AI processes text. Explain that computers can't read words like humans do, so they break text into smaller building blocks called tokens and assign them simple numerical IDs.",
+            "concepts": [
+              "Tokenization",
+              "Tokens as building blocks",
+              "Numerical IDs for words"
+            ],
+            "estimatedSections": 2
+          },
+          "rawOutput": "{\n  \"done\": false,\n  \"title\": \"Chopping up the Dictionary: Tokens and Numbers\",\n  \"scope\": \"Introduce the first step of how AI processes text. Explain that computers can't read words like humans do, so they break text into smaller building blocks called tokens and assign them simple numerical IDs.\",\n  \"concepts\": [\n    \"Tokenization\",\n    \"Tokens as building blocks\",\n    \"Numerical IDs for words\"\n  ],\n  \"estimatedSections\": 2\n}"
+        }
+      ]
+    }
+  }
+}

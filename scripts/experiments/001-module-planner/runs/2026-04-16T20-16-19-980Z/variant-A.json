@@ -1,0 +1,26 @@
+{
+  "variant": {
+    "id": "A",
+    "name": "Baseline (current production)",
+    "description": "Exact current prompt, FLASH model, compressed interview context.",
+    "model": "gemini-3-flash-preview"
+  },
+  "runs": [
+    {
+      "variantId": "A",
+      "runNumber": 1,
+      "latencyMs": 5059,
+      "rawOutput": "{\n  \"done\": false,\n  \"title\": \"The First Principles of Language: Information Theory and Markov Chains\",\n  \"scope\": \"This section establishes the mathematical lens through which language was first quantified. It will cover Claude Shannon’s Information Theory, defining entropy as a measure of linguistic predictability, and transition into how these concepts led to the first generative models: Markov Chains and n-grams.\",\n  \"concepts\": [\n    \"Information Theory and Shannon Entropy\",\n    \"Markov Chains and n-gram models\"\n  ],\n  \"estimatedSections\": 3\n}",
+      "parsed": {
+        "done": false,
+        "title": "The First Principles of Language: Information Theory and Markov Chains",
+        "scope": "This section establishes the mathematical lens through which language was first quantified. It will cover Claude Shannon’s Information Theory, defining entropy as a measure of linguistic predictability, and transition into how these concepts led to the first generative models: Markov Chains and n-grams.",
+        "concepts": [
+          "Information Theory and Shannon Entropy",
+          "Markov Chains and n-gram models"
+        ],
+        "estimatedSections": 3
+      }
+    }
+  ]
+}

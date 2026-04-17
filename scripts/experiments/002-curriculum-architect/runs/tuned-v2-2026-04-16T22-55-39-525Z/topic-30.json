@@ -1,0 +1,186 @@
+{
+  "topicId": 30,
+  "slug": "turboquant-ai-efficiency-concepts",
+  "displayName": "Turboquant: AI Efficiency Concepts",
+  "sourceType": "topic_only",
+  "latencyMs": 23561,
+  "rawOutput": "{\n  \"topic\": \"Turboquant: AI Efficiency Concepts\",\n  \"topic_slug\": \"turboquant-ai-efficiency-concepts\",\n  \"level\": \"Beginner\",\n  \"goal\": \"Conceptual understanding to participate in discussions about AI efficiency\",\n  \"estimated_total_minutes\": 60,\n  \"modules\": [\n    {\n      \"id\": 1,\n      \"title\": \"The AI Memory Bottleneck & Intro to Quantization\",\n      \"estimated_minutes\": 15,\n      \"description\": \"Before understanding TurboQuant, we need to understand the problem it solves. This module explains why AI models run out of memory during long conversations and introduces the concept of quantization.\",\n      \"plan\": {\n        \"goal\": \"Explain what the KV Cache is and define quantization in simple terms as a trade-off between memory efficiency and AI accuracy.\",\n        \"concepts\": [\n          \"Large Language Models (LLM) basics\",\n          \"Context Window\",\n          \"The Key-Value (KV) Cache (the AI's active working memory)\",\n          \"The 'Memory Wall' problem\",\n          \"Quantization (shrinking data footprints)\",\n          \"Efficiency vs. Accuracy trade-off\"\n        ],\n        \"sourceRefs\": [\n          \"Foundations: Introduction\",\n          \"Foundations: 3. Foundational Concepts & Prerequisites\"\n        ],\n        \"prerequisites\": []\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 4,\n        \"pass_threshold\": 75,\n        \"question_types\": [\n          \"conceptual\",\n          \"true_false\"\n        ]\n      }\n    },\n    {\n      \"id\": 2,\n      \"title\": \"How TurboQuant Works (Without the Math)\",\n      \"estimated_minutes\": 15,\n      \"description\": \"Explores the 'magic' of Google's TurboQuant algorithm at a high level. We will use analogies to understand how it shrinks data without losing the AI's intelligence.\",\n      \"plan\": {\n        \"goal\": \"Describe the two-stage TurboQuant process (smearing data and fixing errors) using conceptual analogies instead of mathematics.\",\n        \"concepts\": [\n          \"Zero Memory Overhead (vs traditional methods)\",\n          \"Data-Oblivious (working without seeing calibration data)\",\n          \"Stage 1: Random Rotation ('smearing' data so it's predictably shaped)\",\n          \"Stage 2: 1-Bit Correction (fixing the 'Inner Product Bias' to keep AI attention accurate)\",\n          \"3-bit extreme compression\"\n        ],\n        \"sourceRefs\": [\n          \"Foundations: 1. Core Architecture\",\n          \"Foundations: 2. Dependency Graph\"\n        ],\n        \"prerequisites\": [\n          \"The Key-Value (KV) Cache (the AI's active working memory)\",\n          \"Quantization (shrinking data footprints)\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 5,\n        \"pass_threshold\": 80,\n        \"question_types\": [\n          \"conceptual\",\n          \"analogy_matching\"\n        ]\n      }\n    },\n    {\n      \"id\": 3,\n      \"title\": \"Real-World Impact: Bringing AI to Local Devices\",\n      \"estimated_minutes\": 15,\n      \"description\": \"Translates the concept of 3-bit compression into tangible real-world results. This module explores how TurboQuant enables massive AI models to run on everyday laptops and hardware.\",\n      \"plan\": {\n        \"goal\": \"Give concrete examples of how TurboQuant changes AI deployment, from edge devices to massive vector databases.\",\n        \"concepts\": [\n          \"6x Memory Reduction and 8x Speedup benchmarks\",\n          \"Long-Context Inference (shrinking an 80GB cache to 13GB)\",\n          \"Edge AI & Local Deployment (running AI on laptops/MacBooks)\",\n          \"Semantic Vector Search (RAG pipelines dropping from TBs to GBs of RAM)\",\n          \"Hardware efficiency (cost per query reduction)\"\n        ],\n        \"sourceRefs\": [\n          \"Foundations: 2. Key Performance Benchmarks\",\n          \"Foundations: 3. Real-World Applications & Examples\"\n        ],\n        \"prerequisites\": [\n          \"3-bit extreme compression\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 4,\n        \"pass_threshold\": 75,\n        \"question_types\": [\n          \"application\",\n          \"conceptual\"\n        ]\n      }\n    },\n    {\n      \"id\": 4,\n      \"title\": \"Joining the Conversation: Key Terms & Big Picture\",\n      \"estimated_minutes\": 15,\n      \"description\": \"A synthesis module designed specifically to prepare you for discussions. It covers the economic impact, debunks common misconceptions, and solidifies your vocabulary.\",\n      \"plan\": {\n        \"goal\": \"Confidently use terminology like 'Data-oblivious' and 'KV Cache', explain the economic impact on hardware markets, and correct common misconceptions about TurboQuant.\",\n        \"concepts\": [\n          \"Economic/Market Impact (Memory stock volatility, hardware demand)\",\n          \"Misconception 1: Activations vs. Weights\",\n          \"Misconception 2: True 3-bit vs Overhead limits\",\n          \"Key Conversation Terminology Review (Data-Oblivious, Inner Product Bias, KV Cache)\",\n          \"The Academic Debate (Similarities to RaBitQ)\"\n        ],\n        \"sourceRefs\": [\n          \"Foundations: 4. Common Misconceptions\",\n          \"Foundations: 5. Research Findings & Market Impact\"\n        ],\n        \"prerequisites\": [\n          \"The Key-Value (KV) Cache (the AI's active working memory)\",\n          \"Data-Oblivious (working without seeing calibration data)\",\n          \"Hardware efficiency (cost per query reduction)\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 5,\n        \"pass_threshold\": 80,\n        \"question_types\": [\n          \"conceptual\",\n          \"scenario_response\",\n          \"true_false\"\n        ]\n      }\n    }\n  ]\n}",
+  "parsed": {
+    "topic": "Turboquant: AI Efficiency Concepts",
+    "topic_slug": "turboquant-ai-efficiency-concepts",
+    "level": "Beginner",
+    "goal": "Conceptual understanding to participate in discussions about AI efficiency",
+    "estimated_total_minutes": 60,
+    "modules": [
+      {
+        "id": 1,
+        "title": "The AI Memory Bottleneck & Intro to Quantization",
+        "estimated_minutes": 15,
+        "description": "Before understanding TurboQuant, we need to understand the problem it solves. This module explains why AI models run out of memory during long conversations and introduces the concept of quantization.",
+        "plan": {
+          "goal": "Explain what the KV Cache is and define quantization in simple terms as a trade-off between memory efficiency and AI accuracy.",
+          "concepts": [
+            "Large Language Models (LLM) basics",
+            "Context Window",
+            "The Key-Value (KV) Cache (the AI's active working memory)",
+            "The 'Memory Wall' problem",
+            "Quantization (shrinking data footprints)",
+            "Efficiency vs. Accuracy trade-off"
+          ],
+          "sourceRefs": [
+            "Foundations: Introduction",
+            "Foundations: 3. Foundational Concepts & Prerequisites"
+          ],
+          "prerequisites": []
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 4,
+          "pass_threshold": 75,
+          "question_types": [
+            "conceptual",
+            "true_false"
+          ]
+        }
+      },
+      {
+        "id": 2,
+        "title": "How TurboQuant Works (Without the Math)",
+        "estimated_minutes": 15,
+        "description": "Explores the 'magic' of Google's TurboQuant algorithm at a high level. We will use analogies to understand how it shrinks data without losing the AI's intelligence.",
+        "plan": {
+          "goal": "Describe the two-stage TurboQuant process (smearing data and fixing errors) using conceptual analogies instead of mathematics.",
+          "concepts": [
+            "Zero Memory Overhead (vs traditional methods)",
+            "Data-Oblivious (working without seeing calibration data)",
+            "Stage 1: Random Rotation ('smearing' data so it's predictably shaped)",
+            "Stage 2: 1-Bit Correction (fixing the 'Inner Product Bias' to keep AI attention accurate)",
+            "3-bit extreme compression"
+          ],
+          "sourceRefs": [
+            "Foundations: 1. Core Architecture",
+            "Foundations: 2. Dependency Graph"
+          ],
+          "prerequisites": [
+            "The Key-Value (KV) Cache (the AI's active working memory)",
+            "Quantization (shrinking data footprints)"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 5,
+          "pass_threshold": 80,
+          "question_types": [
+            "conceptual",
+            "analogy_matching"
+          ]
+        }
+      },
+      {
+        "id": 3,
+        "title": "Real-World Impact: Bringing AI to Local Devices",
+        "estimated_minutes": 15,
+        "description": "Translates the concept of 3-bit compression into tangible real-world results. This module explores how TurboQuant enables massive AI models to run on everyday laptops and hardware.",
+        "plan": {
+          "goal": "Give concrete examples of how TurboQuant changes AI deployment, from edge devices to massive vector databases.",
+          "concepts": [
+            "6x Memory Reduction and 8x Speedup benchmarks",
+            "Long-Context Inference (shrinking an 80GB cache to 13GB)",
+            "Edge AI & Local Deployment (running AI on laptops/MacBooks)",
+            "Semantic Vector Search (RAG pipelines dropping from TBs to GBs of RAM)",
+            "Hardware efficiency (cost per query reduction)"
+          ],
+          "sourceRefs": [
+            "Foundations: 2. Key Performance Benchmarks",
+            "Foundations: 3. Real-World Applications & Examples"
+          ],
+          "prerequisites": [
+            "3-bit extreme compression"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 4,
+          "pass_threshold": 75,
+          "question_types": [
+            "application",
+            "conceptual"
+          ]
+        }
+      },
+      {
+        "id": 4,
+        "title": "Joining the Conversation: Key Terms & Big Picture",
+        "estimated_minutes": 15,
+        "description": "A synthesis module designed specifically to prepare you for discussions. It covers the economic impact, debunks common misconceptions, and solidifies your vocabulary.",
+        "plan": {
+          "goal": "Confidently use terminology like 'Data-oblivious' and 'KV Cache', explain the economic impact on hardware markets, and correct common misconceptions about TurboQuant.",
+          "concepts": [
+            "Economic/Market Impact (Memory stock volatility, hardware demand)",
+            "Misconception 1: Activations vs. Weights",
+            "Misconception 2: True 3-bit vs Overhead limits",
+            "Key Conversation Terminology Review (Data-Oblivious, Inner Product Bias, KV Cache)",
+            "The Academic Debate (Similarities to RaBitQ)"
+          ],
+          "sourceRefs": [
+            "Foundations: 4. Common Misconceptions",
+            "Foundations: 5. Research Findings & Market Impact"
+          ],
+          "prerequisites": [
+            "The Key-Value (KV) Cache (the AI's active working memory)",
+            "Data-Oblivious (working without seeing calibration data)",
+            "Hardware efficiency (cost per query reduction)"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 5,
+          "pass_threshold": 80,
+          "question_types": [
+            "conceptual",
+            "scenario_response",
+            "true_false"
+          ]
+        }
+      }
+    ]
+  },
+  "generated": {
+    "moduleCount": 4,
+    "totalMinutes": 60,
+    "modules": [
+      {
+        "id": 1,
+        "title": "The AI Memory Bottleneck & Intro to Quantization",
+        "conceptCount": 6,
+        "minutes": 15
+      },
+      {
+        "id": 2,
+        "title": "How TurboQuant Works (Without the Math)",
+        "conceptCount": 5,
+        "minutes": 15
+      },
+      {
+        "id": 3,
+        "title": "Real-World Impact: Bringing AI to Local Devices",
+        "conceptCount": 5,
+        "minutes": 15
+      },
+      {
+        "id": 4,
+        "title": "Joining the Conversation: Key Terms & Big Picture",
+        "conceptCount": 5,
+        "minutes": 15
+      }
+    ]
+  }
+}

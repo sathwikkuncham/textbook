@@ -1,0 +1,169 @@
+{
+  "variant": {
+    "id": "E",
+    "name": "PRO + upfront full-module plan",
+    "description": "Structurally different: plan the entire module's sections in one shot, then the orchestrator iterates through them.",
+    "model": "gemini-3.1-pro-preview"
+  },
+  "runs": [
+    {
+      "variantId": "E",
+      "runNumber": 1,
+      "latencyMs": 19520,
+      "rawOutput": "{\n  \"totalSections\": 6,\n  \"sections\": [\n    {\n      \"title\": \"The Origins of Creation: Generative vs. Discriminative Modeling\",\n      \"scope\": \"Introduces the foundational goal of generating language rather than just classifying it. We explore the intuition behind modeling the underlying probability distribution of data, setting the stage for the pre-computing era of AI.\",\n      \"concepts\": [\n        \"Generative vs. Discriminative modeling\"\n      ]\n    },\n    {\n      \"title\": \"The First Language Model: Markov Chains and N-Grams\",\n      \"scope\": \"Moving from the abstract goal of generation to the first mathematical implementation in 1913. We explore how Andrey Markov used probability to predict the next letter in a sequence based only on its immediate history, forming the bedrock of sequential text generation.\",\n      \"concepts\": [\n        \"Markov Chains and n-gram models\"\n      ]\n    },\n    {\n      \"title\": \"Quantifying Surprise: Information Theory and Shannon Entropy\",\n      \"scope\": \"Building on the sequential predictions of Markov chains, we introduce Claude Shannon's 1948 framework for measuring unpredictability in communication. This provides the mathematical intuition for evaluating how well a model compresses and understands language.\",\n      \"concepts\": [\n        \"Information Theory and Shannon Entropy\"\n      ]\n    },\n    {\n      \"title\": \"Language as a Decoding Problem: The Noisy Channel Model\",\n      \"scope\": \"Connects Shannon's information theory to the real-world problem of translation. We explore the brilliant intuition of treating a foreign language as an encrypted or 'noisy' version of our own, using probability theory to reconstruct the original message.\",\n      \"concepts\": [\n        \"The 'Noisy Channel' model of translation\"\n      ]\n    },\n    {\n      \"title\": \"Training by Counting: Maximum Likelihood Estimation (MLE)\",\n      \"scope\": \"Explains the exact statistical mechanism used to 'teach' these early n-gram and noisy channel models. We look intuitively at how MLE relies on counting historical text occurrences to calculate the most probable next word, without getting bogged down in derivations.\",\n      \"concepts\": [\n        \"Maximum Likelihood Estimation (MLE) in NLP\"\n      ]\n    },\n    {\n      \"title\": \"The Wall: The Curse of Dimensionality\",\n      \"scope\": \"Reveals the fatal engineering bottleneck of counting-based probabilistic models. We explore why trying to remember longer historical contexts causes the required vocabulary combinations to explode exponentially, forcing the eventual shift to neural architectures.\",\n      \"concepts\": [\n        \"The Curse of Dimensionality in vocabulary space\"\n      ]\n    }\n  ]\n}",
+      "parsed": {
+        "totalSections": 6,
+        "sections": [
+          {
+            "title": "The Origins of Creation: Generative vs. Discriminative Modeling",
+            "scope": "Introduces the foundational goal of generating language rather than just classifying it. We explore the intuition behind modeling the underlying probability distribution of data, setting the stage for the pre-computing era of AI.",
+            "concepts": [
+              "Generative vs. Discriminative modeling"
+            ]
+          },
+          {
+            "title": "The First Language Model: Markov Chains and N-Grams",
+            "scope": "Moving from the abstract goal of generation to the first mathematical implementation in 1913. We explore how Andrey Markov used probability to predict the next letter in a sequence based only on its immediate history, forming the bedrock of sequential text generation.",
+            "concepts": [
+              "Markov Chains and n-gram models"
+            ]
+          },
+          {
+            "title": "Quantifying Surprise: Information Theory and Shannon Entropy",
+            "scope": "Building on the sequential predictions of Markov chains, we introduce Claude Shannon's 1948 framework for measuring unpredictability in communication. This provides the mathematical intuition for evaluating how well a model compresses and understands language.",
+            "concepts": [
+              "Information Theory and Shannon Entropy"
+            ]
+          },
+          {
+            "title": "Language as a Decoding Problem: The Noisy Channel Model",
+            "scope": "Connects Shannon's information theory to the real-world problem of translation. We explore the brilliant intuition of treating a foreign language as an encrypted or 'noisy' version of our own, using probability theory to reconstruct the original message.",
+            "concepts": [
+              "The 'Noisy Channel' model of translation"
+            ]
+          },
+          {
+            "title": "Training by Counting: Maximum Likelihood Estimation (MLE)",
+            "scope": "Explains the exact statistical mechanism used to 'teach' these early n-gram and noisy channel models. We look intuitively at how MLE relies on counting historical text occurrences to calculate the most probable next word, without getting bogged down in derivations.",
+            "concepts": [
+              "Maximum Likelihood Estimation (MLE) in NLP"
+            ]
+          },
+          {
+            "title": "The Wall: The Curse of Dimensionality",
+            "scope": "Reveals the fatal engineering bottleneck of counting-based probabilistic models. We explore why trying to remember longer historical contexts causes the required vocabulary combinations to explode exponentially, forcing the eventual shift to neural architectures.",
+            "concepts": [
+              "The Curse of Dimensionality in vocabulary space"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "variantId": "E",
+      "runNumber": 2,
+      "latencyMs": 26763,
+      "rawOutput": "{\n  \"totalSections\": 6,\n  \"sections\": [\n    {\n      \"title\": \"The Paradigm Shift: Generative vs. Discriminative Modeling\",\n      \"scope\": \"Before diving into the historical math, we establish the fundamental difference between categorizing data (discriminative) and understanding how to create it (generative). This provides the overarching framework for why early researchers needed to model the underlying probability distribution of language rather than just finding patterns.\",\n      \"concepts\": [\n        \"Generative vs. Discriminative modeling\"\n      ]\n    },\n    {\n      \"title\": \"Quantifying Surprise: Information Theory and Shannon Entropy\",\n      \"scope\": \"Building on the goal of generating data, we explore Claude Shannon's mid-century breakthrough in quantifying information. By intuitively understanding 'entropy' as a measure of unpredictability in a sequence, we establish the mathematical foundation for predicting what word comes next.\",\n      \"concepts\": [\n        \"Information Theory and Shannon Entropy\"\n      ]\n    },\n    {\n      \"title\": \"Chaining Probabilities: Markov Chains and N-gram Models\",\n      \"scope\": \"Armed with a way to measure predictability, we examine the earliest algorithmic attempts at text generation using Markov Chains. We will explore how 'n-gram' models assume that the next word depends only on a short, fixed history of previous words, providing our first real generative engine.\",\n      \"concepts\": [\n        \"Markov Chains and n-gram models\"\n      ]\n    },\n    {\n      \"title\": \"Learning from Data: Maximum Likelihood Estimation (MLE)\",\n      \"scope\": \"With the n-gram architecture in place, the model needs a way to learn the actual probabilities from human text. We introduce Maximum Likelihood Estimation conceptually, demonstrating how early systems used simple frequency counting to estimate the most probable next word without relying on modern deep learning.\",\n      \"concepts\": [\n        \"Maximum Likelihood Estimation (MLE) in NLP\"\n      ]\n    },\n    {\n      \"title\": \"The First Wall: The Curse of Dimensionality\",\n      \"scope\": \"We now encounter the critical bottleneck that stalled early probabilistic models: the exponential explosion of combinations as we try to give the n-gram model a longer memory. Understanding this combinatorial 'Curse of Dimensionality' is vital, as it highlights the exact scaling limits that the Attention mechanism will eventually solve.\",\n      \"concepts\": [\n        \"The Curse of Dimensionality in vocabulary space\"\n      ]\n    },\n    {\n      \"title\": \"Decoding the Message: The 'Noisy Channel' Model\",\n      \"scope\": \"Finally, we explore how these early generative concepts were applied to complex sequence tasks like machine translation. By framing translation as deciphering a message corrupted by a 'noisy channel' (e.g., treating French as 'noisy' English), we set the conceptual stage for the sequence-to-sequence translation problems the Transformer was explicitly built to conquer.\",\n      \"concepts\": [\n        \"The 'Noisy Channel' model of translation\"\n      ]\n    }\n  ]\n}",
+      "parsed": {
+        "totalSections": 6,
+        "sections": [
+          {
+            "title": "The Paradigm Shift: Generative vs. Discriminative Modeling",
+            "scope": "Before diving into the historical math, we establish the fundamental difference between categorizing data (discriminative) and understanding how to create it (generative). This provides the overarching framework for why early researchers needed to model the underlying probability distribution of language rather than just finding patterns.",
+            "concepts": [
+              "Generative vs. Discriminative modeling"
+            ]
+          },
+          {
+            "title": "Quantifying Surprise: Information Theory and Shannon Entropy",
+            "scope": "Building on the goal of generating data, we explore Claude Shannon's mid-century breakthrough in quantifying information. By intuitively understanding 'entropy' as a measure of unpredictability in a sequence, we establish the mathematical foundation for predicting what word comes next.",
+            "concepts": [
+              "Information Theory and Shannon Entropy"
+            ]
+          },
+          {
+            "title": "Chaining Probabilities: Markov Chains and N-gram Models",
+            "scope": "Armed with a way to measure predictability, we examine the earliest algorithmic attempts at text generation using Markov Chains. We will explore how 'n-gram' models assume that the next word depends only on a short, fixed history of previous words, providing our first real generative engine.",
+            "concepts": [
+              "Markov Chains and n-gram models"
+            ]
+          },
+          {
+            "title": "Learning from Data: Maximum Likelihood Estimation (MLE)",
+            "scope": "With the n-gram architecture in place, the model needs a way to learn the actual probabilities from human text. We introduce Maximum Likelihood Estimation conceptually, demonstrating how early systems used simple frequency counting to estimate the most probable next word without relying on modern deep learning.",
+            "concepts": [
+              "Maximum Likelihood Estimation (MLE) in NLP"
+            ]
+          },
+          {
+            "title": "The First Wall: The Curse of Dimensionality",
+            "scope": "We now encounter the critical bottleneck that stalled early probabilistic models: the exponential explosion of combinations as we try to give the n-gram model a longer memory. Understanding this combinatorial 'Curse of Dimensionality' is vital, as it highlights the exact scaling limits that the Attention mechanism will eventually solve.",
+            "concepts": [
+              "The Curse of Dimensionality in vocabulary space"
+            ]
+          },
+          {
+            "title": "Decoding the Message: The 'Noisy Channel' Model",
+            "scope": "Finally, we explore how these early generative concepts were applied to complex sequence tasks like machine translation. By framing translation as deciphering a message corrupted by a 'noisy channel' (e.g., treating French as 'noisy' English), we set the conceptual stage for the sequence-to-sequence translation problems the Transformer was explicitly built to conquer.",
+            "concepts": [
+              "The 'Noisy Channel' model of translation"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "variantId": "E",
+      "runNumber": 3,
+      "latencyMs": 24714,
+      "rawOutput": "{\n  \"totalSections\": 6,\n  \"sections\": [\n    {\n      \"title\": \"Quantifying Language: Information Theory and Shannon Entropy\",\n      \"scope\": \"Introduces the foundational idea that language and communication can be mathematically measured in terms of predictability and surprise. It establishes the 'first principle' of how much information a word carries, laying the groundwork for calculating probability in text.\",\n      \"concepts\": [\n        \"Information Theory and Shannon Entropy\"\n      ]\n    },\n    {\n      \"title\": \"Modeling Sequences: Markov Chains and N-Gram Models\",\n      \"scope\": \"Builds on the concept of sequence predictability by introducing systems that guess the next word based purely on a fixed history of previous words. This translates the abstract idea of entropy into a concrete computational state machine for language generation.\",\n      \"concepts\": [\n        \"Markov Chains and n-gram models\"\n      ]\n    },\n    {\n      \"title\": \"Learning Probabilities: Maximum Likelihood Estimation (MLE)\",\n      \"scope\": \"Explains how engineers actually populated the probability tables inside those early n-gram models using real-world text corpora. It bridges the gap between the theoretical Markov state machine and an algorithm that 'learns' by counting occurrences.\",\n      \"concepts\": [\n        \"Maximum Likelihood Estimation (MLE) in NLP\"\n      ]\n    },\n    {\n      \"title\": \"The Paradigm Shift: Generative vs. Discriminative Modeling\",\n      \"scope\": \"Takes a step back to conceptually categorize what our n-gram models are actually doing compared to other early classification algorithms. It contrasts learning the underlying probability distribution of data (generating text) versus simply drawing boundaries between classes.\",\n      \"concepts\": [\n        \"Generative vs. Discriminative modeling\"\n      ]\n    },\n    {\n      \"title\": \"Early Machine Translation: The 'Noisy Channel' Model\",\n      \"scope\": \"Applies the generative modeling paradigm to the complex task of translation, treating the source language as a 'noisy' distortion of the target language that needs to be decoded. This provides the crucial historical context for how pre-neural systems approached tasks that the Transformer would eventually master.\",\n      \"concepts\": [\n        \"The 'Noisy Channel' model of translation\"\n      ]\n    },\n    {\n      \"title\": \"The Fatal Bottleneck: The Curse of Dimensionality\",\n      \"scope\": \"Exposes the mathematical and engineering limits of n-gram models as developers tried to increase the vocabulary size or the memory context window. Understanding this explosion of sparse, empty data matrices perfectly sets up the historical need for neural networks and dense embeddings.\",\n      \"concepts\": [\n        \"The Curse of Dimensionality in vocabulary space\"\n      ]\n    }\n  ]\n}",
+      "parsed": {
+        "totalSections": 6,
+        "sections": [
+          {
+            "title": "Quantifying Language: Information Theory and Shannon Entropy",
+            "scope": "Introduces the foundational idea that language and communication can be mathematically measured in terms of predictability and surprise. It establishes the 'first principle' of how much information a word carries, laying the groundwork for calculating probability in text.",
+            "concepts": [
+              "Information Theory and Shannon Entropy"
+            ]
+          },
+          {
+            "title": "Modeling Sequences: Markov Chains and N-Gram Models",
+            "scope": "Builds on the concept of sequence predictability by introducing systems that guess the next word based purely on a fixed history of previous words. This translates the abstract idea of entropy into a concrete computational state machine for language generation.",
+            "concepts": [
+              "Markov Chains and n-gram models"
+            ]
+          },
+          {
+            "title": "Learning Probabilities: Maximum Likelihood Estimation (MLE)",
+            "scope": "Explains how engineers actually populated the probability tables inside those early n-gram models using real-world text corpora. It bridges the gap between the theoretical Markov state machine and an algorithm that 'learns' by counting occurrences.",
+            "concepts": [
+              "Maximum Likelihood Estimation (MLE) in NLP"
+            ]
+          },
+          {
+            "title": "The Paradigm Shift: Generative vs. Discriminative Modeling",
+            "scope": "Takes a step back to conceptually categorize what our n-gram models are actually doing compared to other early classification algorithms. It contrasts learning the underlying probability distribution of data (generating text) versus simply drawing boundaries between classes.",
+            "concepts": [
+              "Generative vs. Discriminative modeling"
+            ]
+          },
+          {
+            "title": "Early Machine Translation: The 'Noisy Channel' Model",
+            "scope": "Applies the generative modeling paradigm to the complex task of translation, treating the source language as a 'noisy' distortion of the target language that needs to be decoded. This provides the crucial historical context for how pre-neural systems approached tasks that the Transformer would eventually master.",
+            "concepts": [
+              "The 'Noisy Channel' model of translation"
+            ]
+          },
+          {
+            "title": "The Fatal Bottleneck: The Curse of Dimensionality",
+            "scope": "Exposes the mathematical and engineering limits of n-gram models as developers tried to increase the vocabulary size or the memory context window. Understanding this explosion of sparse, empty data matrices perfectly sets up the historical need for neural networks and dense embeddings.",
+            "concepts": [
+              "The Curse of Dimensionality in vocabulary space"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

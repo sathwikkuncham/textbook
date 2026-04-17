@@ -1,0 +1,976 @@
+{
+  "topicId": 33,
+  "slug": "advanced-system-design-mastery",
+  "displayName": "Advanced System Design Mastery",
+  "sourceType": "topic_only",
+  "latencyMs": 74214,
+  "rawOutput": "{\n  \"topic\": \"Advanced System Design Mastery\",\n  \"topic_slug\": \"advanced-system-design-mastery\",\n  \"level\": \"Advanced\",\n  \"goal\": \"Professional mastery through first-principles engineering; building a bottom-up mental model of large-scale systems.\",\n  \"estimated_total_minutes\": 2730,\n  \"modules\": [\n    {\n      \"id\": 1,\n      \"title\": \"The Physics of Compute: Latency and the Memory Hierarchy\",\n      \"estimated_minutes\": 90,\n      \"description\": \"Before designing distributed systems, you must understand the immutable hardware constraints of a single machine. This module grounds you in the latency numbers that dictate all higher-level software design.\",\n      \"plan\": {\n        \"goal\": \"Mathematically quantify system constraints using hardware latency numbers and identify the primary bottleneck in any given system architecture.\",\n        \"concepts\": [\n          \"Latencies Every Programmer Should Know\",\n          \"L1/L2/L3 Cache Mechanics\",\n          \"Main Memory (RAM) access times\",\n          \"Disk Seek and Network I/O latency\",\n          \"The Bottleneck Principle (CPU vs Memory vs I/O bound)\"\n        ],\n        \"sourceRefs\": [\n          \"Designing Data-Intensive Applications (DDIA)\"\n        ],\n        \"prerequisites\": []\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 5,\n        \"pass_threshold\": 80,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\"\n        ]\n      }\n    },\n    {\n      \"id\": 2,\n      \"title\": \"Concurrency Primitives: Processes, Threads, and Coroutines\",\n      \"estimated_minutes\": 120,\n      \"description\": \"High-level abstractions often mask the immense cost of context switching. Here, you will unearth exactly how the OS kernel manages execution and why modern high-concurrency systems rely on user-space threads.\",\n      \"plan\": {\n        \"goal\": \"Explain kernel vs. user-space transitions and justify the use of thread pools and green threads in high-throughput environments.\",\n        \"concepts\": [\n          \"CPU Concurrency vs. Parallelism\",\n          \"OS Kernel vs. User space transitions\",\n          \"Context Switching Overhead\",\n          \"OS Threads vs. User-space Threads (Goroutines/Green threads)\",\n          \"Thread Pools and Resource Exhaustion\"\n        ],\n        \"sourceRefs\": [],\n        \"prerequisites\": [\n          \"The Physics of Compute: Latency and the Memory Hierarchy\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 5,\n        \"pass_threshold\": 80,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\"\n        ]\n      }\n    },\n    {\n      \"id\": 3,\n      \"title\": \"Storage Hardware: Disk I/O Mechanics\",\n      \"estimated_minutes\": 90,\n      \"description\": \"Software design must bow to physical hardware limits. Understanding how SSDs and HDDs actually write data is crucial for understanding why certain databases exist.\",\n      \"plan\": {\n        \"goal\": \"Analyze the difference between random and sequential writes at the hardware level and explain how this impacts software data structures.\",\n        \"concepts\": [\n          \"HDD Platter Mechanics vs. SSD Flash Memory\",\n          \"Page vs. Block storage\",\n          \"Write Amplification\",\n          \"Random vs. Sequential I/O performance\"\n        ],\n        \"sourceRefs\": [\n          \"The Google File System (GFS) - Paper Introduction\"\n        ],\n        \"prerequisites\": [\n          \"The Physics of Compute: Latency and the Memory Hierarchy\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 4,\n        \"pass_threshold\": 75,\n        \"question_types\": [\n          \"conceptual\",\n          \"true_false\"\n        ]\n      }\n    },\n    {\n      \"id\": 4,\n      \"title\": \"High-Performance I/O Models\",\n      \"estimated_minutes\": 120,\n      \"description\": \"This is the engine of servers like Nginx and Redis. We break down how an operating system can handle millions of concurrent connections without exploding thread counts.\",\n      \"plan\": {\n        \"goal\": \"Master the mechanics of non-blocking and asynchronous I/O, specifically how epoll and io_uring bypass traditional blocking limitations.\",\n        \"concepts\": [\n          \"Blocking vs. Non-blocking I/O\",\n          \"Synchronous vs. Asynchronous I/O\",\n          \"Event Loops\",\n          \"Linux `epoll` mechanics\",\n          \"`io_uring` architecture\"\n        ],\n        \"sourceRefs\": [],\n        \"prerequisites\": [\n          \"Concurrency Primitives: Processes, Threads, and Coroutines\",\n          \"Storage Hardware: Disk I/O Mechanics\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 5,\n        \"pass_threshold\": 80,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\"\n        ]\n      }\n    },\n    {\n      \"id\": 5,\n      \"title\": \"Network Transport Deep Dive: TCP Internals\",\n      \"estimated_minutes\": 120,\n      \"description\": \"Systems are only as strong as the wires connecting them. This module strips away the HTTP abstraction to look at the actual transport protocol behavior that drives network latency.\",\n      \"plan\": {\n        \"goal\": \"Deconstruct TCP to calculate connection overhead and explain how flow control and congestion control limit throughput.\",\n        \"concepts\": [\n          \"TCP/IP Stack\",\n          \"The 3-way Handshake latency cost\",\n          \"Flow Control and Sliding Windows\",\n          \"TCP Congestion Control (Slow Start, Congestion Avoidance)\"\n        ],\n        \"sourceRefs\": [],\n        \"prerequisites\": [\n          \"The Physics of Compute: Latency and the Memory Hierarchy\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 6,\n        \"pass_threshold\": 80,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\"\n        ]\n      }\n    },\n    {\n      \"id\": 6,\n      \"title\": \"Modern Network Transport: UDP and QUIC\",\n      \"estimated_minutes\": 90,\n      \"description\": \"TCP's reliability comes at a cost. You will explore why the modern web (HTTP/3) is moving to UDP-based protocols to solve inherent fundamental bottlenecks.\",\n      \"plan\": {\n        \"goal\": \"Explain Head-of-Line blocking in TCP and demonstrate how QUIC over UDP resolves it for modern distributed systems.\",\n        \"concepts\": [\n          \"UDP characteristics\",\n          \"Head-of-Line (HOL) Blocking in HTTP/1.1 and HTTP/2\",\n          \"QUIC protocol design\",\n          \"0-RTT handshakes and connection migration\"\n        ],\n        \"sourceRefs\": [],\n        \"prerequisites\": [\n          \"Network Transport Deep Dive: TCP Internals\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 4,\n        \"pass_threshold\": 75,\n        \"question_types\": [\n          \"conceptual\",\n          \"true_false\"\n        ]\n      }\n    },\n    {\n      \"id\": 7,\n      \"title\": \"Serialization and RPC Mechanics\",\n      \"estimated_minutes\": 120,\n      \"description\": \"How data is actually packaged and sent. We move from text-based formats you know (JSON) to the highly optimized binary formats required for massive internal scale.\",\n      \"plan\": {\n        \"goal\": \"Compare data encoding formats at the byte level and design a schema evolution strategy using Protocol Buffers.\",\n        \"concepts\": [\n          \"Text vs. Binary Serialization (JSON/XML vs Protobuf/Avro/Thrift)\",\n          \"Byte-level encoding overhead\",\n          \"Schema Evolution (Backward/Forward compatibility)\",\n          \"RPC (Remote Procedure Call) patterns\",\n          \"gRPC Multiplexing and Streaming\"\n        ],\n        \"sourceRefs\": [\n          \"DDIA - Chapter 4: Encoding and Evolution\"\n        ],\n        \"prerequisites\": [\n          \"Network Transport Deep Dive: TCP Internals\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 5,\n        \"pass_threshold\": 80,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\"\n        ]\n      }\n    },\n    {\n      \"id\": 8,\n      \"title\": \"Storage Engines I: B-Trees and Read Optimization\",\n      \"estimated_minutes\": 120,\n      \"description\": \"Opening the black box of traditional relational databases. You will learn exactly how a SQL database structures data on disk to make reads fast.\",\n      \"plan\": {\n        \"goal\": \"Trace a read query down to the page level in a B-Tree and design optimal clustered and non-clustered indexes.\",\n        \"concepts\": [\n          \"B-Tree and B+Tree structures\",\n          \"Page allocation and pointers\",\n          \"Read-optimized storage traits\",\n          \"Clustered vs. Non-clustered indexes\",\n          \"Composite indexes and Covered queries\"\n        ],\n        \"sourceRefs\": [\n          \"DDIA - Chapter 3: Storage and Retrieval\"\n        ],\n        \"prerequisites\": [\n          \"Storage Hardware: Disk I/O Mechanics\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 5,\n        \"pass_threshold\": 80,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\"\n        ]\n      }\n    },\n    {\n      \"id\": 9,\n      \"title\": \"Storage Engines II: LSM-Trees and Write Optimization\",\n      \"estimated_minutes\": 120,\n      \"description\": \"When B-Trees fail under extreme write loads, modern systems use LSM-Trees. This is the bedrock of databases like Cassandra and RocksDB.\",\n      \"plan\": {\n        \"goal\": \"Trace the lifecycle of a write request through an LSM-Tree and explain the trade-off between write amplification and read latency.\",\n        \"concepts\": [\n          \"Log-Structured Merge-Trees (LSM)\",\n          \"MemTable and Write-Ahead Log (WAL)\",\n          \"SSTables (Sorted String Tables) and Immutability\",\n          \"Compaction strategies\",\n          \"Bloom Filters for read optimization\"\n        ],\n        \"sourceRefs\": [\n          \"Bigtable: A Distributed Storage System for Structured Data (Paper)\",\n          \"DDIA - Chapter 3: Storage and Retrieval\"\n        ],\n        \"prerequisites\": [\n          \"Storage Engines I: B-Trees and Read Optimization\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 5,\n        \"pass_threshold\": 80,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\"\n        ]\n      }\n    },\n    {\n      \"id\": 10,\n      \"title\": \"Transaction Theory: ACID and Isolation Levels\",\n      \"estimated_minutes\": 120,\n      \"description\": \"Moving past the acronym to the actual math and logic of transactions. You will learn the exact anomalies that can occur when multiple requests hit a database simultaneously.\",\n      \"plan\": {\n        \"goal\": \"Mathematically define transaction isolation levels and correctly identify the anomalies (dirty reads, phantom reads) they prevent.\",\n        \"concepts\": [\n          \"ACID properties deep-dive\",\n          \"Concurrency anomalies: Dirty Reads, Non-repeatable Reads, Phantom Reads, Lost Updates\",\n          \"Isolation Levels: Read Uncommitted, Read Committed, Repeatable Read, Serializable\",\n          \"Performance trade-offs of strong isolation\"\n        ],\n        \"sourceRefs\": [\n          \"DDIA - Chapter 7: Transactions\"\n        ],\n        \"prerequisites\": [\n          \"Concurrency Primitives: Processes, Threads, and Coroutines\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 6,\n        \"pass_threshold\": 80,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\"\n        ]\n      }\n    },\n    {\n      \"id\": 11,\n      \"title\": \"Transaction Implementation: MVCC\",\n      \"estimated_minutes\": 90,\n      \"description\": \"How do databases allow multiple users to read and write without locking up the entire system? The answer is Multi-Version Concurrency Control.\",\n      \"plan\": {\n        \"goal\": \"Explain how MVCC implements lock-free concurrency and diagram the row versioning process during a transaction.\",\n        \"concepts\": [\n          \"Pessimistic vs. Optimistic Concurrency Control\",\n          \"Multi-Version Concurrency Control (MVCC) mechanics\",\n          \"Transaction IDs and Row Versioning\",\n          \"Garbage collection of old tuple versions\"\n        ],\n        \"sourceRefs\": [],\n        \"prerequisites\": [\n          \"Transaction Theory: ACID and Isolation Levels\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 4,\n        \"pass_threshold\": 75,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\"\n        ]\n      }\n    },\n    {\n      \"id\": 12,\n      \"title\": \"Distributed Time and Causality\",\n      \"estimated_minutes\": 120,\n      \"description\": \"In a distributed system, 'Wall Clock Time' is a lie. This module introduces the fundamental problem of distributed state: proving which event happened first.\",\n      \"plan\": {\n        \"goal\": \"Disprove the reliability of wall-clock time in distributed systems and establish event causality using logical clocks.\",\n        \"concepts\": [\n          \"Clock Synchronization and NTP limitations\",\n          \"The concept of 'Happens-Before' relationships\",\n          \"Lamport Clocks\",\n          \"Vector Clocks\",\n          \"Partial vs. Total Ordering of events\"\n        ],\n        \"sourceRefs\": [\n          \"Time, Clocks, and the Ordering of Events in a Distributed System (Lamport Paper)\"\n        ],\n        \"prerequisites\": [\n          \"Network Transport Deep Dive: TCP Internals\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 5,\n        \"pass_threshold\": 80,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\"\n        ]\n      }\n    },\n    {\n      \"id\": 13,\n      \"title\": \"Distributed Consensus: Foundations and Paxos\",\n      \"estimated_minutes\": 120,\n      \"description\": \"How do 10 machines agree on a single truth over an unreliable network? We tackle the historically notorious Paxos algorithm to understand the theory of consensus.\",\n      \"plan\": {\n        \"goal\": \"Define the mathematical problem of distributed agreement, explain split-brain scenarios, and outline the phases of Paxos.\",\n        \"concepts\": [\n          \"The Consensus Problem\",\n          \"Split-brain and Network Partitions\",\n          \"Byzantine vs. Non-Byzantine Failures\",\n          \"Leader Election concepts\",\n          \"Paxos algorithm (Propose, Promise, Accept, Accepted)\"\n        ],\n        \"sourceRefs\": [\n          \"Paxos Made Simple (Lamport Paper)\"\n        ],\n        \"prerequisites\": [\n          \"Distributed Time and Causality\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 5,\n        \"pass_threshold\": 80,\n        \"question_types\": [\n          \"conceptual\"\n        ]\n      }\n    },\n    {\n      \"id\": 14,\n      \"title\": \"Distributed Consensus: Raft Implementation\",\n      \"estimated_minutes\": 120,\n      \"description\": \"Moving from the theory of Paxos to the modern standard used in Kubernetes and etcd. We break down Raft step-by-step.\",\n      \"plan\": {\n        \"goal\": \"Walk through a Raft leader election and log replication scenario, identifying the exact mechanics that prevent data loss.\",\n        \"concepts\": [\n          \"Raft Protocol overview\",\n          \"Leader Election phases and randomized timeouts\",\n          \"Log Replication and Commit Index\",\n          \"Heartbeats and Term Numbers\",\n          \"Handling leader crashes\"\n        ],\n        \"sourceRefs\": [\n          \"Raft: In Search of an Understandable Consensus Algorithm (Paper)\"\n        ],\n        \"prerequisites\": [\n          \"Distributed Consensus: Foundations and Paxos\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 5,\n        \"pass_threshold\": 80,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\"\n        ]\n      }\n    },\n    {\n      \"id\": 15,\n      \"title\": \"The CAP and PACELC Theorems\",\n      \"estimated_minutes\": 90,\n      \"description\": \"The absolute laws of distributed physics. You cannot build a scalable system without formally acknowledging what you are sacrificing.\",\n      \"plan\": {\n        \"goal\": \"Evaluate distributed database architectures against the CAP and PACELC theorems, formally identifying their chosen trade-offs.\",\n        \"concepts\": [\n          \"Consistency, Availability, and Partition Tolerance (CAP)\",\n          \"Why 'Partition Tolerance' is mandatory, not optional\",\n          \"PACELC Theorem extension\",\n          \"Evaluating real-world systems (CP vs AP)\"\n        ],\n        \"sourceRefs\": [\n          \"DDIA - Chapter 8: The Trouble with Distributed Systems\"\n        ],\n        \"prerequisites\": [\n          \"Distributed Time and Causality\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 5,\n        \"pass_threshold\": 80,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\"\n        ]\n      }\n    },\n    {\n      \"id\": 16,\n      \"title\": \"Replication and Quorums\",\n      \"estimated_minutes\": 90,\n      \"description\": \"When you duplicate data across nodes, how do you know you're reading the latest version? We dive into the math of read/write quorums.\",\n      \"plan\": {\n        \"goal\": \"Tune read and write consistency mathematically using the R + W > N formula and design leaderless replication handling.\",\n        \"concepts\": [\n          \"Leader-based vs. Leaderless Replication\",\n          \"Synchronous vs. Asynchronous Replication\",\n          \"Quorum Math (R + W > N)\",\n          \"Sloppy Quorums and Hinted Handoff\",\n          \"Read Repair and Anti-entropy (Gossip Protocols)\"\n        ],\n        \"sourceRefs\": [\n          \"Dynamo: Amazon’s Highly Available Key-value Store (Paper)\"\n        ],\n        \"prerequisites\": [\n          \"The CAP and PACELC Theorems\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 5,\n        \"pass_threshold\": 80,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\"\n        ]\n      }\n    },\n    {\n      \"id\": 17,\n      \"title\": \"Partitioning and Consistent Hashing\",\n      \"estimated_minutes\": 120,\n      \"description\": \"When data is too large for one machine, it must be split. This module covers the algorithmic elegance of consistent hashing that prevents mass data migrations when servers die.\",\n      \"plan\": {\n        \"goal\": \"Design a horizontally sharded data layer using consistent hashing and virtual nodes to handle node failures without a cache stampede.\",\n        \"concepts\": [\n          \"Horizontal Sharding vs. Vertical Scaling\",\n          \"Modulo hashing flaws\",\n          \"Consistent Hashing rings\",\n          \"Virtual Nodes for uniform distribution\",\n          \"The 'Hot Key' (Celebrity) problem and mitigation\"\n        ],\n        \"sourceRefs\": [\n          \"Dynamo: Amazon’s Highly Available Key-value Store (Paper)\"\n        ],\n        \"prerequisites\": [\n          \"Replication and Quorums\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 5,\n        \"pass_threshold\": 80,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\"\n        ]\n      }\n    },\n    {\n      \"id\": 18,\n      \"title\": \"NoSQL Paradigms and Data Modeling\",\n      \"estimated_minutes\": 90,\n      \"description\": \"Unlearning the 'SQL vs NoSQL' debate. Here you will learn to map data structures mathematically to query access patterns rather than hype.\",\n      \"plan\": {\n        \"goal\": \"Select optimal data models based strictly on read/write ratios and relational depth.\",\n        \"concepts\": [\n          \"Key-Value stores (DynamoDB mechanics)\",\n          \"Document stores (MongoDB patterns)\",\n          \"Wide-Column stores (Cassandra data modeling)\",\n          \"Graph databases (Neo4j relationship-first concepts)\",\n          \"Polyglot persistence\"\n        ],\n        \"sourceRefs\": [],\n        \"prerequisites\": [\n          \"Storage Engines II: LSM-Trees and Write Optimization\",\n          \"Partitioning and Consistent Hashing\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 4,\n        \"pass_threshold\": 75,\n        \"question_types\": [\n          \"application\"\n        ]\n      }\n    },\n    {\n      \"id\": 19,\n      \"title\": \"Load Balancing Mechanics\",\n      \"estimated_minutes\": 90,\n      \"description\": \"Moving to the macro level: how routers and proxies distribute millions of requests across a fleet of servers efficiently.\",\n      \"plan\": {\n        \"goal\": \"Design a multi-tiered traffic distribution topology using Layer 4 and Layer 7 load balancing appropriately.\",\n        \"concepts\": [\n          \"Layer 4 (Transport) vs. Layer 7 (Application) Load Balancing\",\n          \"Routing Algorithms (Round Robin, Least Connections, IP Hash)\",\n          \"SSL/TLS Termination overhead\",\n          \"Health Checks and Dynamic Fleet Registration\"\n        ],\n        \"sourceRefs\": [],\n        \"prerequisites\": [\n          \"Network Transport Deep Dive: TCP Internals\",\n          \"Partitioning and Consistent Hashing\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 4,\n        \"pass_threshold\": 75,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\"\n        ]\n      }\n    },\n    {\n      \"id\": 20,\n      \"title\": \"Caching Topologies and Eviction Policies\",\n      \"estimated_minutes\": 120,\n      \"description\": \"Caching is not just putting Redis in front of a database. We explore the deep architectural tradeoffs of cache consistency and eviction algorithms.\",\n      \"plan\": {\n        \"goal\": \"Design robust caching layers that maintain strict consistency with backing stores and survive extreme traffic spikes.\",\n        \"concepts\": [\n          \"Cache Aside vs. Write-Through vs. Write-Behind\",\n          \"Eviction Policies (LRU, LFU, FIFO)\",\n          \"Adaptive Replacement Cache (ARC)\",\n          \"Cache Invalidation challenges\",\n          \"Thundering Herd problem and Cache Stampedes\"\n        ],\n        \"sourceRefs\": [],\n        \"prerequisites\": [\n          \"Partitioning and Consistent Hashing\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 5,\n        \"pass_threshold\": 80,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\"\n        ]\n      }\n    },\n    {\n      \"id\": 21,\n      \"title\": \"Asynchronous Processing and Messaging Systems\",\n      \"estimated_minutes\": 120,\n      \"description\": \"How to decouple a monolith without creating a distributed ball of mud. We focus on the strict guarantees provided by message brokers.\",\n      \"plan\": {\n        \"goal\": \"Architect decoupled asynchronous flows using message brokers, properly categorizing delivery guarantees.\",\n        \"concepts\": [\n          \"Message Queues (RabbitMQ) vs. Event Logs (Kafka)\",\n          \"Delivery Guarantees: At-least-once, At-most-once, Exactly-once\",\n          \"Consumer Groups and Partitioning\",\n          \"Event Sourcing and CQRS (Command Query Responsibility Segregation)\",\n          \"Idempotency in API design\"\n        ],\n        \"sourceRefs\": [\n          \"DDIA - Chapter 11: Stream Processing\"\n        ],\n        \"prerequisites\": [\n          \"Transaction Implementation: MVCC\",\n          \"Distributed Consensus: Raft Implementation\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 5,\n        \"pass_threshold\": 80,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\"\n        ]\n      }\n    },\n    {\n      \"id\": 22,\n      \"title\": \"Reliability Engineering and Failure Modes\",\n      \"estimated_minutes\": 90,\n      \"description\": \"A system isn't designed unless it's designed to fail gracefully. Here we implement the safety nets that prevent cascading outages across microservices.\",\n      \"plan\": {\n        \"goal\": \"Design self-healing service interactions that prevent cascading failures under degraded network conditions.\",\n        \"concepts\": [\n          \"Cascading Failures\",\n          \"Circuit Breaker Pattern\",\n          \"Retries with Exponential Backoff\",\n          \"The mathematics of 'Jitter' in retries\",\n          \"Bulkhead Pattern and Cell-Based Architecture\"\n        ],\n        \"sourceRefs\": [],\n        \"prerequisites\": [\n          \"Asynchronous Processing and Messaging Systems\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 4,\n        \"pass_threshold\": 75,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\"\n        ]\n      }\n    },\n    {\n      \"id\": 23,\n      \"title\": \"Rate Limiting and Backpressure\",\n      \"estimated_minutes\": 90,\n      \"description\": \"Defending the system from being overwhelmed. We dive into the specific algorithms APIs use to choke traffic efficiently.\",\n      \"plan\": {\n        \"goal\": \"Implement and compare algorithmic strategies for API rate limiting and service backpressure.\",\n        \"concepts\": [\n          \"The necessity of Backpressure\",\n          \"Token Bucket Algorithm\",\n          \"Leaky Bucket Algorithm\",\n          \"Fixed Window vs. Sliding Window Counters\",\n          \"Distributed Rate Limiting with Redis\"\n        ],\n        \"sourceRefs\": [],\n        \"prerequisites\": [\n          \"Caching Topologies and Eviction Policies\",\n          \"Reliability Engineering and Failure Modes\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 4,\n        \"pass_threshold\": 75,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\"\n        ]\n      }\n    },\n    {\n      \"id\": 24,\n      \"title\": \"The Internals of Observability\",\n      \"estimated_minutes\": 90,\n      \"description\": \"If you can't see it, you don't understand it. We break down the data structures and protocols behind modern monitoring.\",\n      \"plan\": {\n        \"goal\": \"Design the instrumentation layer for a distributed architecture covering the three pillars of observability.\",\n        \"concepts\": [\n          \"Time-series Metrics storage (Prometheus)\",\n          \"Structured Logging aggregation (ELK Stack)\",\n          \"Distributed Tracing mechanics (Jaeger/Zipkin)\",\n          \"Context propagation via HTTP Headers\",\n          \"Sampling rates and overhead\"\n        ],\n        \"sourceRefs\": [],\n        \"prerequisites\": [\n          \"Serialization and RPC Mechanics\",\n          \"Asynchronous Processing and Messaging Systems\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 4,\n        \"pass_threshold\": 75,\n        \"question_types\": [\n          \"conceptual\"\n        ]\n      }\n    },\n    {\n      \"id\": 25,\n      \"title\": \"Capstone Synthesis: Architecting a Netflix-Scale Global Service\",\n      \"estimated_minutes\": 180,\n      \"description\": \"The culmination of your journey. You will apply every foundational component—from disk I/O to distributed consensus—into a single, cohesive, globally scalable architecture.\",\n      \"plan\": {\n        \"goal\": \"Synthesize all curriculum layers to architect an end-to-end global video streaming and ingestion service, mathematically justifying every infrastructure choice.\",\n        \"concepts\": [\n          \"Distributed Worker Queues for Ingestion/Transcoding\",\n          \"Object Storage (S3) vs. Distributed NoSQL (Cassandra) application\",\n          \"Content Delivery Networks (CDN) and Edge Delivery\",\n          \"Anycast DNS Routing\",\n          \"Failover mechanisms and Circuit Breakers in practice\",\n          \"End-to-end latency budget calculation\"\n        ],\n        \"sourceRefs\": [\n          \"Netflix Engineering Blog Architecture Patterns\"\n        ],\n        \"prerequisites\": [\n          \"Storage Engines II: LSM-Trees and Write Optimization\",\n          \"Distributed Consensus: Raft Implementation\",\n          \"Partitioning and Consistent Hashing\",\n          \"Caching Topologies and Eviction Policies\",\n          \"Reliability Engineering and Failure Modes\",\n          \"Rate Limiting and Backpressure\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 5,\n        \"pass_threshold\": 100,\n        \"question_types\": [\n          \"application\"\n        ]\n      }\n    }\n  ]\n}",
+  "parsed": {
+    "topic": "Advanced System Design Mastery",
+    "topic_slug": "advanced-system-design-mastery",
+    "level": "Advanced",
+    "goal": "Professional mastery through first-principles engineering; building a bottom-up mental model of large-scale systems.",
+    "estimated_total_minutes": 2730,
+    "modules": [
+      {
+        "id": 1,
+        "title": "The Physics of Compute: Latency and the Memory Hierarchy",
+        "estimated_minutes": 90,
+        "description": "Before designing distributed systems, you must understand the immutable hardware constraints of a single machine. This module grounds you in the latency numbers that dictate all higher-level software design.",
+        "plan": {
+          "goal": "Mathematically quantify system constraints using hardware latency numbers and identify the primary bottleneck in any given system architecture.",
+          "concepts": [
+            "Latencies Every Programmer Should Know",
+            "L1/L2/L3 Cache Mechanics",
+            "Main Memory (RAM) access times",
+            "Disk Seek and Network I/O latency",
+            "The Bottleneck Principle (CPU vs Memory vs I/O bound)"
+          ],
+          "sourceRefs": [
+            "Designing Data-Intensive Applications (DDIA)"
+          ],
+          "prerequisites": []
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 5,
+          "pass_threshold": 80,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 2,
+        "title": "Concurrency Primitives: Processes, Threads, and Coroutines",
+        "estimated_minutes": 120,
+        "description": "High-level abstractions often mask the immense cost of context switching. Here, you will unearth exactly how the OS kernel manages execution and why modern high-concurrency systems rely on user-space threads.",
+        "plan": {
+          "goal": "Explain kernel vs. user-space transitions and justify the use of thread pools and green threads in high-throughput environments.",
+          "concepts": [
+            "CPU Concurrency vs. Parallelism",
+            "OS Kernel vs. User space transitions",
+            "Context Switching Overhead",
+            "OS Threads vs. User-space Threads (Goroutines/Green threads)",
+            "Thread Pools and Resource Exhaustion"
+          ],
+          "sourceRefs": [],
+          "prerequisites": [
+            "The Physics of Compute: Latency and the Memory Hierarchy"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 5,
+          "pass_threshold": 80,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 3,
+        "title": "Storage Hardware: Disk I/O Mechanics",
+        "estimated_minutes": 90,
+        "description": "Software design must bow to physical hardware limits. Understanding how SSDs and HDDs actually write data is crucial for understanding why certain databases exist.",
+        "plan": {
+          "goal": "Analyze the difference between random and sequential writes at the hardware level and explain how this impacts software data structures.",
+          "concepts": [
+            "HDD Platter Mechanics vs. SSD Flash Memory",
+            "Page vs. Block storage",
+            "Write Amplification",
+            "Random vs. Sequential I/O performance"
+          ],
+          "sourceRefs": [
+            "The Google File System (GFS) - Paper Introduction"
+          ],
+          "prerequisites": [
+            "The Physics of Compute: Latency and the Memory Hierarchy"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 4,
+          "pass_threshold": 75,
+          "question_types": [
+            "conceptual",
+            "true_false"
+          ]
+        }
+      },
+      {
+        "id": 4,
+        "title": "High-Performance I/O Models",
+        "estimated_minutes": 120,
+        "description": "This is the engine of servers like Nginx and Redis. We break down how an operating system can handle millions of concurrent connections without exploding thread counts.",
+        "plan": {
+          "goal": "Master the mechanics of non-blocking and asynchronous I/O, specifically how epoll and io_uring bypass traditional blocking limitations.",
+          "concepts": [
+            "Blocking vs. Non-blocking I/O",
+            "Synchronous vs. Asynchronous I/O",
+            "Event Loops",
+            "Linux `epoll` mechanics",
+            "`io_uring` architecture"
+          ],
+          "sourceRefs": [],
+          "prerequisites": [
+            "Concurrency Primitives: Processes, Threads, and Coroutines",
+            "Storage Hardware: Disk I/O Mechanics"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 5,
+          "pass_threshold": 80,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 5,
+        "title": "Network Transport Deep Dive: TCP Internals",
+        "estimated_minutes": 120,
+        "description": "Systems are only as strong as the wires connecting them. This module strips away the HTTP abstraction to look at the actual transport protocol behavior that drives network latency.",
+        "plan": {
+          "goal": "Deconstruct TCP to calculate connection overhead and explain how flow control and congestion control limit throughput.",
+          "concepts": [
+            "TCP/IP Stack",
+            "The 3-way Handshake latency cost",
+            "Flow Control and Sliding Windows",
+            "TCP Congestion Control (Slow Start, Congestion Avoidance)"
+          ],
+          "sourceRefs": [],
+          "prerequisites": [
+            "The Physics of Compute: Latency and the Memory Hierarchy"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 6,
+          "pass_threshold": 80,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 6,
+        "title": "Modern Network Transport: UDP and QUIC",
+        "estimated_minutes": 90,
+        "description": "TCP's reliability comes at a cost. You will explore why the modern web (HTTP/3) is moving to UDP-based protocols to solve inherent fundamental bottlenecks.",
+        "plan": {
+          "goal": "Explain Head-of-Line blocking in TCP and demonstrate how QUIC over UDP resolves it for modern distributed systems.",
+          "concepts": [
+            "UDP characteristics",
+            "Head-of-Line (HOL) Blocking in HTTP/1.1 and HTTP/2",
+            "QUIC protocol design",
+            "0-RTT handshakes and connection migration"
+          ],
+          "sourceRefs": [],
+          "prerequisites": [
+            "Network Transport Deep Dive: TCP Internals"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 4,
+          "pass_threshold": 75,
+          "question_types": [
+            "conceptual",
+            "true_false"
+          ]
+        }
+      },
+      {
+        "id": 7,
+        "title": "Serialization and RPC Mechanics",
+        "estimated_minutes": 120,
+        "description": "How data is actually packaged and sent. We move from text-based formats you know (JSON) to the highly optimized binary formats required for massive internal scale.",
+        "plan": {
+          "goal": "Compare data encoding formats at the byte level and design a schema evolution strategy using Protocol Buffers.",
+          "concepts": [
+            "Text vs. Binary Serialization (JSON/XML vs Protobuf/Avro/Thrift)",
+            "Byte-level encoding overhead",
+            "Schema Evolution (Backward/Forward compatibility)",
+            "RPC (Remote Procedure Call) patterns",
+            "gRPC Multiplexing and Streaming"
+          ],
+          "sourceRefs": [
+            "DDIA - Chapter 4: Encoding and Evolution"
+          ],
+          "prerequisites": [
+            "Network Transport Deep Dive: TCP Internals"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 5,
+          "pass_threshold": 80,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 8,
+        "title": "Storage Engines I: B-Trees and Read Optimization",
+        "estimated_minutes": 120,
+        "description": "Opening the black box of traditional relational databases. You will learn exactly how a SQL database structures data on disk to make reads fast.",
+        "plan": {
+          "goal": "Trace a read query down to the page level in a B-Tree and design optimal clustered and non-clustered indexes.",
+          "concepts": [
+            "B-Tree and B+Tree structures",
+            "Page allocation and pointers",
+            "Read-optimized storage traits",
+            "Clustered vs. Non-clustered indexes",
+            "Composite indexes and Covered queries"
+          ],
+          "sourceRefs": [
+            "DDIA - Chapter 3: Storage and Retrieval"
+          ],
+          "prerequisites": [
+            "Storage Hardware: Disk I/O Mechanics"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 5,
+          "pass_threshold": 80,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 9,
+        "title": "Storage Engines II: LSM-Trees and Write Optimization",
+        "estimated_minutes": 120,
+        "description": "When B-Trees fail under extreme write loads, modern systems use LSM-Trees. This is the bedrock of databases like Cassandra and RocksDB.",
+        "plan": {
+          "goal": "Trace the lifecycle of a write request through an LSM-Tree and explain the trade-off between write amplification and read latency.",
+          "concepts": [
+            "Log-Structured Merge-Trees (LSM)",
+            "MemTable and Write-Ahead Log (WAL)",
+            "SSTables (Sorted String Tables) and Immutability",
+            "Compaction strategies",
+            "Bloom Filters for read optimization"
+          ],
+          "sourceRefs": [
+            "Bigtable: A Distributed Storage System for Structured Data (Paper)",
+            "DDIA - Chapter 3: Storage and Retrieval"
+          ],
+          "prerequisites": [
+            "Storage Engines I: B-Trees and Read Optimization"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 5,
+          "pass_threshold": 80,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 10,
+        "title": "Transaction Theory: ACID and Isolation Levels",
+        "estimated_minutes": 120,
+        "description": "Moving past the acronym to the actual math and logic of transactions. You will learn the exact anomalies that can occur when multiple requests hit a database simultaneously.",
+        "plan": {
+          "goal": "Mathematically define transaction isolation levels and correctly identify the anomalies (dirty reads, phantom reads) they prevent.",
+          "concepts": [
+            "ACID properties deep-dive",
+            "Concurrency anomalies: Dirty Reads, Non-repeatable Reads, Phantom Reads, Lost Updates",
+            "Isolation Levels: Read Uncommitted, Read Committed, Repeatable Read, Serializable",
+            "Performance trade-offs of strong isolation"
+          ],
+          "sourceRefs": [
+            "DDIA - Chapter 7: Transactions"
+          ],
+          "prerequisites": [
+            "Concurrency Primitives: Processes, Threads, and Coroutines"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 6,
+          "pass_threshold": 80,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 11,
+        "title": "Transaction Implementation: MVCC",
+        "estimated_minutes": 90,
+        "description": "How do databases allow multiple users to read and write without locking up the entire system? The answer is Multi-Version Concurrency Control.",
+        "plan": {
+          "goal": "Explain how MVCC implements lock-free concurrency and diagram the row versioning process during a transaction.",
+          "concepts": [
+            "Pessimistic vs. Optimistic Concurrency Control",
+            "Multi-Version Concurrency Control (MVCC) mechanics",
+            "Transaction IDs and Row Versioning",
+            "Garbage collection of old tuple versions"
+          ],
+          "sourceRefs": [],
+          "prerequisites": [
+            "Transaction Theory: ACID and Isolation Levels"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 4,
+          "pass_threshold": 75,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 12,
+        "title": "Distributed Time and Causality",
+        "estimated_minutes": 120,
+        "description": "In a distributed system, 'Wall Clock Time' is a lie. This module introduces the fundamental problem of distributed state: proving which event happened first.",
+        "plan": {
+          "goal": "Disprove the reliability of wall-clock time in distributed systems and establish event causality using logical clocks.",
+          "concepts": [
+            "Clock Synchronization and NTP limitations",
+            "The concept of 'Happens-Before' relationships",
+            "Lamport Clocks",
+            "Vector Clocks",
+            "Partial vs. Total Ordering of events"
+          ],
+          "sourceRefs": [
+            "Time, Clocks, and the Ordering of Events in a Distributed System (Lamport Paper)"
+          ],
+          "prerequisites": [
+            "Network Transport Deep Dive: TCP Internals"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 5,
+          "pass_threshold": 80,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 13,
+        "title": "Distributed Consensus: Foundations and Paxos",
+        "estimated_minutes": 120,
+        "description": "How do 10 machines agree on a single truth over an unreliable network? We tackle the historically notorious Paxos algorithm to understand the theory of consensus.",
+        "plan": {
+          "goal": "Define the mathematical problem of distributed agreement, explain split-brain scenarios, and outline the phases of Paxos.",
+          "concepts": [
+            "The Consensus Problem",
+            "Split-brain and Network Partitions",
+            "Byzantine vs. Non-Byzantine Failures",
+            "Leader Election concepts",
+            "Paxos algorithm (Propose, Promise, Accept, Accepted)"
+          ],
+          "sourceRefs": [
+            "Paxos Made Simple (Lamport Paper)"
+          ],
+          "prerequisites": [
+            "Distributed Time and Causality"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 5,
+          "pass_threshold": 80,
+          "question_types": [
+            "conceptual"
+          ]
+        }
+      },
+      {
+        "id": 14,
+        "title": "Distributed Consensus: Raft Implementation",
+        "estimated_minutes": 120,
+        "description": "Moving from the theory of Paxos to the modern standard used in Kubernetes and etcd. We break down Raft step-by-step.",
+        "plan": {
+          "goal": "Walk through a Raft leader election and log replication scenario, identifying the exact mechanics that prevent data loss.",
+          "concepts": [
+            "Raft Protocol overview",
+            "Leader Election phases and randomized timeouts",
+            "Log Replication and Commit Index",
+            "Heartbeats and Term Numbers",
+            "Handling leader crashes"
+          ],
+          "sourceRefs": [
+            "Raft: In Search of an Understandable Consensus Algorithm (Paper)"
+          ],
+          "prerequisites": [
+            "Distributed Consensus: Foundations and Paxos"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 5,
+          "pass_threshold": 80,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 15,
+        "title": "The CAP and PACELC Theorems",
+        "estimated_minutes": 90,
+        "description": "The absolute laws of distributed physics. You cannot build a scalable system without formally acknowledging what you are sacrificing.",
+        "plan": {
+          "goal": "Evaluate distributed database architectures against the CAP and PACELC theorems, formally identifying their chosen trade-offs.",
+          "concepts": [
+            "Consistency, Availability, and Partition Tolerance (CAP)",
+            "Why 'Partition Tolerance' is mandatory, not optional",
+            "PACELC Theorem extension",
+            "Evaluating real-world systems (CP vs AP)"
+          ],
+          "sourceRefs": [
+            "DDIA - Chapter 8: The Trouble with Distributed Systems"
+          ],
+          "prerequisites": [
+            "Distributed Time and Causality"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 5,
+          "pass_threshold": 80,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 16,
+        "title": "Replication and Quorums",
+        "estimated_minutes": 90,
+        "description": "When you duplicate data across nodes, how do you know you're reading the latest version? We dive into the math of read/write quorums.",
+        "plan": {
+          "goal": "Tune read and write consistency mathematically using the R + W > N formula and design leaderless replication handling.",
+          "concepts": [
+            "Leader-based vs. Leaderless Replication",
+            "Synchronous vs. Asynchronous Replication",
+            "Quorum Math (R + W > N)",
+            "Sloppy Quorums and Hinted Handoff",
+            "Read Repair and Anti-entropy (Gossip Protocols)"
+          ],
+          "sourceRefs": [
+            "Dynamo: Amazon’s Highly Available Key-value Store (Paper)"
+          ],
+          "prerequisites": [
+            "The CAP and PACELC Theorems"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 5,
+          "pass_threshold": 80,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 17,
+        "title": "Partitioning and Consistent Hashing",
+        "estimated_minutes": 120,
+        "description": "When data is too large for one machine, it must be split. This module covers the algorithmic elegance of consistent hashing that prevents mass data migrations when servers die.",
+        "plan": {
+          "goal": "Design a horizontally sharded data layer using consistent hashing and virtual nodes to handle node failures without a cache stampede.",
+          "concepts": [
+            "Horizontal Sharding vs. Vertical Scaling",
+            "Modulo hashing flaws",
+            "Consistent Hashing rings",
+            "Virtual Nodes for uniform distribution",
+            "The 'Hot Key' (Celebrity) problem and mitigation"
+          ],
+          "sourceRefs": [
+            "Dynamo: Amazon’s Highly Available Key-value Store (Paper)"
+          ],
+          "prerequisites": [
+            "Replication and Quorums"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 5,
+          "pass_threshold": 80,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 18,
+        "title": "NoSQL Paradigms and Data Modeling",
+        "estimated_minutes": 90,
+        "description": "Unlearning the 'SQL vs NoSQL' debate. Here you will learn to map data structures mathematically to query access patterns rather than hype.",
+        "plan": {
+          "goal": "Select optimal data models based strictly on read/write ratios and relational depth.",
+          "concepts": [
+            "Key-Value stores (DynamoDB mechanics)",
+            "Document stores (MongoDB patterns)",
+            "Wide-Column stores (Cassandra data modeling)",
+            "Graph databases (Neo4j relationship-first concepts)",
+            "Polyglot persistence"
+          ],
+          "sourceRefs": [],
+          "prerequisites": [
+            "Storage Engines II: LSM-Trees and Write Optimization",
+            "Partitioning and Consistent Hashing"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 4,
+          "pass_threshold": 75,
+          "question_types": [
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 19,
+        "title": "Load Balancing Mechanics",
+        "estimated_minutes": 90,
+        "description": "Moving to the macro level: how routers and proxies distribute millions of requests across a fleet of servers efficiently.",
+        "plan": {
+          "goal": "Design a multi-tiered traffic distribution topology using Layer 4 and Layer 7 load balancing appropriately.",
+          "concepts": [
+            "Layer 4 (Transport) vs. Layer 7 (Application) Load Balancing",
+            "Routing Algorithms (Round Robin, Least Connections, IP Hash)",
+            "SSL/TLS Termination overhead",
+            "Health Checks and Dynamic Fleet Registration"
+          ],
+          "sourceRefs": [],
+          "prerequisites": [
+            "Network Transport Deep Dive: TCP Internals",
+            "Partitioning and Consistent Hashing"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 4,
+          "pass_threshold": 75,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 20,
+        "title": "Caching Topologies and Eviction Policies",
+        "estimated_minutes": 120,
+        "description": "Caching is not just putting Redis in front of a database. We explore the deep architectural tradeoffs of cache consistency and eviction algorithms.",
+        "plan": {
+          "goal": "Design robust caching layers that maintain strict consistency with backing stores and survive extreme traffic spikes.",
+          "concepts": [
+            "Cache Aside vs. Write-Through vs. Write-Behind",
+            "Eviction Policies (LRU, LFU, FIFO)",
+            "Adaptive Replacement Cache (ARC)",
+            "Cache Invalidation challenges",
+            "Thundering Herd problem and Cache Stampedes"
+          ],
+          "sourceRefs": [],
+          "prerequisites": [
+            "Partitioning and Consistent Hashing"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 5,
+          "pass_threshold": 80,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 21,
+        "title": "Asynchronous Processing and Messaging Systems",
+        "estimated_minutes": 120,
+        "description": "How to decouple a monolith without creating a distributed ball of mud. We focus on the strict guarantees provided by message brokers.",
+        "plan": {
+          "goal": "Architect decoupled asynchronous flows using message brokers, properly categorizing delivery guarantees.",
+          "concepts": [
+            "Message Queues (RabbitMQ) vs. Event Logs (Kafka)",
+            "Delivery Guarantees: At-least-once, At-most-once, Exactly-once",
+            "Consumer Groups and Partitioning",
+            "Event Sourcing and CQRS (Command Query Responsibility Segregation)",
+            "Idempotency in API design"
+          ],
+          "sourceRefs": [
+            "DDIA - Chapter 11: Stream Processing"
+          ],
+          "prerequisites": [
+            "Transaction Implementation: MVCC",
+            "Distributed Consensus: Raft Implementation"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 5,
+          "pass_threshold": 80,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 22,
+        "title": "Reliability Engineering and Failure Modes",
+        "estimated_minutes": 90,
+        "description": "A system isn't designed unless it's designed to fail gracefully. Here we implement the safety nets that prevent cascading outages across microservices.",
+        "plan": {
+          "goal": "Design self-healing service interactions that prevent cascading failures under degraded network conditions.",
+          "concepts": [
+            "Cascading Failures",
+            "Circuit Breaker Pattern",
+            "Retries with Exponential Backoff",
+            "The mathematics of 'Jitter' in retries",
+            "Bulkhead Pattern and Cell-Based Architecture"
+          ],
+          "sourceRefs": [],
+          "prerequisites": [
+            "Asynchronous Processing and Messaging Systems"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 4,
+          "pass_threshold": 75,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 23,
+        "title": "Rate Limiting and Backpressure",
+        "estimated_minutes": 90,
+        "description": "Defending the system from being overwhelmed. We dive into the specific algorithms APIs use to choke traffic efficiently.",
+        "plan": {
+          "goal": "Implement and compare algorithmic strategies for API rate limiting and service backpressure.",
+          "concepts": [
+            "The necessity of Backpressure",
+            "Token Bucket Algorithm",
+            "Leaky Bucket Algorithm",
+            "Fixed Window vs. Sliding Window Counters",
+            "Distributed Rate Limiting with Redis"
+          ],
+          "sourceRefs": [],
+          "prerequisites": [
+            "Caching Topologies and Eviction Policies",
+            "Reliability Engineering and Failure Modes"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 4,
+          "pass_threshold": 75,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 24,
+        "title": "The Internals of Observability",
+        "estimated_minutes": 90,
+        "description": "If you can't see it, you don't understand it. We break down the data structures and protocols behind modern monitoring.",
+        "plan": {
+          "goal": "Design the instrumentation layer for a distributed architecture covering the three pillars of observability.",
+          "concepts": [
+            "Time-series Metrics storage (Prometheus)",
+            "Structured Logging aggregation (ELK Stack)",
+            "Distributed Tracing mechanics (Jaeger/Zipkin)",
+            "Context propagation via HTTP Headers",
+            "Sampling rates and overhead"
+          ],
+          "sourceRefs": [],
+          "prerequisites": [
+            "Serialization and RPC Mechanics",
+            "Asynchronous Processing and Messaging Systems"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 4,
+          "pass_threshold": 75,
+          "question_types": [
+            "conceptual"
+          ]
+        }
+      },
+      {
+        "id": 25,
+        "title": "Capstone Synthesis: Architecting a Netflix-Scale Global Service",
+        "estimated_minutes": 180,
+        "description": "The culmination of your journey. You will apply every foundational component—from disk I/O to distributed consensus—into a single, cohesive, globally scalable architecture.",
+        "plan": {
+          "goal": "Synthesize all curriculum layers to architect an end-to-end global video streaming and ingestion service, mathematically justifying every infrastructure choice.",
+          "concepts": [
+            "Distributed Worker Queues for Ingestion/Transcoding",
+            "Object Storage (S3) vs. Distributed NoSQL (Cassandra) application",
+            "Content Delivery Networks (CDN) and Edge Delivery",
+            "Anycast DNS Routing",
+            "Failover mechanisms and Circuit Breakers in practice",
+            "End-to-end latency budget calculation"
+          ],
+          "sourceRefs": [
+            "Netflix Engineering Blog Architecture Patterns"
+          ],
+          "prerequisites": [
+            "Storage Engines II: LSM-Trees and Write Optimization",
+            "Distributed Consensus: Raft Implementation",
+            "Partitioning and Consistent Hashing",
+            "Caching Topologies and Eviction Policies",
+            "Reliability Engineering and Failure Modes",
+            "Rate Limiting and Backpressure"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 5,
+          "pass_threshold": 100,
+          "question_types": [
+            "application"
+          ]
+        }
+      }
+    ]
+  },
+  "generated": {
+    "moduleCount": 25,
+    "totalMinutes": 2730,
+    "modules": [
+      {
+        "id": 1,
+        "title": "The Physics of Compute: Latency and the Memory Hierarchy",
+        "conceptCount": 5,
+        "minutes": 90
+      },
+      {
+        "id": 2,
+        "title": "Concurrency Primitives: Processes, Threads, and Coroutines",
+        "conceptCount": 5,
+        "minutes": 120
+      },
+      {
+        "id": 3,
+        "title": "Storage Hardware: Disk I/O Mechanics",
+        "conceptCount": 4,
+        "minutes": 90
+      },
+      {
+        "id": 4,
+        "title": "High-Performance I/O Models",
+        "conceptCount": 5,
+        "minutes": 120
+      },
+      {
+        "id": 5,
+        "title": "Network Transport Deep Dive: TCP Internals",
+        "conceptCount": 4,
+        "minutes": 120
+      },
+      {
+        "id": 6,
+        "title": "Modern Network Transport: UDP and QUIC",
+        "conceptCount": 4,
+        "minutes": 90
+      },
+      {
+        "id": 7,
+        "title": "Serialization and RPC Mechanics",
+        "conceptCount": 5,
+        "minutes": 120
+      },
+      {
+        "id": 8,
+        "title": "Storage Engines I: B-Trees and Read Optimization",
+        "conceptCount": 5,
+        "minutes": 120
+      },
+      {
+        "id": 9,
+        "title": "Storage Engines II: LSM-Trees and Write Optimization",
+        "conceptCount": 5,
+        "minutes": 120
+      },
+      {
+        "id": 10,
+        "title": "Transaction Theory: ACID and Isolation Levels",
+        "conceptCount": 4,
+        "minutes": 120
+      },
+      {
+        "id": 11,
+        "title": "Transaction Implementation: MVCC",
+        "conceptCount": 4,
+        "minutes": 90
+      },
+      {
+        "id": 12,
+        "title": "Distributed Time and Causality",
+        "conceptCount": 5,
+        "minutes": 120
+      },
+      {
+        "id": 13,
+        "title": "Distributed Consensus: Foundations and Paxos",
+        "conceptCount": 5,
+        "minutes": 120
+      },
+      {
+        "id": 14,
+        "title": "Distributed Consensus: Raft Implementation",
+        "conceptCount": 5,
+        "minutes": 120
+      },
+      {
+        "id": 15,
+        "title": "The CAP and PACELC Theorems",
+        "conceptCount": 4,
+        "minutes": 90
+      },
+      {
+        "id": 16,
+        "title": "Replication and Quorums",
+        "conceptCount": 5,
+        "minutes": 90
+      },
+      {
+        "id": 17,
+        "title": "Partitioning and Consistent Hashing",
+        "conceptCount": 5,
+        "minutes": 120
+      },
+      {
+        "id": 18,
+        "title": "NoSQL Paradigms and Data Modeling",
+        "conceptCount": 5,
+        "minutes": 90
+      },
+      {
+        "id": 19,
+        "title": "Load Balancing Mechanics",
+        "conceptCount": 4,
+        "minutes": 90
+      },
+      {
+        "id": 20,
+        "title": "Caching Topologies and Eviction Policies",
+        "conceptCount": 5,
+        "minutes": 120
+      },
+      {
+        "id": 21,
+        "title": "Asynchronous Processing and Messaging Systems",
+        "conceptCount": 5,
+        "minutes": 120
+      },
+      {
+        "id": 22,
+        "title": "Reliability Engineering and Failure Modes",
+        "conceptCount": 5,
+        "minutes": 90
+      },
+      {
+        "id": 23,
+        "title": "Rate Limiting and Backpressure",
+        "conceptCount": 5,
+        "minutes": 90
+      },
+      {
+        "id": 24,
+        "title": "The Internals of Observability",
+        "conceptCount": 5,
+        "minutes": 90
+      },
+      {
+        "id": 25,
+        "title": "Capstone Synthesis: Architecting a Netflix-Scale Global Service",
+        "conceptCount": 6,
+        "minutes": 180
+      }
+    ]
+  }
+}

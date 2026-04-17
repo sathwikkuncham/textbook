@@ -1,0 +1,55 @@
+{
+  "variant": {
+    "id": "C",
+    "name": "PRO + depth enforcement",
+    "description": "PRO model with explicit depth-respecting guidance added.",
+    "model": "gemini-3.1-pro-preview"
+  },
+  "runs": [
+    {
+      "variantId": "C",
+      "runNumber": 1,
+      "latencyMs": 9592,
+      "rawOutput": "{\n  \"done\": false,\n  \"title\": \"Foundations of Language as Probability: Information Theory and Shannon Entropy\",\n  \"scope\": \"Introduce Claude Shannon's foundational premise that communication and language predictability can be mathematically quantified. Build the first-principles intuition for 'surprise' (information content) and how entropy defines the fundamental limits of language modeling.\",\n  \"concepts\": [\n    \"Information Theory and Shannon Entropy\"\n  ],\n  \"estimatedSections\": 6\n}",
+      "parsed": {
+        "done": false,
+        "title": "Foundations of Language as Probability: Information Theory and Shannon Entropy",
+        "scope": "Introduce Claude Shannon's foundational premise that communication and language predictability can be mathematically quantified. Build the first-principles intuition for 'surprise' (information content) and how entropy defines the fundamental limits of language modeling.",
+        "concepts": [
+          "Information Theory and Shannon Entropy"
+        ],
+        "estimatedSections": 6
+      }
+    },
+    {
+      "variantId": "C",
+      "runNumber": 2,
+      "latencyMs": 8545,
+      "rawOutput": "{\n  \"done\": false,\n  \"title\": \"The Mathematical Bedrock: Information Theory and Shannon Entropy\",\n  \"scope\": \"Introduce the fundamental question of how to measure the predictability of a message. Build first-principles intuition for Claude Shannon's concept of 'surprise' and 'information content' before introducing the mathematical formulation of Entropy, setting the foundation for all probabilistic language modeling.\",\n  \"concepts\": [\n    \"Information Theory and Shannon Entropy\"\n  ],\n  \"estimatedSections\": 6\n}",
+      "parsed": {
+        "done": false,
+        "title": "The Mathematical Bedrock: Information Theory and Shannon Entropy",
+        "scope": "Introduce the fundamental question of how to measure the predictability of a message. Build first-principles intuition for Claude Shannon's concept of 'surprise' and 'information content' before introducing the mathematical formulation of Entropy, setting the foundation for all probabilistic language modeling.",
+        "concepts": [
+          "Information Theory and Shannon Entropy"
+        ],
+        "estimatedSections": 6
+      }
+    },
+    {
+      "variantId": "C",
+      "runNumber": 3,
+      "latencyMs": 10239,
+      "rawOutput": "{\n  \"done\": false,\n  \"title\": \"Foundation of Predictability: Information Theory and Shannon Entropy\",\n  \"scope\": \"Introduce Claude Shannon's foundational work on measuring information and predictability in sequences. This section will rebuild the learner's mathematical intuition around probability distributions, logarithms, and what 'entropy' mathematically and philosophically represents in the context of human language from first principles.\",\n  \"concepts\": [\n    \"Information Theory and Shannon Entropy\"\n  ],\n  \"estimatedSections\": 6\n}",
+      "parsed": {
+        "done": false,
+        "title": "Foundation of Predictability: Information Theory and Shannon Entropy",
+        "scope": "Introduce Claude Shannon's foundational work on measuring information and predictability in sequences. This section will rebuild the learner's mathematical intuition around probability distributions, logarithms, and what 'entropy' mathematically and philosophically represents in the context of human language from first principles.",
+        "concepts": [
+          "Information Theory and Shannon Entropy"
+        ],
+        "estimatedSections": 6
+      }
+    }
+  ]
+}

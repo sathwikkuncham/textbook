@@ -1,0 +1,277 @@
+{
+  "topicId": 31,
+  "slug": "psoriasis-pathophysiology-a-10-mark-answer",
+  "displayName": "Psoriasis Pathophysiology: A 10-Mark Answer",
+  "sourceType": "pdf",
+  "latencyMs": 34485,
+  "rawOutput": "{\n  \"topic\": \"Psoriasis Pathophysiology: A 10-Mark Answer\",\n  \"topic_slug\": \"psoriasis-pathophysiology-10-mark\",\n  \"level\": \"Advanced (Post-graduate Dermatology)\",\n  \"goal\": \"Post-graduate dermatology exam preparation (specifically structured for a 10-mark theory answer)\",\n  \"estimated_total_minutes\": 345,\n  \"modules\": [\n    {\n      \"id\": 1,\n      \"title\": \"Etiology: The Genetic and Environmental Baseline\",\n      \"estimated_minutes\": 45,\n      \"description\": \"Establishes the foundational 'who and why' of psoriasis. For a PG exam, detailing specific genetic loci and correlating them with exact environmental triggers sets a high-scoring baseline for your answer.\",\n      \"plan\": {\n        \"goal\": \"Accurately list and explain the genetic loci (PSORS1) and environmental triggers that predispose a patient to psoriasis.\",\n        \"concepts\": [\n          \"Genetic susceptibility in psoriasis\",\n          \"HLA-Cw6 allele\",\n          \"PSORS1 locus on chromosome 6p\",\n          \"IL23R and TNFAIP3 gene mutations\",\n          \"Environmental stressors as initiators\",\n          \"Koebner Phenomenon (trauma-induced)\",\n          \"Streptococcal pharyngitis (guttate psoriasis trigger)\",\n          \"Drug-induced psoriasis (Lithium, Beta-blockers, Antimalarials)\",\n          \"Lifestyle factors (obesity, smoking, alcohol)\"\n        ],\n        \"sourceRefs\": [\n          \"Chapter 31: Psoriasis\"\n        ],\n        \"prerequisites\": []\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 5,\n        \"pass_threshold\": 80,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\"\n        ]\n      }\n    },\n    {\n      \"id\": 2,\n      \"title\": \"The Initiation Phase: Innate Immune Activation\",\n      \"estimated_minutes\": 45,\n      \"description\": \"Details the exact molecular spark that starts the psoriatic lesion. Examiners look for the specific transition from keratinocyte stress to dendritic cell activation.\",\n      \"plan\": {\n        \"goal\": \"Map the sequence from keratinocyte injury to the activation of myeloid dendritic cells via LL-37.\",\n        \"concepts\": [\n          \"Keratinocyte stress and injury\",\n          \"Release of self-DNA/RNA\",\n          \"Antimicrobial peptides (AMPs)\",\n          \"LL-37 (Cathelicidin) complex formation\",\n          \"Toll-like receptors (TLR7/9)\",\n          \"Activation of Plasmacytoid Dendritic Cells (pDCs)\",\n          \"Interferon-alpha (IFN-α) secretion\",\n          \"Activation of Myeloid Dendritic Cells (mDCs)\"\n        ],\n        \"sourceRefs\": [\n          \"Chapter 31: Psoriasis\"\n        ],\n        \"prerequisites\": [\n          \"Environmental stressors as initiators\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 5,\n        \"pass_threshold\": 80,\n        \"question_types\": [\n          \"conceptual\",\n          \"true_false\"\n        ]\n      }\n    },\n    {\n      \"id\": 3,\n      \"title\": \"The Maintenance Phase: IL-23/Th17 Axis (The Core Engine)\",\n      \"estimated_minutes\": 60,\n      \"description\": \"This is the most critical module for a PG student. Mastery of the IL-23/Th17 axis is mandatory for high marks and forms the rational basis for biologic therapies.\",\n      \"plan\": {\n        \"goal\": \"Differentiate the roles of IL-12 and IL-23, and detail the downstream effector cytokines produced by Th17 and Th22 cells.\",\n        \"concepts\": [\n          \"mDC migration to local lymph nodes\",\n          \"Secretion of IL-12 and IL-23\",\n          \"IL-12 pathway: Naive T-cells to Th1 cells\",\n          \"Th1 effector cytokines (TNF-α, IFN-γ)\",\n          \"IL-23 as the master regulator\",\n          \"Th17 and Th22 cell differentiation and survival\",\n          \"IL-17A and IL-17F functions (neutrophil recruitment, inflammation)\",\n          \"IL-22 function (keratinocyte hyperproliferation)\",\n          \"Clinical correlation: Biologic targets (TNF-α, IL-23, IL-17 inhibitors)\"\n        ],\n        \"sourceRefs\": [\n          \"Chapter 31: Psoriasis\"\n        ],\n        \"prerequisites\": [\n          \"Activation of Myeloid Dendritic Cells (mDCs)\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 6,\n        \"pass_threshold\": 80,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\"\n        ]\n      }\n    },\n    {\n      \"id\": 4,\n      \"title\": \"The Feed-Forward Loop & Keratinocyte Response\",\n      \"estimated_minutes\": 45,\n      \"description\": \"Explains how psoriasis sustains itself. Framing keratinocytes as 'drivers' rather than just 'victims' of inflammation is a high-level concept that earns extra marks.\",\n      \"plan\": {\n        \"goal\": \"Explain the autocrine and paracrine feed-forward mechanisms that perpetuate psoriatic plaque formation.\",\n        \"concepts\": [\n          \"Keratinocytes as drivers of inflammation\",\n          \"Shortened keratinocyte cell cycle (28 days to 3-5 days)\",\n          \"Release of chemokines (CXCL8, CXCL1)\",\n          \"Release of cytokines (TNF-α, IL-1) by keratinocytes\",\n          \"Secondary recruitment of neutrophils and T-cells\",\n          \"Vascular changes (angiogenesis, dermal capillary dilation)\",\n          \"The vicious cycle/self-perpetuating inflammatory circuit\"\n        ],\n        \"sourceRefs\": [\n          \"Chapter 31: Psoriasis\"\n        ],\n        \"prerequisites\": [\n          \"IL-17A and IL-17F functions (neutrophil recruitment, inflammation)\",\n          \"IL-22 function (keratinocyte hyperproliferation)\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 5,\n        \"pass_threshold\": 80,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\"\n        ]\n      }\n    },\n    {\n      \"id\": 5,\n      \"title\": \"Clinical & Histological Correlation\",\n      \"estimated_minutes\": 60,\n      \"description\": \"Connects the molecular pathophysiology directly to what is seen under the microscope and on the patient's skin. Crucial for a complete theory answer.\",\n      \"plan\": {\n        \"goal\": \"Correlate cellular and molecular changes with specific histological hallmarks and the clinical Auspitz sign.\",\n        \"concepts\": [\n          \"Acanthosis (epidermal thickening)\",\n          \"Parakeratosis (retention of nuclei in stratum corneum)\",\n          \"Munro’s Microabscesses (neutrophil collections)\",\n          \"Elongated rete ridges ('test-tube' appearance)\",\n          \"Thinning of suprapapillary plates\",\n          \"Dilatation and tortuosity of capillary loops\",\n          \"Pathogenesis of the Auspitz Sign (pinpoint bleeding)\"\n        ],\n        \"sourceRefs\": [\n          \"Chapter 31: Psoriasis\"\n        ],\n        \"prerequisites\": [\n          \"Shortened keratinocyte cell cycle (28 days to 3-5 days)\",\n          \"Secondary recruitment of neutrophils and T-cells\",\n          \"Vascular changes (angiogenesis, dermal capillary dilation)\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 5,\n        \"pass_threshold\": 80,\n        \"question_types\": [\n          \"application\",\n          \"true_false\"\n        ]\n      }\n    },\n    {\n      \"id\": 6,\n      \"title\": \"Capstone: Constructing the 10-Mark Exam Answer & Flowchart\",\n      \"estimated_minutes\": 90,\n      \"description\": \"Translates all learned knowledge into the exact exam format required. You will synthesize the material into a reproducible 10-point structure and a high-yield flowchart.\",\n      \"plan\": {\n        \"goal\": \"Draft a perfectly structured 10-mark theory answer and draw a comprehensive pathophysiological flowchart from memory.\",\n        \"concepts\": [\n          \"Structuring an exam answer: Introduction, Etiology, Pathogenesis, Histology\",\n          \"Drafting the Pathogenesis Flowchart (Trigger -> Innate -> Adaptive -> Amplification)\",\n          \"Highlighting keywords for examiners (HLA-Cw6, LL-37, IL-23, Th17, Parakeratosis)\",\n          \"Integrating 'Extra Mark' tips (Feed-forward concept, Biologic targets, Auspitz mechanism)\",\n          \"Time-management for a 10-mark question\",\n          \"Active recall and self-grading against a model rubric\"\n        ],\n        \"sourceRefs\": [\n          \"Chapter 31: Psoriasis\"\n        ],\n        \"prerequisites\": [\n          \"HLA-Cw6 allele\",\n          \"Activation of Myeloid Dendritic Cells (mDCs)\",\n          \"IL-23 as the master regulator\",\n          \"The vicious cycle/self-perpetuating inflammatory circuit\",\n          \"Pathogenesis of the Auspitz Sign (pinpoint bleeding)\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 3,\n        \"pass_threshold\": 100,\n        \"question_types\": [\n          \"application\"\n        ]\n      }\n    }\n  ]\n}",
+  "parsed": {
+    "topic": "Psoriasis Pathophysiology: A 10-Mark Answer",
+    "topic_slug": "psoriasis-pathophysiology-10-mark",
+    "level": "Advanced (Post-graduate Dermatology)",
+    "goal": "Post-graduate dermatology exam preparation (specifically structured for a 10-mark theory answer)",
+    "estimated_total_minutes": 345,
+    "modules": [
+      {
+        "id": 1,
+        "title": "Etiology: The Genetic and Environmental Baseline",
+        "estimated_minutes": 45,
+        "description": "Establishes the foundational 'who and why' of psoriasis. For a PG exam, detailing specific genetic loci and correlating them with exact environmental triggers sets a high-scoring baseline for your answer.",
+        "plan": {
+          "goal": "Accurately list and explain the genetic loci (PSORS1) and environmental triggers that predispose a patient to psoriasis.",
+          "concepts": [
+            "Genetic susceptibility in psoriasis",
+            "HLA-Cw6 allele",
+            "PSORS1 locus on chromosome 6p",
+            "IL23R and TNFAIP3 gene mutations",
+            "Environmental stressors as initiators",
+            "Koebner Phenomenon (trauma-induced)",
+            "Streptococcal pharyngitis (guttate psoriasis trigger)",
+            "Drug-induced psoriasis (Lithium, Beta-blockers, Antimalarials)",
+            "Lifestyle factors (obesity, smoking, alcohol)"
+          ],
+          "sourceRefs": [
+            "Chapter 31: Psoriasis"
+          ],
+          "prerequisites": []
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 5,
+          "pass_threshold": 80,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 2,
+        "title": "The Initiation Phase: Innate Immune Activation",
+        "estimated_minutes": 45,
+        "description": "Details the exact molecular spark that starts the psoriatic lesion. Examiners look for the specific transition from keratinocyte stress to dendritic cell activation.",
+        "plan": {
+          "goal": "Map the sequence from keratinocyte injury to the activation of myeloid dendritic cells via LL-37.",
+          "concepts": [
+            "Keratinocyte stress and injury",
+            "Release of self-DNA/RNA",
+            "Antimicrobial peptides (AMPs)",
+            "LL-37 (Cathelicidin) complex formation",
+            "Toll-like receptors (TLR7/9)",
+            "Activation of Plasmacytoid Dendritic Cells (pDCs)",
+            "Interferon-alpha (IFN-α) secretion",
+            "Activation of Myeloid Dendritic Cells (mDCs)"
+          ],
+          "sourceRefs": [
+            "Chapter 31: Psoriasis"
+          ],
+          "prerequisites": [
+            "Environmental stressors as initiators"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 5,
+          "pass_threshold": 80,
+          "question_types": [
+            "conceptual",
+            "true_false"
+          ]
+        }
+      },
+      {
+        "id": 3,
+        "title": "The Maintenance Phase: IL-23/Th17 Axis (The Core Engine)",
+        "estimated_minutes": 60,
+        "description": "This is the most critical module for a PG student. Mastery of the IL-23/Th17 axis is mandatory for high marks and forms the rational basis for biologic therapies.",
+        "plan": {
+          "goal": "Differentiate the roles of IL-12 and IL-23, and detail the downstream effector cytokines produced by Th17 and Th22 cells.",
+          "concepts": [
+            "mDC migration to local lymph nodes",
+            "Secretion of IL-12 and IL-23",
+            "IL-12 pathway: Naive T-cells to Th1 cells",
+            "Th1 effector cytokines (TNF-α, IFN-γ)",
+            "IL-23 as the master regulator",
+            "Th17 and Th22 cell differentiation and survival",
+            "IL-17A and IL-17F functions (neutrophil recruitment, inflammation)",
+            "IL-22 function (keratinocyte hyperproliferation)",
+            "Clinical correlation: Biologic targets (TNF-α, IL-23, IL-17 inhibitors)"
+          ],
+          "sourceRefs": [
+            "Chapter 31: Psoriasis"
+          ],
+          "prerequisites": [
+            "Activation of Myeloid Dendritic Cells (mDCs)"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 6,
+          "pass_threshold": 80,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 4,
+        "title": "The Feed-Forward Loop & Keratinocyte Response",
+        "estimated_minutes": 45,
+        "description": "Explains how psoriasis sustains itself. Framing keratinocytes as 'drivers' rather than just 'victims' of inflammation is a high-level concept that earns extra marks.",
+        "plan": {
+          "goal": "Explain the autocrine and paracrine feed-forward mechanisms that perpetuate psoriatic plaque formation.",
+          "concepts": [
+            "Keratinocytes as drivers of inflammation",
+            "Shortened keratinocyte cell cycle (28 days to 3-5 days)",
+            "Release of chemokines (CXCL8, CXCL1)",
+            "Release of cytokines (TNF-α, IL-1) by keratinocytes",
+            "Secondary recruitment of neutrophils and T-cells",
+            "Vascular changes (angiogenesis, dermal capillary dilation)",
+            "The vicious cycle/self-perpetuating inflammatory circuit"
+          ],
+          "sourceRefs": [
+            "Chapter 31: Psoriasis"
+          ],
+          "prerequisites": [
+            "IL-17A and IL-17F functions (neutrophil recruitment, inflammation)",
+            "IL-22 function (keratinocyte hyperproliferation)"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 5,
+          "pass_threshold": 80,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 5,
+        "title": "Clinical & Histological Correlation",
+        "estimated_minutes": 60,
+        "description": "Connects the molecular pathophysiology directly to what is seen under the microscope and on the patient's skin. Crucial for a complete theory answer.",
+        "plan": {
+          "goal": "Correlate cellular and molecular changes with specific histological hallmarks and the clinical Auspitz sign.",
+          "concepts": [
+            "Acanthosis (epidermal thickening)",
+            "Parakeratosis (retention of nuclei in stratum corneum)",
+            "Munro’s Microabscesses (neutrophil collections)",
+            "Elongated rete ridges ('test-tube' appearance)",
+            "Thinning of suprapapillary plates",
+            "Dilatation and tortuosity of capillary loops",
+            "Pathogenesis of the Auspitz Sign (pinpoint bleeding)"
+          ],
+          "sourceRefs": [
+            "Chapter 31: Psoriasis"
+          ],
+          "prerequisites": [
+            "Shortened keratinocyte cell cycle (28 days to 3-5 days)",
+            "Secondary recruitment of neutrophils and T-cells",
+            "Vascular changes (angiogenesis, dermal capillary dilation)"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 5,
+          "pass_threshold": 80,
+          "question_types": [
+            "application",
+            "true_false"
+          ]
+        }
+      },
+      {
+        "id": 6,
+        "title": "Capstone: Constructing the 10-Mark Exam Answer & Flowchart",
+        "estimated_minutes": 90,
+        "description": "Translates all learned knowledge into the exact exam format required. You will synthesize the material into a reproducible 10-point structure and a high-yield flowchart.",
+        "plan": {
+          "goal": "Draft a perfectly structured 10-mark theory answer and draw a comprehensive pathophysiological flowchart from memory.",
+          "concepts": [
+            "Structuring an exam answer: Introduction, Etiology, Pathogenesis, Histology",
+            "Drafting the Pathogenesis Flowchart (Trigger -> Innate -> Adaptive -> Amplification)",
+            "Highlighting keywords for examiners (HLA-Cw6, LL-37, IL-23, Th17, Parakeratosis)",
+            "Integrating 'Extra Mark' tips (Feed-forward concept, Biologic targets, Auspitz mechanism)",
+            "Time-management for a 10-mark question",
+            "Active recall and self-grading against a model rubric"
+          ],
+          "sourceRefs": [
+            "Chapter 31: Psoriasis"
+          ],
+          "prerequisites": [
+            "HLA-Cw6 allele",
+            "Activation of Myeloid Dendritic Cells (mDCs)",
+            "IL-23 as the master regulator",
+            "The vicious cycle/self-perpetuating inflammatory circuit",
+            "Pathogenesis of the Auspitz Sign (pinpoint bleeding)"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 3,
+          "pass_threshold": 100,
+          "question_types": [
+            "application"
+          ]
+        }
+      }
+    ]
+  },
+  "generated": {
+    "moduleCount": 6,
+    "totalMinutes": 345,
+    "modules": [
+      {
+        "id": 1,
+        "title": "Etiology: The Genetic and Environmental Baseline",
+        "conceptCount": 9,
+        "minutes": 45
+      },
+      {
+        "id": 2,
+        "title": "The Initiation Phase: Innate Immune Activation",
+        "conceptCount": 8,
+        "minutes": 45
+      },
+      {
+        "id": 3,
+        "title": "The Maintenance Phase: IL-23/Th17 Axis (The Core Engine)",
+        "conceptCount": 9,
+        "minutes": 60
+      },
+      {
+        "id": 4,
+        "title": "The Feed-Forward Loop & Keratinocyte Response",
+        "conceptCount": 7,
+        "minutes": 45
+      },
+      {
+        "id": 5,
+        "title": "Clinical & Histological Correlation",
+        "conceptCount": 7,
+        "minutes": 60
+      },
+      {
+        "id": 6,
+        "title": "Capstone: Constructing the 10-Mark Exam Answer & Flowchart",
+        "conceptCount": 6,
+        "minutes": 90
+      }
+    ]
+  }
+}

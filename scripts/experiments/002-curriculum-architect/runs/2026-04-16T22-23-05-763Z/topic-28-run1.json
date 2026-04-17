@@ -1,0 +1,970 @@
+{
+  "topicId": 28,
+  "slug": "algorithms-clrs-textbook-companion",
+  "displayName": "Algorithms: CLRS Textbook Companion",
+  "sourceType": "pdf",
+  "runNumber": 1,
+  "latencyMs": 81476,
+  "rawOutput": "{\n  \"topic\": \"Algorithms: CLRS Textbook Companion\",\n  \"topic_slug\": \"algorithms-clrs-companion\",\n  \"level\": \"Expert (Built from First Principles)\",\n  \"goal\": \"Comprehensive mastery from scratch; seeking an interactive, first-principles alternative to traditional reading.\",\n  \"estimated_total_minutes\": 5100,\n  \"modules\": [\n    {\n      \"id\": 1,\n      \"title\": \"Mathematical Foundations and First Principles\",\n      \"estimated_minutes\": 240,\n      \"description\": \"Before diving into algorithm design, it is critical to establish the rigorous mathematical language used throughout CLRS. This module rebuilds your math intuition from scratch, covering discrete structures, series, and logic.\",\n      \"plan\": {\n        \"goal\": \"Fluently read and write mathematical notations, formulate summations, and apply basic discrete math principles required for algorithmic proofs.\",\n        \"concepts\": [\n          \"Sets, relations, and functions\",\n          \"Translating abstract math notation to logic\",\n          \"Summations and series approximations\",\n          \"Techniques for mathematical induction and formal proofs\",\n          \"Basic concepts of graphs, trees, and matrices\",\n          \"Bridging high-school algebra to discrete mathematics\"\n        ],\n        \"sourceRefs\": [\n          \"Part VIII Appendix: Mathematical Background\",\n          \"Preface\"\n        ],\n        \"prerequisites\": []\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 8,\n        \"pass_threshold\": 70,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\"\n        ]\n      }\n    },\n    {\n      \"id\": 2,\n      \"title\": \"The Role of Algorithms and Correctness\",\n      \"estimated_minutes\": 240,\n      \"description\": \"Understanding what an algorithm is and proving that it works is the bedrock of computer science. This module introduces the RAM model and uses basic sorting to teach rigorous correctness proofs.\",\n      \"plan\": {\n        \"goal\": \"Define computational problems, trace basic algorithms in pseudocode and Python, and rigorously prove correctness using loop invariants.\",\n        \"concepts\": [\n          \"The definition and role of algorithms in computing\",\n          \"The Random-Access Machine (RAM) computational model\",\n          \"Translating CLRS pseudocode to Python\",\n          \"Insertion sort: trace and implementation\",\n          \"Defining and applying loop invariants\",\n          \"Mathematical proofs of initialization, maintenance, and termination\"\n        ],\n        \"sourceRefs\": [\n          \"Part I Foundations: Chapter 1\",\n          \"Part I Foundations: Chapter 2\"\n        ],\n        \"prerequisites\": [\n          1\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 6,\n        \"pass_threshold\": 70,\n        \"question_types\": [\n          \"conceptual\",\n          \"true_false\"\n        ]\n      }\n    },\n    {\n      \"id\": 3,\n      \"title\": \"Asymptotic Notation and Growth of Functions\",\n      \"estimated_minutes\": 240,\n      \"description\": \"To compare algorithms, we need a mathematical framework that abstracts away hardware limits. This module dives deep into Big-O notation and bounding runtimes.\",\n      \"plan\": {\n        \"goal\": \"Formally define asymptotic bounds and mathematically evaluate the time complexity of algorithms without relying on hardware-specific timings.\",\n        \"concepts\": [\n          \"The concepts of Best-case, Worst-case, and Average-case analysis\",\n          \"Formal definition of Big-O, Big-Omega, and Big-Theta notations\",\n          \"Little-o and little-omega notations\",\n          \"Standard complexity classes (constant, logarithmic, polynomial, exponential)\",\n          \"Mathematical limits and bounding algorithm growth rates\",\n          \"Visualizing asymptotic curves\"\n        ],\n        \"sourceRefs\": [\n          \"Part I Foundations: Chapter 3\"\n        ],\n        \"prerequisites\": [\n          1,\n          2\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 8,\n        \"pass_threshold\": 70,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\"\n        ]\n      }\n    },\n    {\n      \"id\": 4,\n      \"title\": \"Divide-and-Conquer and Recurrence Relations\",\n      \"estimated_minutes\": 300,\n      \"description\": \"Many optimal algorithms recursively break problems into smaller subproblems. You will learn to formulate these recursive costs mathematically and solve them.\",\n      \"plan\": {\n        \"goal\": \"Design divide-and-conquer algorithms, write their recurrence relations, and solve them using the Substitution Method, Recursion Trees, and the Master Theorem.\",\n        \"concepts\": [\n          \"The Divide, Conquer, and Combine paradigm\",\n          \"Merge sort: implementation and execution tracing\",\n          \"Formulating recurrences for recursive algorithms\",\n          \"Solving recurrences via the Substitution Method\",\n          \"Solving recurrences via Recursion Trees\",\n          \"The Master Theorem and its rigorous proof cases\"\n        ],\n        \"sourceRefs\": [\n          \"Part I Foundations: Chapter 4\"\n        ],\n        \"prerequisites\": [\n          2,\n          3\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 7,\n        \"pass_threshold\": 70,\n        \"question_types\": [\n          \"application\",\n          \"conceptual\"\n        ]\n      }\n    },\n    {\n      \"id\": 5,\n      \"title\": \"Probabilistic Analysis and Randomized Algorithms\",\n      \"estimated_minutes\": 240,\n      \"description\": \"Algorithms don't always operate deterministically. Introducing randomness can lead to drastically better average-case performance, requiring probability to prove efficiency.\",\n      \"plan\": {\n        \"goal\": \"Apply probability theory to analyze the expected performance of randomized algorithms using indicator random variables.\",\n        \"concepts\": [\n          \"Review of basic probability and expected value\",\n          \"The hiring problem and probabilistic analysis\",\n          \"Indicator random variables: definition and application\",\n          \"Las Vegas vs. Monte Carlo algorithmic paradigms\",\n          \"Randomly permuting arrays\",\n          \"Formal proofs of expected running times\"\n        ],\n        \"sourceRefs\": [\n          \"Part I Foundations: Chapter 5\",\n          \"Part VIII Appendix: Probability\"\n        ],\n        \"prerequisites\": [\n          1,\n          3\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 6,\n        \"pass_threshold\": 70,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\"\n        ]\n      }\n    },\n    {\n      \"id\": 6,\n      \"title\": \"Heapsort and Priority Queues\",\n      \"estimated_minutes\": 240,\n      \"description\": \"Data structures and algorithms are intertwined. The Heap is our first advanced data structure, enabling in-place sorting and efficient priority queue operations.\",\n      \"plan\": {\n        \"goal\": \"Implement array-based heap data structures, mathematically prove the correctness of max-heapify, and build a priority queue.\",\n        \"concepts\": [\n          \"The heap data structure and array-tree mapping\",\n          \"Maintaining the heap property (Max-Heapify)\",\n          \"Building a heap in linear time: proofs and analysis\",\n          \"The Heapsort algorithm and its performance bounds\",\n          \"Implementing Priority Queues (Insert, Extract-Max, Increase-Key)\"\n        ],\n        \"sourceRefs\": [\n          \"Part II Sorting and Order Statistics: Chapter 6\"\n        ],\n        \"prerequisites\": [\n          2,\n          3\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 6,\n        \"pass_threshold\": 70,\n        \"question_types\": [\n          \"application\",\n          \"conceptual\"\n        ]\n      }\n    },\n    {\n      \"id\": 7,\n      \"title\": \"Quicksort and its Rigorous Analysis\",\n      \"estimated_minutes\": 240,\n      \"description\": \"Quicksort is arguably the most practical sorting algorithm. Here, we dissect its partitioning logic and mathematically prove why its average case is so much better than its worst case.\",\n      \"plan\": {\n        \"goal\": \"Implement Quicksort, trace its in-place partitioning, and rigorously analyze its worst-case and expected (randomized) running times.\",\n        \"concepts\": [\n          \"The Quicksort algorithm and partitioning logic (Lomuto/Hoare)\",\n          \"Worst-case vs. Best-case partition splits\",\n          \"Randomized Quicksort implementation\",\n          \"Rigorous mathematical analysis of Quicksort's expected runtime\",\n          \"Quicksort vs. Heapsort vs. Merge Sort: empirical and theoretical trade-offs\"\n        ],\n        \"sourceRefs\": [\n          \"Part II Sorting and Order Statistics: Chapter 7\"\n        ],\n        \"prerequisites\": [\n          4,\n          5\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 5,\n        \"pass_threshold\": 70,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\",\n          \"true_false\"\n        ]\n      }\n    },\n    {\n      \"id\": 8,\n      \"title\": \"Sorting in Linear Time and Order Statistics\",\n      \"estimated_minutes\": 300,\n      \"description\": \"Is O(n log n) the absolute limit for sorting? By proving lower bounds via decision trees, we discover how to break this limit using non-comparison algorithms.\",\n      \"plan\": {\n        \"goal\": \"Prove the comparison-sort lower bound and implement linear-time sorting algorithms and selection algorithms.\",\n        \"concepts\": [\n          \"Decision tree models and the Omega(n log n) lower bound proof\",\n          \"Counting Sort: implementation and stable sorting properties\",\n          \"Radix Sort: historical context and mathematical correctness\",\n          \"Bucket Sort analysis and expected time proofs\",\n          \"Order statistics: Finding the minimum, maximum, and i-th element\",\n          \"Selection in expected linear time (Quickselect) and guaranteed linear time (Median-of-Medians)\"\n        ],\n        \"sourceRefs\": [\n          \"Part II Sorting and Order Statistics: Chapter 8\",\n          \"Part II Sorting and Order Statistics: Chapter 9\"\n        ],\n        \"prerequisites\": [\n          5,\n          7\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 8,\n        \"pass_threshold\": 70,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\"\n        ]\n      }\n    },\n    {\n      \"id\": 9,\n      \"title\": \"Elementary Data Structures and Hash Tables\",\n      \"estimated_minutes\": 300,\n      \"description\": \"Before advancing to complex trees, we must master how raw memory is organized into foundational structures like linked lists, stacks, and highly-efficient hash tables.\",\n      \"plan\": {\n        \"goal\": \"Implement memory structures using pointers, design effective hash functions, and resolve collisions mathematically.\",\n        \"concepts\": [\n          \"Stacks, queues, and pointer-based linked lists\",\n          \"Representing rooted trees in memory\",\n          \"Direct-address tables vs. Hash tables\",\n          \"Collision resolution: Chaining vs. Open Addressing (Linear/Quadratic probing, Double hashing)\",\n          \"Hash functions: Division, Multiplication, and Universal Hashing properties\",\n          \"Perfect hashing foundations\"\n        ],\n        \"sourceRefs\": [\n          \"Part III Data Structures: Chapter 10\",\n          \"Part III Data Structures: Chapter 11\"\n        ],\n        \"prerequisites\": [\n          5\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 7,\n        \"pass_threshold\": 70,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\"\n        ]\n      }\n    },\n    {\n      \"id\": 10,\n      \"title\": \"Binary Search Trees and Red-Black Trees\",\n      \"estimated_minutes\": 360,\n      \"description\": \"Standard BSTs degrade to linked lists in the worst case. Red-Black trees introduce self-balancing mechanisms, backed by complex invariant proofs, to guarantee O(log n) operations.\",\n      \"plan\": {\n        \"goal\": \"Implement search, insert, and delete operations on BSTs, and extend them with rigorous color-flipping and rotation invariants to build Red-Black Trees.\",\n        \"concepts\": [\n          \"Binary Search Tree properties and inorder tree walks\",\n          \"Querying, inserting, and deleting nodes in a standard BST\",\n          \"The performance degradation problem of unbalanced trees\",\n          \"Red-Black Tree properties and height proofs\",\n          \"Tree rotations to maintain balance\",\n          \"Red-Black insertion: cases and mathematical proofs\",\n          \"Red-Black deletion: restoring the RB invariant\"\n        ],\n        \"sourceRefs\": [\n          \"Part III Data Structures: Chapter 12\",\n          \"Part III Data Structures: Chapter 13\"\n        ],\n        \"prerequisites\": [\n          9\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 8,\n        \"pass_threshold\": 70,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\"\n        ]\n      }\n    },\n    {\n      \"id\": 11,\n      \"title\": \"Dynamic Programming\",\n      \"estimated_minutes\": 360,\n      \"description\": \"When subproblems overlap, naïve recursion wastes exponential time. Dynamic programming represents a massive paradigm shift in optimization algorithm design.\",\n      \"plan\": {\n        \"goal\": \"Identify optimal substructure, formulate recursive solutions, and optimize them using top-down memoization and bottom-up dynamic programming.\",\n        \"concepts\": [\n          \"The concept of Overlapping Subproblems and Optimal Substructure\",\n          \"Memoization vs. Bottom-up iteration paradigms\",\n          \"Rod cutting optimization\",\n          \"Matrix-chain multiplication: formulation and parens tracking\",\n          \"Longest Common Subsequence (LCS) analysis\",\n          \"Optimal Binary Search Trees\",\n          \"Reconstructing the optimal solution path\"\n        ],\n        \"sourceRefs\": [\n          \"Part IV Advanced Design and Analysis Techniques: Chapter 14\"\n        ],\n        \"prerequisites\": [\n          4,\n          10\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 7,\n        \"pass_threshold\": 70,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\"\n        ]\n      }\n    },\n    {\n      \"id\": 12,\n      \"title\": \"Greedy Algorithms and Amortized Analysis\",\n      \"estimated_minutes\": 360,\n      \"description\": \"Sometimes making the locally optimal 'greedy' choice yields the global optimum. We pair this with amortized analysis to mathematically prove the bounds of operations that vary wildly in cost.\",\n      \"plan\": {\n        \"goal\": \"Prove the greedy choice property for optimization problems and calculate amortized time bounds using aggregate, accounting, and potential methods.\",\n        \"concepts\": [\n          \"The greedy choice property vs optimal substructure\",\n          \"Activity selection problem and proofs of optimality\",\n          \"Huffman codes and data compression\",\n          \"Introduction to Amortized Analysis\",\n          \"The Aggregate Method for bounding sequences of operations\",\n          \"The Accounting Method (banker's view)\",\n          \"The Potential Method (physics view) applied to dynamic tables\"\n        ],\n        \"sourceRefs\": [\n          \"Part IV Advanced Design and Analysis Techniques: Chapter 15\",\n          \"Part IV Advanced Design and Analysis Techniques: Chapter 16\"\n        ],\n        \"prerequisites\": [\n          11\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 8,\n        \"pass_threshold\": 70,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\",\n          \"true_false\"\n        ]\n      }\n    },\n    {\n      \"id\": 13,\n      \"title\": \"Advanced Data Structures: B-Trees and Disjoint Sets\",\n      \"estimated_minutes\": 300,\n      \"description\": \"When data exceeds memory limits, traditional trees fail. We explore B-Trees for disk I/O optimization and Disjoint Sets for lightning-fast relation tracking.\",\n      \"plan\": {\n        \"goal\": \"Model disk I/O using B-Trees and implement disjoint sets with union-by-rank and path compression, analyzing their near-constant time bounds.\",\n        \"concepts\": [\n          \"The Disk Access Model and memory hierarchy\",\n          \"B-Tree properties, splitting nodes, and disk-optimized insertion\",\n          \"B-Tree deletion cases\",\n          \"Data structures for disjoint sets (Union-Find)\",\n          \"Linked-list vs. Forest representation of sets\",\n          \"Heuristics: Union by rank and Path compression\",\n          \"Inverse Ackermann function bounds and amortized proofs\"\n        ],\n        \"sourceRefs\": [\n          \"Part V Advanced Data Structures: Chapter 17\",\n          \"Part V Advanced Data Structures: Chapter 19\"\n        ],\n        \"prerequisites\": [\n          10,\n          12\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 6,\n        \"pass_threshold\": 70,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\"\n        ]\n      }\n    },\n    {\n      \"id\": 14,\n      \"title\": \"Elementary Graph Algorithms and Minimum Spanning Trees\",\n      \"estimated_minutes\": 360,\n      \"description\": \"Graphs model the real world. We start by traversing these networks effectively and move on to finding the cheapest way to connect all nodes.\",\n      \"plan\": {\n        \"goal\": \"Implement graph traversal algorithms (BFS/DFS), derive topological sorts, and rigorously prove the correctness of Kruskal’s and Prim’s algorithms.\",\n        \"concepts\": [\n          \"Graph representations: Adjacency lists and matrices\",\n          \"Breadth-First Search (BFS) and shortest path trees\",\n          \"Depth-First Search (DFS), edge classification, and parenthesis theorem\",\n          \"Topological sorting of Directed Acyclic Graphs (DAGs)\",\n          \"Strongly Connected Components (Kosaraju's algorithm)\",\n          \"The theoretical foundations of Minimum Spanning Trees (MSTs)\",\n          \"Kruskal's algorithm and Prim's algorithm implementation and proofs\"\n        ],\n        \"sourceRefs\": [\n          \"Part VI Graph Algorithms: Chapter 20\",\n          \"Part VI Graph Algorithms: Chapter 21\"\n        ],\n        \"prerequisites\": [\n          9,\n          13\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 8,\n        \"pass_threshold\": 70,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\"\n        ]\n      }\n    },\n    {\n      \"id\": 15,\n      \"title\": \"Shortest Paths: Single-Source and All-Pairs\",\n      \"estimated_minutes\": 360,\n      \"description\": \"Finding the shortest route is foundational to logistics and networking. We rigorously define path relaxation and explore algorithms capable of handling both positive and negative weights.\",\n      \"plan\": {\n        \"goal\": \"Implement and formally analyze shortest-path algorithms, manage negative-weight cycles, and solve dense graph routing problems.\",\n        \"concepts\": [\n          \"Optimal substructure of shortest paths and relaxation\",\n          \"The Bellman-Ford algorithm and negative-weight cycle detection\",\n          \"Shortest paths in DAGs (using topological sort)\",\n          \"Dijkstra's algorithm: implementation and correctness proofs\",\n          \"All-pairs shortest paths and matrix multiplication equivalence\",\n          \"The Floyd-Warshall algorithm (Dynamic Programming applied to graphs)\",\n          \"Johnson's algorithm for sparse graphs via reweighting\"\n        ],\n        \"sourceRefs\": [\n          \"Part VI Graph Algorithms: Chapter 22\",\n          \"Part VI Graph Algorithms: Chapter 23\"\n        ],\n        \"prerequisites\": [\n          14\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 7,\n        \"pass_threshold\": 70,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\"\n        ]\n      }\n    },\n    {\n      \"id\": 16,\n      \"title\": \"Maximum Flow Networks\",\n      \"estimated_minutes\": 240,\n      \"description\": \"How much liquid, data, or traffic can a network handle? The maximum flow problem introduces profound duality theorems connecting flows to cuts.\",\n      \"plan\": {\n        \"goal\": \"Model capacities using flow networks, mathematically prove the max-flow min-cut theorem, and implement the Ford-Fulkerson method.\",\n        \"concepts\": [\n          \"Flow networks, capacities, and conservation constraints\",\n          \"Residual networks and augmenting paths\",\n          \"The Max-flow min-cut theorem formal proof\",\n          \"The Ford-Fulkerson method and implementation tracing\",\n          \"The Edmonds-Karp algorithm (BFS optimization)\",\n          \"Maximum bipartite matching as a flow problem\"\n        ],\n        \"sourceRefs\": [\n          \"Part VI Graph Algorithms: Chapter 24\"\n        ],\n        \"prerequisites\": [\n          14\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 6,\n        \"pass_threshold\": 70,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\"\n        ]\n      }\n    },\n    {\n      \"id\": 17,\n      \"title\": \"Selected Topics: Matrix Operations and Multithreaded Algorithms\",\n      \"estimated_minutes\": 240,\n      \"description\": \"Modern computing is highly parallel and relies heavily on linear algebra. This module expands algorithm design into concurrency and mathematical matrices.\",\n      \"plan\": {\n        \"goal\": \"Analyze the work and span of parallel algorithms and solve linear equation systems using advanced matrix decomposition.\",\n        \"concepts\": [\n          \"Dynamic multithreaded models: Work, Span, and Parallelism bounds\",\n          \"Multithreaded matrix multiplication and Merge Sort\",\n          \"Properties of matrices and basic operations\",\n          \"Strassen’s algorithm for matrix multiplication\",\n          \"Solving systems of linear equations via LUP decomposition\",\n          \"Matrix inversion and determinants\"\n        ],\n        \"sourceRefs\": [\n          \"Part VII Selected Topics: Chapter 26\",\n          \"Part VII Selected Topics: Chapter 27\"\n        ],\n        \"prerequisites\": [\n          4,\n          11\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 6,\n        \"pass_threshold\": 70,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\"\n        ]\n      }\n    },\n    {\n      \"id\": 18,\n      \"title\": \"Selected Topics: String Matching and Computational Geometry\",\n      \"estimated_minutes\": 240,\n      \"description\": \"Text search algorithms power the internet, and geometric algorithms power graphics. We explore these specialized, highly visual algorithms.\",\n      \"plan\": {\n        \"goal\": \"Implement finite automaton and prefix-based string matching, and solve multi-dimensional geometric calculations like the convex hull.\",\n        \"concepts\": [\n          \"The naive string-matching algorithm\",\n          \"The Rabin-Karp algorithm using rolling hashes\",\n          \"Knuth-Morris-Pratt (KMP) algorithm and prefix functions\",\n          \"Properties of line segments and cross products\",\n          \"Determining segment intersections mathematically\",\n          \"Finding the Convex Hull: Graham scan and Jarvis march\"\n        ],\n        \"sourceRefs\": [\n          \"Part VII Selected Topics: Chapter 32\",\n          \"Part VII Selected Topics: Chapter 33\"\n        ],\n        \"prerequisites\": [\n          9\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 7,\n        \"pass_threshold\": 70,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\"\n        ]\n      }\n    },\n    {\n      \"id\": 19,\n      \"title\": \"NP-Completeness and the Limits of Computation\",\n      \"estimated_minutes\": 300,\n      \"description\": \"Not all problems can be solved efficiently. Understanding the P vs NP boundary is essential so you do not waste time seeking polynomial solutions to intractable problems.\",\n      \"plan\": {\n        \"goal\": \"Define the P, NP, and NP-Complete complexity classes, map polynomial-time reductions, and prove specific problems are NP-Complete.\",\n        \"concepts\": [\n          \"Polynomial time (P) and non-deterministic polynomial time (NP)\",\n          \"Decision problems vs optimization problems\",\n          \"Polynomial-time reducibility and the meaning of NP-hardness\",\n          \"Cook-Levin Theorem: Circuit satisfiability is NP-Complete\",\n          \"Proving NP-Completeness: 3-CNF-SAT, Clique, and Vertex Cover\",\n          \"The Traveling-Salesperson Problem and Subset-Sum\"\n        ],\n        \"sourceRefs\": [\n          \"Part VII Selected Topics: Chapter 34\"\n        ],\n        \"prerequisites\": [\n          14\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 8,\n        \"pass_threshold\": 70,\n        \"question_types\": [\n          \"conceptual\",\n          \"true_false\"\n        ]\n      }\n    },\n    {\n      \"id\": 20,\n      \"title\": \"Approximation Algorithms\",\n      \"estimated_minutes\": 240,\n      \"description\": \"When a problem is NP-Complete, you still need an answer. Approximation algorithms provide \\\"good enough\\\" solutions with mathematically proven worst-case boundaries.\",\n      \"plan\": {\n        \"goal\": \"Design and mathematically bound algorithms that return near-optimal solutions to NP-Complete problems.\",\n        \"concepts\": [\n          \"Performance ratios for approximation algorithms\",\n          \"Vertex-cover approximation using greedy approaches\",\n          \"The Traveling-Salesperson Problem approximation with triangle inequality\",\n          \"Set-covering approximation algorithms\",\n          \"Randomized approximations for MAX-3-CNF-SAT\",\n          \"Fully polynomial-time approximation schemes (FPTAS)\"\n        ],\n        \"sourceRefs\": [\n          \"Part VII Selected Topics: Chapter 35\"\n        ],\n        \"prerequisites\": [\n          19\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 6,\n        \"pass_threshold\": 70,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\"\n        ]\n      }\n    }\n  ]\n}",
+  "parsed": {
+    "topic": "Algorithms: CLRS Textbook Companion",
+    "topic_slug": "algorithms-clrs-companion",
+    "level": "Expert (Built from First Principles)",
+    "goal": "Comprehensive mastery from scratch; seeking an interactive, first-principles alternative to traditional reading.",
+    "estimated_total_minutes": 5100,
+    "modules": [
+      {
+        "id": 1,
+        "title": "Mathematical Foundations and First Principles",
+        "estimated_minutes": 240,
+        "description": "Before diving into algorithm design, it is critical to establish the rigorous mathematical language used throughout CLRS. This module rebuilds your math intuition from scratch, covering discrete structures, series, and logic.",
+        "plan": {
+          "goal": "Fluently read and write mathematical notations, formulate summations, and apply basic discrete math principles required for algorithmic proofs.",
+          "concepts": [
+            "Sets, relations, and functions",
+            "Translating abstract math notation to logic",
+            "Summations and series approximations",
+            "Techniques for mathematical induction and formal proofs",
+            "Basic concepts of graphs, trees, and matrices",
+            "Bridging high-school algebra to discrete mathematics"
+          ],
+          "sourceRefs": [
+            "Part VIII Appendix: Mathematical Background",
+            "Preface"
+          ],
+          "prerequisites": []
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 8,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 2,
+        "title": "The Role of Algorithms and Correctness",
+        "estimated_minutes": 240,
+        "description": "Understanding what an algorithm is and proving that it works is the bedrock of computer science. This module introduces the RAM model and uses basic sorting to teach rigorous correctness proofs.",
+        "plan": {
+          "goal": "Define computational problems, trace basic algorithms in pseudocode and Python, and rigorously prove correctness using loop invariants.",
+          "concepts": [
+            "The definition and role of algorithms in computing",
+            "The Random-Access Machine (RAM) computational model",
+            "Translating CLRS pseudocode to Python",
+            "Insertion sort: trace and implementation",
+            "Defining and applying loop invariants",
+            "Mathematical proofs of initialization, maintenance, and termination"
+          ],
+          "sourceRefs": [
+            "Part I Foundations: Chapter 1",
+            "Part I Foundations: Chapter 2"
+          ],
+          "prerequisites": [
+            1
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 6,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "true_false"
+          ]
+        }
+      },
+      {
+        "id": 3,
+        "title": "Asymptotic Notation and Growth of Functions",
+        "estimated_minutes": 240,
+        "description": "To compare algorithms, we need a mathematical framework that abstracts away hardware limits. This module dives deep into Big-O notation and bounding runtimes.",
+        "plan": {
+          "goal": "Formally define asymptotic bounds and mathematically evaluate the time complexity of algorithms without relying on hardware-specific timings.",
+          "concepts": [
+            "The concepts of Best-case, Worst-case, and Average-case analysis",
+            "Formal definition of Big-O, Big-Omega, and Big-Theta notations",
+            "Little-o and little-omega notations",
+            "Standard complexity classes (constant, logarithmic, polynomial, exponential)",
+            "Mathematical limits and bounding algorithm growth rates",
+            "Visualizing asymptotic curves"
+          ],
+          "sourceRefs": [
+            "Part I Foundations: Chapter 3"
+          ],
+          "prerequisites": [
+            1,
+            2
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 8,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 4,
+        "title": "Divide-and-Conquer and Recurrence Relations",
+        "estimated_minutes": 300,
+        "description": "Many optimal algorithms recursively break problems into smaller subproblems. You will learn to formulate these recursive costs mathematically and solve them.",
+        "plan": {
+          "goal": "Design divide-and-conquer algorithms, write their recurrence relations, and solve them using the Substitution Method, Recursion Trees, and the Master Theorem.",
+          "concepts": [
+            "The Divide, Conquer, and Combine paradigm",
+            "Merge sort: implementation and execution tracing",
+            "Formulating recurrences for recursive algorithms",
+            "Solving recurrences via the Substitution Method",
+            "Solving recurrences via Recursion Trees",
+            "The Master Theorem and its rigorous proof cases"
+          ],
+          "sourceRefs": [
+            "Part I Foundations: Chapter 4"
+          ],
+          "prerequisites": [
+            2,
+            3
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 7,
+          "pass_threshold": 70,
+          "question_types": [
+            "application",
+            "conceptual"
+          ]
+        }
+      },
+      {
+        "id": 5,
+        "title": "Probabilistic Analysis and Randomized Algorithms",
+        "estimated_minutes": 240,
+        "description": "Algorithms don't always operate deterministically. Introducing randomness can lead to drastically better average-case performance, requiring probability to prove efficiency.",
+        "plan": {
+          "goal": "Apply probability theory to analyze the expected performance of randomized algorithms using indicator random variables.",
+          "concepts": [
+            "Review of basic probability and expected value",
+            "The hiring problem and probabilistic analysis",
+            "Indicator random variables: definition and application",
+            "Las Vegas vs. Monte Carlo algorithmic paradigms",
+            "Randomly permuting arrays",
+            "Formal proofs of expected running times"
+          ],
+          "sourceRefs": [
+            "Part I Foundations: Chapter 5",
+            "Part VIII Appendix: Probability"
+          ],
+          "prerequisites": [
+            1,
+            3
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 6,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 6,
+        "title": "Heapsort and Priority Queues",
+        "estimated_minutes": 240,
+        "description": "Data structures and algorithms are intertwined. The Heap is our first advanced data structure, enabling in-place sorting and efficient priority queue operations.",
+        "plan": {
+          "goal": "Implement array-based heap data structures, mathematically prove the correctness of max-heapify, and build a priority queue.",
+          "concepts": [
+            "The heap data structure and array-tree mapping",
+            "Maintaining the heap property (Max-Heapify)",
+            "Building a heap in linear time: proofs and analysis",
+            "The Heapsort algorithm and its performance bounds",
+            "Implementing Priority Queues (Insert, Extract-Max, Increase-Key)"
+          ],
+          "sourceRefs": [
+            "Part II Sorting and Order Statistics: Chapter 6"
+          ],
+          "prerequisites": [
+            2,
+            3
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 6,
+          "pass_threshold": 70,
+          "question_types": [
+            "application",
+            "conceptual"
+          ]
+        }
+      },
+      {
+        "id": 7,
+        "title": "Quicksort and its Rigorous Analysis",
+        "estimated_minutes": 240,
+        "description": "Quicksort is arguably the most practical sorting algorithm. Here, we dissect its partitioning logic and mathematically prove why its average case is so much better than its worst case.",
+        "plan": {
+          "goal": "Implement Quicksort, trace its in-place partitioning, and rigorously analyze its worst-case and expected (randomized) running times.",
+          "concepts": [
+            "The Quicksort algorithm and partitioning logic (Lomuto/Hoare)",
+            "Worst-case vs. Best-case partition splits",
+            "Randomized Quicksort implementation",
+            "Rigorous mathematical analysis of Quicksort's expected runtime",
+            "Quicksort vs. Heapsort vs. Merge Sort: empirical and theoretical trade-offs"
+          ],
+          "sourceRefs": [
+            "Part II Sorting and Order Statistics: Chapter 7"
+          ],
+          "prerequisites": [
+            4,
+            5
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 5,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "application",
+            "true_false"
+          ]
+        }
+      },
+      {
+        "id": 8,
+        "title": "Sorting in Linear Time and Order Statistics",
+        "estimated_minutes": 300,
+        "description": "Is O(n log n) the absolute limit for sorting? By proving lower bounds via decision trees, we discover how to break this limit using non-comparison algorithms.",
+        "plan": {
+          "goal": "Prove the comparison-sort lower bound and implement linear-time sorting algorithms and selection algorithms.",
+          "concepts": [
+            "Decision tree models and the Omega(n log n) lower bound proof",
+            "Counting Sort: implementation and stable sorting properties",
+            "Radix Sort: historical context and mathematical correctness",
+            "Bucket Sort analysis and expected time proofs",
+            "Order statistics: Finding the minimum, maximum, and i-th element",
+            "Selection in expected linear time (Quickselect) and guaranteed linear time (Median-of-Medians)"
+          ],
+          "sourceRefs": [
+            "Part II Sorting and Order Statistics: Chapter 8",
+            "Part II Sorting and Order Statistics: Chapter 9"
+          ],
+          "prerequisites": [
+            5,
+            7
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 8,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 9,
+        "title": "Elementary Data Structures and Hash Tables",
+        "estimated_minutes": 300,
+        "description": "Before advancing to complex trees, we must master how raw memory is organized into foundational structures like linked lists, stacks, and highly-efficient hash tables.",
+        "plan": {
+          "goal": "Implement memory structures using pointers, design effective hash functions, and resolve collisions mathematically.",
+          "concepts": [
+            "Stacks, queues, and pointer-based linked lists",
+            "Representing rooted trees in memory",
+            "Direct-address tables vs. Hash tables",
+            "Collision resolution: Chaining vs. Open Addressing (Linear/Quadratic probing, Double hashing)",
+            "Hash functions: Division, Multiplication, and Universal Hashing properties",
+            "Perfect hashing foundations"
+          ],
+          "sourceRefs": [
+            "Part III Data Structures: Chapter 10",
+            "Part III Data Structures: Chapter 11"
+          ],
+          "prerequisites": [
+            5
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 7,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 10,
+        "title": "Binary Search Trees and Red-Black Trees",
+        "estimated_minutes": 360,
+        "description": "Standard BSTs degrade to linked lists in the worst case. Red-Black trees introduce self-balancing mechanisms, backed by complex invariant proofs, to guarantee O(log n) operations.",
+        "plan": {
+          "goal": "Implement search, insert, and delete operations on BSTs, and extend them with rigorous color-flipping and rotation invariants to build Red-Black Trees.",
+          "concepts": [
+            "Binary Search Tree properties and inorder tree walks",
+            "Querying, inserting, and deleting nodes in a standard BST",
+            "The performance degradation problem of unbalanced trees",
+            "Red-Black Tree properties and height proofs",
+            "Tree rotations to maintain balance",
+            "Red-Black insertion: cases and mathematical proofs",
+            "Red-Black deletion: restoring the RB invariant"
+          ],
+          "sourceRefs": [
+            "Part III Data Structures: Chapter 12",
+            "Part III Data Structures: Chapter 13"
+          ],
+          "prerequisites": [
+            9
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 8,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 11,
+        "title": "Dynamic Programming",
+        "estimated_minutes": 360,
+        "description": "When subproblems overlap, naïve recursion wastes exponential time. Dynamic programming represents a massive paradigm shift in optimization algorithm design.",
+        "plan": {
+          "goal": "Identify optimal substructure, formulate recursive solutions, and optimize them using top-down memoization and bottom-up dynamic programming.",
+          "concepts": [
+            "The concept of Overlapping Subproblems and Optimal Substructure",
+            "Memoization vs. Bottom-up iteration paradigms",
+            "Rod cutting optimization",
+            "Matrix-chain multiplication: formulation and parens tracking",
+            "Longest Common Subsequence (LCS) analysis",
+            "Optimal Binary Search Trees",
+            "Reconstructing the optimal solution path"
+          ],
+          "sourceRefs": [
+            "Part IV Advanced Design and Analysis Techniques: Chapter 14"
+          ],
+          "prerequisites": [
+            4,
+            10
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 7,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 12,
+        "title": "Greedy Algorithms and Amortized Analysis",
+        "estimated_minutes": 360,
+        "description": "Sometimes making the locally optimal 'greedy' choice yields the global optimum. We pair this with amortized analysis to mathematically prove the bounds of operations that vary wildly in cost.",
+        "plan": {
+          "goal": "Prove the greedy choice property for optimization problems and calculate amortized time bounds using aggregate, accounting, and potential methods.",
+          "concepts": [
+            "The greedy choice property vs optimal substructure",
+            "Activity selection problem and proofs of optimality",
+            "Huffman codes and data compression",
+            "Introduction to Amortized Analysis",
+            "The Aggregate Method for bounding sequences of operations",
+            "The Accounting Method (banker's view)",
+            "The Potential Method (physics view) applied to dynamic tables"
+          ],
+          "sourceRefs": [
+            "Part IV Advanced Design and Analysis Techniques: Chapter 15",
+            "Part IV Advanced Design and Analysis Techniques: Chapter 16"
+          ],
+          "prerequisites": [
+            11
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 8,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "application",
+            "true_false"
+          ]
+        }
+      },
+      {
+        "id": 13,
+        "title": "Advanced Data Structures: B-Trees and Disjoint Sets",
+        "estimated_minutes": 300,
+        "description": "When data exceeds memory limits, traditional trees fail. We explore B-Trees for disk I/O optimization and Disjoint Sets for lightning-fast relation tracking.",
+        "plan": {
+          "goal": "Model disk I/O using B-Trees and implement disjoint sets with union-by-rank and path compression, analyzing their near-constant time bounds.",
+          "concepts": [
+            "The Disk Access Model and memory hierarchy",
+            "B-Tree properties, splitting nodes, and disk-optimized insertion",
+            "B-Tree deletion cases",
+            "Data structures for disjoint sets (Union-Find)",
+            "Linked-list vs. Forest representation of sets",
+            "Heuristics: Union by rank and Path compression",
+            "Inverse Ackermann function bounds and amortized proofs"
+          ],
+          "sourceRefs": [
+            "Part V Advanced Data Structures: Chapter 17",
+            "Part V Advanced Data Structures: Chapter 19"
+          ],
+          "prerequisites": [
+            10,
+            12
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 6,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 14,
+        "title": "Elementary Graph Algorithms and Minimum Spanning Trees",
+        "estimated_minutes": 360,
+        "description": "Graphs model the real world. We start by traversing these networks effectively and move on to finding the cheapest way to connect all nodes.",
+        "plan": {
+          "goal": "Implement graph traversal algorithms (BFS/DFS), derive topological sorts, and rigorously prove the correctness of Kruskal’s and Prim’s algorithms.",
+          "concepts": [
+            "Graph representations: Adjacency lists and matrices",
+            "Breadth-First Search (BFS) and shortest path trees",
+            "Depth-First Search (DFS), edge classification, and parenthesis theorem",
+            "Topological sorting of Directed Acyclic Graphs (DAGs)",
+            "Strongly Connected Components (Kosaraju's algorithm)",
+            "The theoretical foundations of Minimum Spanning Trees (MSTs)",
+            "Kruskal's algorithm and Prim's algorithm implementation and proofs"
+          ],
+          "sourceRefs": [
+            "Part VI Graph Algorithms: Chapter 20",
+            "Part VI Graph Algorithms: Chapter 21"
+          ],
+          "prerequisites": [
+            9,
+            13
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 8,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 15,
+        "title": "Shortest Paths: Single-Source and All-Pairs",
+        "estimated_minutes": 360,
+        "description": "Finding the shortest route is foundational to logistics and networking. We rigorously define path relaxation and explore algorithms capable of handling both positive and negative weights.",
+        "plan": {
+          "goal": "Implement and formally analyze shortest-path algorithms, manage negative-weight cycles, and solve dense graph routing problems.",
+          "concepts": [
+            "Optimal substructure of shortest paths and relaxation",
+            "The Bellman-Ford algorithm and negative-weight cycle detection",
+            "Shortest paths in DAGs (using topological sort)",
+            "Dijkstra's algorithm: implementation and correctness proofs",
+            "All-pairs shortest paths and matrix multiplication equivalence",
+            "The Floyd-Warshall algorithm (Dynamic Programming applied to graphs)",
+            "Johnson's algorithm for sparse graphs via reweighting"
+          ],
+          "sourceRefs": [
+            "Part VI Graph Algorithms: Chapter 22",
+            "Part VI Graph Algorithms: Chapter 23"
+          ],
+          "prerequisites": [
+            14
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 7,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 16,
+        "title": "Maximum Flow Networks",
+        "estimated_minutes": 240,
+        "description": "How much liquid, data, or traffic can a network handle? The maximum flow problem introduces profound duality theorems connecting flows to cuts.",
+        "plan": {
+          "goal": "Model capacities using flow networks, mathematically prove the max-flow min-cut theorem, and implement the Ford-Fulkerson method.",
+          "concepts": [
+            "Flow networks, capacities, and conservation constraints",
+            "Residual networks and augmenting paths",
+            "The Max-flow min-cut theorem formal proof",
+            "The Ford-Fulkerson method and implementation tracing",
+            "The Edmonds-Karp algorithm (BFS optimization)",
+            "Maximum bipartite matching as a flow problem"
+          ],
+          "sourceRefs": [
+            "Part VI Graph Algorithms: Chapter 24"
+          ],
+          "prerequisites": [
+            14
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 6,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 17,
+        "title": "Selected Topics: Matrix Operations and Multithreaded Algorithms",
+        "estimated_minutes": 240,
+        "description": "Modern computing is highly parallel and relies heavily on linear algebra. This module expands algorithm design into concurrency and mathematical matrices.",
+        "plan": {
+          "goal": "Analyze the work and span of parallel algorithms and solve linear equation systems using advanced matrix decomposition.",
+          "concepts": [
+            "Dynamic multithreaded models: Work, Span, and Parallelism bounds",
+            "Multithreaded matrix multiplication and Merge Sort",
+            "Properties of matrices and basic operations",
+            "Strassen’s algorithm for matrix multiplication",
+            "Solving systems of linear equations via LUP decomposition",
+            "Matrix inversion and determinants"
+          ],
+          "sourceRefs": [
+            "Part VII Selected Topics: Chapter 26",
+            "Part VII Selected Topics: Chapter 27"
+          ],
+          "prerequisites": [
+            4,
+            11
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 6,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 18,
+        "title": "Selected Topics: String Matching and Computational Geometry",
+        "estimated_minutes": 240,
+        "description": "Text search algorithms power the internet, and geometric algorithms power graphics. We explore these specialized, highly visual algorithms.",
+        "plan": {
+          "goal": "Implement finite automaton and prefix-based string matching, and solve multi-dimensional geometric calculations like the convex hull.",
+          "concepts": [
+            "The naive string-matching algorithm",
+            "The Rabin-Karp algorithm using rolling hashes",
+            "Knuth-Morris-Pratt (KMP) algorithm and prefix functions",
+            "Properties of line segments and cross products",
+            "Determining segment intersections mathematically",
+            "Finding the Convex Hull: Graham scan and Jarvis march"
+          ],
+          "sourceRefs": [
+            "Part VII Selected Topics: Chapter 32",
+            "Part VII Selected Topics: Chapter 33"
+          ],
+          "prerequisites": [
+            9
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 7,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 19,
+        "title": "NP-Completeness and the Limits of Computation",
+        "estimated_minutes": 300,
+        "description": "Not all problems can be solved efficiently. Understanding the P vs NP boundary is essential so you do not waste time seeking polynomial solutions to intractable problems.",
+        "plan": {
+          "goal": "Define the P, NP, and NP-Complete complexity classes, map polynomial-time reductions, and prove specific problems are NP-Complete.",
+          "concepts": [
+            "Polynomial time (P) and non-deterministic polynomial time (NP)",
+            "Decision problems vs optimization problems",
+            "Polynomial-time reducibility and the meaning of NP-hardness",
+            "Cook-Levin Theorem: Circuit satisfiability is NP-Complete",
+            "Proving NP-Completeness: 3-CNF-SAT, Clique, and Vertex Cover",
+            "The Traveling-Salesperson Problem and Subset-Sum"
+          ],
+          "sourceRefs": [
+            "Part VII Selected Topics: Chapter 34"
+          ],
+          "prerequisites": [
+            14
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 8,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "true_false"
+          ]
+        }
+      },
+      {
+        "id": 20,
+        "title": "Approximation Algorithms",
+        "estimated_minutes": 240,
+        "description": "When a problem is NP-Complete, you still need an answer. Approximation algorithms provide \"good enough\" solutions with mathematically proven worst-case boundaries.",
+        "plan": {
+          "goal": "Design and mathematically bound algorithms that return near-optimal solutions to NP-Complete problems.",
+          "concepts": [
+            "Performance ratios for approximation algorithms",
+            "Vertex-cover approximation using greedy approaches",
+            "The Traveling-Salesperson Problem approximation with triangle inequality",
+            "Set-covering approximation algorithms",
+            "Randomized approximations for MAX-3-CNF-SAT",
+            "Fully polynomial-time approximation schemes (FPTAS)"
+          ],
+          "sourceRefs": [
+            "Part VII Selected Topics: Chapter 35"
+          ],
+          "prerequisites": [
+            19
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 6,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      }
+    ]
+  },
+  "production": {
+    "moduleCount": 19,
+    "totalMinutes": 3180,
+    "modules": [
+      {
+        "id": 1,
+        "title": "Mathematical Foundations for Algorithm Analysis",
+        "conceptCount": 7,
+        "minutes": 180
+      },
+      {
+        "id": 2,
+        "title": "The Framework of Algorithmic Analysis",
+        "conceptCount": 6,
+        "minutes": 120
+      },
+      {
+        "id": 3,
+        "title": "Asymptotic Notation and Growth of Functions",
+        "conceptCount": 6,
+        "minutes": 150
+      },
+      {
+        "id": 4,
+        "title": "Divide-and-Conquer and Recurrence Relations",
+        "conceptCount": 6,
+        "minutes": 180
+      },
+      {
+        "id": 5,
+        "title": "Probabilistic Analysis and Randomized Algorithms",
+        "conceptCount": 5,
+        "minutes": 150
+      },
+      {
+        "id": 6,
+        "title": "Heapsort and the Priority Queue",
+        "conceptCount": 5,
+        "minutes": 120
+      },
+      {
+        "id": 7,
+        "title": "Quicksort: Design, Analysis, and Optimization",
+        "conceptCount": 5,
+        "minutes": 150
+      },
+      {
+        "id": 8,
+        "title": "Linear Time Sorting and Selection",
+        "conceptCount": 7,
+        "minutes": 180
+      },
+      {
+        "id": 9,
+        "title": "Elementary Data Structures and Hashing",
+        "conceptCount": 7,
+        "minutes": 180
+      },
+      {
+        "id": 10,
+        "title": "Binary Search Trees and Red-Black Trees",
+        "conceptCount": 6,
+        "minutes": 210
+      },
+      {
+        "id": 11,
+        "title": "Dynamic Programming",
+        "conceptCount": 6,
+        "minutes": 180
+      },
+      {
+        "id": 12,
+        "title": "Greedy Algorithms and Amortized Analysis",
+        "conceptCount": 7,
+        "minutes": 180
+      },
+      {
+        "id": 13,
+        "title": "Advanced Data Structures: B-Trees and Heaps",
+        "conceptCount": 5,
+        "minutes": 150
+      },
+      {
+        "id": 14,
+        "title": "Graph Foundations and Elementary Algorithms",
+        "conceptCount": 6,
+        "minutes": 150
+      },
+      {
+        "id": 15,
+        "title": "Minimum Spanning Trees and Shortest Paths",
+        "conceptCount": 7,
+        "minutes": 210
+      },
+      {
+        "id": 16,
+        "title": "All-Pairs Shortest Paths and Maximum Flow",
+        "conceptCount": 6,
+        "minutes": 180
+      },
+      {
+        "id": 17,
+        "title": "NP-Completeness and Complexity Classes",
+        "conceptCount": 6,
+        "minutes": 180
+      },
+      {
+        "id": 18,
+        "title": "Approximation Algorithms",
+        "conceptCount": 6,
+        "minutes": 150
+      },
+      {
+        "id": 19,
+        "title": "Selected Advanced Topics: Number Theory and Computation",
+        "conceptCount": 7,
+        "minutes": 180
+      }
+    ]
+  },
+  "generated": {
+    "moduleCount": 20,
+    "totalMinutes": 5700,
+    "modules": [
+      {
+        "id": 1,
+        "title": "Mathematical Foundations and First Principles",
+        "conceptCount": 6,
+        "minutes": 240
+      },
+      {
+        "id": 2,
+        "title": "The Role of Algorithms and Correctness",
+        "conceptCount": 6,
+        "minutes": 240
+      },
+      {
+        "id": 3,
+        "title": "Asymptotic Notation and Growth of Functions",
+        "conceptCount": 6,
+        "minutes": 240
+      },
+      {
+        "id": 4,
+        "title": "Divide-and-Conquer and Recurrence Relations",
+        "conceptCount": 6,
+        "minutes": 300
+      },
+      {
+        "id": 5,
+        "title": "Probabilistic Analysis and Randomized Algorithms",
+        "conceptCount": 6,
+        "minutes": 240
+      },
+      {
+        "id": 6,
+        "title": "Heapsort and Priority Queues",
+        "conceptCount": 5,
+        "minutes": 240
+      },
+      {
+        "id": 7,
+        "title": "Quicksort and its Rigorous Analysis",
+        "conceptCount": 5,
+        "minutes": 240
+      },
+      {
+        "id": 8,
+        "title": "Sorting in Linear Time and Order Statistics",
+        "conceptCount": 6,
+        "minutes": 300
+      },
+      {
+        "id": 9,
+        "title": "Elementary Data Structures and Hash Tables",
+        "conceptCount": 6,
+        "minutes": 300
+      },
+      {
+        "id": 10,
+        "title": "Binary Search Trees and Red-Black Trees",
+        "conceptCount": 7,
+        "minutes": 360
+      },
+      {
+        "id": 11,
+        "title": "Dynamic Programming",
+        "conceptCount": 7,
+        "minutes": 360
+      },
+      {
+        "id": 12,
+        "title": "Greedy Algorithms and Amortized Analysis",
+        "conceptCount": 7,
+        "minutes": 360
+      },
+      {
+        "id": 13,
+        "title": "Advanced Data Structures: B-Trees and Disjoint Sets",
+        "conceptCount": 7,
+        "minutes": 300
+      },
+      {
+        "id": 14,
+        "title": "Elementary Graph Algorithms and Minimum Spanning Trees",
+        "conceptCount": 7,
+        "minutes": 360
+      },
+      {
+        "id": 15,
+        "title": "Shortest Paths: Single-Source and All-Pairs",
+        "conceptCount": 7,
+        "minutes": 360
+      },
+      {
+        "id": 16,
+        "title": "Maximum Flow Networks",
+        "conceptCount": 6,
+        "minutes": 240
+      },
+      {
+        "id": 17,
+        "title": "Selected Topics: Matrix Operations and Multithreaded Algorithms",
+        "conceptCount": 6,
+        "minutes": 240
+      },
+      {
+        "id": 18,
+        "title": "Selected Topics: String Matching and Computational Geometry",
+        "conceptCount": 6,
+        "minutes": 240
+      },
+      {
+        "id": 19,
+        "title": "NP-Completeness and the Limits of Computation",
+        "conceptCount": 6,
+        "minutes": 300
+      },
+      {
+        "id": 20,
+        "title": "Approximation Algorithms",
+        "conceptCount": 6,
+        "minutes": 240
+      }
+    ]
+  }
+}

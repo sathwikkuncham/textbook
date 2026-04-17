@@ -1,0 +1,160 @@
+{
+  "topic": {
+    "id": 24,
+    "slug": "advaita-vedanta-shankaracharyas-commentary",
+    "displayName": "Advaita Vedanta: Shankaracharya's Commentary",
+    "moduleTitle": "Upodghata: The Prologue and Foundations of Adhyasa",
+    "modulePlan": {
+      "goal": "Establish the foundational logic of Shankaracharya's commentary: why knowledge is the only path to liberation and the nature of the 'Superimposition' (Adhyasa) error.",
+      "concepts": [
+        "Viveka (discrimination between real and unreal)",
+        "Vairagya (dispassion toward transient things)",
+        "Shatka Sampatti (six inner qualifications)",
+        "Mumukshutva (intense longing for liberation)",
+        "Subject-Object confusion",
+        "Avidya (primordial ignorance)",
+        "Atman vs. Anatman (Self vs. non-Self)",
+        "Saguna Brahman (Reality with attributes)",
+        "Nirguna Brahman (Reality without attributes)",
+        "The logic of incarnation (Vasudeva as Brahman)",
+        "Pravritti (action for prosperity)",
+        "Nivritti (withdrawal for knowledge)"
+      ],
+      "sourceRefs": [
+        "Shankaracharya's Upodghata"
+      ],
+      "prerequisites": []
+    },
+    "compressedInterview": "Purpose: Deep philosophical mastery and first-principles understanding of Advaita Vedanta\nPrior knowledge: Exposure to Buddhism and Advaita Vedanta; requires a 'from scratch' approach to ensure foundational clarity\nDesired depth: Maximum — exhaustive, verse-by-verse and commentary-by-commentary study\nTime available: Indefinite/Long-term (1-2 years); no rush\nFocus areas: Shankaracharya's Introduction (Upodghata), Advaita Vedanta metaphysics vs. Buddhist thought, First-principles building of Non-dualism, Full 18-chapter commentary analysis, Sadhana Chatushtaya (qualifications for knowledge)\nSource type: PDF (Bhagavad Gita with Shankaracharya's Commentary)",
+    "rawTranscript": "User: I want to learn about: Bhagawad Gita, Shankaracharya's commentary. In depth. From scratch to the advanced philosophical depth. We use the commentary by Shankaracharya extensively. We will also define what is advaita vedanta and use first principles to build the whole thing from bottom up. (from a PDF: Bhagavad-Gita.with.the.Commentary.of.Sri.Shankaracharya.pdf)\n\nAssistant: That sounds like a profound undertaking. Diving into the Gita through the lens of Shankaracharya's Advaita Vedanta is a journey into the heart of non-dualism. To help me structure this roadmap, could you tell me a bit about your primary goal for this study? Are you looking for personal spiritual growth, preparing for academic research, or perhaps building a foundation to eventually teach these concepts? Also, how much time can you realistically dedicate to this study each week?\n\nUser: I want to go in depth philosophically. I need to delve deeper into this from scratch even when I have some exposure to Buddhism and Advaita vedanta. I would like to start from scratch using first princpiles.\n\nAssistant: That background in Buddhism will be incredibly helpful, especially when we start looking at the distinctions between Sunyata and Shankaracharya's Brahman. Since you want to build this from first principles, it's a rigorous path. To make sure we pace this correctly, are you looking to go through the entire PDF cover-to-cover (all 18 chapters and every verse of the commentary), or would you prefer to focus on the key metaphysical chapters first (like Chapters 2, 7, 13, and 18) where the Advaita philosophy is most concentrated? Also, how many hours a week do you see yourself dedicating to this study?\n\nUser: Entire PDF cover to cover all 18 chapters and introduction and everything. I have years. I don't mind anything about time. I don't mind if this takes me an year or two. No rush. No time limit.\n\nAssistant: That's a magnificent goal. Given the depth of Shankara's Bhashya and your desire to build from first principles without a time constraint, we can really dig into the logic behind the non-dualist perspective, the Sanskrit nuances, and the rigorous dialectics Shankaracharya uses.",
+    "productionSubtopicCount": 4,
+    "productionSubtopicTitles": [
+      "Sadhana Chatushtaya: The Qualifications",
+      "The Nature of Superimposition (Adhyasa)",
+      "Vasudeva as Brahman: Personal vs. Impersonal Reality",
+      "The Purpose of the Gita: Pravritti and Nivritti"
+    ],
+    "profileSummary": "Advanced · Maximum depth · 1-2 years · Non-dualism, first principles · 12 Sanskrit concepts"
+  },
+  "byVariant": {
+    "A": {
+      "variant": {
+        "id": "A",
+        "name": "Baseline (current production)",
+        "description": "Exact current prompt, FLASH model, compressed interview context.",
+        "model": "gemini-3-flash-preview"
+      },
+      "runs": [
+        {
+          "runNumber": 1,
+          "latencyMs": 5979,
+          "parsed": {
+            "done": false,
+            "title": "The Two-Fold Dharma and the Nature of the Divine Descent",
+            "scope": "This section introduces Shankaracharya’s prologue (Upodghata) by examining the dual nature of Vedic Dharma: Pravritti (outward action) and Nivritti (inward knowledge). It will further explore the metaphysical nature of the Lord (Krishna) as the non-dual Brahman (Nirguna) appearing with attributes (Saguna) to preserve the world's order, setting the stage for why knowledge is the ultimate goal.",
+            "concepts": [
+              "Pravritti (action for prosperity)",
+              "Nivritti (withdrawal for knowledge)",
+              "Saguna Brahman (Reality with attributes)",
+              "Nirguna Brahman (Reality without attributes)",
+              "The logic of incarnation (Vasudeva as Brahman)"
+            ],
+            "estimatedSections": 5
+          },
+          "rawOutput": "{\n  \"done\": false,\n  \"title\": \"The Two-Fold Dharma and the Nature of the Divine Descent\",\n  \"scope\": \"This section introduces Shankaracharya’s prologue (Upodghata) by examining the dual nature of Vedic Dharma: Pravritti (outward action) and Nivritti (inward knowledge). It will further explore the metaphysical nature of the Lord (Krishna) as the non-dual Brahman (Nirguna) appearing with attributes (Saguna) to preserve the world's order, setting the stage for why knowledge is the ultimate goal.\",\n  \"concepts\": [\n    \"Pravritti (action for prosperity)\",\n    \"Nivritti (withdrawal for knowledge)\",\n    \"Saguna Brahman (Reality with attributes)\",\n    \"Nirguna Brahman (Reality without attributes)\",\n    \"The logic of incarnation (Vasudeva as Brahman)\"\n  ],\n  \"estimatedSections\": 5\n}"
+        },
+        {
+          "runNumber": 2,
+          "latencyMs": 7963,
+          "parsed": {
+            "done": false,
+            "title": "The Two-Fold Dharma and the Descent of Brahman",
+            "scope": "This section examines the opening of Shankaracharya's commentary, focusing on the two paths of Vedic Dharma: Pravritti (action) and Nivritti (withdrawal). It explores the nature of Brahman in both its absolute (Nirguna) and manifest (Saguna) aspects, and the metaphysical logic behind the incarnation of Lord Krishna to restore cosmic order.",
+            "concepts": [
+              "Pravritti (action for prosperity)",
+              "Nivritti (withdrawal for knowledge)",
+              "Saguna Brahman (Reality with attributes)",
+              "Nirguna Brahman (Reality without attributes)",
+              "The logic of incarnation (Vasudeva as Brahman)"
+            ],
+            "estimatedSections": 5
+          },
+          "rawOutput": "{\n  \"done\": false,\n  \"title\": \"The Two-Fold Dharma and the Descent of Brahman\",\n  \"scope\": \"This section examines the opening of Shankaracharya's commentary, focusing on the two paths of Vedic Dharma: Pravritti (action) and Nivritti (withdrawal). It explores the nature of Brahman in both its absolute (Nirguna) and manifest (Saguna) aspects, and the metaphysical logic behind the incarnation of Lord Krishna to restore cosmic order.\",\n  \"concepts\": [\n    \"Pravritti (action for prosperity)\",\n    \"Nivritti (withdrawal for knowledge)\",\n    \"Saguna Brahman (Reality with attributes)\",\n    \"Nirguna Brahman (Reality without attributes)\",\n    \"The logic of incarnation (Vasudeva as Brahman)\"\n  ],\n  \"estimatedSections\": 5\n}"
+        },
+        {
+          "runNumber": 3,
+          "latencyMs": 7226,
+          "parsed": {
+            "done": false,
+            "title": "The Two-Fold Dharma and the Descent of Brahman",
+            "scope": "Introduce Shankaracharya’s opening logic in the Upodghata, distinguishing between Pravritti-dharma (the path of action/prosperity) and Nivritti-dharma (the path of knowledge/liberation). Establish the metaphysical nature of Saguna and Nirguna Brahman and the philosophical purpose behind the Lord’s descent as Vasudeva to restore spiritual order.",
+            "concepts": [
+              "Pravritti (action for prosperity)",
+              "Nivritti (withdrawal for knowledge)",
+              "Saguna Brahman (Reality with attributes)",
+              "Nirguna Brahman (Reality without attributes)",
+              "The logic of incarnation (Vasudeva as Brahman)"
+            ],
+            "estimatedSections": 5
+          },
+          "rawOutput": "{\n  \"done\": false,\n  \"title\": \"The Two-Fold Dharma and the Descent of Brahman\",\n  \"scope\": \"Introduce Shankaracharya’s opening logic in the Upodghata, distinguishing between Pravritti-dharma (the path of action/prosperity) and Nivritti-dharma (the path of knowledge/liberation). Establish the metaphysical nature of Saguna and Nirguna Brahman and the philosophical purpose behind the Lord’s descent as Vasudeva to restore spiritual order.\",\n  \"concepts\": [\n    \"Pravritti (action for prosperity)\",\n    \"Nivritti (withdrawal for knowledge)\",\n    \"Saguna Brahman (Reality with attributes)\",\n    \"Nirguna Brahman (Reality without attributes)\",\n    \"The logic of incarnation (Vasudeva as Brahman)\"\n  ],\n  \"estimatedSections\": 5\n}"
+        }
+      ]
+    },
+    "D": {
+      "variant": {
+        "id": "D",
+        "name": "PRO + depth + raw transcript",
+        "description": "Variant C but with the raw interview transcript instead of compressed summary.",
+        "model": "gemini-3.1-pro-preview"
+      },
+      "runs": [
+        {
+          "runNumber": 1,
+          "latencyMs": 17310,
+          "parsed": {
+            "done": false,
+            "title": "Ground Zero: The Observer, the Observed, and the Root of Confusion",
+            "scope": "Begin the philosophical bottom-up construction of Advaita Vedanta by isolating the most undeniable reality: the conscious subject. This section will establish the strict logical boundary between the observer (Atman) and the observed (Anatman), and demonstrate how all ordinary human experience relies on a fundamental 'Subject-Object confusion' (Adhyasa).",
+            "concepts": [
+              "Atman vs. Anatman (Self vs. non-Self)",
+              "Subject-Object confusion"
+            ],
+            "estimatedSections": 7
+          },
+          "rawOutput": "{\n  \"done\": false,\n  \"title\": \"Ground Zero: The Observer, the Observed, and the Root of Confusion\",\n  \"scope\": \"Begin the philosophical bottom-up construction of Advaita Vedanta by isolating the most undeniable reality: the conscious subject. This section will establish the strict logical boundary between the observer (Atman) and the observed (Anatman), and demonstrate how all ordinary human experience relies on a fundamental 'Subject-Object confusion' (Adhyasa).\",\n  \"concepts\": [\n    \"Atman vs. Anatman (Self vs. non-Self)\",\n    \"Subject-Object confusion\"\n  ],\n  \"estimatedSections\": 7\n}"
+        },
+        {
+          "runNumber": 2,
+          "latencyMs": 22328,
+          "parsed": {
+            "done": false,
+            "title": "The Foundational Error: Subject-Object Confusion and Avidya",
+            "scope": "To build Advaita Vedanta from first principles, we must begin with the starting point of human experience. This section explores 'Adhyasa'—the fundamental cognitive error of mixing the conscious subject with inert objects—and introduces 'Avidya', the primordial ignorance that drives this confusion.",
+            "concepts": [
+              "Subject-Object confusion",
+              "Avidya (primordial ignorance)"
+            ],
+            "estimatedSections": 7
+          },
+          "rawOutput": "{\n  \"done\": false,\n  \"title\": \"The Foundational Error: Subject-Object Confusion and Avidya\",\n  \"scope\": \"To build Advaita Vedanta from first principles, we must begin with the starting point of human experience. This section explores 'Adhyasa'—the fundamental cognitive error of mixing the conscious subject with inert objects—and introduces 'Avidya', the primordial ignorance that drives this confusion.\",\n  \"concepts\": [\n    \"Subject-Object confusion\",\n    \"Avidya (primordial ignorance)\"\n  ],\n  \"estimatedSections\": 7\n}"
+        },
+        {
+          "runNumber": 3,
+          "latencyMs": 10905,
+          "parsed": {
+            "done": false,
+            "title": "The First Principle of Advaita: Subject-Object Confusion and Avidya",
+            "scope": "Establish the absolute starting point of Shankaracharya's philosophy by examining the fundamental error of human experience: superimposing the Subject ('I') onto the Object ('not-I'). This section will rigorously define Avidya (primordial ignorance) as a structural mechanism rather than mere lack of information, setting the stage for why liberation is necessary.",
+            "concepts": [
+              "Subject-Object confusion",
+              "Avidya (primordial ignorance)"
+            ],
+            "estimatedSections": 7
+          },
+          "rawOutput": "{\n  \"done\": false,\n  \"title\": \"The First Principle of Advaita: Subject-Object Confusion and Avidya\",\n  \"scope\": \"Establish the absolute starting point of Shankaracharya's philosophy by examining the fundamental error of human experience: superimposing the Subject ('I') onto the Object ('not-I'). This section will rigorously define Avidya (primordial ignorance) as a structural mechanism rather than mere lack of information, setting the stage for why liberation is necessary.\",\n  \"concepts\": [\n    \"Subject-Object confusion\",\n    \"Avidya (primordial ignorance)\"\n  ],\n  \"estimatedSections\": 7\n}"
+        }
+      ]
+    }
+  }
+}

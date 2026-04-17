@@ -1,0 +1,59 @@
+{
+  "variant": {
+    "id": "B",
+    "name": "Model swap only (PRO)",
+    "description": "Identical baseline prompt, only model changes to PRO.",
+    "model": "gemini-3.1-pro-preview"
+  },
+  "runs": [
+    {
+      "variantId": "B",
+      "runNumber": 1,
+      "latencyMs": 8260,
+      "rawOutput": "{\n  \"done\": false,\n  \"title\": \"Foundational Probabilities: Information Theory and Markov Models\",\n  \"scope\": \"This section introduces language as a sequence of probabilistic events rather than strict grammatical rules. It covers Shannon Entropy from first principles as a mathematical measure of information and uncertainty, and introduces Markov Chains and n-gram models as the earliest statistical frameworks for sequence prediction.\",\n  \"concepts\": [\n    \"Information Theory and Shannon Entropy\",\n    \"Markov Chains and n-gram models\"\n  ],\n  \"estimatedSections\": 3\n}",
+      "parsed": {
+        "done": false,
+        "title": "Foundational Probabilities: Information Theory and Markov Models",
+        "scope": "This section introduces language as a sequence of probabilistic events rather than strict grammatical rules. It covers Shannon Entropy from first principles as a mathematical measure of information and uncertainty, and introduces Markov Chains and n-gram models as the earliest statistical frameworks for sequence prediction.",
+        "concepts": [
+          "Information Theory and Shannon Entropy",
+          "Markov Chains and n-gram models"
+        ],
+        "estimatedSections": 3
+      }
+    },
+    {
+      "variantId": "B",
+      "runNumber": 2,
+      "latencyMs": 12456,
+      "rawOutput": "{\n  \"done\": false,\n  \"title\": \"Information Theory, Entropy, and the Birth of Generative Language Models\",\n  \"scope\": \"Introduce the mathematical definition of information and Shannon Entropy from a first-principles perspective. Connect this mathematical foundation to the earliest probabilistic representations of language using Markov Chains and n-gram models, demonstrating how text generation is fundamentally a stochastic process.\",\n  \"concepts\": [\n    \"Information Theory and Shannon Entropy\",\n    \"Markov Chains and n-gram models\"\n  ],\n  \"estimatedSections\": 3\n}",
+      "parsed": {
+        "done": false,
+        "title": "Information Theory, Entropy, and the Birth of Generative Language Models",
+        "scope": "Introduce the mathematical definition of information and Shannon Entropy from a first-principles perspective. Connect this mathematical foundation to the earliest probabilistic representations of language using Markov Chains and n-gram models, demonstrating how text generation is fundamentally a stochastic process.",
+        "concepts": [
+          "Information Theory and Shannon Entropy",
+          "Markov Chains and n-gram models"
+        ],
+        "estimatedSections": 3
+      }
+    },
+    {
+      "variantId": "B",
+      "runNumber": 3,
+      "latencyMs": 13327,
+      "rawOutput": "{\n  \"done\": false,\n  \"title\": \"Quantifying and Generating Language: Entropy and Markov Models\",\n  \"scope\": \"This section establishes the first principles of probabilistic language modeling. It begins by defining how information is mathematically quantified using Shannon Entropy, then explores how sequence generation is modeled using Markov Chains and n-grams within a generative, rather than discriminative, framework.\",\n  \"concepts\": [\n    \"Information Theory and Shannon Entropy\",\n    \"Markov Chains and n-gram models\",\n    \"Generative vs. Discriminative modeling\"\n  ],\n  \"estimatedSections\": 3\n}",
+      "parsed": {
+        "done": false,
+        "title": "Quantifying and Generating Language: Entropy and Markov Models",
+        "scope": "This section establishes the first principles of probabilistic language modeling. It begins by defining how information is mathematically quantified using Shannon Entropy, then explores how sequence generation is modeled using Markov Chains and n-grams within a generative, rather than discriminative, framework.",
+        "concepts": [
+          "Information Theory and Shannon Entropy",
+          "Markov Chains and n-gram models",
+          "Generative vs. Discriminative modeling"
+        ],
+        "estimatedSections": 3
+      }
+    }
+  ]
+}

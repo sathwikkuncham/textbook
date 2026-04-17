@@ -1,0 +1,148 @@
+{
+  "topicId": 29,
+  "slug": "understanding-large-language-models-llms",
+  "displayName": "Understanding Large Language Models (LLMs)",
+  "sourceType": "topic_only",
+  "latencyMs": 19367,
+  "rawOutput": "{\n  \"topic\": \"Understanding Large Language Models (LLMs)\",\n  \"topic_slug\": \"understanding-llms-demystified\",\n  \"level\": \"Absolute Beginner\",\n  \"goal\": \"Personal curiosity—demystifying the 'magic' of AI for a non-technical learner\",\n  \"estimated_total_minutes\": 26,\n  \"modules\": [\n    {\n      \"id\": 1,\n      \"title\": \"The Alphabet of AI: How Machines 'Read' Words\",\n      \"estimated_minutes\": 8,\n      \"description\": \"Demystifies the very first step of the bottom-up process: how an AI turns human language into something a computer can process without losing its meaning.\",\n      \"plan\": {\n        \"goal\": \"Understand how words are broken down and mapped into mathematical 'neighborhoods' of meaning.\",\n        \"concepts\": [\n          \"Computers processing numbers instead of text\",\n          \"Tokenization (chopping words into LEGO-like chunks)\",\n          \"Text-to-number conversion (Token IDs)\",\n          \"Embeddings (creating a 3D 'GPS map' of meaning)\",\n          \"Semantic proximity (why 'King' and 'Queen' live in the same mathematical neighborhood)\",\n          \"Understanding relationships without understanding 'what' an object is\"\n        ],\n        \"sourceRefs\": [\n          \"Phase 1: The Foundation (The 'Alphabet' of AI)\",\n          \"Phase 1: The Building Blocks (Bottom-Up)\"\n        ],\n        \"prerequisites\": []\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 3,\n        \"pass_threshold\": 66,\n        \"question_types\": [\"conceptual\", \"analogy_matching\"]\n      }\n    },\n    {\n      \"id\": 2,\n      \"title\": \"Hitting Send: The Engine Inside the AI's Brain\",\n      \"estimated_minutes\": 10,\n      \"description\": \"Explores exactly what happens the millisecond you hit send, revealing that the 'magic' is actually a highly advanced game of autocomplete.\",\n      \"plan\": {\n        \"goal\": \"Explain the step-by-step prediction process and how the AI maintains context across a sentence.\",\n        \"concepts\": [\n          \"Super-autocomplete (Next-Token Prediction)\",\n          \"Calculating mathematical probability of the next word\",\n          \"The Transformer architecture\",\n          \"The Attention Mechanism (the 'Matchmaker')\",\n          \"Contextual shifting (how 'river' changes the meaning of 'bank')\",\n          \"Following patterns rather than hard-coded rules\"\n        ],\n        \"sourceRefs\": [\n          \"Phase 2: The Mechanism (How it 'Thinks')\",\n          \"Phase 2: How It 'Understands' (The Magic of Scale)\"\n        ],\n        \"prerequisites\": [\n          \"Tokenization\",\n          \"Embeddings\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 4,\n        \"pass_threshold\": 75,\n        \"question_types\": [\"conceptual\", \"application\", \"true_false\"]\n      }\n    },\n    {\n      \"id\": 3,\n      \"title\": \"From Chaos to Conversation: How AI Learns to Act Human\",\n      \"estimated_minutes\": 8,\n      \"description\": \"Connects the mechanics to the massive training process, explaining how reading the internet and getting human feedback creates a helpful, seemingly intelligent assistant.\",\n      \"plan\": {\n        \"goal\": \"Articulate how scale creates new abilities and how human feedback makes the AI polite and useful.\",\n        \"concepts\": [\n          \"Training data (eating the entire internet)\",\n          \"Emergence (how massive scale accidentally creates logic and reasoning)\",\n          \"The Base Model vs. the fine-tuned model\",\n          \"RLHF (Reinforcement Learning from Human Feedback)\",\n          \"The Chef Analogy (Ingredients, Chopping, Spices, Recipe, Cooking)\",\n          \"Statistical mirrors vs. true human understanding\"\n        ],\n        \"sourceRefs\": [\n          \"Phase 3: The 'Understanding' (How it generates value)\",\n          \"Phase 4: Why it feels so 'Human' (RLHF)\",\n          \"Bottom-Up Summary for a Beginner\"\n        ],\n        \"prerequisites\": [\n          \"Next-Token Prediction\",\n          \"The Attention Mechanism\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 3,\n        \"pass_threshold\": 66,\n        \"question_types\": [\"conceptual\", \"true_false\"]\n      }\n    }\n  ]\n}",
+  "parsed": {
+    "topic": "Understanding Large Language Models (LLMs)",
+    "topic_slug": "understanding-llms-demystified",
+    "level": "Absolute Beginner",
+    "goal": "Personal curiosity—demystifying the 'magic' of AI for a non-technical learner",
+    "estimated_total_minutes": 26,
+    "modules": [
+      {
+        "id": 1,
+        "title": "The Alphabet of AI: How Machines 'Read' Words",
+        "estimated_minutes": 8,
+        "description": "Demystifies the very first step of the bottom-up process: how an AI turns human language into something a computer can process without losing its meaning.",
+        "plan": {
+          "goal": "Understand how words are broken down and mapped into mathematical 'neighborhoods' of meaning.",
+          "concepts": [
+            "Computers processing numbers instead of text",
+            "Tokenization (chopping words into LEGO-like chunks)",
+            "Text-to-number conversion (Token IDs)",
+            "Embeddings (creating a 3D 'GPS map' of meaning)",
+            "Semantic proximity (why 'King' and 'Queen' live in the same mathematical neighborhood)",
+            "Understanding relationships without understanding 'what' an object is"
+          ],
+          "sourceRefs": [
+            "Phase 1: The Foundation (The 'Alphabet' of AI)",
+            "Phase 1: The Building Blocks (Bottom-Up)"
+          ],
+          "prerequisites": []
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 3,
+          "pass_threshold": 66,
+          "question_types": [
+            "conceptual",
+            "analogy_matching"
+          ]
+        }
+      },
+      {
+        "id": 2,
+        "title": "Hitting Send: The Engine Inside the AI's Brain",
+        "estimated_minutes": 10,
+        "description": "Explores exactly what happens the millisecond you hit send, revealing that the 'magic' is actually a highly advanced game of autocomplete.",
+        "plan": {
+          "goal": "Explain the step-by-step prediction process and how the AI maintains context across a sentence.",
+          "concepts": [
+            "Super-autocomplete (Next-Token Prediction)",
+            "Calculating mathematical probability of the next word",
+            "The Transformer architecture",
+            "The Attention Mechanism (the 'Matchmaker')",
+            "Contextual shifting (how 'river' changes the meaning of 'bank')",
+            "Following patterns rather than hard-coded rules"
+          ],
+          "sourceRefs": [
+            "Phase 2: The Mechanism (How it 'Thinks')",
+            "Phase 2: How It 'Understands' (The Magic of Scale)"
+          ],
+          "prerequisites": [
+            "Tokenization",
+            "Embeddings"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 4,
+          "pass_threshold": 75,
+          "question_types": [
+            "conceptual",
+            "application",
+            "true_false"
+          ]
+        }
+      },
+      {
+        "id": 3,
+        "title": "From Chaos to Conversation: How AI Learns to Act Human",
+        "estimated_minutes": 8,
+        "description": "Connects the mechanics to the massive training process, explaining how reading the internet and getting human feedback creates a helpful, seemingly intelligent assistant.",
+        "plan": {
+          "goal": "Articulate how scale creates new abilities and how human feedback makes the AI polite and useful.",
+          "concepts": [
+            "Training data (eating the entire internet)",
+            "Emergence (how massive scale accidentally creates logic and reasoning)",
+            "The Base Model vs. the fine-tuned model",
+            "RLHF (Reinforcement Learning from Human Feedback)",
+            "The Chef Analogy (Ingredients, Chopping, Spices, Recipe, Cooking)",
+            "Statistical mirrors vs. true human understanding"
+          ],
+          "sourceRefs": [
+            "Phase 3: The 'Understanding' (How it generates value)",
+            "Phase 4: Why it feels so 'Human' (RLHF)",
+            "Bottom-Up Summary for a Beginner"
+          ],
+          "prerequisites": [
+            "Next-Token Prediction",
+            "The Attention Mechanism"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 3,
+          "pass_threshold": 66,
+          "question_types": [
+            "conceptual",
+            "true_false"
+          ]
+        }
+      }
+    ]
+  },
+  "generated": {
+    "moduleCount": 3,
+    "totalMinutes": 26,
+    "modules": [
+      {
+        "id": 1,
+        "title": "The Alphabet of AI: How Machines 'Read' Words",
+        "conceptCount": 6,
+        "minutes": 8
+      },
+      {
+        "id": 2,
+        "title": "Hitting Send: The Engine Inside the AI's Brain",
+        "conceptCount": 6,
+        "minutes": 10
+      },
+      {
+        "id": 3,
+        "title": "From Chaos to Conversation: How AI Learns to Act Human",
+        "conceptCount": 6,
+        "minutes": 8
+      }
+    ]
+  }
+}

@@ -1,0 +1,282 @@
+{
+  "topicId": 31,
+  "slug": "psoriasis-pathophysiology-a-10-mark-answer",
+  "displayName": "Psoriasis Pathophysiology: A 10-Mark Answer",
+  "sourceType": "pdf",
+  "runNumber": 1,
+  "latencyMs": 40349,
+  "rawOutput": "{\n  \"topic\": \"Psoriasis Pathophysiology: A 10-Mark Answer\",\n  \"topic_slug\": \"psoriasis-pathophysiology-10-mark\",\n  \"level\": \"Advanced (Post-graduate)\",\n  \"goal\": \"Post-graduate dermatology exam preparation (specifically structured for a 10-mark theory answer)\",\n  \"estimated_total_minutes\": 480,\n  \"modules\": [\n    {\n      \"id\": 1,\n      \"title\": \"Module 1: Etiology - Genetic Loci and Environmental Triggers\",\n      \"estimated_minutes\": 120,\n      \"description\": \"Understanding the genetic basis and trigger factors is the first crucial pillar of a 10-mark exam answer. This module establishes the foundational susceptibility elements that set the stage for the psoriatic inflammatory cascade.\",\n      \"plan\": {\n        \"goal\": \"Accurately describe the genetic susceptibility loci (PSORS1-9) and correlate specific environmental triggers with the initiation of psoriasis.\",\n        \"concepts\": [\n          \"Definition of psoriasis as a chronic immune-mediated inflammatory disease\",\n          \"PSORS1 to PSORS9 genetic loci overview\",\n          \"HLA-Cw6 allele association and significance\",\n          \"Mutations in IL23R and TNFAIP3 genes\",\n          \"Koebner phenomenon mechanisms (trauma-induced lesions)\",\n          \"Streptococcal pharyngitis as a trigger for guttate psoriasis\",\n          \"Drug-induced psoriasis (lithium, beta-blockers, antimalarials, NSAIDs)\",\n          \"Lifestyle triggers (obesity, smoking, alcohol)\"\n        ],\n        \"sourceRefs\": [\n          \"31 Psoriasis\"\n        ],\n        \"prerequisites\": []\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 5,\n        \"pass_threshold\": 70,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\"\n        ]\n      }\n    },\n    {\n      \"id\": 2,\n      \"title\": \"Module 2: The Initiation Phase - Innate Immune Activation\",\n      \"estimated_minutes\": 120,\n      \"description\": \"This module transitions from triggers to the immediate biochemical response. Mastering the innate immune cascade is essential for explaining how physical trauma or infection translates into a profound cellular response.\",\n      \"plan\": {\n        \"goal\": \"Map the innate immune initiation phase, detailing the biochemical cascade from keratinocyte stress to dendritic cell activation.\",\n        \"concepts\": [\n          \"Keratinocyte injury and stress signaling\",\n          \"Release of self-DNA and RNA from damaged cells\",\n          \"Antimicrobial peptides (AMPs) in the skin\",\n          \"LL-37 (Cathelicidin) complex formation with nucleic acids\",\n          \"Toll-like receptors (TLR7 and TLR9) activation\",\n          \"Role of Plasmacytoid Dendritic Cells (pDCs)\",\n          \"Interferon-alpha (IFN-α) surge and its downstream effects\",\n          \"Myeloid Dendritic Cells (mDCs) activation and lymphatic migration\"\n        ],\n        \"sourceRefs\": [\n          \"31 Psoriasis\"\n        ],\n        \"prerequisites\": [\n          \"Koebner phenomenon mechanisms\",\n          \"HLA-Cw6 allele association and significance\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 5,\n        \"pass_threshold\": 70,\n        \"question_types\": [\n          \"conceptual\",\n          \"true_false\"\n        ]\n      }\n    },\n    {\n      \"id\": 3,\n      \"title\": \"Module 3: The Maintenance Phase - The IL-23/Th17 Axis\",\n      \"estimated_minutes\": 120,\n      \"description\": \"The IL-23/Th17 axis is the 'core' of psoriatic pathophysiology and the primary target for modern biologics. Examiners look heavily for detailed molecular understanding in this section.\",\n      \"plan\": {\n        \"goal\": \"Detail the adaptive immune maintenance phase, emphasizing the IL-23/Th17 axis and its role as the central driver of psoriatic inflammation.\",\n        \"concepts\": [\n          \"Lymph node migration and cytokine secretion by mDCs\",\n          \"IL-12 driven differentiation of Naive T-cells into Th1 cells\",\n          \"Th1 effector cytokines: TNF-α and IFN-γ\",\n          \"IL-23 as the master regulatory cytokine\",\n          \"Survival and proliferation of Th17 and Th22 cells\",\n          \"Effector functions of IL-17A and IL-17F\",\n          \"Effector functions of IL-22 on epithelial tissue\",\n          \"Biologic treatment targets (anti-TNF-α, anti-IL-23, anti-IL-17) as clinical correlates\"\n        ],\n        \"sourceRefs\": [\n          \"31 Psoriasis\"\n        ],\n        \"prerequisites\": [\n          \"Myeloid Dendritic Cells (mDCs) activation and lymphatic migration\",\n          \"Role of Plasmacytoid Dendritic Cells (pDCs)\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 6,\n        \"pass_threshold\": 70,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\"\n        ]\n      }\n    },\n    {\n      \"id\": 4,\n      \"title\": \"Module 4: Cellular Consequences, Histopathology, and the Feed-Forward Loop\",\n      \"estimated_minutes\": 90,\n      \"description\": \"To score full marks, physiological pathways must be correlated with clinical and histological signs. This module connects molecular cytokines to what is seen under the microscope and clinically on the patient's skin, culminating in a reproducible exam flowchart.\",\n      \"plan\": {\n        \"goal\": \"Correlate molecular pathophysiology with epidermal histopathology and construct a reproducible 10-mark exam flowchart of the feed-forward inflammatory loop.\",\n        \"concepts\": [\n          \"Keratinocyte cell cycle reduction (28 days to 3-5 days)\",\n          \"The Feed-Forward Loop: Keratinocyte production of CXCL1/8, TNF-α, and IL-1\",\n          \"Histopathology: Acanthosis and elongated rete ridges\",\n          \"Histopathology: Parakeratosis and loss of granular layer\",\n          \"Histopathology: Munro's microabscesses (neutrophil infiltration)\",\n          \"Vascular changes: Angiogenesis and capillary dilation\",\n          \"Clinical-pathological correlation: Auspitz sign pathophysiology\",\n          \"Exam-style summary flowchart construction (Genetics -> Innate -> Adaptive -> Cellular)\"\n        ],\n        \"sourceRefs\": [\n          \"31 Psoriasis\"\n        ],\n        \"prerequisites\": [\n          \"Effector functions of IL-17A and IL-17F\",\n          \"Effector functions of IL-22 on epithelial tissue\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 6,\n        \"pass_threshold\": 70,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\",\n          \"true_false\"\n        ]\n      }\n    },\n    {\n      \"id\": 5,\n      \"title\": \"Module 5: Comparative Pathophysiology - Lichen Planus and Lichenoid Disorders\",\n      \"estimated_minutes\": 30,\n      \"description\": \"While psoriasis is driven by the IL-23/Th17 axis resulting in hyperproliferation, lichen planus presents a contrasting T-cell mediated autoimmune destruction of basal cells. Understanding this contrast is vital for comprehensive dermatological pathology.\",\n      \"plan\": {\n        \"goal\": \"Differentiate the pathophysiology of interface dermatitis seen in lichen planus from the hyperproliferative pathophysiology of psoriasis.\",\n        \"concepts\": [\n          \"Lichen planus etiology and suspected triggers (e.g., Hepatitis C, drugs)\",\n          \"Cell-mediated autoimmunity in lichenoid disorders\",\n          \"CD8+ cytotoxic T-cell targeting of basal keratinocytes\",\n          \"Formation of apoptotic keratinocytes (Civatte bodies/colloid bodies)\",\n          \"Mechanism of interface dermatitis\",\n          \"Vacuolar alteration of the basal cell layer\",\n          \"Band-like lymphocytic infiltrate in the upper dermis\",\n          \"Wickham striae clinical-pathological correlation\"\n        ],\n        \"sourceRefs\": [\n          \"32 Lichen Planus and Lichenoid Disorders\"\n        ],\n        \"prerequisites\": []\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 4,\n        \"pass_threshold\": 70,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\"\n        ]\n      }\n    }\n  ]\n}",
+  "parsed": {
+    "topic": "Psoriasis Pathophysiology: A 10-Mark Answer",
+    "topic_slug": "psoriasis-pathophysiology-10-mark",
+    "level": "Advanced (Post-graduate)",
+    "goal": "Post-graduate dermatology exam preparation (specifically structured for a 10-mark theory answer)",
+    "estimated_total_minutes": 480,
+    "modules": [
+      {
+        "id": 1,
+        "title": "Module 1: Etiology - Genetic Loci and Environmental Triggers",
+        "estimated_minutes": 120,
+        "description": "Understanding the genetic basis and trigger factors is the first crucial pillar of a 10-mark exam answer. This module establishes the foundational susceptibility elements that set the stage for the psoriatic inflammatory cascade.",
+        "plan": {
+          "goal": "Accurately describe the genetic susceptibility loci (PSORS1-9) and correlate specific environmental triggers with the initiation of psoriasis.",
+          "concepts": [
+            "Definition of psoriasis as a chronic immune-mediated inflammatory disease",
+            "PSORS1 to PSORS9 genetic loci overview",
+            "HLA-Cw6 allele association and significance",
+            "Mutations in IL23R and TNFAIP3 genes",
+            "Koebner phenomenon mechanisms (trauma-induced lesions)",
+            "Streptococcal pharyngitis as a trigger for guttate psoriasis",
+            "Drug-induced psoriasis (lithium, beta-blockers, antimalarials, NSAIDs)",
+            "Lifestyle triggers (obesity, smoking, alcohol)"
+          ],
+          "sourceRefs": [
+            "31 Psoriasis"
+          ],
+          "prerequisites": []
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 5,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 2,
+        "title": "Module 2: The Initiation Phase - Innate Immune Activation",
+        "estimated_minutes": 120,
+        "description": "This module transitions from triggers to the immediate biochemical response. Mastering the innate immune cascade is essential for explaining how physical trauma or infection translates into a profound cellular response.",
+        "plan": {
+          "goal": "Map the innate immune initiation phase, detailing the biochemical cascade from keratinocyte stress to dendritic cell activation.",
+          "concepts": [
+            "Keratinocyte injury and stress signaling",
+            "Release of self-DNA and RNA from damaged cells",
+            "Antimicrobial peptides (AMPs) in the skin",
+            "LL-37 (Cathelicidin) complex formation with nucleic acids",
+            "Toll-like receptors (TLR7 and TLR9) activation",
+            "Role of Plasmacytoid Dendritic Cells (pDCs)",
+            "Interferon-alpha (IFN-α) surge and its downstream effects",
+            "Myeloid Dendritic Cells (mDCs) activation and lymphatic migration"
+          ],
+          "sourceRefs": [
+            "31 Psoriasis"
+          ],
+          "prerequisites": [
+            "Koebner phenomenon mechanisms",
+            "HLA-Cw6 allele association and significance"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 5,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "true_false"
+          ]
+        }
+      },
+      {
+        "id": 3,
+        "title": "Module 3: The Maintenance Phase - The IL-23/Th17 Axis",
+        "estimated_minutes": 120,
+        "description": "The IL-23/Th17 axis is the 'core' of psoriatic pathophysiology and the primary target for modern biologics. Examiners look heavily for detailed molecular understanding in this section.",
+        "plan": {
+          "goal": "Detail the adaptive immune maintenance phase, emphasizing the IL-23/Th17 axis and its role as the central driver of psoriatic inflammation.",
+          "concepts": [
+            "Lymph node migration and cytokine secretion by mDCs",
+            "IL-12 driven differentiation of Naive T-cells into Th1 cells",
+            "Th1 effector cytokines: TNF-α and IFN-γ",
+            "IL-23 as the master regulatory cytokine",
+            "Survival and proliferation of Th17 and Th22 cells",
+            "Effector functions of IL-17A and IL-17F",
+            "Effector functions of IL-22 on epithelial tissue",
+            "Biologic treatment targets (anti-TNF-α, anti-IL-23, anti-IL-17) as clinical correlates"
+          ],
+          "sourceRefs": [
+            "31 Psoriasis"
+          ],
+          "prerequisites": [
+            "Myeloid Dendritic Cells (mDCs) activation and lymphatic migration",
+            "Role of Plasmacytoid Dendritic Cells (pDCs)"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 6,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 4,
+        "title": "Module 4: Cellular Consequences, Histopathology, and the Feed-Forward Loop",
+        "estimated_minutes": 90,
+        "description": "To score full marks, physiological pathways must be correlated with clinical and histological signs. This module connects molecular cytokines to what is seen under the microscope and clinically on the patient's skin, culminating in a reproducible exam flowchart.",
+        "plan": {
+          "goal": "Correlate molecular pathophysiology with epidermal histopathology and construct a reproducible 10-mark exam flowchart of the feed-forward inflammatory loop.",
+          "concepts": [
+            "Keratinocyte cell cycle reduction (28 days to 3-5 days)",
+            "The Feed-Forward Loop: Keratinocyte production of CXCL1/8, TNF-α, and IL-1",
+            "Histopathology: Acanthosis and elongated rete ridges",
+            "Histopathology: Parakeratosis and loss of granular layer",
+            "Histopathology: Munro's microabscesses (neutrophil infiltration)",
+            "Vascular changes: Angiogenesis and capillary dilation",
+            "Clinical-pathological correlation: Auspitz sign pathophysiology",
+            "Exam-style summary flowchart construction (Genetics -> Innate -> Adaptive -> Cellular)"
+          ],
+          "sourceRefs": [
+            "31 Psoriasis"
+          ],
+          "prerequisites": [
+            "Effector functions of IL-17A and IL-17F",
+            "Effector functions of IL-22 on epithelial tissue"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 6,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "application",
+            "true_false"
+          ]
+        }
+      },
+      {
+        "id": 5,
+        "title": "Module 5: Comparative Pathophysiology - Lichen Planus and Lichenoid Disorders",
+        "estimated_minutes": 30,
+        "description": "While psoriasis is driven by the IL-23/Th17 axis resulting in hyperproliferation, lichen planus presents a contrasting T-cell mediated autoimmune destruction of basal cells. Understanding this contrast is vital for comprehensive dermatological pathology.",
+        "plan": {
+          "goal": "Differentiate the pathophysiology of interface dermatitis seen in lichen planus from the hyperproliferative pathophysiology of psoriasis.",
+          "concepts": [
+            "Lichen planus etiology and suspected triggers (e.g., Hepatitis C, drugs)",
+            "Cell-mediated autoimmunity in lichenoid disorders",
+            "CD8+ cytotoxic T-cell targeting of basal keratinocytes",
+            "Formation of apoptotic keratinocytes (Civatte bodies/colloid bodies)",
+            "Mechanism of interface dermatitis",
+            "Vacuolar alteration of the basal cell layer",
+            "Band-like lymphocytic infiltrate in the upper dermis",
+            "Wickham striae clinical-pathological correlation"
+          ],
+          "sourceRefs": [
+            "32 Lichen Planus and Lichenoid Disorders"
+          ],
+          "prerequisites": []
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 4,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      }
+    ]
+  },
+  "production": {
+    "moduleCount": 7,
+    "totalMinutes": 360,
+    "modules": [
+      {
+        "id": 1,
+        "title": "Etiology: Genetics and Environmental Triggers",
+        "conceptCount": 7,
+        "minutes": 60
+      },
+      {
+        "id": 2,
+        "title": "The Initiation Phase: Innate Immune Activation",
+        "conceptCount": 6,
+        "minutes": 45
+      },
+      {
+        "id": 3,
+        "title": "The Maintenance Phase: The IL-23/Th17 Axis",
+        "conceptCount": 7,
+        "minutes": 75
+      },
+      {
+        "id": 4,
+        "title": "Epidermal Dynamics and the Feed-Forward Loop",
+        "conceptCount": 6,
+        "minutes": 45
+      },
+      {
+        "id": 5,
+        "title": "Histopathology and Clinical Correlation",
+        "conceptCount": 6,
+        "minutes": 45
+      },
+      {
+        "id": 6,
+        "title": "Comparative Pathophysiology: Lichen Planus",
+        "conceptCount": 6,
+        "minutes": 30
+      },
+      {
+        "id": 7,
+        "title": "Synthesis: Structuring the 10-Mark Answer",
+        "conceptCount": 5,
+        "minutes": 60
+      }
+    ]
+  },
+  "generated": {
+    "moduleCount": 5,
+    "totalMinutes": 480,
+    "modules": [
+      {
+        "id": 1,
+        "title": "Module 1: Etiology - Genetic Loci and Environmental Triggers",
+        "conceptCount": 8,
+        "minutes": 120
+      },
+      {
+        "id": 2,
+        "title": "Module 2: The Initiation Phase - Innate Immune Activation",
+        "conceptCount": 8,
+        "minutes": 120
+      },
+      {
+        "id": 3,
+        "title": "Module 3: The Maintenance Phase - The IL-23/Th17 Axis",
+        "conceptCount": 8,
+        "minutes": 120
+      },
+      {
+        "id": 4,
+        "title": "Module 4: Cellular Consequences, Histopathology, and the Feed-Forward Loop",
+        "conceptCount": 8,
+        "minutes": 90
+      },
+      {
+        "id": 5,
+        "title": "Module 5: Comparative Pathophysiology - Lichen Planus and Lichenoid Disorders",
+        "conceptCount": 8,
+        "minutes": 30
+      }
+    ]
+  }
+}

@@ -1,0 +1,185 @@
+{
+  "topicId": 30,
+  "slug": "turboquant-ai-efficiency-concepts",
+  "displayName": "Turboquant: AI Efficiency Concepts",
+  "sourceType": "topic_only",
+  "latencyMs": 27368,
+  "rawOutput": "{\n  \"topic\": \"Turboquant: AI Efficiency Concepts\",\n  \"topic_slug\": \"turboquant-ai-efficiency-concepts\",\n  \"level\": \"Beginner\",\n  \"goal\": \"Conceptual understanding to participate in discussions about AI efficiency\",\n  \"estimated_total_minutes\": 60,\n  \"modules\": [\n    {\n      \"id\": 1,\n      \"title\": \"The AI Memory Bottleneck: Why We Need Efficiency\",\n      \"estimated_minutes\": 15,\n      \"description\": \"Since you are new to machine learning, we start with the 'why'. This module builds a simple mental model of how AI models consume memory, focusing on why long conversations make AI slow and expensive.\",\n      \"plan\": {\n        \"goal\": \"Explain the concept of an AI's 'working memory' and why long conversations cause a hardware bottleneck.\",\n        \"concepts\": [\n          \"High-level basics of Large Language Models (LLMs)\",\n          \"The 'Working Memory' analogy\",\n          \"What is the KV Cache (Key-Value Cache)?\",\n          \"Linear memory growth in long-context tasks\",\n          \"The 'Memory Wall' and hardware costs (e.g., needing expensive H100 GPUs)\"\n        ],\n        \"sourceRefs\": [\n          \"Foundations: The Core Innovation\",\n          \"Foundations: Real-World Applications (Long-Context LLM Inference)\"\n        ],\n        \"prerequisites\": []\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 3,\n        \"pass_threshold\": 66,\n        \"question_types\": [\n          \"conceptual\",\n          \"true_false\"\n        ]\n      }\n    },\n    {\n      \"id\": 2,\n      \"title\": \"Quantization Basics: The Art of AI Compression\",\n      \"estimated_minutes\": 15,\n      \"description\": \"Introduces the general concept of quantization. It focuses on the fundamental trade-off between shrinking a model's size and losing its 'intelligence', setting the stage for why TurboQuant is special.\",\n      \"plan\": {\n        \"goal\": \"Define quantization conceptually and explain the traditional trade-off between model size and accuracy.\",\n        \"concepts\": [\n          \"What is Quantization? (Digital compression analogy)\",\n          \"Bit precision (shrinking 16-bit numbers to smaller formats)\",\n          \"The Efficiency vs. Accuracy trade-off\",\n          \"Traditional memory overhead (storing scaling constants)\",\n          \"Why traditional compression hurts AI 'attention'\"\n        ],\n        \"sourceRefs\": [\n          \"Foundations: The Core Innovation\",\n          \"Foundations: Common Misconceptions\"\n        ],\n        \"prerequisites\": [\n          \"The 'Working Memory' analogy\",\n          \"What is the KV Cache (Key-Value Cache)?\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 4,\n        \"pass_threshold\": 75,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\"\n        ]\n      }\n    },\n    {\n      \"id\": 3,\n      \"title\": \"The Magic of TurboQuant: High-Level Concepts\",\n      \"estimated_minutes\": 15,\n      \"description\": \"Translates the complex math of TurboQuant into simple analogies. You will learn how it achieves extreme compression without losing accuracy, giving you the 'how' for your conversations.\",\n      \"plan\": {\n        \"goal\": \"Describe how TurboQuant compresses data without accuracy loss using 'data smearing' and 'bias correction' analogies.\",\n        \"concepts\": [\n          \"Data-oblivious (plug-and-play without calibration/training)\",\n          \"Stage 1 Analogy: 'Whitening/Smearing' data (Random rotation to remove outliers)\",\n          \"Why predictable data eliminates memory overhead\",\n          \"Stage 2 Analogy: 'Debiasing' the attention (1-bit residual correction)\",\n          \"Inner Product Bias (how the 1-bit correction fixes AI's blind spots)\",\n          \"Achieving ~3-bit extreme compression with zero accuracy loss\"\n        ],\n        \"sourceRefs\": [\n          \"Foundations: Core Architecture\",\n          \"Foundations: The Core Innovation\"\n        ],\n        \"prerequisites\": [\n          \"What is Quantization? (Digital compression analogy)\",\n          \"The Efficiency vs. Accuracy trade-off\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 4,\n        \"pass_threshold\": 75,\n        \"question_types\": [\n          \"conceptual\",\n          \"true_false\"\n        ]\n      }\n    },\n    {\n      \"id\": 4,\n      \"title\": \"Talking Points: Real-World Impact & Edge AI\",\n      \"estimated_minutes\": 15,\n      \"description\": \"Brings everything together into practical talking points. This module focuses on the business, hardware, and personal-device impacts of TurboQuant so you can confidently discuss its significance.\",\n      \"plan\": {\n        \"goal\": \"Confidently discuss the market impact of TurboQuant, including its role in Edge AI and hardware economics.\",\n        \"concepts\": [\n          \"Edge AI: Running massive LLMs on laptops and MacBooks\",\n          \"Enabling massive context windows (128K tokens) on consumer hardware\",\n          \"Semantic Vector Search (shrinking RAG databases from Terabytes to Gigabytes)\",\n          \"Economic market impact (reducing reliance on High Bandwidth Memory/HBM chips)\",\n          \"Summary of key vocabulary for discussions (KV Cache, Data-Oblivious, Memory Wall, Quantization)\"\n        ],\n        \"sourceRefs\": [\n          \"Foundations: Real-World Applications & Examples\",\n          \"Foundations: Research Findings & Market Impact\"\n        ],\n        \"prerequisites\": [\n          \"What is the KV Cache (Key-Value Cache)?\",\n          \"Achieving ~3-bit extreme compression with zero accuracy loss\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 5,\n        \"pass_threshold\": 80,\n        \"question_types\": [\n          \"application\",\n          \"conceptual\"\n        ]\n      }\n    }\n  ]\n}",
+  "parsed": {
+    "topic": "Turboquant: AI Efficiency Concepts",
+    "topic_slug": "turboquant-ai-efficiency-concepts",
+    "level": "Beginner",
+    "goal": "Conceptual understanding to participate in discussions about AI efficiency",
+    "estimated_total_minutes": 60,
+    "modules": [
+      {
+        "id": 1,
+        "title": "The AI Memory Bottleneck: Why We Need Efficiency",
+        "estimated_minutes": 15,
+        "description": "Since you are new to machine learning, we start with the 'why'. This module builds a simple mental model of how AI models consume memory, focusing on why long conversations make AI slow and expensive.",
+        "plan": {
+          "goal": "Explain the concept of an AI's 'working memory' and why long conversations cause a hardware bottleneck.",
+          "concepts": [
+            "High-level basics of Large Language Models (LLMs)",
+            "The 'Working Memory' analogy",
+            "What is the KV Cache (Key-Value Cache)?",
+            "Linear memory growth in long-context tasks",
+            "The 'Memory Wall' and hardware costs (e.g., needing expensive H100 GPUs)"
+          ],
+          "sourceRefs": [
+            "Foundations: The Core Innovation",
+            "Foundations: Real-World Applications (Long-Context LLM Inference)"
+          ],
+          "prerequisites": []
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 3,
+          "pass_threshold": 66,
+          "question_types": [
+            "conceptual",
+            "true_false"
+          ]
+        }
+      },
+      {
+        "id": 2,
+        "title": "Quantization Basics: The Art of AI Compression",
+        "estimated_minutes": 15,
+        "description": "Introduces the general concept of quantization. It focuses on the fundamental trade-off between shrinking a model's size and losing its 'intelligence', setting the stage for why TurboQuant is special.",
+        "plan": {
+          "goal": "Define quantization conceptually and explain the traditional trade-off between model size and accuracy.",
+          "concepts": [
+            "What is Quantization? (Digital compression analogy)",
+            "Bit precision (shrinking 16-bit numbers to smaller formats)",
+            "The Efficiency vs. Accuracy trade-off",
+            "Traditional memory overhead (storing scaling constants)",
+            "Why traditional compression hurts AI 'attention'"
+          ],
+          "sourceRefs": [
+            "Foundations: The Core Innovation",
+            "Foundations: Common Misconceptions"
+          ],
+          "prerequisites": [
+            "The 'Working Memory' analogy",
+            "What is the KV Cache (Key-Value Cache)?"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 4,
+          "pass_threshold": 75,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 3,
+        "title": "The Magic of TurboQuant: High-Level Concepts",
+        "estimated_minutes": 15,
+        "description": "Translates the complex math of TurboQuant into simple analogies. You will learn how it achieves extreme compression without losing accuracy, giving you the 'how' for your conversations.",
+        "plan": {
+          "goal": "Describe how TurboQuant compresses data without accuracy loss using 'data smearing' and 'bias correction' analogies.",
+          "concepts": [
+            "Data-oblivious (plug-and-play without calibration/training)",
+            "Stage 1 Analogy: 'Whitening/Smearing' data (Random rotation to remove outliers)",
+            "Why predictable data eliminates memory overhead",
+            "Stage 2 Analogy: 'Debiasing' the attention (1-bit residual correction)",
+            "Inner Product Bias (how the 1-bit correction fixes AI's blind spots)",
+            "Achieving ~3-bit extreme compression with zero accuracy loss"
+          ],
+          "sourceRefs": [
+            "Foundations: Core Architecture",
+            "Foundations: The Core Innovation"
+          ],
+          "prerequisites": [
+            "What is Quantization? (Digital compression analogy)",
+            "The Efficiency vs. Accuracy trade-off"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 4,
+          "pass_threshold": 75,
+          "question_types": [
+            "conceptual",
+            "true_false"
+          ]
+        }
+      },
+      {
+        "id": 4,
+        "title": "Talking Points: Real-World Impact & Edge AI",
+        "estimated_minutes": 15,
+        "description": "Brings everything together into practical talking points. This module focuses on the business, hardware, and personal-device impacts of TurboQuant so you can confidently discuss its significance.",
+        "plan": {
+          "goal": "Confidently discuss the market impact of TurboQuant, including its role in Edge AI and hardware economics.",
+          "concepts": [
+            "Edge AI: Running massive LLMs on laptops and MacBooks",
+            "Enabling massive context windows (128K tokens) on consumer hardware",
+            "Semantic Vector Search (shrinking RAG databases from Terabytes to Gigabytes)",
+            "Economic market impact (reducing reliance on High Bandwidth Memory/HBM chips)",
+            "Summary of key vocabulary for discussions (KV Cache, Data-Oblivious, Memory Wall, Quantization)"
+          ],
+          "sourceRefs": [
+            "Foundations: Real-World Applications & Examples",
+            "Foundations: Research Findings & Market Impact"
+          ],
+          "prerequisites": [
+            "What is the KV Cache (Key-Value Cache)?",
+            "Achieving ~3-bit extreme compression with zero accuracy loss"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 5,
+          "pass_threshold": 80,
+          "question_types": [
+            "application",
+            "conceptual"
+          ]
+        }
+      }
+    ]
+  },
+  "generated": {
+    "moduleCount": 4,
+    "totalMinutes": 60,
+    "modules": [
+      {
+        "id": 1,
+        "title": "The AI Memory Bottleneck: Why We Need Efficiency",
+        "conceptCount": 5,
+        "minutes": 15
+      },
+      {
+        "id": 2,
+        "title": "Quantization Basics: The Art of AI Compression",
+        "conceptCount": 5,
+        "minutes": 15
+      },
+      {
+        "id": 3,
+        "title": "The Magic of TurboQuant: High-Level Concepts",
+        "conceptCount": 6,
+        "minutes": 15
+      },
+      {
+        "id": 4,
+        "title": "Talking Points: Real-World Impact & Edge AI",
+        "conceptCount": 5,
+        "minutes": 15
+      }
+    ]
+  }
+}

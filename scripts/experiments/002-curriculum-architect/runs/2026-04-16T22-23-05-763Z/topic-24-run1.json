@@ -1,0 +1,1147 @@
+{
+  "topicId": 24,
+  "slug": "advaita-vedanta-shankaracharyas-commentary",
+  "displayName": "Advaita Vedanta: Shankaracharya's Commentary",
+  "sourceType": "pdf",
+  "runNumber": 1,
+  "latencyMs": 99988,
+  "rawOutput": "{\n  \"topic\": \"Advaita Vedanta: Shankaracharya's Commentary\",\n  \"topic_slug\": \"advaita-vedanta-shankaracharya-gita-commentary\",\n  \"level\": \"expert\",\n  \"goal\": \"Deep philosophical mastery and first-principles understanding of Advaita Vedanta\",\n  \"estimated_total_minutes\": 2730,\n  \"modules\": [\n    {\n      \"id\": 1,\n      \"title\": \"Introduction to Advaita & Shankaracharya's Framework\",\n      \"estimated_minutes\": 90,\n      \"description\": \"Establish the absolute first principles of Advaita Vedanta before entering the text. This module introduces the core problem of human existence according to Shankara—superimposition—and outlines the necessary qualifications for a student.\",\n      \"plan\": {\n        \"goal\": \"Master the concept of Adhyasa (superimposition), define Advaita Vedanta from first principles, and understand the Sadhana Chatushtaya (four-fold qualifications).\",\n        \"concepts\": [\n          \"Definition of Advaita Vedanta\",\n          \"Adhyasa (Superimposition of the Self and non-Self)\",\n          \"Avidya (Ignorance) vs. Vidya (Knowledge)\",\n          \"Sadhana Chatushtaya (The Four-fold Qualifications)\",\n          \"Shankara's twofold Dharma: Pravritti (Action) and Nivritti (Renunciation)\",\n          \"The metaphysical purpose of the Gita Avatar\"\n        ],\n        \"sourceRefs\": [\n          \"Introduction (pp. 1-6)\"\n        ],\n        \"prerequisites\": []\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 5,\n        \"pass_threshold\": 70,\n        \"question_types\": [\"conceptual\", \"true_false\"]\n      }\n    },\n    {\n      \"id\": 2,\n      \"title\": \"The Despondency of Arjuna: The Empirical Crisis\",\n      \"estimated_minutes\": 60,\n      \"description\": \"Analyze Arjuna's grief not merely as a historical event, but as the archetypal human crisis of Soka (grief) and Moha (delusion) occurring within Vyavaharika (empirical reality).\",\n      \"plan\": {\n        \"goal\": \"Analyze the existential crisis of Arjuna as the necessary prerequisite for spiritual inquiry into non-duality.\",\n        \"concepts\": [\n          \"Soka (Grief) and Moha (Delusion) as the roots of Samsara\",\n          \"Vyavaharika: The empirical reality of Dharma and Adharma\",\n          \"The illusion of agency and attachment to relatives\",\n          \"The paradox of worldly duty vs. absolute truth\"\n        ],\n        \"sourceRefs\": [\n          \"First Discourse: The Despondency of Arjuna (pp. 7-18)\"\n        ],\n        \"prerequisites\": [1]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 5,\n        \"pass_threshold\": 70,\n        \"question_types\": [\"conceptual\", \"application\"]\n      }\n    },\n    {\n      \"id\": 3,\n      \"title\": \"Sankhya-Yoga Part 1: The Metaphysics of Reality\",\n      \"estimated_minutes\": 120,\n      \"description\": \"Dive deep into Shankaracharya's most rigorous philosophical arguments. This module deduces the nature of the Atman from first principles and refutes competing metaphysical models like Buddhist 'momentariness'.\",\n      \"plan\": {\n        \"goal\": \"Derive the absolute distinction between the eternal Self (Atman) and the ephemeral body, applying first principles to distinguish Sat from Asat.\",\n        \"concepts\": [\n          \"Sat (The Real) vs. Asat (The Unreal) defined by Shankara\",\n          \"Atman as the Unchanging Witness (Sakshi)\",\n          \"Paramarthika (Absolute reality) vs. Vyavaharika (Empirical reality)\",\n          \"Refutation of Buddhist Sunyata and Momentariness theory\",\n          \"The indestructible nature of Consciousness\"\n        ],\n        \"sourceRefs\": [\n          \"Second Discourse: Sankhya-Yoga (pp. 19-40 approx)\"\n        ],\n        \"prerequisites\": [1, 2]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 7,\n        \"pass_threshold\": 70,\n        \"question_types\": [\"conceptual\", \"true_false\", \"application\"]\n      }\n    },\n    {\n      \"id\": 4,\n      \"title\": \"Sankhya-Yoga Part 2: Action Within Illusion\",\n      \"estimated_minutes\": 120,\n      \"description\": \"Understand why, if the world is an illusion, one must act. Shankara outlines Karma Yoga strictly as a preparatory mechanism for the mind, not a direct path to liberation.\",\n      \"plan\": {\n        \"goal\": \"Understand the mechanics of Karma Yoga as a preparatory step (Sadhana) to purify the mind for Advaitic realization.\",\n        \"concepts\": [\n          \"Vairagya: Dispassion for the fruits of action\",\n          \"Samatva: Equanimity in success and failure\",\n          \"The bondage of Karma and the trap of desire-driven action\",\n          \"Karma Yoga as Chitta Shuddhi (purification of the mind)\"\n        ],\n        \"sourceRefs\": [\n          \"Second Discourse: Sankhya-Yoga (pp. 41-60 approx)\"\n        ],\n        \"prerequisites\": [3]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 6,\n        \"pass_threshold\": 70,\n        \"question_types\": [\"conceptual\", \"application\"]\n      }\n    },\n    {\n      \"id\": 5,\n      \"title\": \"Sankhya-Yoga Part 3: Sthitaprajna\",\n      \"estimated_minutes\": 120,\n      \"description\": \"Examine Shankara's detailed commentary on the 'Man of Steady Wisdom.' This section establishes the psychological profile of an enlightened being who has sublated the empirical world.\",\n      \"plan\": {\n        \"goal\": \"Characterize the enlightened sage (Jivanmukta) and analyze the state of steady wisdom from an Advaitic perspective.\",\n        \"concepts\": [\n          \"Characteristics of the Sthitaprajna (Sage of steady wisdom)\",\n          \"Sublation of empirical reality (The Night and Day analogy)\",\n          \"Jivanmukti: Liberation while living in the body\",\n          \"Pratyahara: Complete withdrawal of the senses\",\n          \"The descent from desire to destruction\"\n        ],\n        \"sourceRefs\": [\n          \"Second Discourse: Sankhya-Yoga (pp. 61-81)\"\n        ],\n        \"prerequisites\": [3, 4]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 6,\n        \"pass_threshold\": 70,\n        \"question_types\": [\"conceptual\", \"true_false\"]\n      }\n    },\n    {\n      \"id\": 6,\n      \"title\": \"Karma-Yoga Part 1: Knowledge vs. Action\",\n      \"estimated_minutes\": 90,\n      \"description\": \"Navigate the great debate between Jnana (Knowledge) and Karma (Action). Shankara rigorously refutes the Mimamsa school to prove that action alone cannot yield ultimate liberation.\",\n      \"plan\": {\n        \"goal\": \"Reconcile Shankara's strict emphasis on Knowledge (Jnana) with the Gita's mandate for Action (Karma).\",\n        \"concepts\": [\n          \"The absolute separation of Jnana Nishta and Karma Nishta\",\n          \"Refutation of Mimamsa (the belief that ritual action grants liberation)\",\n          \"Prakriti's role in action (Action belongs to the Gunas, not the Self)\",\n          \"Loka-Sangraha: Acting for the welfare of the world as a Jnani\"\n        ],\n        \"sourceRefs\": [\n          \"Third Discourse: Karma-Yoga (pp. 82-100)\"\n        ],\n        \"prerequisites\": [3, 4]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 5,\n        \"pass_threshold\": 70,\n        \"question_types\": [\"conceptual\", \"application\"]\n      }\n    },\n    {\n      \"id\": 7,\n      \"title\": \"Karma-Yoga Part 2: The Anatomy of Desire\",\n      \"estimated_minutes\": 90,\n      \"description\": \"Dissect the psychological mechanics of desire and anger. Shankara provides a hierarchical map of the human faculties to explain how awareness can override instinct.\",\n      \"plan\": {\n        \"goal\": \"Analyze the mechanics of Kama (desire) and Krodha (anger) as the primary obstacles to self-knowledge.\",\n        \"concepts\": [\n          \"Kama and Krodha as the ultimate enemies\",\n          \"The veiling power of desire (Avarana)\",\n          \"The hierarchy of faculties: Senses, Mind, Intellect, Atman\",\n          \"Conquering the lower self through the realization of the Higher Self\"\n        ],\n        \"sourceRefs\": [\n          \"Third Discourse: Karma-Yoga (pp. 101-117)\"\n        ],\n        \"prerequisites\": [6]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 5,\n        \"pass_threshold\": 70,\n        \"question_types\": [\"conceptual\"]\n      }\n    },\n    {\n      \"id\": 8,\n      \"title\": \"Jnana-Yoga Part 1: The Metaphysics of Avatarana\",\n      \"estimated_minutes\": 90,\n      \"description\": \"Examine Shankara's interpretation of Divine Incarnation. If Brahman is without form, how does Krishna take birth? This module unpacks the role of Maya in projecting the Avatara.\",\n      \"plan\": {\n        \"goal\": \"Understand the metaphysics of Divine Incarnation (Avatara) and Shankara's definition of non-action in action.\",\n        \"concepts\": [\n          \"Saguna Brahman (Ishvara) vs. Nirguna Brahman\",\n          \"Maya as the Lord's projecting power\",\n          \"The purpose and mechanics of Avatarana (Descent)\",\n          \"Akarma in Karma: Recognizing non-action within action\"\n        ],\n        \"sourceRefs\": [\n          \"Fourth Discourse: Jnana-Yoga (pp. 118-135)\"\n        ],\n        \"prerequisites\": [3, 6]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 6,\n        \"pass_threshold\": 70,\n        \"question_types\": [\"conceptual\", \"true_false\"]\n      }\n    },\n    {\n      \"id\": 9,\n      \"title\": \"Jnana-Yoga Part 2: The Fire of Knowledge\",\n      \"estimated_minutes\": 90,\n      \"description\": \"Discover how Advaita transforms the Vedic concept of ritual sacrifice (Yajna) into an internal, cognitive process where knowledge itself burns away karma.\",\n      \"plan\": {\n        \"goal\": \"Master the concept of Jnana-Yajna (knowledge as sacrifice) and understand the mechanism by which knowledge incinerates Karma.\",\n        \"concepts\": [\n          \"Reinterpreting Vedic Yajna through an Advaitic lens\",\n          \"Jnana-Yajna: The sacrifice of ignorance into the fire of consciousness\",\n          \"The destruction of Sanchita (accumulated) Karma through Self-knowledge\",\n          \"Shraddha (Faith) as a cognitive prerequisite for Jnana\"\n        ],\n        \"sourceRefs\": [\n          \"Fourth Discourse: Jnana-Yoga (pp. 136-153)\"\n        ],\n        \"prerequisites\": [8]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 5,\n        \"pass_threshold\": 70,\n        \"question_types\": [\"conceptual\", \"application\"]\n      }\n    },\n    {\n      \"id\": 10,\n      \"title\": \"Samnyasa-Yoga: Renunciation of Action\",\n      \"estimated_minutes\": 120,\n      \"description\": \"Shankara vehemently defends Sannyasa (monastic renunciation). This module explores why the total abandonment of action is the logical consequence of self-knowledge.\",\n      \"plan\": {\n        \"goal\": \"Distinguish between true renunciation of action (Jnana) and the yoga of action (Karma), proving Jnana's ultimate supremacy.\",\n        \"concepts\": [\n          \"Sannyasa (Renunciation) vs. Karma Yoga\",\n          \"The illusion of agency: The realization that 'I do nothing at all'\",\n          \"Sama-darshana: The equal vision of a sage (seeing Brahman in a cow, elephant, and outcaste)\",\n          \"Abiding in Brahman vs. participating in Samsara\"\n        ],\n        \"sourceRefs\": [\n          \"Fifth Discourse: Samnyasa-Yoga (pp. 154-178)\"\n        ],\n        \"prerequisites\": [6, 9]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 6,\n        \"pass_threshold\": 70,\n        \"question_types\": [\"conceptual\", \"true_false\"]\n      }\n    },\n    {\n      \"id\": 11,\n      \"title\": \"Dhyana-Yoga: The Mechanics of Meditation\",\n      \"estimated_minutes\": 120,\n      \"description\": \"Knowledge must be assimilated. Shankara comments on the rigorous practice of meditation (Dhyana) required to internalize the intellectual grasp of non-duality.\",\n      \"plan\": {\n        \"goal\": \"Master the mechanics of meditation (Dhyana) as the means to internalize Advaitic realization.\",\n        \"concepts\": [\n          \"Prerequisites for Dhyana (Meditation) in Advaita\",\n          \"Techniques for controlling a restless mind (Abhyasa and Vairagya)\",\n          \"Experiencing the unity of all beings within the Self\",\n          \"The fate of the Yoga Bhrashta (the fallen yogi) in future lives\"\n        ],\n        \"sourceRefs\": [\n          \"Sixth Discourse: Dhyana-Yoga (pp. 179-206)\"\n        ],\n        \"prerequisites\": [1, 10]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 6,\n        \"pass_threshold\": 70,\n        \"question_types\": [\"conceptual\", \"application\"]\n      }\n    },\n    {\n      \"id\": 12,\n      \"title\": \"Vijnana-Yoga: The Two Natures of the Divine\",\n      \"estimated_minutes\": 90,\n      \"description\": \"Shankara maps out the macrocosm, detailing how the formless Brahman projects the material universe through its lower nature while remaining untainted in its higher nature.\",\n      \"plan\": {\n        \"goal\": \"Differentiate between Brahman's lower nature (Prakriti) and higher nature (Para Prakriti/Atman) to deconstruct empirical reality.\",\n        \"concepts\": [\n          \"Apara Prakriti (The eightfold lower nature/matter)\",\n          \"Para Prakriti (The higher nature/Consciousness/Jiva)\",\n          \"The Divine Maya of the three Gunas\",\n          \"The four types of devotees and the supremacy of the Jnani (The Wise)\"\n        ],\n        \"sourceRefs\": [\n          \"Seventh Discourse: Vijnana-Yoga (pp. 207-221)\"\n        ],\n        \"prerequisites\": [3, 8]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 5,\n        \"pass_threshold\": 70,\n        \"question_types\": [\"conceptual\"]\n      }\n    },\n    {\n      \"id\": 13,\n      \"title\": \"Abhyasa-Yoga: Advaitic Eschatology\",\n      \"estimated_minutes\": 90,\n      \"description\": \"Explore what happens at death from the Advaitic perspective. Shankara clarifies the difference between gradual liberation and immediate liberation.\",\n      \"plan\": {\n        \"goal\": \"Analyze the eschatology of Advaita, the mechanics of cosmic cycles, and the state of consciousness at death.\",\n        \"concepts\": [\n          \"Definitions of Adhibhuta, Adhidaiva, and Adhiyajna\",\n          \"The principle of Antya Kala (remembering the Divine at death)\",\n          \"The cosmic cycles: Brahma's day and night (Srishti and Pralaya)\",\n          \"The Two Paths: Devayana (Path of Light) and Pitriyana (Path of Return)\",\n          \"Avyakta: The unmanifested reality\"\n        ],\n        \"sourceRefs\": [\n          \"Eighth Discourse: Abhyasa-Yoga (pp. 222-237)\"\n        ],\n        \"prerequisites\": [12]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 5,\n        \"pass_threshold\": 70,\n        \"question_types\": [\"conceptual\", \"true_false\"]\n      }\n    },\n    {\n      \"id\": 14,\n      \"title\": \"Sovereign Wisdom: The Paradox of Creation\",\n      \"estimated_minutes\": 120,\n      \"description\": \"Confront the ultimate paradox of Advaita: the universe exists within Brahman, but Brahman does not exist within the universe. Shankara explains this through the lens of Maya.\",\n      \"plan\": {\n        \"goal\": \"Comprehend the paradoxical relationship between Brahman and the universe, resolving apparent contradictions through the theory of Maya.\",\n        \"concepts\": [\n          \"Raja Vidya (The Sovereign Knowledge)\",\n          \"The unattached nature of Brahman to its creation (Asanga)\",\n          \"Maya as a projecting and concealing power\",\n          \"Ananya Bhakti: Non-dual devotion to the Absolute\"\n        ],\n        \"sourceRefs\": [\n          \"Ninth Discourse: Sovereign Wisdom and Secret (pp. 238-258)\"\n        ],\n        \"prerequisites\": [8, 12]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 6,\n        \"pass_threshold\": 70,\n        \"question_types\": [\"conceptual\", \"application\"]\n      }\n    },\n    {\n      \"id\": 15,\n      \"title\": \"Divine Manifestations: Seeing the One in the Many\",\n      \"estimated_minutes\": 90,\n      \"description\": \"Before perceiving formlessness, the mind must see the Supreme in the highest forms of empirical reality. Shankara analyzes the Vibhutis as focal points for meditation.\",\n      \"plan\": {\n        \"goal\": \"Recognize the immanence of Ishvara (Saguna Brahman) through His cosmic manifestations (Vibhutis).\",\n        \"concepts\": [\n          \"The origin of the gods, sages, and the universe from Brahman\",\n          \"The essence of Vibhuti (Divine glory) as a meditative tool\",\n          \"Seeing the One underlying substance in manifold expressions\",\n          \"Brahman as the seed of all existence\"\n        ],\n        \"sourceRefs\": [\n          \"Tenth Discourse: Divine Manifestations (pp. 259-276)\"\n        ],\n        \"prerequisites\": [12, 14]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 5,\n        \"pass_threshold\": 70,\n        \"question_types\": [\"conceptual\"]\n      }\n    },\n    {\n      \"id\": 16,\n      \"title\": \"The Universal Form: Time, Will, and Ego\",\n      \"estimated_minutes\": 120,\n      \"description\": \"Deconstruct the terrifying vision of the Vishvarupa. Shankara uses this to prove the absolute insignificance of individual ego against the backdrop of Cosmic Time (Kala).\",\n      \"plan\": {\n        \"goal\": \"Deconstruct the vision of the Vishvarupa (Universal Form) and analyze its metaphysical implications for time and individual agency.\",\n        \"concepts\": [\n          \"The limitations of empirical vision and the necessity of Divya Chakshu (Divine Eye)\",\n          \"Time (Kala) as the ultimate destroyer in the empirical realm\",\n          \"The illusion of free will vs. the Cosmic Will\",\n          \"Nimittamatram: Becoming a mere instrument of the Divine\"\n        ],\n        \"sourceRefs\": [\n          \"Eleventh Discourse: The Universal Form (pp. 277-301)\"\n        ],\n        \"prerequisites\": [14, 15]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 6,\n        \"pass_threshold\": 70,\n        \"question_types\": [\"conceptual\", \"application\"]\n      }\n    },\n    {\n      \"id\": 17,\n      \"title\": \"Bhakti-Yoga: Resolving the Dualistic Tension\",\n      \"estimated_minutes\": 90,\n      \"description\": \"Address the perennial debate between formless meditation and personal devotion. Shankara explains why Bhakti is necessary and how it naturally matures into Jnana.\",\n      \"plan\": {\n        \"goal\": \"Resolve the apparent dichotomy between the worship of the Unmanifest (Nirguna) and the Manifest (Saguna) in Shankara's framework.\",\n        \"concepts\": [\n          \"Nirguna Upasana vs. Saguna Upasana\",\n          \"The difficulty of the Unmanifest path for embodied beings (Dehavadbhih)\",\n          \"The 35 traits of a true Bhakta (Devotee)\",\n          \"Bhakti as an indispensable preparation for Jnana\"\n        ],\n        \"sourceRefs\": [\n          \"Twelfth Discourse: Bhakti-Yoga (pp. 302-315)\"\n        ],\n        \"prerequisites\": [8, 14]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 5,\n        \"pass_threshold\": 70,\n        \"question_types\": [\"conceptual\", \"true_false\"]\n      }\n    },\n    {\n      \"id\": 18,\n      \"title\": \"Matter and Spirit Part 1: Kshetra and Kshetrajna\",\n      \"estimated_minutes\": 120,\n      \"description\": \"Enter the most philosophically dense chapter of the Gita. Shankara uses this text to establish the absolute epistemic divide between the Observer and the Observed.\",\n      \"plan\": {\n        \"goal\": \"Establish the absolute distinction between the Field (Object/Matter) and the Knower of the Field (Subject/Consciousness).\",\n        \"concepts\": [\n          \"Kshetra (The Field: body, mind, ego, universe)\",\n          \"Kshetrajna (The Knower of the Field: Pure Consciousness)\",\n          \"Adhyasa revisited: The mixing of Kshetra and Kshetrajna\",\n          \"Refutation of Buddhist Vijnanavada (Idealism) using the Witness consciousness\",\n          \"Atman as the sole conscious Observer\"\n        ],\n        \"sourceRefs\": [\n          \"Thirteenth Discourse: Matter and Spirit (pp. 316-335 approx)\"\n        ],\n        \"prerequisites\": [3, 12]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 7,\n        \"pass_threshold\": 70,\n        \"question_types\": [\"conceptual\", \"true_false\", \"application\"]\n      }\n    },\n    {\n      \"id\": 19,\n      \"title\": \"Matter and Spirit Part 2: Epistemology of the Absolute\",\n      \"estimated_minutes\": 120,\n      \"description\": \"Shankara redefines 'Knowledge'. It is not information, but a set of virtues that prepare the mind. Furthermore, he dialectically proves that Brahman can be defined as neither existent nor non-existent.\",\n      \"plan\": {\n        \"goal\": \"Analyze the qualities constituting true Knowledge (Jnana) and deconstruct the paradoxical nature of Brahman (Jneya).\",\n        \"concepts\": [\n          \"The virtues that constitute true Knowledge (Amanitvam: humility, etc.)\",\n          \"Jneya: That which is to be known (Brahman)\",\n          \"Why Brahman is neither Sat (existent) nor Asat (non-existent) empirically\",\n          \"The all-pervading, contradictory nature of Brahman (possessing senses yet without them)\"\n        ],\n        \"sourceRefs\": [\n          \"Thirteenth Discourse: Matter and Spirit (pp. 336-355 approx)\"\n        ],\n        \"prerequisites\": [18]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 6,\n        \"pass_threshold\": 70,\n        \"question_types\": [\"conceptual\", \"application\"]\n      }\n    },\n    {\n      \"id\": 20,\n      \"title\": \"Matter and Spirit Part 3: Prakriti and Purusha\",\n      \"estimated_minutes\": 120,\n      \"description\": \"Contrast Advaita Vedanta with the classical Sankhya school. Shankara explains how the interaction of Purusha (Spirit) and Prakriti (Matter) leads to the cycle of birth and death.\",\n      \"plan\": {\n        \"goal\": \"Deconstruct the interaction between Purusha and Prakriti, understanding the mechanics of superimposition leading to Samsara.\",\n        \"concepts\": [\n          \"Advaita's view of Purusha and Prakriti vs. dualistic Sankhya\",\n          \"How attachment to the Gunas causes birth in good and evil wombs\",\n          \"Seeing the actionless Self amidst the actions of Prakriti\",\n          \"The culmination of knowledge: Seeing the One in all\"\n        ],\n        \"sourceRefs\": [\n          \"Thirteenth Discourse: Matter and Spirit (pp. 356-377)\"\n        ],\n        \"prerequisites\": [18, 19]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 6,\n        \"pass_threshold\": 70,\n        \"question_types\": [\"conceptual\"]\n      }\n    },\n    {\n      \"id\": 21,\n      \"title\": \"The Three Gunas: The Software of Maya\",\n      \"estimated_minutes\": 90,\n      \"description\": \"Examine the three fundamental qualities of nature. Shankara shows how even 'goodness' (Sattva) is a golden chain that binds the soul to empirical reality.\",\n      \"plan\": {\n        \"goal\": \"Understand the mechanics of Maya through the three Gunas and formulate the path to transcend them.\",\n        \"concepts\": [\n          \"Sattva (Purity/Light), Rajas (Passion/Activity), and Tamas (Inertia/Ignorance)\",\n          \"The binding nature of the Gunas (even Sattva binds)\",\n          \"The characteristics of the Gunatita (one who has transcended the Gunas)\",\n          \"Brahman as the foundation of the immortal and the Gunas\"\n        ],\n        \"sourceRefs\": [\n          \"Fourteenth Discourse: The Three Gunas (pp. 378-395)\"\n        ],\n        \"prerequisites\": [12, 20]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 5,\n        \"pass_threshold\": 70,\n        \"question_types\": [\"conceptual\", \"application\"]\n      }\n    },\n    {\n      \"id\": 22,\n      \"title\": \"The Supreme Spirit: Felling the Tree of Samsara\",\n      \"estimated_minutes\": 90,\n      \"description\": \"Analyze one of the most famous metaphors in Vedanta—the inverted Ashvattha tree. Shankara uses this to describe the entanglement of Samsara and the absolute transcendence of Purushottama.\",\n      \"plan\": {\n        \"goal\": \"Deconstruct the metaphor of the Ashvattha tree and conceptualize the Purushottama (Supreme Spirit).\",\n        \"concepts\": [\n          \"The inverted Ashvattha tree as a model of Samsara\",\n          \"Asanga: The axe of detachment\",\n          \"Kshara Purusha (the perishable domain) vs. Akshara Purusha (the imperishable Jiva)\",\n          \"Purushottama (The Supreme Self) transcending both\"\n        ],\n        \"sourceRefs\": [\n          \"Fifteenth Discourse: The Supreme Spirit (pp. 396-413)\"\n        ],\n        \"prerequisites\": [20, 21]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 5,\n        \"pass_threshold\": 70,\n        \"question_types\": [\"conceptual\", \"true_false\"]\n      }\n    },\n    {\n      \"id\": 23,\n      \"title\": \"Spirituality and Materialism: The Empirical Dialectic\",\n      \"estimated_minutes\": 60,\n      \"description\": \"Shankara maps human behavior, showing how worldview dictates action. A materialistic, non-dualistic-in-practice worldview leads to destruction, while divine qualities prepare one for liberation.\",\n      \"plan\": {\n        \"goal\": \"Analyze the dialectic between divine (Daivi) and demoniac (Asuri) properties in the context of empirical reality (Vyavaharika).\",\n        \"concepts\": [\n          \"Daivi Sampad (Divine wealth) as preparation for liberation\",\n          \"Asuri Sampad (Demoniac wealth) as the root of bondage\",\n          \"The extreme delusion of materialism, egoism, and the denial of Ishvara\",\n          \"Shastra (scripture) as the necessary guide for empirical action\"\n        ],\n        \"sourceRefs\": [\n          \"Sixteenth Discourse: Spirituality and Materialism (pp. 414-426)\"\n        ],\n        \"prerequisites\": [21]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 4,\n        \"pass_threshold\": 70,\n        \"question_types\": [\"conceptual\", \"application\"]\n      }\n    },\n    {\n      \"id\": 24,\n      \"title\": \"The Threefold Faith\",\n      \"estimated_minutes\": 60,\n      \"description\": \"Apply the theory of the Gunas to human psychology. Shankara explains how a person's faith, diet, and spiritual practices are entirely conditioned by their dominant Guna.\",\n      \"plan\": {\n        \"goal\": \"Examine how the three Gunas condition Shraddha (faith), action, and spiritual practices.\",\n        \"concepts\": [\n          \"Shraddha (Faith) mapped across Sattva, Rajas, and Tamas\",\n          \"The threefold division of food, sacrifice, austerity, and charity\",\n          \"The metaphysical significance of the mantra 'Om Tat Sat'\",\n          \"Correcting imperfect actions through alignment with the Absolute\"\n        ],\n        \"sourceRefs\": [\n          \"Seventeenth Discourse: The Threefold Faith (pp. 427-440)\"\n        ],\n        \"prerequisites\": [21, 23]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 5,\n        \"pass_threshold\": 70,\n        \"question_types\": [\"conceptual\", \"application\"]\n      }\n    },\n    {\n      \"id\": 25,\n      \"title\": \"Conclusion Part 1: Renunciation vs. Relinquishment\",\n      \"estimated_minutes\": 120,\n      \"description\": \"Enter the final, massive summary chapter. Shankara systematically lays out the definitive Advaitic stance on the difference between giving up action entirely and giving up the fruits of action.\",\n      \"plan\": {\n        \"goal\": \"Clarify the definitive Advaitic stance on Sannyasa (Renunciation) versus Tyaga (Relinquishment).\",\n        \"concepts\": [\n          \"Sannyasa (Renunciation of desire-driven action) vs. Tyaga (Relinquishment of fruits)\",\n          \"The necessity of purifying actions (Yajna, Dana, Tapas)\",\n          \"The five causes of action (reframing Sankhya metaphysics)\",\n          \"The absolute non-agency of the Self (Atman)\"\n        ],\n        \"sourceRefs\": [\n          \"Eighteenth Discourse: Conclusion (pp. 441-470 approx)\"\n        ],\n        \"prerequisites\": [10, 20]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 6,\n        \"pass_threshold\": 70,\n        \"question_types\": [\"conceptual\", \"true_false\"]\n      }\n    },\n    {\n      \"id\": 26,\n      \"title\": \"Conclusion Part 2: The Gunas in Knowledge and Duty\",\n      \"estimated_minutes\": 120,\n      \"description\": \"Shankara maps the Gunas across all human faculties—intellect, firmness, happiness—and explains the metaphysical foundation of Svadharma (one's own duty) as an expression of nature.\",\n      \"plan\": {\n        \"goal\": \"Analyze how the Gunas stratify knowledge, action, and the intellect, culminating in the metaphysical duties of the Varnas.\",\n        \"concepts\": [\n          \"Threefold Knowledge, Action, and Actor based on the Gunas\",\n          \"Threefold Intellect (Buddhi) and Firmness (Dhriti)\",\n          \"Threefold Happiness (Sukha)\",\n          \"The metaphysical and psychological basis of Svadharma (one's inherent duty)\"\n        ],\n        \"sourceRefs\": [\n          \"Eighteenth Discourse: Conclusion (pp. 471-500 approx)\"\n        ],\n        \"prerequisites\": [21, 25]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 6,\n        \"pass_threshold\": 70,\n        \"question_types\": [\"conceptual\", \"application\"]\n      }\n    },\n    {\n      \"id\": 27,\n      \"title\": \"Conclusion Part 3: The Ultimate Verdict (Moksha)\",\n      \"estimated_minutes\": 120,\n      \"description\": \"The grand finale. Shankara brings all arguments together to definitively refute the combination of knowledge and action, establishing Jnana alone as the guarantor of Moksha.\",\n      \"plan\": {\n        \"goal\": \"Synthesize Shankara's final verdict: absolute liberation (Moksha) through Jnana alone, refuting Karma-Jnana-Samuchhaya.\",\n        \"concepts\": [\n          \"Jnana-Nishtha: Devotion as the culmination of Knowledge\",\n          \"Sarva Dharman Parityajya: The absolute surrender of all Dharmas\",\n          \"Rigorous refutation of Karma-Jnana-Samuchhaya (combined action and knowledge)\",\n          \"Final Liberation (Moksha) as realizing one's identity with Brahman\",\n          \"The qualifications for receiving this ultimate knowledge\"\n        ],\n        \"sourceRefs\": [\n          \"Eighteenth Discourse: Conclusion (pp. 501-522)\"\n        ],\n        \"prerequisites\": [3, 6, 18, 25]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 7,\n        \"pass_threshold\": 70,\n        \"question_types\": [\"conceptual\", \"true_false\", \"application\"]\n      }\n    }\n  ]\n}",
+  "parsed": {
+    "topic": "Advaita Vedanta: Shankaracharya's Commentary",
+    "topic_slug": "advaita-vedanta-shankaracharya-gita-commentary",
+    "level": "expert",
+    "goal": "Deep philosophical mastery and first-principles understanding of Advaita Vedanta",
+    "estimated_total_minutes": 2730,
+    "modules": [
+      {
+        "id": 1,
+        "title": "Introduction to Advaita & Shankaracharya's Framework",
+        "estimated_minutes": 90,
+        "description": "Establish the absolute first principles of Advaita Vedanta before entering the text. This module introduces the core problem of human existence according to Shankara—superimposition—and outlines the necessary qualifications for a student.",
+        "plan": {
+          "goal": "Master the concept of Adhyasa (superimposition), define Advaita Vedanta from first principles, and understand the Sadhana Chatushtaya (four-fold qualifications).",
+          "concepts": [
+            "Definition of Advaita Vedanta",
+            "Adhyasa (Superimposition of the Self and non-Self)",
+            "Avidya (Ignorance) vs. Vidya (Knowledge)",
+            "Sadhana Chatushtaya (The Four-fold Qualifications)",
+            "Shankara's twofold Dharma: Pravritti (Action) and Nivritti (Renunciation)",
+            "The metaphysical purpose of the Gita Avatar"
+          ],
+          "sourceRefs": [
+            "Introduction (pp. 1-6)"
+          ],
+          "prerequisites": []
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 5,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "true_false"
+          ]
+        }
+      },
+      {
+        "id": 2,
+        "title": "The Despondency of Arjuna: The Empirical Crisis",
+        "estimated_minutes": 60,
+        "description": "Analyze Arjuna's grief not merely as a historical event, but as the archetypal human crisis of Soka (grief) and Moha (delusion) occurring within Vyavaharika (empirical reality).",
+        "plan": {
+          "goal": "Analyze the existential crisis of Arjuna as the necessary prerequisite for spiritual inquiry into non-duality.",
+          "concepts": [
+            "Soka (Grief) and Moha (Delusion) as the roots of Samsara",
+            "Vyavaharika: The empirical reality of Dharma and Adharma",
+            "The illusion of agency and attachment to relatives",
+            "The paradox of worldly duty vs. absolute truth"
+          ],
+          "sourceRefs": [
+            "First Discourse: The Despondency of Arjuna (pp. 7-18)"
+          ],
+          "prerequisites": [
+            1
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 5,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 3,
+        "title": "Sankhya-Yoga Part 1: The Metaphysics of Reality",
+        "estimated_minutes": 120,
+        "description": "Dive deep into Shankaracharya's most rigorous philosophical arguments. This module deduces the nature of the Atman from first principles and refutes competing metaphysical models like Buddhist 'momentariness'.",
+        "plan": {
+          "goal": "Derive the absolute distinction between the eternal Self (Atman) and the ephemeral body, applying first principles to distinguish Sat from Asat.",
+          "concepts": [
+            "Sat (The Real) vs. Asat (The Unreal) defined by Shankara",
+            "Atman as the Unchanging Witness (Sakshi)",
+            "Paramarthika (Absolute reality) vs. Vyavaharika (Empirical reality)",
+            "Refutation of Buddhist Sunyata and Momentariness theory",
+            "The indestructible nature of Consciousness"
+          ],
+          "sourceRefs": [
+            "Second Discourse: Sankhya-Yoga (pp. 19-40 approx)"
+          ],
+          "prerequisites": [
+            1,
+            2
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 7,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "true_false",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 4,
+        "title": "Sankhya-Yoga Part 2: Action Within Illusion",
+        "estimated_minutes": 120,
+        "description": "Understand why, if the world is an illusion, one must act. Shankara outlines Karma Yoga strictly as a preparatory mechanism for the mind, not a direct path to liberation.",
+        "plan": {
+          "goal": "Understand the mechanics of Karma Yoga as a preparatory step (Sadhana) to purify the mind for Advaitic realization.",
+          "concepts": [
+            "Vairagya: Dispassion for the fruits of action",
+            "Samatva: Equanimity in success and failure",
+            "The bondage of Karma and the trap of desire-driven action",
+            "Karma Yoga as Chitta Shuddhi (purification of the mind)"
+          ],
+          "sourceRefs": [
+            "Second Discourse: Sankhya-Yoga (pp. 41-60 approx)"
+          ],
+          "prerequisites": [
+            3
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 6,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 5,
+        "title": "Sankhya-Yoga Part 3: Sthitaprajna",
+        "estimated_minutes": 120,
+        "description": "Examine Shankara's detailed commentary on the 'Man of Steady Wisdom.' This section establishes the psychological profile of an enlightened being who has sublated the empirical world.",
+        "plan": {
+          "goal": "Characterize the enlightened sage (Jivanmukta) and analyze the state of steady wisdom from an Advaitic perspective.",
+          "concepts": [
+            "Characteristics of the Sthitaprajna (Sage of steady wisdom)",
+            "Sublation of empirical reality (The Night and Day analogy)",
+            "Jivanmukti: Liberation while living in the body",
+            "Pratyahara: Complete withdrawal of the senses",
+            "The descent from desire to destruction"
+          ],
+          "sourceRefs": [
+            "Second Discourse: Sankhya-Yoga (pp. 61-81)"
+          ],
+          "prerequisites": [
+            3,
+            4
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 6,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "true_false"
+          ]
+        }
+      },
+      {
+        "id": 6,
+        "title": "Karma-Yoga Part 1: Knowledge vs. Action",
+        "estimated_minutes": 90,
+        "description": "Navigate the great debate between Jnana (Knowledge) and Karma (Action). Shankara rigorously refutes the Mimamsa school to prove that action alone cannot yield ultimate liberation.",
+        "plan": {
+          "goal": "Reconcile Shankara's strict emphasis on Knowledge (Jnana) with the Gita's mandate for Action (Karma).",
+          "concepts": [
+            "The absolute separation of Jnana Nishta and Karma Nishta",
+            "Refutation of Mimamsa (the belief that ritual action grants liberation)",
+            "Prakriti's role in action (Action belongs to the Gunas, not the Self)",
+            "Loka-Sangraha: Acting for the welfare of the world as a Jnani"
+          ],
+          "sourceRefs": [
+            "Third Discourse: Karma-Yoga (pp. 82-100)"
+          ],
+          "prerequisites": [
+            3,
+            4
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 5,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 7,
+        "title": "Karma-Yoga Part 2: The Anatomy of Desire",
+        "estimated_minutes": 90,
+        "description": "Dissect the psychological mechanics of desire and anger. Shankara provides a hierarchical map of the human faculties to explain how awareness can override instinct.",
+        "plan": {
+          "goal": "Analyze the mechanics of Kama (desire) and Krodha (anger) as the primary obstacles to self-knowledge.",
+          "concepts": [
+            "Kama and Krodha as the ultimate enemies",
+            "The veiling power of desire (Avarana)",
+            "The hierarchy of faculties: Senses, Mind, Intellect, Atman",
+            "Conquering the lower self through the realization of the Higher Self"
+          ],
+          "sourceRefs": [
+            "Third Discourse: Karma-Yoga (pp. 101-117)"
+          ],
+          "prerequisites": [
+            6
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 5,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual"
+          ]
+        }
+      },
+      {
+        "id": 8,
+        "title": "Jnana-Yoga Part 1: The Metaphysics of Avatarana",
+        "estimated_minutes": 90,
+        "description": "Examine Shankara's interpretation of Divine Incarnation. If Brahman is without form, how does Krishna take birth? This module unpacks the role of Maya in projecting the Avatara.",
+        "plan": {
+          "goal": "Understand the metaphysics of Divine Incarnation (Avatara) and Shankara's definition of non-action in action.",
+          "concepts": [
+            "Saguna Brahman (Ishvara) vs. Nirguna Brahman",
+            "Maya as the Lord's projecting power",
+            "The purpose and mechanics of Avatarana (Descent)",
+            "Akarma in Karma: Recognizing non-action within action"
+          ],
+          "sourceRefs": [
+            "Fourth Discourse: Jnana-Yoga (pp. 118-135)"
+          ],
+          "prerequisites": [
+            3,
+            6
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 6,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "true_false"
+          ]
+        }
+      },
+      {
+        "id": 9,
+        "title": "Jnana-Yoga Part 2: The Fire of Knowledge",
+        "estimated_minutes": 90,
+        "description": "Discover how Advaita transforms the Vedic concept of ritual sacrifice (Yajna) into an internal, cognitive process where knowledge itself burns away karma.",
+        "plan": {
+          "goal": "Master the concept of Jnana-Yajna (knowledge as sacrifice) and understand the mechanism by which knowledge incinerates Karma.",
+          "concepts": [
+            "Reinterpreting Vedic Yajna through an Advaitic lens",
+            "Jnana-Yajna: The sacrifice of ignorance into the fire of consciousness",
+            "The destruction of Sanchita (accumulated) Karma through Self-knowledge",
+            "Shraddha (Faith) as a cognitive prerequisite for Jnana"
+          ],
+          "sourceRefs": [
+            "Fourth Discourse: Jnana-Yoga (pp. 136-153)"
+          ],
+          "prerequisites": [
+            8
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 5,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 10,
+        "title": "Samnyasa-Yoga: Renunciation of Action",
+        "estimated_minutes": 120,
+        "description": "Shankara vehemently defends Sannyasa (monastic renunciation). This module explores why the total abandonment of action is the logical consequence of self-knowledge.",
+        "plan": {
+          "goal": "Distinguish between true renunciation of action (Jnana) and the yoga of action (Karma), proving Jnana's ultimate supremacy.",
+          "concepts": [
+            "Sannyasa (Renunciation) vs. Karma Yoga",
+            "The illusion of agency: The realization that 'I do nothing at all'",
+            "Sama-darshana: The equal vision of a sage (seeing Brahman in a cow, elephant, and outcaste)",
+            "Abiding in Brahman vs. participating in Samsara"
+          ],
+          "sourceRefs": [
+            "Fifth Discourse: Samnyasa-Yoga (pp. 154-178)"
+          ],
+          "prerequisites": [
+            6,
+            9
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 6,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "true_false"
+          ]
+        }
+      },
+      {
+        "id": 11,
+        "title": "Dhyana-Yoga: The Mechanics of Meditation",
+        "estimated_minutes": 120,
+        "description": "Knowledge must be assimilated. Shankara comments on the rigorous practice of meditation (Dhyana) required to internalize the intellectual grasp of non-duality.",
+        "plan": {
+          "goal": "Master the mechanics of meditation (Dhyana) as the means to internalize Advaitic realization.",
+          "concepts": [
+            "Prerequisites for Dhyana (Meditation) in Advaita",
+            "Techniques for controlling a restless mind (Abhyasa and Vairagya)",
+            "Experiencing the unity of all beings within the Self",
+            "The fate of the Yoga Bhrashta (the fallen yogi) in future lives"
+          ],
+          "sourceRefs": [
+            "Sixth Discourse: Dhyana-Yoga (pp. 179-206)"
+          ],
+          "prerequisites": [
+            1,
+            10
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 6,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 12,
+        "title": "Vijnana-Yoga: The Two Natures of the Divine",
+        "estimated_minutes": 90,
+        "description": "Shankara maps out the macrocosm, detailing how the formless Brahman projects the material universe through its lower nature while remaining untainted in its higher nature.",
+        "plan": {
+          "goal": "Differentiate between Brahman's lower nature (Prakriti) and higher nature (Para Prakriti/Atman) to deconstruct empirical reality.",
+          "concepts": [
+            "Apara Prakriti (The eightfold lower nature/matter)",
+            "Para Prakriti (The higher nature/Consciousness/Jiva)",
+            "The Divine Maya of the three Gunas",
+            "The four types of devotees and the supremacy of the Jnani (The Wise)"
+          ],
+          "sourceRefs": [
+            "Seventh Discourse: Vijnana-Yoga (pp. 207-221)"
+          ],
+          "prerequisites": [
+            3,
+            8
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 5,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual"
+          ]
+        }
+      },
+      {
+        "id": 13,
+        "title": "Abhyasa-Yoga: Advaitic Eschatology",
+        "estimated_minutes": 90,
+        "description": "Explore what happens at death from the Advaitic perspective. Shankara clarifies the difference between gradual liberation and immediate liberation.",
+        "plan": {
+          "goal": "Analyze the eschatology of Advaita, the mechanics of cosmic cycles, and the state of consciousness at death.",
+          "concepts": [
+            "Definitions of Adhibhuta, Adhidaiva, and Adhiyajna",
+            "The principle of Antya Kala (remembering the Divine at death)",
+            "The cosmic cycles: Brahma's day and night (Srishti and Pralaya)",
+            "The Two Paths: Devayana (Path of Light) and Pitriyana (Path of Return)",
+            "Avyakta: The unmanifested reality"
+          ],
+          "sourceRefs": [
+            "Eighth Discourse: Abhyasa-Yoga (pp. 222-237)"
+          ],
+          "prerequisites": [
+            12
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 5,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "true_false"
+          ]
+        }
+      },
+      {
+        "id": 14,
+        "title": "Sovereign Wisdom: The Paradox of Creation",
+        "estimated_minutes": 120,
+        "description": "Confront the ultimate paradox of Advaita: the universe exists within Brahman, but Brahman does not exist within the universe. Shankara explains this through the lens of Maya.",
+        "plan": {
+          "goal": "Comprehend the paradoxical relationship between Brahman and the universe, resolving apparent contradictions through the theory of Maya.",
+          "concepts": [
+            "Raja Vidya (The Sovereign Knowledge)",
+            "The unattached nature of Brahman to its creation (Asanga)",
+            "Maya as a projecting and concealing power",
+            "Ananya Bhakti: Non-dual devotion to the Absolute"
+          ],
+          "sourceRefs": [
+            "Ninth Discourse: Sovereign Wisdom and Secret (pp. 238-258)"
+          ],
+          "prerequisites": [
+            8,
+            12
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 6,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 15,
+        "title": "Divine Manifestations: Seeing the One in the Many",
+        "estimated_minutes": 90,
+        "description": "Before perceiving formlessness, the mind must see the Supreme in the highest forms of empirical reality. Shankara analyzes the Vibhutis as focal points for meditation.",
+        "plan": {
+          "goal": "Recognize the immanence of Ishvara (Saguna Brahman) through His cosmic manifestations (Vibhutis).",
+          "concepts": [
+            "The origin of the gods, sages, and the universe from Brahman",
+            "The essence of Vibhuti (Divine glory) as a meditative tool",
+            "Seeing the One underlying substance in manifold expressions",
+            "Brahman as the seed of all existence"
+          ],
+          "sourceRefs": [
+            "Tenth Discourse: Divine Manifestations (pp. 259-276)"
+          ],
+          "prerequisites": [
+            12,
+            14
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 5,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual"
+          ]
+        }
+      },
+      {
+        "id": 16,
+        "title": "The Universal Form: Time, Will, and Ego",
+        "estimated_minutes": 120,
+        "description": "Deconstruct the terrifying vision of the Vishvarupa. Shankara uses this to prove the absolute insignificance of individual ego against the backdrop of Cosmic Time (Kala).",
+        "plan": {
+          "goal": "Deconstruct the vision of the Vishvarupa (Universal Form) and analyze its metaphysical implications for time and individual agency.",
+          "concepts": [
+            "The limitations of empirical vision and the necessity of Divya Chakshu (Divine Eye)",
+            "Time (Kala) as the ultimate destroyer in the empirical realm",
+            "The illusion of free will vs. the Cosmic Will",
+            "Nimittamatram: Becoming a mere instrument of the Divine"
+          ],
+          "sourceRefs": [
+            "Eleventh Discourse: The Universal Form (pp. 277-301)"
+          ],
+          "prerequisites": [
+            14,
+            15
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 6,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 17,
+        "title": "Bhakti-Yoga: Resolving the Dualistic Tension",
+        "estimated_minutes": 90,
+        "description": "Address the perennial debate between formless meditation and personal devotion. Shankara explains why Bhakti is necessary and how it naturally matures into Jnana.",
+        "plan": {
+          "goal": "Resolve the apparent dichotomy between the worship of the Unmanifest (Nirguna) and the Manifest (Saguna) in Shankara's framework.",
+          "concepts": [
+            "Nirguna Upasana vs. Saguna Upasana",
+            "The difficulty of the Unmanifest path for embodied beings (Dehavadbhih)",
+            "The 35 traits of a true Bhakta (Devotee)",
+            "Bhakti as an indispensable preparation for Jnana"
+          ],
+          "sourceRefs": [
+            "Twelfth Discourse: Bhakti-Yoga (pp. 302-315)"
+          ],
+          "prerequisites": [
+            8,
+            14
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 5,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "true_false"
+          ]
+        }
+      },
+      {
+        "id": 18,
+        "title": "Matter and Spirit Part 1: Kshetra and Kshetrajna",
+        "estimated_minutes": 120,
+        "description": "Enter the most philosophically dense chapter of the Gita. Shankara uses this text to establish the absolute epistemic divide between the Observer and the Observed.",
+        "plan": {
+          "goal": "Establish the absolute distinction between the Field (Object/Matter) and the Knower of the Field (Subject/Consciousness).",
+          "concepts": [
+            "Kshetra (The Field: body, mind, ego, universe)",
+            "Kshetrajna (The Knower of the Field: Pure Consciousness)",
+            "Adhyasa revisited: The mixing of Kshetra and Kshetrajna",
+            "Refutation of Buddhist Vijnanavada (Idealism) using the Witness consciousness",
+            "Atman as the sole conscious Observer"
+          ],
+          "sourceRefs": [
+            "Thirteenth Discourse: Matter and Spirit (pp. 316-335 approx)"
+          ],
+          "prerequisites": [
+            3,
+            12
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 7,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "true_false",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 19,
+        "title": "Matter and Spirit Part 2: Epistemology of the Absolute",
+        "estimated_minutes": 120,
+        "description": "Shankara redefines 'Knowledge'. It is not information, but a set of virtues that prepare the mind. Furthermore, he dialectically proves that Brahman can be defined as neither existent nor non-existent.",
+        "plan": {
+          "goal": "Analyze the qualities constituting true Knowledge (Jnana) and deconstruct the paradoxical nature of Brahman (Jneya).",
+          "concepts": [
+            "The virtues that constitute true Knowledge (Amanitvam: humility, etc.)",
+            "Jneya: That which is to be known (Brahman)",
+            "Why Brahman is neither Sat (existent) nor Asat (non-existent) empirically",
+            "The all-pervading, contradictory nature of Brahman (possessing senses yet without them)"
+          ],
+          "sourceRefs": [
+            "Thirteenth Discourse: Matter and Spirit (pp. 336-355 approx)"
+          ],
+          "prerequisites": [
+            18
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 6,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 20,
+        "title": "Matter and Spirit Part 3: Prakriti and Purusha",
+        "estimated_minutes": 120,
+        "description": "Contrast Advaita Vedanta with the classical Sankhya school. Shankara explains how the interaction of Purusha (Spirit) and Prakriti (Matter) leads to the cycle of birth and death.",
+        "plan": {
+          "goal": "Deconstruct the interaction between Purusha and Prakriti, understanding the mechanics of superimposition leading to Samsara.",
+          "concepts": [
+            "Advaita's view of Purusha and Prakriti vs. dualistic Sankhya",
+            "How attachment to the Gunas causes birth in good and evil wombs",
+            "Seeing the actionless Self amidst the actions of Prakriti",
+            "The culmination of knowledge: Seeing the One in all"
+          ],
+          "sourceRefs": [
+            "Thirteenth Discourse: Matter and Spirit (pp. 356-377)"
+          ],
+          "prerequisites": [
+            18,
+            19
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 6,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual"
+          ]
+        }
+      },
+      {
+        "id": 21,
+        "title": "The Three Gunas: The Software of Maya",
+        "estimated_minutes": 90,
+        "description": "Examine the three fundamental qualities of nature. Shankara shows how even 'goodness' (Sattva) is a golden chain that binds the soul to empirical reality.",
+        "plan": {
+          "goal": "Understand the mechanics of Maya through the three Gunas and formulate the path to transcend them.",
+          "concepts": [
+            "Sattva (Purity/Light), Rajas (Passion/Activity), and Tamas (Inertia/Ignorance)",
+            "The binding nature of the Gunas (even Sattva binds)",
+            "The characteristics of the Gunatita (one who has transcended the Gunas)",
+            "Brahman as the foundation of the immortal and the Gunas"
+          ],
+          "sourceRefs": [
+            "Fourteenth Discourse: The Three Gunas (pp. 378-395)"
+          ],
+          "prerequisites": [
+            12,
+            20
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 5,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 22,
+        "title": "The Supreme Spirit: Felling the Tree of Samsara",
+        "estimated_minutes": 90,
+        "description": "Analyze one of the most famous metaphors in Vedanta—the inverted Ashvattha tree. Shankara uses this to describe the entanglement of Samsara and the absolute transcendence of Purushottama.",
+        "plan": {
+          "goal": "Deconstruct the metaphor of the Ashvattha tree and conceptualize the Purushottama (Supreme Spirit).",
+          "concepts": [
+            "The inverted Ashvattha tree as a model of Samsara",
+            "Asanga: The axe of detachment",
+            "Kshara Purusha (the perishable domain) vs. Akshara Purusha (the imperishable Jiva)",
+            "Purushottama (The Supreme Self) transcending both"
+          ],
+          "sourceRefs": [
+            "Fifteenth Discourse: The Supreme Spirit (pp. 396-413)"
+          ],
+          "prerequisites": [
+            20,
+            21
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 5,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "true_false"
+          ]
+        }
+      },
+      {
+        "id": 23,
+        "title": "Spirituality and Materialism: The Empirical Dialectic",
+        "estimated_minutes": 60,
+        "description": "Shankara maps human behavior, showing how worldview dictates action. A materialistic, non-dualistic-in-practice worldview leads to destruction, while divine qualities prepare one for liberation.",
+        "plan": {
+          "goal": "Analyze the dialectic between divine (Daivi) and demoniac (Asuri) properties in the context of empirical reality (Vyavaharika).",
+          "concepts": [
+            "Daivi Sampad (Divine wealth) as preparation for liberation",
+            "Asuri Sampad (Demoniac wealth) as the root of bondage",
+            "The extreme delusion of materialism, egoism, and the denial of Ishvara",
+            "Shastra (scripture) as the necessary guide for empirical action"
+          ],
+          "sourceRefs": [
+            "Sixteenth Discourse: Spirituality and Materialism (pp. 414-426)"
+          ],
+          "prerequisites": [
+            21
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 4,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 24,
+        "title": "The Threefold Faith",
+        "estimated_minutes": 60,
+        "description": "Apply the theory of the Gunas to human psychology. Shankara explains how a person's faith, diet, and spiritual practices are entirely conditioned by their dominant Guna.",
+        "plan": {
+          "goal": "Examine how the three Gunas condition Shraddha (faith), action, and spiritual practices.",
+          "concepts": [
+            "Shraddha (Faith) mapped across Sattva, Rajas, and Tamas",
+            "The threefold division of food, sacrifice, austerity, and charity",
+            "The metaphysical significance of the mantra 'Om Tat Sat'",
+            "Correcting imperfect actions through alignment with the Absolute"
+          ],
+          "sourceRefs": [
+            "Seventeenth Discourse: The Threefold Faith (pp. 427-440)"
+          ],
+          "prerequisites": [
+            21,
+            23
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 5,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 25,
+        "title": "Conclusion Part 1: Renunciation vs. Relinquishment",
+        "estimated_minutes": 120,
+        "description": "Enter the final, massive summary chapter. Shankara systematically lays out the definitive Advaitic stance on the difference between giving up action entirely and giving up the fruits of action.",
+        "plan": {
+          "goal": "Clarify the definitive Advaitic stance on Sannyasa (Renunciation) versus Tyaga (Relinquishment).",
+          "concepts": [
+            "Sannyasa (Renunciation of desire-driven action) vs. Tyaga (Relinquishment of fruits)",
+            "The necessity of purifying actions (Yajna, Dana, Tapas)",
+            "The five causes of action (reframing Sankhya metaphysics)",
+            "The absolute non-agency of the Self (Atman)"
+          ],
+          "sourceRefs": [
+            "Eighteenth Discourse: Conclusion (pp. 441-470 approx)"
+          ],
+          "prerequisites": [
+            10,
+            20
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 6,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "true_false"
+          ]
+        }
+      },
+      {
+        "id": 26,
+        "title": "Conclusion Part 2: The Gunas in Knowledge and Duty",
+        "estimated_minutes": 120,
+        "description": "Shankara maps the Gunas across all human faculties—intellect, firmness, happiness—and explains the metaphysical foundation of Svadharma (one's own duty) as an expression of nature.",
+        "plan": {
+          "goal": "Analyze how the Gunas stratify knowledge, action, and the intellect, culminating in the metaphysical duties of the Varnas.",
+          "concepts": [
+            "Threefold Knowledge, Action, and Actor based on the Gunas",
+            "Threefold Intellect (Buddhi) and Firmness (Dhriti)",
+            "Threefold Happiness (Sukha)",
+            "The metaphysical and psychological basis of Svadharma (one's inherent duty)"
+          ],
+          "sourceRefs": [
+            "Eighteenth Discourse: Conclusion (pp. 471-500 approx)"
+          ],
+          "prerequisites": [
+            21,
+            25
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 6,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 27,
+        "title": "Conclusion Part 3: The Ultimate Verdict (Moksha)",
+        "estimated_minutes": 120,
+        "description": "The grand finale. Shankara brings all arguments together to definitively refute the combination of knowledge and action, establishing Jnana alone as the guarantor of Moksha.",
+        "plan": {
+          "goal": "Synthesize Shankara's final verdict: absolute liberation (Moksha) through Jnana alone, refuting Karma-Jnana-Samuchhaya.",
+          "concepts": [
+            "Jnana-Nishtha: Devotion as the culmination of Knowledge",
+            "Sarva Dharman Parityajya: The absolute surrender of all Dharmas",
+            "Rigorous refutation of Karma-Jnana-Samuchhaya (combined action and knowledge)",
+            "Final Liberation (Moksha) as realizing one's identity with Brahman",
+            "The qualifications for receiving this ultimate knowledge"
+          ],
+          "sourceRefs": [
+            "Eighteenth Discourse: Conclusion (pp. 501-522)"
+          ],
+          "prerequisites": [
+            3,
+            6,
+            18,
+            25
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 7,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "true_false",
+            "application"
+          ]
+        }
+      }
+    ]
+  },
+  "production": {
+    "moduleCount": 11,
+    "totalMinutes": 1650,
+    "modules": [
+      {
+        "id": 1,
+        "title": "Upodghata: The Prologue and Foundations of Adhyasa",
+        "conceptCount": 12,
+        "minutes": 120
+      },
+      {
+        "id": 2,
+        "title": "Discourse 1 & 2 (Part A): The Problem of Grief and the Immortality of Atman",
+        "conceptCount": 11,
+        "minutes": 150
+      },
+      {
+        "id": 3,
+        "title": "Discourse 2 (Part B) & 3: Sthitaprajna and the Logic of Karma Yoga",
+        "conceptCount": 8,
+        "minutes": 150
+      },
+      {
+        "id": 4,
+        "title": "Discourse 4 & 5: Divine Wisdom and the Renunciation of Action",
+        "conceptCount": 9,
+        "minutes": 140
+      },
+      {
+        "id": 5,
+        "title": "Discourse 6 & 7: Dhyana-Yoga and Vijnana",
+        "conceptCount": 10,
+        "minutes": 150
+      },
+      {
+        "id": 6,
+        "title": "Discourse 8 & 9: Sovereign Wisdom and the Mystery of Brahman",
+        "conceptCount": 8,
+        "minutes": 140
+      },
+      {
+        "id": 7,
+        "title": "Discourse 10, 11 & 12: Manifestation, Vision, and Devotion",
+        "conceptCount": 6,
+        "minutes": 150
+      },
+      {
+        "id": 8,
+        "title": "Discourse 13 (Part A): Kshetra and Kshetrajna (Field and Knower)",
+        "conceptCount": 8,
+        "minutes": 160
+      },
+      {
+        "id": 9,
+        "title": "Discourse 13 (Part B) & 14: The Path to Knowledge and the Three Gunas",
+        "conceptCount": 7,
+        "minutes": 150
+      },
+      {
+        "id": 10,
+        "title": "Discourse 15, 16 & 17: The Supreme Spirit and the Faith of Man",
+        "conceptCount": 7,
+        "minutes": 150
+      },
+      {
+        "id": 11,
+        "title": "Discourse 18: Final Conclusion and the Dawn of Liberation",
+        "conceptCount": 10,
+        "minutes": 190
+      }
+    ]
+  },
+  "generated": {
+    "moduleCount": 27,
+    "totalMinutes": 2730,
+    "modules": [
+      {
+        "id": 1,
+        "title": "Introduction to Advaita & Shankaracharya's Framework",
+        "conceptCount": 6,
+        "minutes": 90
+      },
+      {
+        "id": 2,
+        "title": "The Despondency of Arjuna: The Empirical Crisis",
+        "conceptCount": 4,
+        "minutes": 60
+      },
+      {
+        "id": 3,
+        "title": "Sankhya-Yoga Part 1: The Metaphysics of Reality",
+        "conceptCount": 5,
+        "minutes": 120
+      },
+      {
+        "id": 4,
+        "title": "Sankhya-Yoga Part 2: Action Within Illusion",
+        "conceptCount": 4,
+        "minutes": 120
+      },
+      {
+        "id": 5,
+        "title": "Sankhya-Yoga Part 3: Sthitaprajna",
+        "conceptCount": 5,
+        "minutes": 120
+      },
+      {
+        "id": 6,
+        "title": "Karma-Yoga Part 1: Knowledge vs. Action",
+        "conceptCount": 4,
+        "minutes": 90
+      },
+      {
+        "id": 7,
+        "title": "Karma-Yoga Part 2: The Anatomy of Desire",
+        "conceptCount": 4,
+        "minutes": 90
+      },
+      {
+        "id": 8,
+        "title": "Jnana-Yoga Part 1: The Metaphysics of Avatarana",
+        "conceptCount": 4,
+        "minutes": 90
+      },
+      {
+        "id": 9,
+        "title": "Jnana-Yoga Part 2: The Fire of Knowledge",
+        "conceptCount": 4,
+        "minutes": 90
+      },
+      {
+        "id": 10,
+        "title": "Samnyasa-Yoga: Renunciation of Action",
+        "conceptCount": 4,
+        "minutes": 120
+      },
+      {
+        "id": 11,
+        "title": "Dhyana-Yoga: The Mechanics of Meditation",
+        "conceptCount": 4,
+        "minutes": 120
+      },
+      {
+        "id": 12,
+        "title": "Vijnana-Yoga: The Two Natures of the Divine",
+        "conceptCount": 4,
+        "minutes": 90
+      },
+      {
+        "id": 13,
+        "title": "Abhyasa-Yoga: Advaitic Eschatology",
+        "conceptCount": 5,
+        "minutes": 90
+      },
+      {
+        "id": 14,
+        "title": "Sovereign Wisdom: The Paradox of Creation",
+        "conceptCount": 4,
+        "minutes": 120
+      },
+      {
+        "id": 15,
+        "title": "Divine Manifestations: Seeing the One in the Many",
+        "conceptCount": 4,
+        "minutes": 90
+      },
+      {
+        "id": 16,
+        "title": "The Universal Form: Time, Will, and Ego",
+        "conceptCount": 4,
+        "minutes": 120
+      },
+      {
+        "id": 17,
+        "title": "Bhakti-Yoga: Resolving the Dualistic Tension",
+        "conceptCount": 4,
+        "minutes": 90
+      },
+      {
+        "id": 18,
+        "title": "Matter and Spirit Part 1: Kshetra and Kshetrajna",
+        "conceptCount": 5,
+        "minutes": 120
+      },
+      {
+        "id": 19,
+        "title": "Matter and Spirit Part 2: Epistemology of the Absolute",
+        "conceptCount": 4,
+        "minutes": 120
+      },
+      {
+        "id": 20,
+        "title": "Matter and Spirit Part 3: Prakriti and Purusha",
+        "conceptCount": 4,
+        "minutes": 120
+      },
+      {
+        "id": 21,
+        "title": "The Three Gunas: The Software of Maya",
+        "conceptCount": 4,
+        "minutes": 90
+      },
+      {
+        "id": 22,
+        "title": "The Supreme Spirit: Felling the Tree of Samsara",
+        "conceptCount": 4,
+        "minutes": 90
+      },
+      {
+        "id": 23,
+        "title": "Spirituality and Materialism: The Empirical Dialectic",
+        "conceptCount": 4,
+        "minutes": 60
+      },
+      {
+        "id": 24,
+        "title": "The Threefold Faith",
+        "conceptCount": 4,
+        "minutes": 60
+      },
+      {
+        "id": 25,
+        "title": "Conclusion Part 1: Renunciation vs. Relinquishment",
+        "conceptCount": 4,
+        "minutes": 120
+      },
+      {
+        "id": 26,
+        "title": "Conclusion Part 2: The Gunas in Knowledge and Duty",
+        "conceptCount": 4,
+        "minutes": 120
+      },
+      {
+        "id": 27,
+        "title": "Conclusion Part 3: The Ultimate Verdict (Moksha)",
+        "conceptCount": 5,
+        "minutes": 120
+      }
+    ]
+  }
+}

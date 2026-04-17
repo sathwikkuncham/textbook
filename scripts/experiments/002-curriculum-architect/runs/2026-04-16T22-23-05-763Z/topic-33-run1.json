@@ -1,0 +1,553 @@
+{
+  "topicId": 33,
+  "slug": "advanced-system-design-mastery",
+  "displayName": "Advanced System Design Mastery",
+  "sourceType": "topic_only",
+  "runNumber": 1,
+  "latencyMs": 63925,
+  "rawOutput": "{\n  \"topic\": \"Advanced System Design Mastery\",\n  \"topic_slug\": \"advanced-system-design-mastery\",\n  \"level\": \"Expert / First-Principles\",\n  \"goal\": \"Professional mastery through first-principles engineering; building a bottom-up mental model of large-scale systems.\",\n  \"estimated_total_minutes\": 1500,\n  \"modules\": [\n    {\n      \"id\": 1,\n      \"title\": \"Hardware and OS Primitives (The Physics of Computing)\",\n      \"estimated_minutes\": 150,\n      \"description\": \"Before designing distributed systems, you must master the absolute physical constraints of a single machine. High-level abstractions fail when they ignore hardware realities. This module establishes why systems bottleneck by examining CPU concurrency, memory hierarchies, and storage mechanics at the bare-metal level.\",\n      \"plan\": {\n        \"goal\": \"Quantify single-machine constraints, calculate system bottlenecks, and evaluate I/O and concurrency models at the OS kernel level.\",\n        \"concepts\": [\n          \"Latencies Every Programmer Should Know\",\n          \"L1/L2/L3 Cache vs. Main Memory vs. Disk overhead\",\n          \"Kernel vs. User space transitions\",\n          \"Context Switching mechanics and overhead\",\n          \"Process vs. Thread vs. Coroutine\",\n          \"User-space threads (Goroutines/Green threads)\",\n          \"Blocking vs. Non-blocking I/O\",\n          \"Synchronous vs. Asynchronous I/O\",\n          \"Linux epoll vs. io_uring\",\n          \"SSD Storage Internals: Page vs. Block\",\n          \"Sequential vs. Random write performance and amplification\"\n        ],\n        \"sourceRefs\": [\n          \"Phase 1: The Hardware & OS Layer\",\n          \"Layer 1: The Foundations\"\n        ],\n        \"prerequisites\": []\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 8,\n        \"pass_threshold\": 70,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\",\n          \"true_false\"\n        ]\n      }\n    },\n    {\n      \"id\": 2,\n      \"title\": \"Network Internals and the Transport Layer\",\n      \"estimated_minutes\": 150,\n      \"description\": \"Distributed systems are only as resilient as the wires connecting them. Surface-level knowledge stops at HTTP. This module dives into the transport layer to show exactly how packets traverse networks, why latency spikes occur, and how modern protocols bypass ancient bottlenecks.\",\n      \"plan\": {\n        \"goal\": \"Deconstruct transport layer protocols to analyze connection management, flow control, and latency optimization techniques.\",\n        \"concepts\": [\n          \"OSI Model transport layer specifics\",\n          \"TCP 3-way handshake mechanics and latency cost\",\n          \"TCP Flow Control and Sliding Windows\",\n          \"TCP Congestion Control: Slow Start and Congestion Avoidance\",\n          \"UDP datagram characteristics and use cases\",\n          \"Head-of-Line (HOL) blocking in TCP\",\n          \"HTTP/1.1 vs. HTTP/2 multiplexing constraints\",\n          \"QUIC protocol foundations\",\n          \"HTTP/3 over UDP mechanics\"\n        ],\n        \"sourceRefs\": [\n          \"Phase 2: Networking & Communication\",\n          \"Layer 3: Networking and Communication Protocols\"\n        ],\n        \"prerequisites\": [\n          \"Latencies Every Programmer Should Know\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 8,\n        \"pass_threshold\": 70,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\",\n          \"true_false\"\n        ]\n      }\n    },\n    {\n      \"id\": 3,\n      \"title\": \"Application Protocols and Data Serialization\",\n      \"estimated_minutes\": 120,\n      \"description\": \"Once a connection is established, the format of the data being transmitted dictates CPU and network overhead. This module covers the architectural trade-offs of API paradigms and why binary serialization is critical for evolving large-scale systems.\",\n      \"plan\": {\n        \"goal\": \"Design efficient inter-service communication architectures by selecting optimal application-layer protocols and serialization formats.\",\n        \"concepts\": [\n          \"REST constraints: Statelessness and Idempotency\",\n          \"Remote Procedure Calls (RPC) architecture\",\n          \"gRPC multiplexing and streaming capabilities\",\n          \"WebSockets for bidirectional stateful communication\",\n          \"Parsing overhead: JSON and XML vs. Binary formats\",\n          \"Binary Serialization mechanics\",\n          \"Protocol Buffers (Protobuf) internals and memory layout\",\n          \"Avro and Thrift structural comparisons\",\n          \"Schema evolution mechanics in distributed services\"\n        ],\n        \"sourceRefs\": [\n          \"Phase 2: Networking & Communication\",\n          \"Layer 3: Networking and Communication Protocols\"\n        ],\n        \"prerequisites\": [\n          \"TCP Flow Control and Sliding Windows\",\n          \"UDP datagram characteristics\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 6,\n        \"pass_threshold\": 70,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\",\n          \"true_false\"\n        ]\n      }\n    },\n    {\n      \"id\": 4,\n      \"title\": \"Single-Node Storage Engines and Indexing\",\n      \"estimated_minutes\": 150,\n      \"description\": \"A database is not a black box; it is an abstraction over hardware I/O. To scale data storage, you must understand how a single machine writes to disk. This module contrasts read-optimized and write-optimized data structures at the binary level.\",\n      \"plan\": {\n        \"goal\": \"Analyze database storage structures and indexing mechanics to optimize read and write paths for specific workload profiles.\",\n        \"concepts\": [\n          \"Storage engine read vs. write optimization trade-offs\",\n          \"B-Tree and B+Tree data structure mechanics\",\n          \"Log-Structured Merge-Trees (LSM-Trees) architecture\",\n          \"MemTable and Write-Ahead Log (WAL) synergy\",\n          \"SSTable immutability and Compaction strategies\",\n          \"Clustered vs. Non-clustered index layouts\",\n          \"Composite index binary structure and left-prefix matching\",\n          \"Covered queries and index-only scans\",\n          \"The computational overhead of index maintenance\"\n        ],\n        \"sourceRefs\": [\n          \"Phase 3: Data Architecture\",\n          \"Layer 2: Deep Data Storage & Retrieval\",\n          \"Designing Data-Intensive Applications (DDIA)\"\n        ],\n        \"prerequisites\": [\n          \"SSD Storage Internals: Page vs. Block\",\n          \"Sequential vs. Random write performance and amplification\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 8,\n        \"pass_threshold\": 70,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\",\n          \"true_false\"\n        ]\n      }\n    },\n    {\n      \"id\": 5,\n      \"title\": \"Transaction Theory and Concurrency Control\",\n      \"estimated_minutes\": 150,\n      \"description\": \"When multiple users access data simultaneously, state corruption is inevitable without rigorous concurrency control. This module provides a theoretical and practical deep-dive into transaction isolation, moving far beyond a basic definition of ACID.\",\n      \"plan\": {\n        \"goal\": \"Master ACID semantics and evaluate the strict mathematical trade-offs between database isolation levels and concurrent access phenomena.\",\n        \"concepts\": [\n          \"ACID properties formal definition and nuances\",\n          \"ANSI SQL Transaction Isolation Levels\",\n          \"Read Uncommitted vs. Read Committed\",\n          \"Repeatable Read vs. Serializable execution\",\n          \"Concurrency phenomena: Dirty reads, Non-repeatable reads, Phantom reads\",\n          \"Multi-Version Concurrency Control (MVCC) implementation\",\n          \"Pessimistic vs. Optimistic locking mechanisms\",\n          \"Deadlock detection and resolution\"\n        ],\n        \"sourceRefs\": [\n          \"Phase 3: Data Architecture\",\n          \"Layer 2: Deep Data Storage & Retrieval\",\n          \"Designing Data-Intensive Applications (DDIA)\"\n        ],\n        \"prerequisites\": [\n          \"B-Tree and B+Tree data structure mechanics\",\n          \"LSM-Trees architecture\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 8,\n        \"pass_threshold\": 70,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\",\n          \"true_false\"\n        ]\n      }\n    },\n    {\n      \"id\": 6,\n      \"title\": \"Distributed Systems Theory: Time, State, and Consensus\",\n      \"estimated_minutes\": 180,\n      \"description\": \"Moving from one machine to a cluster introduces the unpredictable chaos of network partitions and clock drift. This module covers the core mathematical theorems and consensus algorithms that make reliable distributed systems possible.\",\n      \"plan\": {\n        \"goal\": \"Navigate the fundamental impossibilities of distributed computing, analyze logical time, and trace state agreement via consensus algorithms.\",\n        \"concepts\": [\n          \"The 8 Fallacies of Distributed Computing\",\n          \"CAP Theorem mathematical trade-offs\",\n          \"PACELC Theorem extensions for latency\",\n          \"Clock Synchronization challenges and NTP limits\",\n          \"Wall Clock Time vs. Logical Time\",\n          \"Lamport Clocks and causality\",\n          \"Vector Clocks and concurrent event detection\",\n          \"The necessity of Consensus Algorithms\",\n          \"Paxos theoretical complexity vs. Raft understandability\",\n          \"Raft mechanics: Leader Election and Log Replication\"\n        ],\n        \"sourceRefs\": [\n          \"Phase 4: Distributed Systems Theory\",\n          \"Layer 5: Distributed Systems Theory\",\n          \"Raft: In Search of an Understandable Consensus Algorithm\"\n        ],\n        \"prerequisites\": [\n          \"Transaction Isolation Levels\",\n          \"TCP Flow Control and Sliding Windows\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 10,\n        \"pass_threshold\": 70,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\",\n          \"true_false\"\n        ]\n      }\n    },\n    {\n      \"id\": 7,\n      \"title\": \"Distributed Data: Partitioning and Replication\",\n      \"estimated_minutes\": 150,\n      \"description\": \"To store petabytes of data, databases must span hundreds of machines. This module explores how to partition data without creating massive hotspots, and how to replicate it while managing the delicate balance of consistency and availability.\",\n      \"plan\": {\n        \"goal\": \"Design horizontally scalable data stores using advanced partitioning formulas, consistent hashing, and quorum-based replication.\",\n        \"concepts\": [\n          \"Horizontal partitioning (Sharding) vs. vertical scaling\",\n          \"Shard Key selection criteria and the Hot Key problem\",\n          \"Consistent Hashing mathematics\",\n          \"Hash rings and Virtual Nodes for load distribution\",\n          \"Quorums formula (R + W > N)\",\n          \"Tuning Read/Write quorums for speed vs. integrity\",\n          \"Gossip Protocols for decentralized state propagation\",\n          \"Dynamo: Amazon's Highly Available Key-value Store principles\",\n          \"Bigtable: Distributed Storage System for Structured Data principles\"\n        ],\n        \"sourceRefs\": [\n          \"Phase 5: Scalability Patterns\",\n          \"Dynamo: Amazon’s Highly Available Key-value Store\",\n          \"Bigtable: A Distributed Storage System for Structured Data\"\n        ],\n        \"prerequisites\": [\n          \"CAP Theorem mathematical trade-offs\",\n          \"Raft mechanics: Leader Election and Log Replication\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 8,\n        \"pass_threshold\": 70,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\",\n          \"true_false\"\n        ]\n      }\n    },\n    {\n      \"id\": 8,\n      \"title\": \"Scalability Patterns and Traffic Management\",\n      \"estimated_minutes\": 150,\n      \"description\": \"Serving millions of concurrent users requires aggressively offloading work from primary databases and intelligently distributing network traffic. This module covers load balancing, caching hierarchies, and asynchronous architectures.\",\n      \"plan\": {\n        \"goal\": \"Architect traffic distribution, caching tiers, and asynchronous event-driven workflows to handle massive user scale without degradation.\",\n        \"concepts\": [\n          \"Layer 4 (Transport) vs. Layer 7 (Application) Load Balancing\",\n          \"Load Balancing Algorithms: Least Connections, IP Hash\",\n          \"Caching Strategies: Cache Aside, Write-Through, Write-Behind\",\n          \"Cache Eviction Policies: LRU, LFU, ARC\",\n          \"The Cache Stampede / Thundering Herd problem and mitigations\",\n          \"Asynchronous Processing architectural patterns\",\n          \"Message Brokers mechanics (Kafka append-only logs vs. RabbitMQ queues)\",\n          \"Message Delivery guarantees: At-least-once, At-most-once, Exactly-once\"\n        ],\n        \"sourceRefs\": [\n          \"Phase 5: Scalability Patterns\",\n          \"Layer 4: Scalability Patterns\"\n        ],\n        \"prerequisites\": [\n          \"Consistent Hashing mathematics\",\n          \"Horizontal partitioning (Sharding)\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 8,\n        \"pass_threshold\": 70,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\",\n          \"true_false\"\n        ]\n      }\n    },\n    {\n      \"id\": 9,\n      \"title\": \"Resilience, Observability, and Advanced Architecture\",\n      \"estimated_minutes\": 150,\n      \"description\": \"Systems will fail. A mature architecture expects failure and is designed to heal itself automatically. This module shifts focus from scaling up to surviving catastrophe, ensuring systems degrade gracefully and remain observable.\",\n      \"plan\": {\n        \"goal\": \"Design self-healing, observable distributed systems implementing advanced fault-tolerance patterns and isolated execution cells.\",\n        \"concepts\": [\n          \"Distributed Failure Modes and cascading failures\",\n          \"Circuit Breaker pattern states and thresholds\",\n          \"Retries with Exponential Backoff and Jitter\",\n          \"Rate Limiting algorithms: Token Bucket, Leaky Bucket, Sliding Window\",\n          \"The Three Pillars of Observability: Metrics, Logging, Tracing\",\n          \"Event Sourcing principles and auditability\",\n          \"Command Query Responsibility Segregation (CQRS)\",\n          \"Microservices network overhead and distributed monolith risks\",\n          \"Cell-Based Architecture for blast radius isolation\"\n        ],\n        \"sourceRefs\": [\n          \"Phase 6: Reliability & Observability\",\n          \"Layer 6: Advanced Architectural Patterns\"\n        ],\n        \"prerequisites\": [\n          \"Asynchronous Processing architectural patterns\",\n          \"Layer 4 (Transport) vs. Layer 7 (Application) Load Balancing\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 8,\n        \"pass_threshold\": 70,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\",\n          \"true_false\"\n        ]\n      }\n    },\n    {\n      \"id\": 10,\n      \"title\": \"Capstone: Deconstructing Global-Scale Systems\",\n      \"estimated_minutes\": 150,\n      \"description\": \"Theoretical knowledge must be mapped to reality. This capstone applies every principle learned—from L1 caches to B-Trees to Consensus algorithms—by architecting a global video streaming platform akin to Netflix.\",\n      \"plan\": {\n        \"goal\": \"Synthesize hardware, network, storage, and distributed systems primitives to architect and mathematically justify a global-scale streaming service.\",\n        \"concepts\": [\n          \"System Bottleneck Identification (CPU vs. RAM vs. Disk vs. Network)\",\n          \"Distributed Worker Queues for mass data ingestion and transcoding\",\n          \"Object Storage (S3) vs. Block Storage for media\",\n          \"Distributed NoSQL deployment for metadata high availability\",\n          \"Edge computing and Content Delivery Networks (CDN) caching\",\n          \"Anycast DNS routing and geographical latency optimization\",\n          \"Graceful failover and circuit breaking in complex topologies\",\n          \"The Google File System (GFS) paper principles applied\",\n          \"MapReduce paradigm for distributed data processing\"\n        ],\n        \"sourceRefs\": [\n          \"Worked Example: Designing a Global Video Streaming Service\",\n          \"The Google File System (GFS)\",\n          \"MapReduce: Simplified Data Processing on Large Clusters\"\n        ],\n        \"prerequisites\": [\n          \"Circuit Breaker pattern states and thresholds\",\n          \"Message Brokers mechanics (Kafka append-only logs vs. RabbitMQ queues)\",\n          \"Edge computing and Content Delivery Networks (CDN) caching\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 10,\n        \"pass_threshold\": 70,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\",\n          \"true_false\"\n        ]\n      }\n    }\n  ]\n}",
+  "parsed": {
+    "topic": "Advanced System Design Mastery",
+    "topic_slug": "advanced-system-design-mastery",
+    "level": "Expert / First-Principles",
+    "goal": "Professional mastery through first-principles engineering; building a bottom-up mental model of large-scale systems.",
+    "estimated_total_minutes": 1500,
+    "modules": [
+      {
+        "id": 1,
+        "title": "Hardware and OS Primitives (The Physics of Computing)",
+        "estimated_minutes": 150,
+        "description": "Before designing distributed systems, you must master the absolute physical constraints of a single machine. High-level abstractions fail when they ignore hardware realities. This module establishes why systems bottleneck by examining CPU concurrency, memory hierarchies, and storage mechanics at the bare-metal level.",
+        "plan": {
+          "goal": "Quantify single-machine constraints, calculate system bottlenecks, and evaluate I/O and concurrency models at the OS kernel level.",
+          "concepts": [
+            "Latencies Every Programmer Should Know",
+            "L1/L2/L3 Cache vs. Main Memory vs. Disk overhead",
+            "Kernel vs. User space transitions",
+            "Context Switching mechanics and overhead",
+            "Process vs. Thread vs. Coroutine",
+            "User-space threads (Goroutines/Green threads)",
+            "Blocking vs. Non-blocking I/O",
+            "Synchronous vs. Asynchronous I/O",
+            "Linux epoll vs. io_uring",
+            "SSD Storage Internals: Page vs. Block",
+            "Sequential vs. Random write performance and amplification"
+          ],
+          "sourceRefs": [
+            "Phase 1: The Hardware & OS Layer",
+            "Layer 1: The Foundations"
+          ],
+          "prerequisites": []
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 8,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "application",
+            "true_false"
+          ]
+        }
+      },
+      {
+        "id": 2,
+        "title": "Network Internals and the Transport Layer",
+        "estimated_minutes": 150,
+        "description": "Distributed systems are only as resilient as the wires connecting them. Surface-level knowledge stops at HTTP. This module dives into the transport layer to show exactly how packets traverse networks, why latency spikes occur, and how modern protocols bypass ancient bottlenecks.",
+        "plan": {
+          "goal": "Deconstruct transport layer protocols to analyze connection management, flow control, and latency optimization techniques.",
+          "concepts": [
+            "OSI Model transport layer specifics",
+            "TCP 3-way handshake mechanics and latency cost",
+            "TCP Flow Control and Sliding Windows",
+            "TCP Congestion Control: Slow Start and Congestion Avoidance",
+            "UDP datagram characteristics and use cases",
+            "Head-of-Line (HOL) blocking in TCP",
+            "HTTP/1.1 vs. HTTP/2 multiplexing constraints",
+            "QUIC protocol foundations",
+            "HTTP/3 over UDP mechanics"
+          ],
+          "sourceRefs": [
+            "Phase 2: Networking & Communication",
+            "Layer 3: Networking and Communication Protocols"
+          ],
+          "prerequisites": [
+            "Latencies Every Programmer Should Know"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 8,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "application",
+            "true_false"
+          ]
+        }
+      },
+      {
+        "id": 3,
+        "title": "Application Protocols and Data Serialization",
+        "estimated_minutes": 120,
+        "description": "Once a connection is established, the format of the data being transmitted dictates CPU and network overhead. This module covers the architectural trade-offs of API paradigms and why binary serialization is critical for evolving large-scale systems.",
+        "plan": {
+          "goal": "Design efficient inter-service communication architectures by selecting optimal application-layer protocols and serialization formats.",
+          "concepts": [
+            "REST constraints: Statelessness and Idempotency",
+            "Remote Procedure Calls (RPC) architecture",
+            "gRPC multiplexing and streaming capabilities",
+            "WebSockets for bidirectional stateful communication",
+            "Parsing overhead: JSON and XML vs. Binary formats",
+            "Binary Serialization mechanics",
+            "Protocol Buffers (Protobuf) internals and memory layout",
+            "Avro and Thrift structural comparisons",
+            "Schema evolution mechanics in distributed services"
+          ],
+          "sourceRefs": [
+            "Phase 2: Networking & Communication",
+            "Layer 3: Networking and Communication Protocols"
+          ],
+          "prerequisites": [
+            "TCP Flow Control and Sliding Windows",
+            "UDP datagram characteristics"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 6,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "application",
+            "true_false"
+          ]
+        }
+      },
+      {
+        "id": 4,
+        "title": "Single-Node Storage Engines and Indexing",
+        "estimated_minutes": 150,
+        "description": "A database is not a black box; it is an abstraction over hardware I/O. To scale data storage, you must understand how a single machine writes to disk. This module contrasts read-optimized and write-optimized data structures at the binary level.",
+        "plan": {
+          "goal": "Analyze database storage structures and indexing mechanics to optimize read and write paths for specific workload profiles.",
+          "concepts": [
+            "Storage engine read vs. write optimization trade-offs",
+            "B-Tree and B+Tree data structure mechanics",
+            "Log-Structured Merge-Trees (LSM-Trees) architecture",
+            "MemTable and Write-Ahead Log (WAL) synergy",
+            "SSTable immutability and Compaction strategies",
+            "Clustered vs. Non-clustered index layouts",
+            "Composite index binary structure and left-prefix matching",
+            "Covered queries and index-only scans",
+            "The computational overhead of index maintenance"
+          ],
+          "sourceRefs": [
+            "Phase 3: Data Architecture",
+            "Layer 2: Deep Data Storage & Retrieval",
+            "Designing Data-Intensive Applications (DDIA)"
+          ],
+          "prerequisites": [
+            "SSD Storage Internals: Page vs. Block",
+            "Sequential vs. Random write performance and amplification"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 8,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "application",
+            "true_false"
+          ]
+        }
+      },
+      {
+        "id": 5,
+        "title": "Transaction Theory and Concurrency Control",
+        "estimated_minutes": 150,
+        "description": "When multiple users access data simultaneously, state corruption is inevitable without rigorous concurrency control. This module provides a theoretical and practical deep-dive into transaction isolation, moving far beyond a basic definition of ACID.",
+        "plan": {
+          "goal": "Master ACID semantics and evaluate the strict mathematical trade-offs between database isolation levels and concurrent access phenomena.",
+          "concepts": [
+            "ACID properties formal definition and nuances",
+            "ANSI SQL Transaction Isolation Levels",
+            "Read Uncommitted vs. Read Committed",
+            "Repeatable Read vs. Serializable execution",
+            "Concurrency phenomena: Dirty reads, Non-repeatable reads, Phantom reads",
+            "Multi-Version Concurrency Control (MVCC) implementation",
+            "Pessimistic vs. Optimistic locking mechanisms",
+            "Deadlock detection and resolution"
+          ],
+          "sourceRefs": [
+            "Phase 3: Data Architecture",
+            "Layer 2: Deep Data Storage & Retrieval",
+            "Designing Data-Intensive Applications (DDIA)"
+          ],
+          "prerequisites": [
+            "B-Tree and B+Tree data structure mechanics",
+            "LSM-Trees architecture"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 8,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "application",
+            "true_false"
+          ]
+        }
+      },
+      {
+        "id": 6,
+        "title": "Distributed Systems Theory: Time, State, and Consensus",
+        "estimated_minutes": 180,
+        "description": "Moving from one machine to a cluster introduces the unpredictable chaos of network partitions and clock drift. This module covers the core mathematical theorems and consensus algorithms that make reliable distributed systems possible.",
+        "plan": {
+          "goal": "Navigate the fundamental impossibilities of distributed computing, analyze logical time, and trace state agreement via consensus algorithms.",
+          "concepts": [
+            "The 8 Fallacies of Distributed Computing",
+            "CAP Theorem mathematical trade-offs",
+            "PACELC Theorem extensions for latency",
+            "Clock Synchronization challenges and NTP limits",
+            "Wall Clock Time vs. Logical Time",
+            "Lamport Clocks and causality",
+            "Vector Clocks and concurrent event detection",
+            "The necessity of Consensus Algorithms",
+            "Paxos theoretical complexity vs. Raft understandability",
+            "Raft mechanics: Leader Election and Log Replication"
+          ],
+          "sourceRefs": [
+            "Phase 4: Distributed Systems Theory",
+            "Layer 5: Distributed Systems Theory",
+            "Raft: In Search of an Understandable Consensus Algorithm"
+          ],
+          "prerequisites": [
+            "Transaction Isolation Levels",
+            "TCP Flow Control and Sliding Windows"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 10,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "application",
+            "true_false"
+          ]
+        }
+      },
+      {
+        "id": 7,
+        "title": "Distributed Data: Partitioning and Replication",
+        "estimated_minutes": 150,
+        "description": "To store petabytes of data, databases must span hundreds of machines. This module explores how to partition data without creating massive hotspots, and how to replicate it while managing the delicate balance of consistency and availability.",
+        "plan": {
+          "goal": "Design horizontally scalable data stores using advanced partitioning formulas, consistent hashing, and quorum-based replication.",
+          "concepts": [
+            "Horizontal partitioning (Sharding) vs. vertical scaling",
+            "Shard Key selection criteria and the Hot Key problem",
+            "Consistent Hashing mathematics",
+            "Hash rings and Virtual Nodes for load distribution",
+            "Quorums formula (R + W > N)",
+            "Tuning Read/Write quorums for speed vs. integrity",
+            "Gossip Protocols for decentralized state propagation",
+            "Dynamo: Amazon's Highly Available Key-value Store principles",
+            "Bigtable: Distributed Storage System for Structured Data principles"
+          ],
+          "sourceRefs": [
+            "Phase 5: Scalability Patterns",
+            "Dynamo: Amazon’s Highly Available Key-value Store",
+            "Bigtable: A Distributed Storage System for Structured Data"
+          ],
+          "prerequisites": [
+            "CAP Theorem mathematical trade-offs",
+            "Raft mechanics: Leader Election and Log Replication"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 8,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "application",
+            "true_false"
+          ]
+        }
+      },
+      {
+        "id": 8,
+        "title": "Scalability Patterns and Traffic Management",
+        "estimated_minutes": 150,
+        "description": "Serving millions of concurrent users requires aggressively offloading work from primary databases and intelligently distributing network traffic. This module covers load balancing, caching hierarchies, and asynchronous architectures.",
+        "plan": {
+          "goal": "Architect traffic distribution, caching tiers, and asynchronous event-driven workflows to handle massive user scale without degradation.",
+          "concepts": [
+            "Layer 4 (Transport) vs. Layer 7 (Application) Load Balancing",
+            "Load Balancing Algorithms: Least Connections, IP Hash",
+            "Caching Strategies: Cache Aside, Write-Through, Write-Behind",
+            "Cache Eviction Policies: LRU, LFU, ARC",
+            "The Cache Stampede / Thundering Herd problem and mitigations",
+            "Asynchronous Processing architectural patterns",
+            "Message Brokers mechanics (Kafka append-only logs vs. RabbitMQ queues)",
+            "Message Delivery guarantees: At-least-once, At-most-once, Exactly-once"
+          ],
+          "sourceRefs": [
+            "Phase 5: Scalability Patterns",
+            "Layer 4: Scalability Patterns"
+          ],
+          "prerequisites": [
+            "Consistent Hashing mathematics",
+            "Horizontal partitioning (Sharding)"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 8,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "application",
+            "true_false"
+          ]
+        }
+      },
+      {
+        "id": 9,
+        "title": "Resilience, Observability, and Advanced Architecture",
+        "estimated_minutes": 150,
+        "description": "Systems will fail. A mature architecture expects failure and is designed to heal itself automatically. This module shifts focus from scaling up to surviving catastrophe, ensuring systems degrade gracefully and remain observable.",
+        "plan": {
+          "goal": "Design self-healing, observable distributed systems implementing advanced fault-tolerance patterns and isolated execution cells.",
+          "concepts": [
+            "Distributed Failure Modes and cascading failures",
+            "Circuit Breaker pattern states and thresholds",
+            "Retries with Exponential Backoff and Jitter",
+            "Rate Limiting algorithms: Token Bucket, Leaky Bucket, Sliding Window",
+            "The Three Pillars of Observability: Metrics, Logging, Tracing",
+            "Event Sourcing principles and auditability",
+            "Command Query Responsibility Segregation (CQRS)",
+            "Microservices network overhead and distributed monolith risks",
+            "Cell-Based Architecture for blast radius isolation"
+          ],
+          "sourceRefs": [
+            "Phase 6: Reliability & Observability",
+            "Layer 6: Advanced Architectural Patterns"
+          ],
+          "prerequisites": [
+            "Asynchronous Processing architectural patterns",
+            "Layer 4 (Transport) vs. Layer 7 (Application) Load Balancing"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 8,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "application",
+            "true_false"
+          ]
+        }
+      },
+      {
+        "id": 10,
+        "title": "Capstone: Deconstructing Global-Scale Systems",
+        "estimated_minutes": 150,
+        "description": "Theoretical knowledge must be mapped to reality. This capstone applies every principle learned—from L1 caches to B-Trees to Consensus algorithms—by architecting a global video streaming platform akin to Netflix.",
+        "plan": {
+          "goal": "Synthesize hardware, network, storage, and distributed systems primitives to architect and mathematically justify a global-scale streaming service.",
+          "concepts": [
+            "System Bottleneck Identification (CPU vs. RAM vs. Disk vs. Network)",
+            "Distributed Worker Queues for mass data ingestion and transcoding",
+            "Object Storage (S3) vs. Block Storage for media",
+            "Distributed NoSQL deployment for metadata high availability",
+            "Edge computing and Content Delivery Networks (CDN) caching",
+            "Anycast DNS routing and geographical latency optimization",
+            "Graceful failover and circuit breaking in complex topologies",
+            "The Google File System (GFS) paper principles applied",
+            "MapReduce paradigm for distributed data processing"
+          ],
+          "sourceRefs": [
+            "Worked Example: Designing a Global Video Streaming Service",
+            "The Google File System (GFS)",
+            "MapReduce: Simplified Data Processing on Large Clusters"
+          ],
+          "prerequisites": [
+            "Circuit Breaker pattern states and thresholds",
+            "Message Brokers mechanics (Kafka append-only logs vs. RabbitMQ queues)",
+            "Edge computing and Content Delivery Networks (CDN) caching"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 10,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "application",
+            "true_false"
+          ]
+        }
+      }
+    ]
+  },
+  "production": {
+    "moduleCount": 10,
+    "totalMinutes": 1080,
+    "modules": [
+      {
+        "id": 1,
+        "title": "The Physics of a Single Machine: Hardware & OS Primitives",
+        "conceptCount": 8,
+        "minutes": 120
+      },
+      {
+        "id": 2,
+        "title": "Network Internals and Transport Layer Mechanics",
+        "conceptCount": 8,
+        "minutes": 90
+      },
+      {
+        "id": 3,
+        "title": "Storage Engine Mechanics and Indexing Depth",
+        "conceptCount": 8,
+        "minutes": 120
+      },
+      {
+        "id": 4,
+        "title": "Transaction Theory and Concurrency Control",
+        "conceptCount": 7,
+        "minutes": 90
+      },
+      {
+        "id": 5,
+        "title": "Distributed Foundations: Time, Consensus, and Consistency",
+        "conceptCount": 8,
+        "minutes": 150
+      },
+      {
+        "id": 6,
+        "title": "Data Distribution: Partitioning and Replication",
+        "conceptCount": 7,
+        "minutes": 120
+      },
+      {
+        "id": 7,
+        "title": "High-Scale Traffic Management and Caching",
+        "conceptCount": 7,
+        "minutes": 90
+      },
+      {
+        "id": 8,
+        "title": "Asynchronous Processing and Messaging Patterns",
+        "conceptCount": 7,
+        "minutes": 90
+      },
+      {
+        "id": 9,
+        "title": "Resilience, Reliability, and Observability",
+        "conceptCount": 7,
+        "minutes": 100
+      },
+      {
+        "id": 10,
+        "title": "Advanced Architectural Paradigms & Case Studies",
+        "conceptCount": 7,
+        "minutes": 110
+      }
+    ]
+  },
+  "generated": {
+    "moduleCount": 10,
+    "totalMinutes": 1500,
+    "modules": [
+      {
+        "id": 1,
+        "title": "Hardware and OS Primitives (The Physics of Computing)",
+        "conceptCount": 11,
+        "minutes": 150
+      },
+      {
+        "id": 2,
+        "title": "Network Internals and the Transport Layer",
+        "conceptCount": 9,
+        "minutes": 150
+      },
+      {
+        "id": 3,
+        "title": "Application Protocols and Data Serialization",
+        "conceptCount": 9,
+        "minutes": 120
+      },
+      {
+        "id": 4,
+        "title": "Single-Node Storage Engines and Indexing",
+        "conceptCount": 9,
+        "minutes": 150
+      },
+      {
+        "id": 5,
+        "title": "Transaction Theory and Concurrency Control",
+        "conceptCount": 8,
+        "minutes": 150
+      },
+      {
+        "id": 6,
+        "title": "Distributed Systems Theory: Time, State, and Consensus",
+        "conceptCount": 10,
+        "minutes": 180
+      },
+      {
+        "id": 7,
+        "title": "Distributed Data: Partitioning and Replication",
+        "conceptCount": 9,
+        "minutes": 150
+      },
+      {
+        "id": 8,
+        "title": "Scalability Patterns and Traffic Management",
+        "conceptCount": 8,
+        "minutes": 150
+      },
+      {
+        "id": 9,
+        "title": "Resilience, Observability, and Advanced Architecture",
+        "conceptCount": 9,
+        "minutes": 150
+      },
+      {
+        "id": 10,
+        "title": "Capstone: Deconstructing Global-Scale Systems",
+        "conceptCount": 9,
+        "minutes": 150
+      }
+    ]
+  }
+}

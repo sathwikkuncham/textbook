@@ -1,0 +1,178 @@
+{
+  "topicId": 29,
+  "slug": "understanding-large-language-models-llms",
+  "displayName": "Understanding Large Language Models (LLMs)",
+  "sourceType": "topic_only",
+  "latencyMs": 26311,
+  "rawOutput": "{\n  \"topic\": \"Understanding Large Language Models (LLMs)\",\n  \"topic_slug\": \"understanding-llms-bottom-up-conceptual\",\n  \"level\": \"Absolute Beginner\",\n  \"goal\": \"Personal curiosity—demystifying the 'magic' of AI for a non-technical learner\",\n  \"estimated_total_minutes\": 25,\n  \"modules\": [\n    {\n      \"id\": 1,\n      \"title\": \"The AI's Alphabet: How Computers 'Read' Words\",\n      \"estimated_minutes\": 6,\n      \"description\": \"Before an AI can answer your questions, it has to convert human language into something a machine can process. This module breaks down the very first step of the bottom-up journey: turning words into numbers and organizing them into a 'map of meaning.'\",\n      \"plan\": {\n        \"goal\": \"Explain how text is chopped into pieces and assigned mathematical locations so a computer can understand relationships between words without knowing what the words actually are.\",\n        \"concepts\": [\n          \"Tokens (The LEGO bricks of language)\",\n          \"Embeddings (The GPS map of meaning)\",\n          \"Concept clustering (Why 'king' and 'queen' live in the same neighborhood)\"\n        ],\n        \"sourceRefs\": [\n          \"Phase 1: The Foundation (The 'Alphabet' of AI)\",\n          \"Phase 1: The Building Blocks (Bottom-Up)\"\n        ],\n        \"prerequisites\": []\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 3,\n        \"pass_threshold\": 70,\n        \"question_types\": [\n          \"conceptual\",\n          \"analogy_matching\"\n        ]\n      }\n    },\n    {\n      \"id\": 2,\n      \"title\": \"The Brain's Engine: How the Model Learns to 'Think'\",\n      \"estimated_minutes\": 8,\n      \"description\": \"Now that we know how the AI reads, we need to understand how it was trained. This module covers the core mechanism behind the magic: a massive game of high-stakes autocomplete, guided by a revolutionary context-matching system.\",\n      \"plan\": {\n        \"goal\": \"Understand that an LLM is fundamentally predicting the next word, and explain how the 'Attention' mechanism helps it remember context to make accurate predictions.\",\n        \"concepts\": [\n          \"Next-Token Prediction (Super-autocomplete)\",\n          \"The Transformer Architecture\",\n          \"Attention Mechanism (The 'Matchmaker' for context)\",\n          \"Training on internet-scale data\"\n        ],\n        \"sourceRefs\": [\n          \"Phase 2: The Mechanism (How it 'Thinks')\",\n          \"Phase 2: How It 'Understands' (The Magic of Scale)\"\n        ],\n        \"prerequisites\": [\n          \"Tokens\",\n          \"Embeddings\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 4,\n        \"pass_threshold\": 75,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\"\n        ]\n      }\n    },\n    {\n      \"id\": 3,\n      \"title\": \"Hitting 'Send': From Chaos to Conversation\",\n      \"estimated_minutes\": 6,\n      \"description\": \"You asked what exactly happens the second you hit send. This module walks through the inference process (the AI \\\"cooking\\\" its response) and explains why the AI sounds like a polite, helpful human rather than a chaotic robot.\",\n      \"plan\": {\n        \"goal\": \"Trace the exact sequence of events from submitting a prompt to receiving a response, and explain how human feedback shaped the AI's polite personality.\",\n        \"concepts\": [\n          \"Inference (The Prediction/Cooking process)\",\n          \"The Base Model vs. The Chat Model\",\n          \"RLHF (Reinforcement Learning from Human Feedback)\",\n          \"Context windows and prompt processing\"\n        ],\n        \"sourceRefs\": [\n          \"Phase 4: Why it feels so 'Human' (RLHF)\",\n          \"Bottom-Up Summary for a Beginner (The Chef Analogy)\"\n        ],\n        \"prerequisites\": [\n          \"Next-Token Prediction\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 3,\n        \"pass_threshold\": 70,\n        \"question_types\": [\n          \"conceptual\",\n          \"true_false\"\n        ]\n      }\n    },\n    {\n      \"id\": 4,\n      \"title\": \"Demystifying the Magic: Does it Actually Understand?\",\n      \"estimated_minutes\": 5,\n      \"description\": \"The final piece of the puzzle. AI can write poetry and debug code, which makes it feel incredibly human. This module explains the difference between human comprehension and the AI's 'statistical mirror,' wrapping up the demystification of the model.\",\n      \"plan\": {\n        \"goal\": \"Differentiate between human comprehension and AI's statistical pattern matching, and describe how scale leads to 'Emergent' abilities.\",\n        \"concepts\": [\n          \"Emergence (The 'water vs. wetness' analogy)\",\n          \"Statistical Understanding vs. Human Understanding\",\n          \"The Super-Librarian analogy\",\n          \"General Purpose Translation\"\n        ],\n        \"sourceRefs\": [\n          \"Phase 3: The 'Understanding' (How it generates value)\",\n          \"Phase 3: Why It Feels So Valuable\"\n        ],\n        \"prerequisites\": [\n          \"Attention Mechanism\",\n          \"Training on internet-scale data\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 3,\n        \"pass_threshold\": 70,\n        \"question_types\": [\n          \"conceptual\",\n          \"true_false\"\n        ]\n      }\n    }\n  ]\n}",
+  "parsed": {
+    "topic": "Understanding Large Language Models (LLMs)",
+    "topic_slug": "understanding-llms-bottom-up-conceptual",
+    "level": "Absolute Beginner",
+    "goal": "Personal curiosity—demystifying the 'magic' of AI for a non-technical learner",
+    "estimated_total_minutes": 25,
+    "modules": [
+      {
+        "id": 1,
+        "title": "The AI's Alphabet: How Computers 'Read' Words",
+        "estimated_minutes": 6,
+        "description": "Before an AI can answer your questions, it has to convert human language into something a machine can process. This module breaks down the very first step of the bottom-up journey: turning words into numbers and organizing them into a 'map of meaning.'",
+        "plan": {
+          "goal": "Explain how text is chopped into pieces and assigned mathematical locations so a computer can understand relationships between words without knowing what the words actually are.",
+          "concepts": [
+            "Tokens (The LEGO bricks of language)",
+            "Embeddings (The GPS map of meaning)",
+            "Concept clustering (Why 'king' and 'queen' live in the same neighborhood)"
+          ],
+          "sourceRefs": [
+            "Phase 1: The Foundation (The 'Alphabet' of AI)",
+            "Phase 1: The Building Blocks (Bottom-Up)"
+          ],
+          "prerequisites": []
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 3,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "analogy_matching"
+          ]
+        }
+      },
+      {
+        "id": 2,
+        "title": "The Brain's Engine: How the Model Learns to 'Think'",
+        "estimated_minutes": 8,
+        "description": "Now that we know how the AI reads, we need to understand how it was trained. This module covers the core mechanism behind the magic: a massive game of high-stakes autocomplete, guided by a revolutionary context-matching system.",
+        "plan": {
+          "goal": "Understand that an LLM is fundamentally predicting the next word, and explain how the 'Attention' mechanism helps it remember context to make accurate predictions.",
+          "concepts": [
+            "Next-Token Prediction (Super-autocomplete)",
+            "The Transformer Architecture",
+            "Attention Mechanism (The 'Matchmaker' for context)",
+            "Training on internet-scale data"
+          ],
+          "sourceRefs": [
+            "Phase 2: The Mechanism (How it 'Thinks')",
+            "Phase 2: How It 'Understands' (The Magic of Scale)"
+          ],
+          "prerequisites": [
+            "Tokens",
+            "Embeddings"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 4,
+          "pass_threshold": 75,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 3,
+        "title": "Hitting 'Send': From Chaos to Conversation",
+        "estimated_minutes": 6,
+        "description": "You asked what exactly happens the second you hit send. This module walks through the inference process (the AI \"cooking\" its response) and explains why the AI sounds like a polite, helpful human rather than a chaotic robot.",
+        "plan": {
+          "goal": "Trace the exact sequence of events from submitting a prompt to receiving a response, and explain how human feedback shaped the AI's polite personality.",
+          "concepts": [
+            "Inference (The Prediction/Cooking process)",
+            "The Base Model vs. The Chat Model",
+            "RLHF (Reinforcement Learning from Human Feedback)",
+            "Context windows and prompt processing"
+          ],
+          "sourceRefs": [
+            "Phase 4: Why it feels so 'Human' (RLHF)",
+            "Bottom-Up Summary for a Beginner (The Chef Analogy)"
+          ],
+          "prerequisites": [
+            "Next-Token Prediction"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 3,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "true_false"
+          ]
+        }
+      },
+      {
+        "id": 4,
+        "title": "Demystifying the Magic: Does it Actually Understand?",
+        "estimated_minutes": 5,
+        "description": "The final piece of the puzzle. AI can write poetry and debug code, which makes it feel incredibly human. This module explains the difference between human comprehension and the AI's 'statistical mirror,' wrapping up the demystification of the model.",
+        "plan": {
+          "goal": "Differentiate between human comprehension and AI's statistical pattern matching, and describe how scale leads to 'Emergent' abilities.",
+          "concepts": [
+            "Emergence (The 'water vs. wetness' analogy)",
+            "Statistical Understanding vs. Human Understanding",
+            "The Super-Librarian analogy",
+            "General Purpose Translation"
+          ],
+          "sourceRefs": [
+            "Phase 3: The 'Understanding' (How it generates value)",
+            "Phase 3: Why It Feels So Valuable"
+          ],
+          "prerequisites": [
+            "Attention Mechanism",
+            "Training on internet-scale data"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 3,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "true_false"
+          ]
+        }
+      }
+    ]
+  },
+  "generated": {
+    "moduleCount": 4,
+    "totalMinutes": 25,
+    "modules": [
+      {
+        "id": 1,
+        "title": "The AI's Alphabet: How Computers 'Read' Words",
+        "conceptCount": 3,
+        "minutes": 6
+      },
+      {
+        "id": 2,
+        "title": "The Brain's Engine: How the Model Learns to 'Think'",
+        "conceptCount": 4,
+        "minutes": 8
+      },
+      {
+        "id": 3,
+        "title": "Hitting 'Send': From Chaos to Conversation",
+        "conceptCount": 4,
+        "minutes": 6
+      },
+      {
+        "id": 4,
+        "title": "Demystifying the Magic: Does it Actually Understand?",
+        "conceptCount": 4,
+        "minutes": 5
+      }
+    ]
+  }
+}

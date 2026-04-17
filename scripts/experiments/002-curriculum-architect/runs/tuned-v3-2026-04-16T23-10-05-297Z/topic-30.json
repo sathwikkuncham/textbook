@@ -1,0 +1,179 @@
+{
+  "topicId": 30,
+  "slug": "turboquant-ai-efficiency-concepts",
+  "displayName": "Turboquant: AI Efficiency Concepts",
+  "sourceType": "topic_only",
+  "latencyMs": 26200,
+  "rawOutput": "{\n  \"topic\": \"Turboquant: AI Efficiency Concepts\",\n  \"topic_slug\": \"turboquant-ai-efficiency-concepts\",\n  \"level\": \"Beginner\",\n  \"goal\": \"Conceptual understanding to participate in discussions about AI efficiency\",\n  \"estimated_total_minutes\": 60,\n  \"modules\": [\n    {\n      \"id\": 1,\n      \"title\": \"The AI Memory Wall: Why Models Get Too Big\",\n      \"estimated_minutes\": 15,\n      \"description\": \"Before understanding how we shrink AI memory, we need to understand why it gets so bloated. This module explains the 'KV Cache' concept in plain English.\",\n      \"plan\": {\n        \"goal\": \"Explain why reading long documents causes AI models to run out of memory.\",\n        \"concepts\": [\n          \"The Context Window (how much text an AI can remember at once)\",\n          \"KV Cache (the AI's 'working memory')\",\n          \"The Memory Bottleneck (e.g., 80GB needed just to remember 128K words)\",\n          \"Compute vs. Memory in modern AI\"\n        ],\n        \"sourceRefs\": [\n          \"Research Context: Foundations - Section 3.A (Long-Context LLM Inference)\",\n          \"Research Context: Foundations - Section 3 (Foundational Concepts)\"\n        ],\n        \"prerequisites\": []\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 3,\n        \"pass_threshold\": 66,\n        \"question_types\": [\n          \"conceptual\",\n          \"true_false\"\n        ]\n      }\n    },\n    {\n      \"id\": 2,\n      \"title\": \"Quantization 101: Shrinking the Brain\",\n      \"estimated_minutes\": 15,\n      \"description\": \"Introduces the general concept of quantization—compressing data to save space—and the traditional trade-offs involved.\",\n      \"plan\": {\n        \"goal\": \"Define quantization and explain the typical trade-off between memory efficiency and AI accuracy.\",\n        \"concepts\": [\n          \"What is Quantization? (Moving from high precision to low precision)\",\n          \"Bit representation (e.g., 16-bit down to 3-bit)\",\n          \"The traditional Efficiency vs. Accuracy trade-off\",\n          \"Memory overhead (why traditional methods need extra storage for 'scales')\"\n        ],\n        \"sourceRefs\": [\n          \"Research Context: Foundations - Section 1 (The Core Innovation)\"\n        ],\n        \"prerequisites\": [\n          \"KV Cache (the AI's 'working memory')\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 4,\n        \"pass_threshold\": 75,\n        \"question_types\": [\n          \"conceptual\",\n          \"true_false\"\n        ]\n      }\n    },\n    {\n      \"id\": 3,\n      \"title\": \"The Magic of Turboquant\",\n      \"estimated_minutes\": 15,\n      \"description\": \"Explains how Turboquant achieves extreme compression without losing accuracy, using high-level analogies instead of deep math.\",\n      \"plan\": {\n        \"goal\": \"Describe the two steps Turboquant uses to compress AI memory by 6x without making the AI 'dumb'.\",\n        \"concepts\": [\n          \"Data-oblivious (Plug-and-play: no training data needed)\",\n          \"Stage 1: 'Smearing' the data (Random Rotation to handle outliers)\",\n          \"Stage 2: Fixing the blind spots (1-bit bias correction to keep attention accurate)\",\n          \"Performance wins: 6x memory reduction, 8x speedup, zero accuracy loss at 3 bits\"\n        ],\n        \"sourceRefs\": [\n          \"Research Context: Foundations - Section 1 (Core Architecture)\",\n          \"Research Context: Foundations - Section 2 (Key Performance Benchmarks)\"\n        ],\n        \"prerequisites\": [\n          \"What is Quantization? (Moving from high precision to low precision)\",\n          \"The traditional Efficiency vs. Accuracy trade-off\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 4,\n        \"pass_threshold\": 75,\n        \"question_types\": [\n          \"conceptual\"\n        ]\n      }\n    },\n    {\n      \"id\": 4,\n      \"title\": \"Talking Points: Real-World Impact & Future Trends\",\n      \"estimated_minutes\": 15,\n      \"description\": \"Brings everything together into practical conversational points. Focuses on what Turboquant enables in the real world and key terminology to use with peers.\",\n      \"plan\": {\n        \"goal\": \"Confidently discuss the real-world applications of Turboquant, from running massive AI on laptops to economic impacts.\",\n        \"concepts\": [\n          \"Edge AI (Running massive models locally on MacBooks and phones)\",\n          \"Semantic Vector Search (RAG pipelines dropping from Terabytes to Gigabytes of RAM)\",\n          \"Market/Economic Impact (Software efficiency reducing demand for expensive memory chips)\",\n          \"Key distinction: Turboquant targets 'Activations/Cache', not just model 'Weights'\",\n          \"Buzzword review: Data-oblivious, KV Cache, 3-bit compression\"\n        ],\n        \"sourceRefs\": [\n          \"Research Context: Foundations - Section 3 (Real-World Applications)\",\n          \"Research Context: Foundations - Section 4 (Common Misconceptions)\",\n          \"Research Context: Foundations - Section 5 (Market Impact)\"\n        ],\n        \"prerequisites\": [\n          \"Data-oblivious (Plug-and-play: no training data needed)\",\n          \"KV Cache (the AI's 'working memory')\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 5,\n        \"pass_threshold\": 80,\n        \"question_types\": [\n          \"application\",\n          \"true_false\"\n        ]\n      }\n    }\n  ]\n}",
+  "parsed": {
+    "topic": "Turboquant: AI Efficiency Concepts",
+    "topic_slug": "turboquant-ai-efficiency-concepts",
+    "level": "Beginner",
+    "goal": "Conceptual understanding to participate in discussions about AI efficiency",
+    "estimated_total_minutes": 60,
+    "modules": [
+      {
+        "id": 1,
+        "title": "The AI Memory Wall: Why Models Get Too Big",
+        "estimated_minutes": 15,
+        "description": "Before understanding how we shrink AI memory, we need to understand why it gets so bloated. This module explains the 'KV Cache' concept in plain English.",
+        "plan": {
+          "goal": "Explain why reading long documents causes AI models to run out of memory.",
+          "concepts": [
+            "The Context Window (how much text an AI can remember at once)",
+            "KV Cache (the AI's 'working memory')",
+            "The Memory Bottleneck (e.g., 80GB needed just to remember 128K words)",
+            "Compute vs. Memory in modern AI"
+          ],
+          "sourceRefs": [
+            "Research Context: Foundations - Section 3.A (Long-Context LLM Inference)",
+            "Research Context: Foundations - Section 3 (Foundational Concepts)"
+          ],
+          "prerequisites": []
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 3,
+          "pass_threshold": 66,
+          "question_types": [
+            "conceptual",
+            "true_false"
+          ]
+        }
+      },
+      {
+        "id": 2,
+        "title": "Quantization 101: Shrinking the Brain",
+        "estimated_minutes": 15,
+        "description": "Introduces the general concept of quantization—compressing data to save space—and the traditional trade-offs involved.",
+        "plan": {
+          "goal": "Define quantization and explain the typical trade-off between memory efficiency and AI accuracy.",
+          "concepts": [
+            "What is Quantization? (Moving from high precision to low precision)",
+            "Bit representation (e.g., 16-bit down to 3-bit)",
+            "The traditional Efficiency vs. Accuracy trade-off",
+            "Memory overhead (why traditional methods need extra storage for 'scales')"
+          ],
+          "sourceRefs": [
+            "Research Context: Foundations - Section 1 (The Core Innovation)"
+          ],
+          "prerequisites": [
+            "KV Cache (the AI's 'working memory')"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 4,
+          "pass_threshold": 75,
+          "question_types": [
+            "conceptual",
+            "true_false"
+          ]
+        }
+      },
+      {
+        "id": 3,
+        "title": "The Magic of Turboquant",
+        "estimated_minutes": 15,
+        "description": "Explains how Turboquant achieves extreme compression without losing accuracy, using high-level analogies instead of deep math.",
+        "plan": {
+          "goal": "Describe the two steps Turboquant uses to compress AI memory by 6x without making the AI 'dumb'.",
+          "concepts": [
+            "Data-oblivious (Plug-and-play: no training data needed)",
+            "Stage 1: 'Smearing' the data (Random Rotation to handle outliers)",
+            "Stage 2: Fixing the blind spots (1-bit bias correction to keep attention accurate)",
+            "Performance wins: 6x memory reduction, 8x speedup, zero accuracy loss at 3 bits"
+          ],
+          "sourceRefs": [
+            "Research Context: Foundations - Section 1 (Core Architecture)",
+            "Research Context: Foundations - Section 2 (Key Performance Benchmarks)"
+          ],
+          "prerequisites": [
+            "What is Quantization? (Moving from high precision to low precision)",
+            "The traditional Efficiency vs. Accuracy trade-off"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 4,
+          "pass_threshold": 75,
+          "question_types": [
+            "conceptual"
+          ]
+        }
+      },
+      {
+        "id": 4,
+        "title": "Talking Points: Real-World Impact & Future Trends",
+        "estimated_minutes": 15,
+        "description": "Brings everything together into practical conversational points. Focuses on what Turboquant enables in the real world and key terminology to use with peers.",
+        "plan": {
+          "goal": "Confidently discuss the real-world applications of Turboquant, from running massive AI on laptops to economic impacts.",
+          "concepts": [
+            "Edge AI (Running massive models locally on MacBooks and phones)",
+            "Semantic Vector Search (RAG pipelines dropping from Terabytes to Gigabytes of RAM)",
+            "Market/Economic Impact (Software efficiency reducing demand for expensive memory chips)",
+            "Key distinction: Turboquant targets 'Activations/Cache', not just model 'Weights'",
+            "Buzzword review: Data-oblivious, KV Cache, 3-bit compression"
+          ],
+          "sourceRefs": [
+            "Research Context: Foundations - Section 3 (Real-World Applications)",
+            "Research Context: Foundations - Section 4 (Common Misconceptions)",
+            "Research Context: Foundations - Section 5 (Market Impact)"
+          ],
+          "prerequisites": [
+            "Data-oblivious (Plug-and-play: no training data needed)",
+            "KV Cache (the AI's 'working memory')"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 5,
+          "pass_threshold": 80,
+          "question_types": [
+            "application",
+            "true_false"
+          ]
+        }
+      }
+    ]
+  },
+  "generated": {
+    "moduleCount": 4,
+    "totalMinutes": 60,
+    "modules": [
+      {
+        "id": 1,
+        "title": "The AI Memory Wall: Why Models Get Too Big",
+        "conceptCount": 4,
+        "minutes": 15
+      },
+      {
+        "id": 2,
+        "title": "Quantization 101: Shrinking the Brain",
+        "conceptCount": 4,
+        "minutes": 15
+      },
+      {
+        "id": 3,
+        "title": "The Magic of Turboquant",
+        "conceptCount": 4,
+        "minutes": 15
+      },
+      {
+        "id": 4,
+        "title": "Talking Points: Real-World Impact & Future Trends",
+        "conceptCount": 5,
+        "minutes": 15
+      }
+    ]
+  }
+}

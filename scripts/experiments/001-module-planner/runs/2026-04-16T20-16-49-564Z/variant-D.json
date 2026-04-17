@@ -1,0 +1,55 @@
+{
+  "variant": {
+    "id": "D",
+    "name": "PRO + depth + raw transcript",
+    "description": "Variant C but with the raw interview transcript instead of compressed summary.",
+    "model": "gemini-3.1-pro-preview"
+  },
+  "runs": [
+    {
+      "variantId": "D",
+      "runNumber": 1,
+      "latencyMs": 9142,
+      "rawOutput": "{\n  \"done\": false,\n  \"title\": \"Information Theory and Shannon Entropy: Measuring Surprise\",\n  \"scope\": \"Introduce Claude Shannon's foundational idea of treating communication as a measurable flow of information. Build an intuitive understanding of 'entropy' as a measure of unpredictability or surprise in language sequences, establishing why predicting the next word is the mathematical core of generative AI.\",\n  \"concepts\": [\n    \"Information Theory and Shannon Entropy\"\n  ],\n  \"estimatedSections\": 6\n}",
+      "parsed": {
+        "done": false,
+        "title": "Information Theory and Shannon Entropy: Measuring Surprise",
+        "scope": "Introduce Claude Shannon's foundational idea of treating communication as a measurable flow of information. Build an intuitive understanding of 'entropy' as a measure of unpredictability or surprise in language sequences, establishing why predicting the next word is the mathematical core of generative AI.",
+        "concepts": [
+          "Information Theory and Shannon Entropy"
+        ],
+        "estimatedSections": 6
+      }
+    },
+    {
+      "variantId": "D",
+      "runNumber": 2,
+      "latencyMs": 16474,
+      "rawOutput": "{\n  \"done\": false,\n  \"title\": \"Before Computers: Andrey Markov and the Genesis of Next-Token Prediction\",\n  \"scope\": \"We will begin our chronological journey in 1913, long before modern computers, to understand the very first generative language model. By exploring how Andrey Markov analyzed poetry to predict the probability of the next letter, we will build an intuitive, first-principles understanding of sequence prediction and state transitions—the absolute bedrock of all language modeling.\",\n  \"concepts\": [\n    \"Markov Chains and n-gram models\"\n  ],\n  \"estimatedSections\": 6\n}",
+      "parsed": {
+        "done": false,
+        "title": "Before Computers: Andrey Markov and the Genesis of Next-Token Prediction",
+        "scope": "We will begin our chronological journey in 1913, long before modern computers, to understand the very first generative language model. By exploring how Andrey Markov analyzed poetry to predict the probability of the next letter, we will build an intuitive, first-principles understanding of sequence prediction and state transitions—the absolute bedrock of all language modeling.",
+        "concepts": [
+          "Markov Chains and n-gram models"
+        ],
+        "estimatedSections": 6
+      }
+    },
+    {
+      "variantId": "D",
+      "runNumber": 3,
+      "latencyMs": 12882,
+      "rawOutput": "{\n  \"done\": false,\n  \"title\": \"The Dawn of Predictability: Information Theory and Shannon Entropy\",\n  \"scope\": \"Introduce Claude Shannon's revolutionary 1948 premise that communication can be quantified probabilistically. This section will build an intuitive, first-principles understanding of 'Entropy' as a measure of surprise or uncertainty in predicting the next letter or word, laying the absolute foundation for all generative modeling.\",\n  \"concepts\": [\n    \"Information Theory and Shannon Entropy\"\n  ],\n  \"estimatedSections\": 6\n}",
+      "parsed": {
+        "done": false,
+        "title": "The Dawn of Predictability: Information Theory and Shannon Entropy",
+        "scope": "Introduce Claude Shannon's revolutionary 1948 premise that communication can be quantified probabilistically. This section will build an intuitive, first-principles understanding of 'Entropy' as a measure of surprise or uncertainty in predicting the next letter or word, laying the absolute foundation for all generative modeling.",
+        "concepts": [
+          "Information Theory and Shannon Entropy"
+        ],
+        "estimatedSections": 6
+      }
+    }
+  ]
+}

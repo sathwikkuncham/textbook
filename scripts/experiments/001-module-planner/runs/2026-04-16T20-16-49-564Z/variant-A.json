@@ -1,0 +1,58 @@
+{
+  "variant": {
+    "id": "A",
+    "name": "Baseline (current production)",
+    "description": "Exact current prompt, FLASH model, compressed interview context.",
+    "model": "gemini-3-flash-preview"
+  },
+  "runs": [
+    {
+      "variantId": "A",
+      "runNumber": 1,
+      "latencyMs": 4949,
+      "rawOutput": "{\n  \"done\": false,\n  \"title\": \"The Foundations of Probabilistic Language: Information Theory and Markovian Chains\",\n  \"scope\": \"Establish the mathematical bedrock of NLP by exploring Claude Shannon's Information Theory and the concept of entropy as a measure of predictability in language. Transition into the first formal computational models of text: Markov Chains and n-gram models, explaining how they treat language as a stochastic process governed by local dependency.\",\n  \"concepts\": [\"Information Theory and Shannon Entropy\", \"Markov Chains and n-gram models\"],\n  \"estimatedSections\": 3\n}",
+      "parsed": {
+        "done": false,
+        "title": "The Foundations of Probabilistic Language: Information Theory and Markovian Chains",
+        "scope": "Establish the mathematical bedrock of NLP by exploring Claude Shannon's Information Theory and the concept of entropy as a measure of predictability in language. Transition into the first formal computational models of text: Markov Chains and n-gram models, explaining how they treat language as a stochastic process governed by local dependency.",
+        "concepts": [
+          "Information Theory and Shannon Entropy",
+          "Markov Chains and n-gram models"
+        ],
+        "estimatedSections": 3
+      }
+    },
+    {
+      "variantId": "A",
+      "runNumber": 2,
+      "latencyMs": 5885,
+      "rawOutput": "{\n  \"done\": false,\n  \"title\": \"The Stochastic Nature of Language: Shannon Entropy and Markovian Chains\",\n  \"scope\": \"Establish the mathematical foundation of language as information. This section covers Shannon's definition of entropy as the limit of predictability and the transition to Markov Chains/n-grams as the first algorithmic attempts to model sequential probability in text, framed through the lens of a Senior Engineer's understanding of state machines and data compression.\",\n  \"concepts\": [\"Information Theory and Shannon Entropy\", \"Markov Chains and n-gram models\"],\n  \"estimatedSections\": 3\n}",
+      "parsed": {
+        "done": false,
+        "title": "The Stochastic Nature of Language: Shannon Entropy and Markovian Chains",
+        "scope": "Establish the mathematical foundation of language as information. This section covers Shannon's definition of entropy as the limit of predictability and the transition to Markov Chains/n-grams as the first algorithmic attempts to model sequential probability in text, framed through the lens of a Senior Engineer's understanding of state machines and data compression.",
+        "concepts": [
+          "Information Theory and Shannon Entropy",
+          "Markov Chains and n-gram models"
+        ],
+        "estimatedSections": 3
+      }
+    },
+    {
+      "variantId": "A",
+      "runNumber": 3,
+      "latencyMs": 4808,
+      "rawOutput": "{\n  \"done\": false,\n  \"title\": \"The Mathematical Birth of Language: Information Theory and Markovian Dynamics\",\n  \"scope\": \"Establish the first-principles of language as a stochastic process. This section introduces Claude Shannon's Information Theory to quantify language uncertainty (Entropy) and the transition into Markov Chains as the foundational generative models for sequence prediction.\",\n  \"concepts\": [\"Information Theory and Shannon Entropy\", \"Markov Chains and n-gram models\"],\n  \"estimatedSections\": 3\n}",
+      "parsed": {
+        "done": false,
+        "title": "The Mathematical Birth of Language: Information Theory and Markovian Dynamics",
+        "scope": "Establish the first-principles of language as a stochastic process. This section introduces Claude Shannon's Information Theory to quantify language uncertainty (Entropy) and the transition into Markov Chains as the foundational generative models for sequence prediction.",
+        "concepts": [
+          "Information Theory and Shannon Entropy",
+          "Markov Chains and n-gram models"
+        ],
+        "estimatedSections": 3
+      }
+    }
+  ]
+}

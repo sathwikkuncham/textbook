@@ -1,0 +1,169 @@
+{
+  "topicId": 29,
+  "slug": "understanding-large-language-models-llms",
+  "displayName": "Understanding Large Language Models (LLMs)",
+  "sourceType": "topic_only",
+  "runNumber": 1,
+  "latencyMs": 26552,
+  "rawOutput": "{\n  \"topic\": \"Understanding Large Language Models (LLMs)\",\n  \"topic_slug\": \"understanding-llms-non-technical\",\n  \"level\": \"Absolute Beginner\",\n  \"goal\": \"Personal curiosity—demystifying the 'magic' of AI for a non-technical learner\",\n  \"estimated_total_minutes\": 30,\n  \"modules\": [\n    {\n      \"id\": 1,\n      \"title\": \"The Building Blocks: How AI 'Reads' Words\",\n      \"estimated_minutes\": 10,\n      \"description\": \"Computers can only process numbers, not text. This module explores how an AI converts human language into mathematical 'LEGO bricks' and maps out their meanings, which matters because it is the fundamental first step in how LLMs process your prompts.\",\n      \"plan\": {\n        \"goal\": \"Explain how words are broken down into tokens and mapped as numbers to give the computer a mathematical sense of meaning.\",\n        \"concepts\": [\n          \"The limitation of computers reading text\",\n          \"Tokenization (The Alphabet of AI)\",\n          \"Breaking words into chunks vs. whole words\",\n          \"Embeddings (The Map of Meaning)\",\n          \"Vector space (Mapping words to coordinates)\",\n          \"Semantic proximity (How related words are grouped)\"\n        ],\n        \"sourceRefs\": [\n          \"Foundations: Phase 1\"\n        ],\n        \"prerequisites\": []\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 3,\n        \"pass_threshold\": 70,\n        \"question_types\": [\n          \"conceptual\",\n          \"true_false\"\n        ]\n      }\n    },\n    {\n      \"id\": 2,\n      \"title\": \"The Mechanism: How AI 'Thinks' and Predicts\",\n      \"estimated_minutes\": 10,\n      \"description\": \"It feels like the AI is thinking, but it is actually playing a high-speed game of autocomplete. This module matters because understanding 'attention' and 'prediction' removes the illusion of magic and reveals the mathematical engine powering these models.\",\n      \"plan\": {\n        \"goal\": \"Describe the process of next-token prediction and how the Transformer's attention mechanism tracks context across a sentence.\",\n        \"concepts\": [\n          \"Next-Token Prediction\",\n          \"The 'Super-Autocomplete' concept\",\n          \"Training on internet-scale data\",\n          \"The Transformer architecture\",\n          \"The Attention Mechanism (The Matchmaker)\",\n          \"Tracking context and word relationships in a sentence\"\n        ],\n        \"sourceRefs\": [\n          \"Foundations: Phase 2\"\n        ],\n        \"prerequisites\": [\n          \"Tokenization (The Alphabet of AI)\",\n          \"Embeddings (The Map of Meaning)\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 4,\n        \"pass_threshold\": 70,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\"\n        ]\n      }\n    },\n    {\n      \"id\": 3,\n      \"title\": \"Emergence & Polish: Why AI Feels So Human\",\n      \"estimated_minutes\": 10,\n      \"description\": \"A raw predictive model is chaotic and robotic. This module explains how massive scale creates 'emergent' intelligence and how human feedback trains the AI to be polite and helpful, which matters because it explains the gap between a raw algorithm and the conversational assistant you interact with.\",\n      \"plan\": {\n        \"goal\": \"Understand how scaling creates emergent abilities and how human feedback shapes the model's behavior to be conversational and useful.\",\n        \"concepts\": [\n          \"Pattern recognition vs. human understanding\",\n          \"The Statistical Mirror concept\",\n          \"Model Scaling and Emergent Properties\",\n          \"The Base Model's raw chaos\",\n          \"Reinforcement Learning from Human Feedback (RLHF)\",\n          \"General Purpose Translation (Turning thoughts to drafts)\"\n        ],\n        \"sourceRefs\": [\n          \"Foundations: Phase 3\",\n          \"Foundations: Phase 4\"\n        ],\n        \"prerequisites\": [\n          \"Next-Token Prediction\",\n          \"The Attention Mechanism (The Matchmaker)\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 3,\n        \"pass_threshold\": 70,\n        \"question_types\": [\n          \"conceptual\",\n          \"true_false\"\n        ]\n      }\n    }\n  ]\n}",
+  "parsed": {
+    "topic": "Understanding Large Language Models (LLMs)",
+    "topic_slug": "understanding-llms-non-technical",
+    "level": "Absolute Beginner",
+    "goal": "Personal curiosity—demystifying the 'magic' of AI for a non-technical learner",
+    "estimated_total_minutes": 30,
+    "modules": [
+      {
+        "id": 1,
+        "title": "The Building Blocks: How AI 'Reads' Words",
+        "estimated_minutes": 10,
+        "description": "Computers can only process numbers, not text. This module explores how an AI converts human language into mathematical 'LEGO bricks' and maps out their meanings, which matters because it is the fundamental first step in how LLMs process your prompts.",
+        "plan": {
+          "goal": "Explain how words are broken down into tokens and mapped as numbers to give the computer a mathematical sense of meaning.",
+          "concepts": [
+            "The limitation of computers reading text",
+            "Tokenization (The Alphabet of AI)",
+            "Breaking words into chunks vs. whole words",
+            "Embeddings (The Map of Meaning)",
+            "Vector space (Mapping words to coordinates)",
+            "Semantic proximity (How related words are grouped)"
+          ],
+          "sourceRefs": [
+            "Foundations: Phase 1"
+          ],
+          "prerequisites": []
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 3,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "true_false"
+          ]
+        }
+      },
+      {
+        "id": 2,
+        "title": "The Mechanism: How AI 'Thinks' and Predicts",
+        "estimated_minutes": 10,
+        "description": "It feels like the AI is thinking, but it is actually playing a high-speed game of autocomplete. This module matters because understanding 'attention' and 'prediction' removes the illusion of magic and reveals the mathematical engine powering these models.",
+        "plan": {
+          "goal": "Describe the process of next-token prediction and how the Transformer's attention mechanism tracks context across a sentence.",
+          "concepts": [
+            "Next-Token Prediction",
+            "The 'Super-Autocomplete' concept",
+            "Training on internet-scale data",
+            "The Transformer architecture",
+            "The Attention Mechanism (The Matchmaker)",
+            "Tracking context and word relationships in a sentence"
+          ],
+          "sourceRefs": [
+            "Foundations: Phase 2"
+          ],
+          "prerequisites": [
+            "Tokenization (The Alphabet of AI)",
+            "Embeddings (The Map of Meaning)"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 4,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 3,
+        "title": "Emergence & Polish: Why AI Feels So Human",
+        "estimated_minutes": 10,
+        "description": "A raw predictive model is chaotic and robotic. This module explains how massive scale creates 'emergent' intelligence and how human feedback trains the AI to be polite and helpful, which matters because it explains the gap between a raw algorithm and the conversational assistant you interact with.",
+        "plan": {
+          "goal": "Understand how scaling creates emergent abilities and how human feedback shapes the model's behavior to be conversational and useful.",
+          "concepts": [
+            "Pattern recognition vs. human understanding",
+            "The Statistical Mirror concept",
+            "Model Scaling and Emergent Properties",
+            "The Base Model's raw chaos",
+            "Reinforcement Learning from Human Feedback (RLHF)",
+            "General Purpose Translation (Turning thoughts to drafts)"
+          ],
+          "sourceRefs": [
+            "Foundations: Phase 3",
+            "Foundations: Phase 4"
+          ],
+          "prerequisites": [
+            "Next-Token Prediction",
+            "The Attention Mechanism (The Matchmaker)"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 3,
+          "pass_threshold": 70,
+          "question_types": [
+            "conceptual",
+            "true_false"
+          ]
+        }
+      }
+    ]
+  },
+  "production": {
+    "moduleCount": 3,
+    "totalMinutes": 30,
+    "modules": [
+      {
+        "id": 1,
+        "title": "The Building Blocks: Tokens and Word Maps",
+        "conceptCount": 7,
+        "minutes": 10
+      },
+      {
+        "id": 2,
+        "title": "The Prediction Engine: How AI 'Thinks'",
+        "conceptCount": 7,
+        "minutes": 10
+      },
+      {
+        "id": 3,
+        "title": "Emergence and the Human Touch",
+        "conceptCount": 7,
+        "minutes": 10
+      }
+    ]
+  },
+  "generated": {
+    "moduleCount": 3,
+    "totalMinutes": 30,
+    "modules": [
+      {
+        "id": 1,
+        "title": "The Building Blocks: How AI 'Reads' Words",
+        "conceptCount": 6,
+        "minutes": 10
+      },
+      {
+        "id": 2,
+        "title": "The Mechanism: How AI 'Thinks' and Predicts",
+        "conceptCount": 6,
+        "minutes": 10
+      },
+      {
+        "id": 3,
+        "title": "Emergence & Polish: Why AI Feels So Human",
+        "conceptCount": 6,
+        "minutes": 10
+      }
+    ]
+  }
+}

@@ -1,0 +1,174 @@
+{
+  "topicId": 29,
+  "slug": "understanding-large-language-models-llms",
+  "displayName": "Understanding Large Language Models (LLMs)",
+  "sourceType": "topic_only",
+  "latencyMs": 29577,
+  "rawOutput": "{\n  \"topic\": \"Understanding Large Language Models (LLMs)\",\n  \"topic_slug\": \"understanding-llms-non-technical\",\n  \"level\": \"Absolute Beginner\",\n  \"goal\": \"Personal curiosity—demystifying the 'magic' of AI for a non-technical learner\",\n  \"estimated_total_minutes\": 25,\n  \"modules\": [\n    {\n      \"id\": 1,\n      \"title\": \"Translating Words to Numbers: The Alphabet of AI\",\n      \"estimated_minutes\": 6,\n      \"description\": \"Computers don't read English; they only do math. This module strips away the magic by showing exactly how words are broken down into LEGO-like blocks and mapped like GPS coordinates so a computer can process them.\",\n      \"plan\": {\n        \"goal\": \"Explain how an LLM converts human words into numbers and spatial maps to understand relationships between concepts.\",\n        \"concepts\": [\n          \"Tokenization (breaking words into chunks)\",\n          \"Embeddings (the 3D map of meaning)\",\n          \"Concept proximity (why 'King' and 'Queen' are mathematically close)\"\n        ],\n        \"sourceRefs\": [\n          \"Phase 1: The Foundation (The 'Alphabet' of AI)\",\n          \"Phase 1: The Building Blocks (Bottom-Up)\"\n        ],\n        \"prerequisites\": []\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 3,\n        \"pass_threshold\": 66,\n        \"question_types\": [\n          \"conceptual\",\n          \"true_false\"\n        ]\n      }\n    },\n    {\n      \"id\": 2,\n      \"title\": \"Grasping Context: How AI 'Reads' a Sentence\",\n      \"estimated_minutes\": 6,\n      \"description\": \"If AI is just math, how does it know the difference between a river 'bank' and a money 'bank'? This module introduces the secret sauce that lets the model see the whole picture.\",\n      \"plan\": {\n        \"goal\": \"Understand how the 'Attention' mechanism allows the model to figure out the context of words without human comprehension.\",\n        \"concepts\": [\n          \"The Transformer architecture\",\n          \"Attention mechanism (the matchmaker)\",\n          \"Pattern recognition over true 'meaning'\"\n        ],\n        \"sourceRefs\": [\n          \"Phase 2: The Mechanism (How it 'Thinks')\"\n        ],\n        \"prerequisites\": [\n          \"Tokenization (breaking words into chunks)\",\n          \"Embeddings (the 3D map of meaning)\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 3,\n        \"pass_threshold\": 66,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\"\n        ]\n      }\n    },\n    {\n      \"id\": 3,\n      \"title\": \"The Super-Autocomplete: How the 'Brain' Was Taught\",\n      \"estimated_minutes\": 7,\n      \"description\": \"Tackling your question about how these models were trained. We will look at how forcing a machine to play a trillion games of 'guess the next word' accidentally taught it to reason.\",\n      \"plan\": {\n        \"goal\": \"Describe the training process of next-token prediction and how scaling up this simple task creates emergent, complex abilities.\",\n        \"concepts\": [\n          \"Next-Token Prediction (high-stakes autocomplete)\",\n          \"Training on internet-scale data\",\n          \"Emergence (how quantity of data creates new skills like reasoning or coding)\"\n        ],\n        \"sourceRefs\": [\n          \"Phase 3: The 'Understanding' (How it generates value)\",\n          \"Phase 2: How It 'Understands' (The Magic of Scale)\"\n        ],\n        \"prerequisites\": [\n          \"Pattern recognition over true 'meaning'\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 4,\n        \"pass_threshold\": 75,\n        \"question_types\": [\n          \"conceptual\",\n          \"true_false\"\n        ]\n      }\n    },\n    {\n      \"id\": 4,\n      \"title\": \"Hitting 'Send': What Happens When You Ask a Question\",\n      \"estimated_minutes\": 6,\n      \"description\": \"Connecting all the dots. We will walk through the exact, step-by-step process of what happens inside the machine the second you send a prompt, and why its answer feels so human.\",\n      \"plan\": {\n        \"goal\": \"Map out the inference process from user prompt to final answer, including how human feedback shapes the AI's polite tone.\",\n        \"concepts\": [\n          \"The Chef Analogy (Ingredients, Chopping, Spice Rack, Recipe, Cooking)\",\n          \"RLHF (Reinforcement Learning from Human Feedback)\",\n          \"Base models vs. Helpful assistants\",\n          \"The statistical mirror (why it feels human)\"\n        ],\n        \"sourceRefs\": [\n          \"Phase 4: Why it feels so 'Human' (RLHF)\",\n          \"Bottom-Up Summary for a Beginner\"\n        ],\n        \"prerequisites\": [\n          \"Next-Token Prediction (high-stakes autocomplete)\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 3,\n        \"pass_threshold\": 66,\n        \"question_types\": [\n          \"application\",\n          \"conceptual\"\n        ]\n      }\n    }\n  ]\n}",
+  "parsed": {
+    "topic": "Understanding Large Language Models (LLMs)",
+    "topic_slug": "understanding-llms-non-technical",
+    "level": "Absolute Beginner",
+    "goal": "Personal curiosity—demystifying the 'magic' of AI for a non-technical learner",
+    "estimated_total_minutes": 25,
+    "modules": [
+      {
+        "id": 1,
+        "title": "Translating Words to Numbers: The Alphabet of AI",
+        "estimated_minutes": 6,
+        "description": "Computers don't read English; they only do math. This module strips away the magic by showing exactly how words are broken down into LEGO-like blocks and mapped like GPS coordinates so a computer can process them.",
+        "plan": {
+          "goal": "Explain how an LLM converts human words into numbers and spatial maps to understand relationships between concepts.",
+          "concepts": [
+            "Tokenization (breaking words into chunks)",
+            "Embeddings (the 3D map of meaning)",
+            "Concept proximity (why 'King' and 'Queen' are mathematically close)"
+          ],
+          "sourceRefs": [
+            "Phase 1: The Foundation (The 'Alphabet' of AI)",
+            "Phase 1: The Building Blocks (Bottom-Up)"
+          ],
+          "prerequisites": []
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 3,
+          "pass_threshold": 66,
+          "question_types": [
+            "conceptual",
+            "true_false"
+          ]
+        }
+      },
+      {
+        "id": 2,
+        "title": "Grasping Context: How AI 'Reads' a Sentence",
+        "estimated_minutes": 6,
+        "description": "If AI is just math, how does it know the difference between a river 'bank' and a money 'bank'? This module introduces the secret sauce that lets the model see the whole picture.",
+        "plan": {
+          "goal": "Understand how the 'Attention' mechanism allows the model to figure out the context of words without human comprehension.",
+          "concepts": [
+            "The Transformer architecture",
+            "Attention mechanism (the matchmaker)",
+            "Pattern recognition over true 'meaning'"
+          ],
+          "sourceRefs": [
+            "Phase 2: The Mechanism (How it 'Thinks')"
+          ],
+          "prerequisites": [
+            "Tokenization (breaking words into chunks)",
+            "Embeddings (the 3D map of meaning)"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 3,
+          "pass_threshold": 66,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 3,
+        "title": "The Super-Autocomplete: How the 'Brain' Was Taught",
+        "estimated_minutes": 7,
+        "description": "Tackling your question about how these models were trained. We will look at how forcing a machine to play a trillion games of 'guess the next word' accidentally taught it to reason.",
+        "plan": {
+          "goal": "Describe the training process of next-token prediction and how scaling up this simple task creates emergent, complex abilities.",
+          "concepts": [
+            "Next-Token Prediction (high-stakes autocomplete)",
+            "Training on internet-scale data",
+            "Emergence (how quantity of data creates new skills like reasoning or coding)"
+          ],
+          "sourceRefs": [
+            "Phase 3: The 'Understanding' (How it generates value)",
+            "Phase 2: How It 'Understands' (The Magic of Scale)"
+          ],
+          "prerequisites": [
+            "Pattern recognition over true 'meaning'"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 4,
+          "pass_threshold": 75,
+          "question_types": [
+            "conceptual",
+            "true_false"
+          ]
+        }
+      },
+      {
+        "id": 4,
+        "title": "Hitting 'Send': What Happens When You Ask a Question",
+        "estimated_minutes": 6,
+        "description": "Connecting all the dots. We will walk through the exact, step-by-step process of what happens inside the machine the second you send a prompt, and why its answer feels so human.",
+        "plan": {
+          "goal": "Map out the inference process from user prompt to final answer, including how human feedback shapes the AI's polite tone.",
+          "concepts": [
+            "The Chef Analogy (Ingredients, Chopping, Spice Rack, Recipe, Cooking)",
+            "RLHF (Reinforcement Learning from Human Feedback)",
+            "Base models vs. Helpful assistants",
+            "The statistical mirror (why it feels human)"
+          ],
+          "sourceRefs": [
+            "Phase 4: Why it feels so 'Human' (RLHF)",
+            "Bottom-Up Summary for a Beginner"
+          ],
+          "prerequisites": [
+            "Next-Token Prediction (high-stakes autocomplete)"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 3,
+          "pass_threshold": 66,
+          "question_types": [
+            "application",
+            "conceptual"
+          ]
+        }
+      }
+    ]
+  },
+  "generated": {
+    "moduleCount": 4,
+    "totalMinutes": 25,
+    "modules": [
+      {
+        "id": 1,
+        "title": "Translating Words to Numbers: The Alphabet of AI",
+        "conceptCount": 3,
+        "minutes": 6
+      },
+      {
+        "id": 2,
+        "title": "Grasping Context: How AI 'Reads' a Sentence",
+        "conceptCount": 3,
+        "minutes": 6
+      },
+      {
+        "id": 3,
+        "title": "The Super-Autocomplete: How the 'Brain' Was Taught",
+        "conceptCount": 3,
+        "minutes": 7
+      },
+      {
+        "id": 4,
+        "title": "Hitting 'Send': What Happens When You Ask a Question",
+        "conceptCount": 4,
+        "minutes": 6
+      }
+    ]
+  }
+}

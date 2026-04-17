@@ -1,0 +1,224 @@
+{
+  "topicId": 31,
+  "slug": "psoriasis-pathophysiology-a-10-mark-answer",
+  "displayName": "Psoriasis Pathophysiology: A 10-Mark Answer",
+  "sourceType": "pdf",
+  "latencyMs": 30585,
+  "rawOutput": "{\n  \"topic\": \"Psoriasis Pathophysiology: A 10-Mark Answer\",\n  \"topic_slug\": \"psoriasis-pathophysiology-10-mark-pg-exam\",\n  \"level\": \"Advanced (Post-Graduate Medical)\",\n  \"goal\": \"Post-graduate dermatology exam preparation (specifically structured for a 10-mark theory answer)\",\n  \"estimated_total_minutes\": 300,\n  \"modules\": [\n    {\n      \"id\": 1,\n      \"title\": \"Etiology: Genetic Loci and Environmental Triggers\",\n      \"estimated_minutes\": 45,\n      \"description\": \"Lays the foundation by exploring the specific genetic susceptibility loci (PSORS1-9) and how environmental triggers prime the immune system, essential for the opening sections of a PG-level theory answer.\",\n      \"plan\": {\n        \"goal\": \"Identify and explain the role of PSORS loci, HLA-Cw6, and specific environmental triggers in initiating psoriasis.\",\n        \"concepts\": [\n          \"PSORS1-9 genetic loci\",\n          \"HLA-Cw6 allele association\",\n          \"IL23R and TNFAIP3 gene mutations\",\n          \"Koebner phenomenon mechanism\",\n          \"Streptococcal pharyngitis (guttate psoriasis trigger)\",\n          \"Drug-induced triggers (Lithium, Beta-blockers, NSAIDs)\"\n        ],\n        \"sourceRefs\": [\n          \"Chapter 31 Psoriasis\"\n        ],\n        \"prerequisites\": []\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 5,\n        \"pass_threshold\": 80,\n        \"question_types\": [\n          \"conceptual\",\n          \"application\"\n        ]\n      }\n    },\n    {\n      \"id\": 2,\n      \"title\": \"The Spark: Innate Immunity and the Initiation Phase\",\n      \"estimated_minutes\": 50,\n      \"description\": \"Dives into the immediate molecular response to keratinocyte stress. This module builds the first half of your pathophysiological flowchart.\",\n      \"plan\": {\n        \"goal\": \"Map the cascade from keratinocyte injury to the activation of Plasmacytoid Dendritic Cells via antimicrobial peptides.\",\n        \"concepts\": [\n          \"Keratinocyte stress and self-DNA/RNA release\",\n          \"Role of LL-37 (Cathelicidin)\",\n          \"LL-37/DNA complex formation\",\n          \"Toll-like receptors (TLR7/9)\",\n          \"Plasmacytoid Dendritic Cells (pDCs) activation\",\n          \"Interferon-alpha (IFN-\\u03b1) surge\"\n        ],\n        \"sourceRefs\": [\n          \"Chapter 31 Psoriasis\"\n        ],\n        \"prerequisites\": [\n          \"Etiology: Genetic Loci and Environmental Triggers\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 5,\n        \"pass_threshold\": 80,\n        \"question_types\": [\n          \"conceptual\",\n          \"pathway_sequencing\"\n        ]\n      }\n    },\n    {\n      \"id\": 3,\n      \"title\": \"The Engine: Adaptive Immunity and the IL-23/Th17 Axis\",\n      \"estimated_minutes\": 60,\n      \"description\": \"The highest-yield module for your exam. This covers the 'master regulator' pathways that examiners look for, detailing the shift from innate to adaptive immunity.\",\n      \"plan\": {\n        \"goal\": \"Diagram the IL-23/Th17 axis and differentiate the specific effector functions of IL-17A, IL-17F, and IL-22.\",\n        \"concepts\": [\n          \"Myeloid Dendritic Cells (mDCs) migration and activation\",\n          \"IL-12 pathway and Th1 cell differentiation (TNF-\\u03b1, IFN-\\u03b3)\",\n          \"IL-23 as the master regulator\",\n          \"Th17 and Th22 cell survival and proliferation\",\n          \"Effector mechanisms of IL-17A and IL-17F\",\n          \"Effector mechanisms of IL-22\"\n        ],\n        \"sourceRefs\": [\n          \"Chapter 31 Psoriasis\"\n        ],\n        \"prerequisites\": [\n          \"The Spark: Innate Immunity and the Initiation Phase\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 6,\n        \"pass_threshold\": 80,\n        \"question_types\": [\n          \"conceptual\",\n          \"molecular_interaction\",\n          \"true_false\"\n        ]\n      }\n    },\n    {\n      \"id\": 4,\n      \"title\": \"Clinical Translation: Histopathology and the Feed-Forward Loop\",\n      \"estimated_minutes\": 60,\n      \"description\": \"Connects the invisible molecular immunology to the visible histological slides and clinical signs you see on the ward. Crucial for scoring marks on clinico-pathological correlation.\",\n      \"plan\": {\n        \"goal\": \"Correlate specific cytokine activity with epidermal changes, histological hallmarks, and clinical signs (Auspitz sign).\",\n        \"concepts\": [\n          \"Keratinocyte hyperproliferation (28 days to 3-5 days transit time)\",\n          \"The inflammatory feed-forward circuit (CXCL8, CXCL1)\",\n          \"Acanthosis and elongated rete ridges\",\n          \"Parakeratosis pathophysiology\",\n          \"Munro\\u2019s Microabscesses (neutrophil infiltration)\",\n          \"Vascular dilation, angiogenesis, and the Auspitz sign\"\n        ],\n        \"sourceRefs\": [\n          \"Chapter 31 Psoriasis\"\n        ],\n        \"prerequisites\": [\n          \"The Engine: Adaptive Immunity and the IL-23/Th17 Axis\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 6,\n        \"pass_threshold\": 80,\n        \"question_types\": [\n          \"clinical_correlation\",\n          \"conceptual\",\n          \"image_feature_association\"\n        ]\n      }\n    },\n    {\n      \"id\": 5,\n      \"title\": \"Exam Synthesis: The 10-Mark Architecture & Flowcharts\",\n      \"estimated_minutes\": 85,\n      \"description\": \"Brings the entire 4-month mastery into a highly replicable, structured framework. Focuses on spatial memory, drawing flowcharts, and hitting the examiner's grading rubric.\",\n      \"plan\": {\n        \"goal\": \"Construct a complete, timed 10-mark theory answer including a comprehensive immunopathogenesis flowchart and biological target correlations.\",\n        \"concepts\": [\n          \"Structuring the 10-mark answer (Intro, Etiology, Innate, Adaptive, Histology)\",\n          \"Designing the macro-flowchart (Trigger -> AMPs -> pDCs -> mDCs -> IL-23 -> Th17 -> Keratinocytes)\",\n          \"Integrating the 'Feed-Forward' concept clearly in diagrams\",\n          \"Bonus point strategy: Linking pathophysiology to biologic targets (Anti-TNF-\\u03b1, Anti-IL-23, Anti-IL-17)\",\n          \"Summary tables for rapid examiner review\"\n        ],\n        \"sourceRefs\": [\n          \"Chapter 31 Psoriasis\"\n        ],\n        \"prerequisites\": [\n          \"Etiology: Genetic Loci and Environmental Triggers\",\n          \"Clinical Translation: Histopathology and the Feed-Forward Loop\"\n        ]\n      },\n      \"subtopics\": [],\n      \"generated\": false,\n      \"checkpoint\": {\n        \"type\": \"quiz\",\n        \"num_questions\": 3,\n        \"pass_threshold\": 100,\n        \"question_types\": [\n          \"essay_structuring\",\n          \"diagram_reproduction\",\n          \"rubric_checklist\"\n        ]\n      }\n    }\n  ]\n}",
+  "parsed": {
+    "topic": "Psoriasis Pathophysiology: A 10-Mark Answer",
+    "topic_slug": "psoriasis-pathophysiology-10-mark-pg-exam",
+    "level": "Advanced (Post-Graduate Medical)",
+    "goal": "Post-graduate dermatology exam preparation (specifically structured for a 10-mark theory answer)",
+    "estimated_total_minutes": 300,
+    "modules": [
+      {
+        "id": 1,
+        "title": "Etiology: Genetic Loci and Environmental Triggers",
+        "estimated_minutes": 45,
+        "description": "Lays the foundation by exploring the specific genetic susceptibility loci (PSORS1-9) and how environmental triggers prime the immune system, essential for the opening sections of a PG-level theory answer.",
+        "plan": {
+          "goal": "Identify and explain the role of PSORS loci, HLA-Cw6, and specific environmental triggers in initiating psoriasis.",
+          "concepts": [
+            "PSORS1-9 genetic loci",
+            "HLA-Cw6 allele association",
+            "IL23R and TNFAIP3 gene mutations",
+            "Koebner phenomenon mechanism",
+            "Streptococcal pharyngitis (guttate psoriasis trigger)",
+            "Drug-induced triggers (Lithium, Beta-blockers, NSAIDs)"
+          ],
+          "sourceRefs": [
+            "Chapter 31 Psoriasis"
+          ],
+          "prerequisites": []
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 5,
+          "pass_threshold": 80,
+          "question_types": [
+            "conceptual",
+            "application"
+          ]
+        }
+      },
+      {
+        "id": 2,
+        "title": "The Spark: Innate Immunity and the Initiation Phase",
+        "estimated_minutes": 50,
+        "description": "Dives into the immediate molecular response to keratinocyte stress. This module builds the first half of your pathophysiological flowchart.",
+        "plan": {
+          "goal": "Map the cascade from keratinocyte injury to the activation of Plasmacytoid Dendritic Cells via antimicrobial peptides.",
+          "concepts": [
+            "Keratinocyte stress and self-DNA/RNA release",
+            "Role of LL-37 (Cathelicidin)",
+            "LL-37/DNA complex formation",
+            "Toll-like receptors (TLR7/9)",
+            "Plasmacytoid Dendritic Cells (pDCs) activation",
+            "Interferon-alpha (IFN-α) surge"
+          ],
+          "sourceRefs": [
+            "Chapter 31 Psoriasis"
+          ],
+          "prerequisites": [
+            "Etiology: Genetic Loci and Environmental Triggers"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 5,
+          "pass_threshold": 80,
+          "question_types": [
+            "conceptual",
+            "pathway_sequencing"
+          ]
+        }
+      },
+      {
+        "id": 3,
+        "title": "The Engine: Adaptive Immunity and the IL-23/Th17 Axis",
+        "estimated_minutes": 60,
+        "description": "The highest-yield module for your exam. This covers the 'master regulator' pathways that examiners look for, detailing the shift from innate to adaptive immunity.",
+        "plan": {
+          "goal": "Diagram the IL-23/Th17 axis and differentiate the specific effector functions of IL-17A, IL-17F, and IL-22.",
+          "concepts": [
+            "Myeloid Dendritic Cells (mDCs) migration and activation",
+            "IL-12 pathway and Th1 cell differentiation (TNF-α, IFN-γ)",
+            "IL-23 as the master regulator",
+            "Th17 and Th22 cell survival and proliferation",
+            "Effector mechanisms of IL-17A and IL-17F",
+            "Effector mechanisms of IL-22"
+          ],
+          "sourceRefs": [
+            "Chapter 31 Psoriasis"
+          ],
+          "prerequisites": [
+            "The Spark: Innate Immunity and the Initiation Phase"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 6,
+          "pass_threshold": 80,
+          "question_types": [
+            "conceptual",
+            "molecular_interaction",
+            "true_false"
+          ]
+        }
+      },
+      {
+        "id": 4,
+        "title": "Clinical Translation: Histopathology and the Feed-Forward Loop",
+        "estimated_minutes": 60,
+        "description": "Connects the invisible molecular immunology to the visible histological slides and clinical signs you see on the ward. Crucial for scoring marks on clinico-pathological correlation.",
+        "plan": {
+          "goal": "Correlate specific cytokine activity with epidermal changes, histological hallmarks, and clinical signs (Auspitz sign).",
+          "concepts": [
+            "Keratinocyte hyperproliferation (28 days to 3-5 days transit time)",
+            "The inflammatory feed-forward circuit (CXCL8, CXCL1)",
+            "Acanthosis and elongated rete ridges",
+            "Parakeratosis pathophysiology",
+            "Munro’s Microabscesses (neutrophil infiltration)",
+            "Vascular dilation, angiogenesis, and the Auspitz sign"
+          ],
+          "sourceRefs": [
+            "Chapter 31 Psoriasis"
+          ],
+          "prerequisites": [
+            "The Engine: Adaptive Immunity and the IL-23/Th17 Axis"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 6,
+          "pass_threshold": 80,
+          "question_types": [
+            "clinical_correlation",
+            "conceptual",
+            "image_feature_association"
+          ]
+        }
+      },
+      {
+        "id": 5,
+        "title": "Exam Synthesis: The 10-Mark Architecture & Flowcharts",
+        "estimated_minutes": 85,
+        "description": "Brings the entire 4-month mastery into a highly replicable, structured framework. Focuses on spatial memory, drawing flowcharts, and hitting the examiner's grading rubric.",
+        "plan": {
+          "goal": "Construct a complete, timed 10-mark theory answer including a comprehensive immunopathogenesis flowchart and biological target correlations.",
+          "concepts": [
+            "Structuring the 10-mark answer (Intro, Etiology, Innate, Adaptive, Histology)",
+            "Designing the macro-flowchart (Trigger -> AMPs -> pDCs -> mDCs -> IL-23 -> Th17 -> Keratinocytes)",
+            "Integrating the 'Feed-Forward' concept clearly in diagrams",
+            "Bonus point strategy: Linking pathophysiology to biologic targets (Anti-TNF-α, Anti-IL-23, Anti-IL-17)",
+            "Summary tables for rapid examiner review"
+          ],
+          "sourceRefs": [
+            "Chapter 31 Psoriasis"
+          ],
+          "prerequisites": [
+            "Etiology: Genetic Loci and Environmental Triggers",
+            "Clinical Translation: Histopathology and the Feed-Forward Loop"
+          ]
+        },
+        "subtopics": [],
+        "generated": false,
+        "checkpoint": {
+          "type": "quiz",
+          "num_questions": 3,
+          "pass_threshold": 100,
+          "question_types": [
+            "essay_structuring",
+            "diagram_reproduction",
+            "rubric_checklist"
+          ]
+        }
+      }
+    ]
+  },
+  "generated": {
+    "moduleCount": 5,
+    "totalMinutes": 300,
+    "modules": [
+      {
+        "id": 1,
+        "title": "Etiology: Genetic Loci and Environmental Triggers",
+        "conceptCount": 6,
+        "minutes": 45
+      },
+      {
+        "id": 2,
+        "title": "The Spark: Innate Immunity and the Initiation Phase",
+        "conceptCount": 6,
+        "minutes": 50
+      },
+      {
+        "id": 3,
+        "title": "The Engine: Adaptive Immunity and the IL-23/Th17 Axis",
+        "conceptCount": 6,
+        "minutes": 60
+      },
+      {
+        "id": 4,
+        "title": "Clinical Translation: Histopathology and the Feed-Forward Loop",
+        "conceptCount": 6,
+        "minutes": 60
+      },
+      {
+        "id": 5,
+        "title": "Exam Synthesis: The 10-Mark Architecture & Flowcharts",
+        "conceptCount": 5,
+        "minutes": 85
+      }
+    ]
+  }
+}

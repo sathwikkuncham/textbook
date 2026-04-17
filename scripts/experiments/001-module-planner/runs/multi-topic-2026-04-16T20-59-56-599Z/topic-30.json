@@ -1,0 +1,82 @@
+{
+  "topic": {
+    "id": 30,
+    "slug": "turboquant-ai-efficiency-concepts",
+    "displayName": "Turboquant: AI Efficiency Concepts",
+    "moduleTitle": "The Memory Wall: Why AI Needs Turboquant",
+    "modulePlan": {
+      "goal": "Explain the relationship between AI context length and memory consumption.",
+      "concepts": [
+        "The Memory Wall",
+        "KV Cache (Key-Value Cache)",
+        "Linear growth of memory with context length",
+        "HBM (High Bandwidth Memory) constraints",
+        "GPU vs. Consumer hardware limitations",
+        "Long-context AI (128K+ tokens)",
+        "Cost-per-query economics"
+      ],
+      "sourceRefs": [
+        "Foundations: 1. The Core Innovation",
+        "Foundations: 3. Real-World Applications"
+      ],
+      "prerequisites": []
+    },
+    "compressedInterview": "Purpose: Conceptual understanding to participate in discussions about AI efficiency\nPrior knowledge: Beginner — limited knowledge of ML/Neural Networks\nDesired depth: High-level / Conceptual — explaining the 'how' and 'why' without deep math or code\nTime available: 1 hour total (paced for a slow reader)\nFocus areas: What is quantization?, Efficiency vs. Accuracy trade-offs, How Turboquant/Quantization enables AI on local devices, Key terminology for conversation\nSource type: General AI concept / Quantization tech",
+    "rawTranscript": "User: I want to learn about: Turboquant\n\nAssistant: That sounds like an interesting focus! To help me build the right path for you, are you looking at Turboquant in the context of a specific library (like the one for quant finance or model quantization) or perhaps a specific paper or course?\n\nUser: I want to learn about it completely how ai is using this technology\n\nAssistant: Got it—exploring how AI leverages quantization for performance is a great topic. To tailor the depth, how comfortable are you with machine learning basics? For example, do you already know how neural networks or large language models (LLMs) work, or should we start from the fundamentals?\n\nUser: I know very little basic\n\nAssistant: That's helpful to know! Since we're starting with the basics, I can make sure we cover the \"why\" before the \"how.\" One last thing to help me scope this out: are you looking for a high-level conceptual understanding of how this makes AI faster and more efficient, or do you want to eventually get hands-on with some code? Also, how much time do you have to dedicate to this—are we looking at a quick weekend deep-dive or a few hours a week over a month?\n\nUser: Incan read for 1 hour and I am slow reader i would like to understand and will be able to talk about this\n\nAssistant: Thanks for sharing that! Since you have about an hour and want to be able to discuss the topic confidently, we'll focus on the high-level \"magic\" of how quantization makes massive AI models small enough to run on everyday devices without losing their \"intelligence.\"",
+    "productionSubtopicCount": 4,
+    "productionSubtopicTitles": [
+      "The Expanding Mind: Understanding the Memory Wall",
+      "The Weight of Words: Why Memory Runs Out",
+      "Shrinking the Scratchpad: The Magic of Quantization",
+      "The Price of Memory: Why Efficiency Equals Access"
+    ],
+    "profileSummary": "Beginner · Conceptual · 1 hour · Slow reader · Limited ML knowledge · 7 concepts"
+  },
+  "runs": [
+    {
+      "runNumber": 1,
+      "latencyMs": 11658,
+      "parsed": {
+        "done": false,
+        "title": "The Memory Wall: Why AI Needs So Much Space",
+        "scope": "Introduce the concept of the 'Memory Wall'—the physical limit where AI is bottlenecked not by its ability to 'think' (compute), but by its ability to fetch and store data (memory). Compare everyday consumer hardware with specialized AI GPUs to explain why running large AI models is so difficult on normal devices.",
+        "concepts": [
+          "The Memory Wall",
+          "GPU vs. Consumer hardware limitations"
+        ],
+        "estimatedSections": 3
+      },
+      "rawOutput": "{\n  \"done\": false,\n  \"title\": \"The Memory Wall: Why AI Needs So Much Space\",\n  \"scope\": \"Introduce the concept of the 'Memory Wall'—the physical limit where AI is bottlenecked not by its ability to 'think' (compute), but by its ability to fetch and store data (memory). Compare everyday consumer hardware with specialized AI GPUs to explain why running large AI models is so difficult on normal devices.\",\n  \"concepts\": [\n    \"The Memory Wall\",\n    \"GPU vs. Consumer hardware limitations\"\n  ],\n  \"estimatedSections\": 3\n}"
+    },
+    {
+      "runNumber": 2,
+      "latencyMs": 11569,
+      "parsed": {
+        "done": false,
+        "title": "The AI's Working Memory: Long-Context AI and the Memory Wall",
+        "scope": "Introduce how AI processes text using 'context' through simple, everyday analogies. Explain the goal of 'Long-context AI' (like an AI trying to read a whole book at once) and introduce the 'Memory Wall'—the invisible barrier where an AI simply runs out of short-term memory space to hold the conversation.",
+        "concepts": [
+          "Long-context AI (128K+ tokens)",
+          "The Memory Wall"
+        ],
+        "estimatedSections": 4
+      },
+      "rawOutput": "{\n  \"done\": false,\n  \"title\": \"The AI's Working Memory: Long-Context AI and the Memory Wall\",\n  \"scope\": \"Introduce how AI processes text using 'context' through simple, everyday analogies. Explain the goal of 'Long-context AI' (like an AI trying to read a whole book at once) and introduce the 'Memory Wall'—the invisible barrier where an AI simply runs out of short-term memory space to hold the conversation.\",\n  \"concepts\": [\n    \"Long-context AI (128K+ tokens)\",\n    \"The Memory Wall\"\n  ],\n  \"estimatedSections\": 4\n}"
+    },
+    {
+      "runNumber": 3,
+      "latencyMs": 18928,
+      "parsed": {
+        "done": false,
+        "title": "The Big Squeeze: Why AI Struggles to Read Whole Books",
+        "scope": "Introduce the goal of modern AI to process massive amounts of text at once, known as long-context AI. Explain the fundamental barrier standing in the way: The Memory Wall, a physical bottleneck where an AI's processing speed outpaces its ability to fetch information from memory.",
+        "concepts": [
+          "Long-context AI (128K+ tokens)",
+          "The Memory Wall"
+        ],
+        "estimatedSections": 4
+      },
+      "rawOutput": "{\n  \"done\": false,\n  \"title\": \"The Big Squeeze: Why AI Struggles to Read Whole Books\",\n  \"scope\": \"Introduce the goal of modern AI to process massive amounts of text at once, known as long-context AI. Explain the fundamental barrier standing in the way: The Memory Wall, a physical bottleneck where an AI's processing speed outpaces its ability to fetch information from memory.\",\n  \"concepts\": [\n    \"Long-context AI (128K+ tokens)\",\n    \"The Memory Wall\"\n  ],\n  \"estimatedSections\": 4\n}"
+    }
+  ]
+}
