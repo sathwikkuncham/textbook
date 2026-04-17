@@ -1,8 +1,15 @@
 import type { LearnerIntentProfile } from "@/lib/types/learning";
 
 /**
- * Formats the full learner interview for injection into agent instructions.
- * ~300-400 tokens. Every agent that needs learner context should use this.
+ * UI-FACING SUMMARY ONLY.
+ *
+ * Returns the labeled-fields version of the learner profile. This is for
+ * display surfaces (confirmation card, settings page header, memory
+ * snapshots) and nothing else. It deliberately omits the raw transcript.
+ *
+ * DO NOT pass this to agents. Agents receive the full interview via
+ * `formatFullInterviewForAgent` below, which preserves the learner's own
+ * words — the richest signal we capture.
  */
 export function formatInterviewForAgent(
   intent: LearnerIntentProfile | Record<string, unknown>
@@ -22,7 +29,42 @@ export function formatInterviewForAgent(
 }
 
 /**
- * Derive display-only level from interview for DB/UI.
+ * THE canonical interview context for any downstream agent.
+ *
+ * Combines the labeled summary (quick scan) with the full raw intake
+ * transcript (the learner's own words). Agents should read the transcript
+ * first — it carries intent, register, and character that the summary
+ * flattens.
+ *
+ * Contract: every API route that hands learner context to an agent MUST
+ * use this function, never `formatInterviewForAgent`.
+ */
+export function formatFullInterviewForAgent(
+  intent: LearnerIntentProfile | Record<string, unknown>
+): string {
+  const summary = formatInterviewForAgent(intent);
+  const profile = intent as Record<string, unknown>;
+  const transcript = profile.rawTranscript as
+    | Array<{ role: string; content: string }>
+    | undefined;
+
+  if (!transcript || transcript.length === 0) {
+    return summary;
+  }
+
+  const transcriptText = transcript
+    .map((t) => `${t.role === "user" ? "User" : "Advisor"}: ${t.content}`)
+    .join("\n\n");
+
+  return `## Learner profile (labeled summary)
+${summary}
+
+## Full intake conversation (learner's own words)
+${transcriptText}`;
+}
+
+/**
+ * Derive display-only level from interview for DB/UI only.
  * NOT used by any agent — agents read the full interview.
  */
 export function deriveDisplayLevel(intent: LearnerIntentProfile | Record<string, unknown>): string {
@@ -38,7 +80,7 @@ export function deriveDisplayLevel(intent: LearnerIntentProfile | Record<string,
 }
 
 /**
- * Derive display-only time commitment from interview for DB/UI.
+ * Derive display-only time commitment from interview for DB/UI only.
  * NOT used by any agent — agents read the full interview.
  */
 export function deriveDisplayTimeCommitment(intent: LearnerIntentProfile | Record<string, unknown>): string {

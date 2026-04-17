@@ -13,7 +13,7 @@ import {
 } from "@/lib/db/repository";
 import { createCurriculumArchitect } from "@/agents/curriculum-architect";
 import { runAgent } from "@/agents/runner";
-import { formatInterviewForAgent } from "@/lib/interview-context";
+import { formatFullInterviewForAgent } from "@/lib/interview-context";
 
 export const maxDuration = 60;
 
@@ -74,7 +74,7 @@ export async function POST(request: NextRequest) {
     const learnerIntent = await findLearnerIntent(topicRecord.id);
 
     const interviewContext = learnerIntent
-      ? formatInterviewForAgent(learnerIntent as Record<string, unknown>)
+      ? formatFullInterviewForAgent(learnerIntent as Record<string, unknown>)
       : `Purpose: ${goal}`;
 
     const architect = createCurriculumArchitect(

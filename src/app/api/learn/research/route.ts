@@ -11,7 +11,7 @@ import {
 import { createResearchPipeline } from "@/agents/pipelines/research-pipeline";
 import { runAgent } from "@/agents/runner";
 import { deriveTopicName } from "@/agents/topic-namer";
-import { formatInterviewForAgent } from "@/lib/interview-context";
+import { formatFullInterviewForAgent } from "@/lib/interview-context";
 
 export const maxDuration = 120;
 
@@ -71,7 +71,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const interviewContext = learnerIntent
-      ? formatInterviewForAgent(learnerIntent as Record<string, unknown>)
+      ? formatFullInterviewForAgent(learnerIntent as Record<string, unknown>)
       : undefined;
 
     const pipeline = createResearchPipeline(topic, level, goal, interviewContext);

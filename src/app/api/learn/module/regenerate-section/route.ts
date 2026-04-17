@@ -12,7 +12,7 @@ import {
   saveContentEvaluation,
   getContentEvaluations,
 } from "@/lib/db/repository";
-import { formatInterviewForAgent } from "@/lib/interview-context";
+import { formatFullInterviewForAgent } from "@/lib/interview-context";
 import { createContentComposer } from "@/agents/content-composer";
 import { createContentEvaluator } from "@/agents/content-evaluator";
 import { createFetchSourceContentTool } from "@/agents/tools/fetch-source-content";
@@ -74,38 +74,38 @@ export async function POST(request: NextRequest) {
   // Build context (same as module/generate route)
   const learnerIntent = await findLearnerIntent(topicRecord.id);
   const interviewContext = learnerIntent
-    ? formatInterviewForAgent(learnerIntent as Record<string, unknown>)
+    ? formatFullInterviewForAgent(learnerIntent as Record<string, unknown>)
     : `Goal: ${curriculum.goal}`;
 
-  const contextParts: string[] = [];
-  if (learnerIntent) {
-    const intent = learnerIntent as Record<string, unknown>;
-    if (intent.purpose) contextParts.push(`Purpose: ${intent.purpose}`);
-    if (intent.priorKnowledge) contextParts.push(`Prior knowledge: ${intent.priorKnowledge}`);
-    if (intent.desiredDepth) contextParts.push(`Desired depth: ${intent.desiredDepth}`);
-    const focusAreas = intent.focusAreas as string[] | undefined;
-    if (focusAreas?.length) contextParts.push(`Focus areas: ${focusAreas.join(", ")}`);
-  }
+  // Learner context for the composer — starts from the full interview and
+  // layers in learned insights + recent behavioral observations. Agents see
+  // the raw transcript, not a re-derived labeled summary.
+  const contextParts: string[] = [interviewContext];
 
   const learnerInsights = await findLearnerInsights(topicRecord.id);
   if (learnerInsights) {
     const weakAreas = learnerInsights.weakAreas as string[];
     const style = learnerInsights.learningStyle as Record<string, unknown>;
-    if (weakAreas.length > 0) contextParts.push(`Weak areas: ${weakAreas.join(", ")}`);
-    if (style?.preferredApproach) contextParts.push(`Preferred approach: ${style.preferredApproach}`);
+    const insightLines: string[] = [];
+    if (weakAreas.length > 0) insightLines.push(`Weak areas: ${weakAreas.join(", ")}`);
+    if (style?.preferredApproach) insightLines.push(`Preferred approach: ${style.preferredApproach}`);
+    if (style?.paceCategory) insightLines.push(`Pace: ${style.paceCategory}`);
+    if (style?.helpSeekingPattern) insightLines.push(`Help-seeking pattern: ${style.helpSeekingPattern}`);
+    if (insightLines.length > 0) {
+      contextParts.push(`\n## Learned insights (from quiz + chat analysis)\n${insightLines.join("\n")}`);
+    }
   }
 
   const observations = await getRecentObservations(topicRecord.id, 25);
   if (observations.length > 0) {
     contextParts.push(
-      `\nLearning pattern observations:\n${observations.map((o) => `- ${o.observation}`).join("\n")}`
+      `\n## Learning pattern observations (from chat)\n${observations.map((o) => `- ${o.observation}`).join("\n")}`
     );
   }
 
-  const researchContext = JSON.stringify(research, null, 2)
-    .slice(0, 6000);
+  const researchContext = JSON.stringify(research, null, 2);
 
-  const learnerContext = contextParts.length > 0 ? contextParts.join("\n") : undefined;
+  const learnerContext = contextParts.join("\n");
 
   // Build tools
   const tools: BaseTool[] = [createFetchResearchContextTool(topicRecord.id)];

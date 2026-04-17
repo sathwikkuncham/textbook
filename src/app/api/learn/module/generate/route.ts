@@ -8,7 +8,7 @@ import {
   getRecentObservations,
   saveCurriculum,
 } from "@/lib/db/repository";
-import { formatInterviewForAgent } from "@/lib/interview-context";
+import { formatFullInterviewForAgent } from "@/lib/interview-context";
 import { orchestrateModule } from "@/agents/module-orchestrator";
 import type { Curriculum, Subtopic } from "@/lib/types/learning";
 
@@ -65,37 +65,37 @@ export async function POST(request: NextRequest) {
 
   const learnerIntent = await findLearnerIntent(topicRecord.id);
   const interviewContext = learnerIntent
-    ? formatInterviewForAgent(learnerIntent as Record<string, unknown>)
+    ? formatFullInterviewForAgent(learnerIntent as Record<string, unknown>)
     : `Goal: ${curriculum.goal}`;
 
-  // Learner context (observations + insights)
-  const contextParts: string[] = [];
-  if (learnerIntent) {
-    const intent = learnerIntent as Record<string, unknown>;
-    if (intent.purpose) contextParts.push(`Purpose: ${intent.purpose}`);
-    if (intent.priorKnowledge) contextParts.push(`Prior knowledge: ${intent.priorKnowledge}`);
-    if (intent.desiredDepth) contextParts.push(`Desired depth: ${intent.desiredDepth}`);
-    const focusAreas = intent.focusAreas as string[] | undefined;
-    if (focusAreas?.length) contextParts.push(`Focus areas: ${focusAreas.join(", ")}`);
-  }
+  // Learner context for the composer — starts from the full interview and
+  // layers in dynamically learned insights + recent behavioral observations.
+  // Agents must always see the raw interview as canonical, not a re-derived
+  // labeled summary.
+  const contextParts: string[] = [interviewContext];
 
   const learnerInsights = await findLearnerInsights(topicRecord.id);
   if (learnerInsights) {
     const weakAreas = learnerInsights.weakAreas as string[];
     const style = learnerInsights.learningStyle as Record<string, unknown>;
-    if (weakAreas.length > 0) contextParts.push(`Weak areas: ${weakAreas.join(", ")}`);
-    if (style?.preferredApproach) contextParts.push(`Preferred approach: ${style.preferredApproach}`);
+    const insightLines: string[] = [];
+    if (weakAreas.length > 0) insightLines.push(`Weak areas: ${weakAreas.join(", ")}`);
+    if (style?.preferredApproach) insightLines.push(`Preferred approach: ${style.preferredApproach}`);
+    if (style?.paceCategory) insightLines.push(`Pace: ${style.paceCategory}`);
+    if (style?.helpSeekingPattern) insightLines.push(`Help-seeking pattern: ${style.helpSeekingPattern}`);
+    if (insightLines.length > 0) {
+      contextParts.push(`\n## Learned insights (from quiz + chat analysis)\n${insightLines.join("\n")}`);
+    }
   }
 
   const observations = await getRecentObservations(topicRecord.id, 25);
   if (observations.length > 0) {
     contextParts.push(
-      `\nLearning pattern observations:\n${observations.map((o) => `- ${o.observation}`).join("\n")}`
+      `\n## Learning pattern observations (from chat)\n${observations.map((o) => `- ${o.observation}`).join("\n")}`
     );
   }
 
-  const researchContext = JSON.stringify(research, null, 2)
-    .slice(0, 6000);
+  const researchContext = JSON.stringify(research, null, 2);
 
   // Stream orchestrator events via SSE
   const encoder = new TextEncoder();
@@ -117,7 +117,7 @@ export async function POST(request: NextRequest) {
           sourcePath: topicRecord.sourcePath,
         });
 
-        let generatedSections: Array<{ title: string; score: number }> = [];
+        let generatedSections: Array<{ title: string; score: number; wordCount: number; estimatedMinutes: number }> = [];
 
         for await (const event of events) {
           controller.enqueue(
@@ -138,10 +138,14 @@ export async function POST(request: NextRequest) {
             updatedModule.subtopics = generatedSections.map((s, i): Subtopic => ({
               id: `${moduleId}.${i + 1}`,
               title: s.title,
-              estimated_minutes: 20, // approximate — sections vary
+              estimated_minutes: s.estimatedMinutes,
               key_concepts: [], // concepts are in the plan, not per-subtopic
               teaching_approach: "first-principles", // placeholder — agent decided dynamically
             }));
+            updatedModule.estimated_minutes = generatedSections.reduce(
+              (sum, s) => sum + s.estimatedMinutes,
+              0
+            );
             updatedModule.generated = true;
             await saveCurriculum(topicRecord.id, curriculum);
           }

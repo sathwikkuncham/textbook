@@ -16,6 +16,7 @@ import {
   getRecentObservations,
 } from "@/lib/db/repository";
 import { createContentComposer } from "@/agents/content-composer";
+import { formatFullInterviewForAgent } from "@/lib/interview-context";
 import { createContentEvaluator } from "@/agents/content-evaluator";
 import { createFetchSourceContentTool } from "@/agents/tools/fetch-source-content";
 import { createFetchPreviousSubtopicTool } from "@/agents/tools/fetch-previous-subtopic";
@@ -111,11 +112,7 @@ export async function POST(request: NextRequest) {
   }
 
   const subtopicDesc = `${subtopic.id}: ${subtopic.title} (key concepts: ${subtopic.key_concepts.join(", ")})`;
-  // Strip curly braces from research context — the @google/adk template
-  // engine interprets {word} patterns as context variables, so code examples
-  // like {useState} or {count} from React/JS research data cause errors.
-  const researchContext = JSON.stringify(research, null, 2)
-    .slice(0, 6000);
+  const researchContext = JSON.stringify(research, null, 2);
 
   // Compute subtopic position within the module
   const totalSubtopics = module.subtopics.length;
@@ -173,36 +170,36 @@ export async function POST(request: NextRequest) {
     // Subtopic expansion tool — agent can signal when scope is too broad
     tools.push(createSignalSubtopicExpansionTool(topicRecord.id, moduleId, subtopic.id));
 
-    // Fetch learner model + intent for adaptive content
+    // Learner context for the composer — starts from the full interview
+    // (the raw transcript is canonical) and layers in learned insights and
+    // recent behavioral observations on top.
     const contextParts: string[] = [];
 
-    // Learner intent from interview
     const learnerIntent = await findLearnerIntent(topicRecord.id);
     if (learnerIntent) {
-      const intent = learnerIntent as Record<string, unknown>;
-      if (intent.purpose) contextParts.push(`Purpose: ${intent.purpose}`);
-      if (intent.priorKnowledge) contextParts.push(`Prior knowledge: ${intent.priorKnowledge}`);
-      if (intent.desiredDepth) contextParts.push(`Desired depth: ${intent.desiredDepth}`);
-      const focusAreas = intent.focusAreas as string[] | undefined;
-      if (focusAreas?.length) contextParts.push(`Focus areas: ${focusAreas.join(", ")}`);
+      contextParts.push(
+        formatFullInterviewForAgent(learnerIntent as Record<string, unknown>)
+      );
     }
 
-    // Learner model from quiz/chat analysis
     const learnerInsights = await findLearnerInsights(topicRecord.id);
     if (learnerInsights) {
       const weakAreas = learnerInsights.weakAreas as string[];
       const style = learnerInsights.learningStyle as Record<string, unknown>;
-      if (weakAreas.length > 0) contextParts.push(`Weak areas: ${weakAreas.join(", ")}`);
-      if (style?.preferredApproach) contextParts.push(`Preferred approach: ${style.preferredApproach}`);
-      if (style?.paceCategory) contextParts.push(`Pace: ${style.paceCategory}`);
-      if (style?.helpSeekingPattern) contextParts.push(`Help-seeking: ${style.helpSeekingPattern}`);
+      const insightLines: string[] = [];
+      if (weakAreas.length > 0) insightLines.push(`Weak areas: ${weakAreas.join(", ")}`);
+      if (style?.preferredApproach) insightLines.push(`Preferred approach: ${style.preferredApproach}`);
+      if (style?.paceCategory) insightLines.push(`Pace: ${style.paceCategory}`);
+      if (style?.helpSeekingPattern) insightLines.push(`Help-seeking: ${style.helpSeekingPattern}`);
+      if (insightLines.length > 0) {
+        contextParts.push(`\n## Learned insights (from quiz + chat analysis)\n${insightLines.join("\n")}`);
+      }
     }
 
-    // Learner observations from chat interactions
     const observations = await getRecentObservations(topicRecord.id, 25);
     if (observations.length > 0) {
       contextParts.push(
-        `\nLearning pattern observations (from chat interactions):\n${observations.map((o) => `- ${o.observation}`).join("\n")}`
+        `\n## Learning pattern observations (from chat interactions)\n${observations.map((o) => `- ${o.observation}`).join("\n")}`
       );
     }
 

@@ -23,7 +23,7 @@ import { createFetchSourceContentTool } from "@/agents/tools/fetch-source-conten
 import { createFetchPreviousSubtopicTool } from "@/agents/tools/fetch-previous-subtopic";
 import { streamAgentText } from "@/agents/runner";
 import { generateSlug } from "@/lib/types/learning";
-import { formatInterviewForAgent } from "@/lib/interview-context";
+import { formatFullInterviewForAgent } from "@/lib/interview-context";
 import { extractObservation } from "@/lib/learner-observer";
 
 export const maxDuration = 120;
@@ -181,7 +181,7 @@ export async function POST(request: NextRequest) {
     // Original interview intent
     const learnerIntent = await findLearnerIntent(topicRecord.id);
     if (learnerIntent) {
-      contextParts.push(formatInterviewForAgent(learnerIntent as Record<string, unknown>));
+      contextParts.push(formatFullInterviewForAgent(learnerIntent as Record<string, unknown>));
     }
 
     // Learned insights from quiz/chat analysis
@@ -228,12 +228,13 @@ export async function POST(request: NextRequest) {
     fullMessage += `Learner's question: ${message}`;
   }
 
-  // Combine subtopic content with semantically retrieved source material
+  // Combine subtopic content with semantically retrieved source material.
+  // No truncation — the tutor receives the full section the learner is reading
+  // plus any retrieved source chunks in full. Compromising context here was
+  // a major driver of the "data dump" tutor responses we observed.
   const combinedContent = sourceContext
-    ? subtopicContent.slice(0, 4000) +
-      "\n\n---\nRelevant source material:\n" +
-      sourceContext.slice(0, 4000)
-    : subtopicContent.slice(0, 6000);
+    ? `${subtopicContent}\n\n---\nRelevant source material:\n${sourceContext}`
+    : subtopicContent;
 
   // Create the tutor agent
   const tutor = createChatTutor({

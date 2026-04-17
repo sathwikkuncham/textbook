@@ -6,7 +6,8 @@ import {
   findLearnerIntent,
 } from "@/lib/db/repository";
 import { generateSlug } from "@/lib/types/learning";
-import { formatInterviewForAgent } from "@/lib/interview-context";
+import { formatFullInterviewForAgent } from "@/lib/interview-context";
+import { MODELS } from "@/agents/models";
 
 const genAI = new GoogleGenerativeAI(
   process.env.GOOGLE_GENAI_API_KEY ?? ""
@@ -35,7 +36,7 @@ export async function POST(request: NextRequest) {
 
   const learnerIntent = await findLearnerIntent(topicRecord.id);
   const interviewContext = learnerIntent
-    ? formatInterviewForAgent(learnerIntent as Record<string, unknown>)
+    ? formatFullInterviewForAgent(learnerIntent as Record<string, unknown>)
     : null;
 
   const structure = await findSourceStructure(topicRecord.id);
@@ -65,7 +66,7 @@ Based on their level and goal, provide a brief recommendation (2-3 sentences) ab
 
   try {
     const model = genAI.getGenerativeModel({
-      model: "gemini-3-flash-preview",
+      model: MODELS.PRO,
     });
     const result = await model.generateContent(prompt);
     const recommendation = result.response.text();
