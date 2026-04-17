@@ -39,6 +39,7 @@ export function NewTopicForm() {
   const [sourceFile, setSourceFile] = useState<File | null>(null);
   const [sourceUrl, setSourceUrl] = useState("");
   const [inputValue, setInputValue] = useState("");
+  const [feedbackValue, setFeedbackValue] = useState("");
   const [isPipelineRunning, setIsPipelineRunning] = useState(false);
   const [pipelinePhase, setPipelinePhase] = useState<string | null>(null);
   const [formError, setFormError] = useState<string | null>(null);
@@ -104,12 +105,33 @@ export function NewTopicForm() {
   const handleConfirmAndStart = async () => {
     if (!interview.profile || isPipelineRunning) return;
 
+    // Capture any last-minute feedback the learner typed in the confirmation
+    // panel and append it to the raw transcript before we ship the profile
+    // downstream. Agents read the transcript as the canonical context.
+    // Build the augmented profile locally — setState is async, so we cannot
+    // rely on interview.profile reflecting the append immediately.
+    let profileToShip: LearnerIntentProfile = interview.profile;
+    if (feedbackValue.trim()) {
+      interview.appendLearnerFeedback(feedbackValue);
+      profileToShip = {
+        ...interview.profile,
+        rawTranscript: [
+          ...interview.profile.rawTranscript,
+          {
+            role: "user",
+            content: `[Additional context from the learner before we begin] ${feedbackValue.trim()}`,
+          },
+        ],
+      };
+      setFeedbackValue("");
+    }
+
     setIsPipelineRunning(true);
     setFormError(null);
-    const derivedLevel = deriveDisplayLevel(interview.profile);
-    const derivedTimeCommitment = deriveDisplayTimeCommitment(interview.profile);
+    const derivedLevel = deriveDisplayLevel(profileToShip);
+    const derivedTimeCommitment = deriveDisplayTimeCommitment(profileToShip);
     const topicName = topic.trim();
-    const goal = interview.profile.purpose || "general understanding";
+    const goal = profileToShip.purpose || "general understanding";
 
     // Check if topic already exists (retry scenario)
     const slug = generateSlug(topicName);
@@ -150,7 +172,7 @@ export function NewTopicForm() {
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
                 topicId: uploadData.topicId,
-                profile: interview.profile,
+                profile: profileToShip,
               }),
             });
           }
@@ -180,7 +202,7 @@ export function NewTopicForm() {
               level: derivedLevel,
               goal,
               timeCommitment: derivedTimeCommitment,
-              learnerIntent: interview.profile,
+              learnerIntent: profileToShip,
             }),
           });
           if (!researchRes.ok) throw new Error("Failed to create topic");
@@ -412,6 +434,19 @@ export function NewTopicForm() {
               {interview.profile.focusAreas.length > 0 && (
                 <p><span className="text-muted-foreground">Focus:</span> {interview.profile.focusAreas.join(", ")}</p>
               )}
+            </div>
+            <div className="mt-3">
+              <label className="mb-1.5 block text-xs text-muted-foreground">
+                Anything to add or correct before we begin? (optional)
+              </label>
+              <textarea
+                value={feedbackValue}
+                onChange={(e) => setFeedbackValue(e.target.value)}
+                placeholder="e.g. something I struggled with last time, a specific angle I care about, constraints I forgot to mention…"
+                rows={3}
+                disabled={isPipelineRunning}
+                className="w-full resize-none rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50"
+              />
             </div>
             <div className="mt-3 flex gap-2">
               <Button onClick={handleConfirmAndStart} disabled={isPipelineRunning} className="flex-1 gap-2" size="sm">

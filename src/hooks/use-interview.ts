@@ -174,6 +174,43 @@ export function useInterview(topicName?: string) {
     [messages, isLoading, phase, topicName]
   );
 
+  /**
+   * Append a final free-form note from the learner to the raw transcript.
+   *
+   * The labeled profile fields are a summary for UI display only. Downstream
+   * agents read the full transcript, so last-minute additions/corrections go
+   * in as an extra user turn at the tail of the conversation. This is the
+   * feedback mechanism at the end of the interview.
+   */
+  const appendLearnerFeedback = useCallback((note: string) => {
+    const trimmed = note.trim();
+    if (!trimmed) return;
+    const feedbackMsg: InterviewMessage = {
+      id: `user-feedback-${Date.now()}`,
+      role: "user",
+      content: `[Additional context from the learner before we begin] ${trimmed}`,
+    };
+    setMessages((prev) => {
+      const updated = [...prev, feedbackMsg];
+      setProfile((existingProfile) => {
+        if (!existingProfile) return existingProfile;
+        const nextProfile = {
+          ...existingProfile,
+          rawTranscript: updated.map((m) => ({ role: m.role, content: m.content })),
+        };
+        if (topicName) {
+          saveToStorage(topicName, {
+            messages: updated,
+            phase: "confirming",
+            profile: nextProfile,
+          });
+        }
+        return nextProfile;
+      });
+      return updated;
+    });
+  }, [topicName]);
+
   const confirmProfile = useCallback(() => {
     setPhase("complete");
     if (topicName) clearStorage(topicName);
@@ -195,6 +232,7 @@ export function useInterview(topicName?: string) {
     profile,
     error,
     sendMessage,
+    appendLearnerFeedback,
     confirmProfile,
     reset,
   };
