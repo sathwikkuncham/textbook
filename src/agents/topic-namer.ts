@@ -1,4 +1,5 @@
 import { GoogleGenAI } from "@google/genai";
+import { MODELS } from "./models";
 
 const CATEGORIES = [
   "programming",
@@ -54,7 +55,7 @@ Rules:
 
   try {
     const response = await ai.models.generateContent({
-      model: "gemini-2.0-flash",
+      model: MODELS.PRO,
       contents: prompt,
     });
 

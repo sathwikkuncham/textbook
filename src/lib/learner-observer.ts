@@ -1,4 +1,5 @@
 import { GoogleGenAI } from "@google/genai";
+import { MODELS } from "@/agents/models";
 
 /**
  * Extracts a concise learning-pattern observation from a chat exchange.
@@ -40,7 +41,7 @@ Observation (one sentence, or NONE):`;
 
   try {
     const response = await ai.models.generateContent({
-      model: "gemini-2.0-flash",
+      model: MODELS.PRO,
       contents: prompt,
     });
 

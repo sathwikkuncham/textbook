@@ -2,6 +2,7 @@ import {
   GoogleGenerativeAI,
   type Tool,
 } from "@google/generative-ai";
+import { MODELS } from "@/agents/models";
 
 const apiKey = process.env.GOOGLE_GENAI_API_KEY;
 
@@ -18,7 +19,7 @@ const genAI = new GoogleGenerativeAI(apiKey);
 export async function extractPDFWithGemini(
   buffer: Buffer,
   prompt: string,
-  model: string = "gemini-3-flash-preview"
+  model: string = MODELS.PRO
 ): Promise<string> {
   const base64 = buffer.toString("base64");
 
@@ -172,7 +173,7 @@ Do NOT summarize. Return the actual content from the book for this section.`;
 export async function extractURLWithGemini(
   url: string,
   prompt: string,
-  model: string = "gemini-3-flash-preview"
+  model: string = MODELS.PRO
 ): Promise<string> {
   const geminiModel = genAI.getGenerativeModel({
     model,
