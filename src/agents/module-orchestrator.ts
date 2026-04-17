@@ -40,15 +40,49 @@ export interface GeneratedSection {
   conceptsCovered: string[];
   content: string;
   evaluationScore: number;
+  wordCount: number;
+  estimatedMinutes: number;
 }
 
 export type OrchestratorEvent =
   | { type: "planning"; message: string }
   | { type: "section_start"; sectionNumber: number; totalEstimate: number; title: string }
-  | { type: "section_complete"; sectionNumber: number; title: string; score: number }
+  | { type: "section_complete"; sectionNumber: number; title: string; score: number; estimatedMinutes: number }
   | { type: "section_revision"; sectionNumber: number; title: string }
-  | { type: "module_complete"; totalSections: number; sections: Array<{ title: string; score: number }> }
+  | {
+      type: "module_complete";
+      totalSections: number;
+      sections: Array<{ title: string; score: number; wordCount: number; estimatedMinutes: number }>;
+    }
   | { type: "error"; message: string };
+
+/**
+ * Estimate reading time for generated content.
+ *
+ * Gemini output is primarily prose with inline math and diagrams. Technical
+ * prose averages ~180 words/minute of genuine engagement (not skimming).
+ * Diagrams and code blocks each add ~2 minutes of study time.
+ *
+ * Floor of 5 minutes — no section reads in under 5 minutes of attention.
+ */
+function estimateReadingMinutes(content: string): { wordCount: number; estimatedMinutes: number } {
+  const stripped = content
+    .replace(/```[\s\S]*?```/g, " CODEBLOCK ")
+    .replace(/~~~[\s\S]*?~~~/g, " DIAGRAM ")
+    .replace(/\$\$[\s\S]*?\$\$/g, " MATHBLOCK ");
+
+  const wordCount = stripped.split(/\s+/).filter((w) => w.length > 0).length;
+
+  const codeBlockCount = (content.match(/```[\s\S]*?```/g) ?? []).length;
+  const diagramCount = (content.match(/~~~mermaid[\s\S]*?~~~/g) ?? []).length;
+  const mathBlockCount = (content.match(/\$\$[\s\S]*?\$\$/g) ?? []).length;
+
+  const readingMinutes = wordCount / 180;
+  const visualMinutes = diagramCount * 2 + codeBlockCount * 1.5 + mathBlockCount * 1;
+  const estimatedMinutes = Math.max(5, Math.ceil(readingMinutes + visualMinutes));
+
+  return { wordCount, estimatedMinutes };
+}
 
 // ── Planner — decides what to teach next ──────────────────
 
@@ -78,16 +112,19 @@ async function planNextSection(
 
   const planner = new LlmAgent({
     name: "ModulePlanner",
-    model: MODELS.FLASH,
+    model: MODELS.PRO,
     description: "Plans the next section of a module",
-    instruction: () => `You are planning sections for a learning module. Your job is to decide what the NEXT section should cover.
+    instruction: () => `You are planning sections for a learning module. Your job is to decide what the NEXT section should cover — for this specific learner, not for a generic reader.
 
 ## Module
 Title: ${moduleTitle}
 Goal: ${plan.goal}
 All concepts to cover: ${allConcepts.join(", ")}
 
-## Learner Profile
+## Learner Profile — Intake Interview
+
+This is the intake context for the learner. Read their own words carefully — they carry depth preferences, pain points, constraints, and register that a summary alone cannot.
+
 ${interviewContext}
 
 ## What's Been Generated So Far
@@ -96,26 +133,39 @@ ${previousSummary}
 ## Remaining Concepts
 ${remaining.length > 0 ? remaining.join(", ") : "ALL concepts have been covered"}
 
+## CRITICAL: Honor the Learner's Stated Depth
+
+Re-read the learner's actual words above and identify:
+1. How much time did they say they have?
+2. How deeply do they want to understand?
+3. Are they rusty on prerequisites? (rusty means more scaffolding, not less)
+4. Did they use words like "from scratch", "bottom-up", "first principles", "no rush", "exhaustive"?
+
+Calibrate section count and per-section concept density to their stated depth:
+- Quick overview / limited time → 2-3 sections, 3-4 concepts per section
+- Standard depth → 3-5 sections, 2-3 concepts per section
+- Exhaustive / first principles / no time limit → 5-8 sections, 1-2 concepts per section
+
+Giving an "exhaustive, no time limit" learner two sections to cover six concepts is a failure — you are betraying their stated request. Err on the side of MORE sections, not fewer.
+
 ## Your Decision
 
-If all concepts have been adequately covered and the module goal can be considered met, return:
+If all concepts have been adequately covered AND the requested depth has been honored, return:
 {"done": true}
 
-Otherwise, decide the NEXT section. Consider:
-- What is the natural next step given what was just taught?
-- Group related concepts together — don't teach one concept per section
-- But don't cram too many concepts into one section either (2-4 concepts is typical)
-- The section should be scoped so the content agent can teach it deeply (not rush)
-- For the first section, start with the most foundational concepts
-- CRITICAL: Even if the learner is experienced, do NOT skip foundational concepts. Their experience informs pace and rigor, not what to skip. Teach from ground zero — just faster and deeper for experienced learners.
+Otherwise, decide the NEXT section. Rules:
+- Group only closely coupled concepts (a foundation and its direct application — yes; two distinct foundations — no). Two distinct foundations each deserve their own section.
+- The scope must give the content agent room to build intuition BEFORE formulas, derivations, or technical terms.
+- For the first section, begin with the single most foundational concept for THIS learner — which may differ from the source's opening chapter. Sequence by genuine dependency for this learner's mind, not by source order.
+- Experience informs pace and rigor, not what to skip. Even an expert learner who asked for foundations gets foundations — just taught at their pace.
 
 Return ONLY valid JSON (no markdown, no explanation):
 {
   "done": false,
-  "title": "Section title — specific to the content",
+  "title": "Section title — specific to the content, not generic",
   "scope": "A 2-3 sentence description of what this section should teach and how it connects to what came before",
   "concepts": ["concept1", "concept2"],
-  "estimatedSections": <your estimate of total sections needed for the full module>
+  "estimatedSections": <your estimate of total sections needed for the full module, matching the learner's depth request>
 }`,
     outputKey: "plan",
   });
@@ -358,6 +408,7 @@ export async function* orchestrateModule(
     ).catch((err) => console.warn("[orchestrator] Embedding failed:", err));
 
     // Track this section
+    const { wordCount, estimatedMinutes } = estimateReadingMinutes(finalContent);
     const section: GeneratedSection = {
       index: sectionIndex,
       title: decision.title,
@@ -365,6 +416,8 @@ export async function* orchestrateModule(
       conceptsCovered: decision.concepts ?? [],
       content: finalContent,
       evaluationScore,
+      wordCount,
+      estimatedMinutes,
     };
     sections.push(section);
     previousSummaries.push({
@@ -378,13 +431,19 @@ export async function* orchestrateModule(
       sectionNumber,
       title: decision.title,
       score: evaluationScore,
+      estimatedMinutes,
     };
   }
 
   yield {
     type: "module_complete",
     totalSections: sections.length,
-    sections: sections.map((s) => ({ title: s.title, score: s.evaluationScore })),
+    sections: sections.map((s) => ({
+      title: s.title,
+      score: s.evaluationScore,
+      wordCount: s.wordCount,
+      estimatedMinutes: s.estimatedMinutes,
+    })),
   };
 
   return sections;
