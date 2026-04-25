@@ -1,58 +1,42 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabase, STORAGE_BUCKET } from "@/lib/supabase/client";
-import { generateSlug } from "@/lib/types/learning";
 import { findTopicBySlug, createTopic, updatePipelinePhase } from "@/lib/db/repository";
-import { deriveTopicName } from "@/agents/topic-namer";
 
+// Finalizes a PDF upload after the browser has PUT the bytes directly to
+// Supabase Storage via a signed URL from /api/learn/source/signed-upload.
+// This route only writes the topic row + sourcePath; it never sees the file
+// bytes, so it's not subject to the platform body-size ceiling.
 export async function POST(request: NextRequest) {
-  const formData = await request.formData();
-  const file = formData.get("file") as File | null;
-  const topic = formData.get("topic") as string;
-  const level = formData.get("level") as string;
-  const goal = formData.get("goal") as string;
-  const timeCommitment = formData.get("timeCommitment") as string;
-  const sourceType = formData.get("sourceType") as string;
+  const body = await request.json();
+  const {
+    topic,
+    topicSlug,
+    displayName,
+    level,
+    goal,
+    timeCommitment,
+    sourceType,
+    storagePath,
+    fileName,
+    fileSize,
+    category,
+  } = body as {
+    topic?: string;
+    topicSlug?: string;
+    displayName?: string;
+    level?: string;
+    goal?: string;
+    timeCommitment?: string;
+    sourceType?: string;
+    storagePath?: string;
+    fileName?: string;
+    fileSize?: number;
+    category?: string;
+  };
 
-  if (!file || !topic) {
+  if (!topic || !topicSlug || !storagePath) {
     return NextResponse.json(
-      { error: "file and topic are required" },
+      { error: "topic, topicSlug, and storagePath are required" },
       { status: 400 }
-    );
-  }
-
-  const providedSlug = formData.get("slug") as string | null;
-  let topicSlug: string;
-  let displayName: string;
-
-  if (providedSlug) {
-    topicSlug = providedSlug;
-    displayName = topic;
-  } else {
-    // Derive a clean, concise topic name — same as URL and topic-only flows
-    const { name: derivedName, category: _category } = await deriveTopicName(
-      topic,
-      level || "intermediate",
-      goal || "general understanding"
-    );
-    topicSlug = generateSlug(derivedName);
-    displayName = derivedName;
-  }
-
-  const fileName = `${topicSlug}/${Date.now()}-${file.name}`;
-
-  const buffer = Buffer.from(await file.arrayBuffer());
-
-  const { error: uploadError } = await supabase.storage
-    .from(STORAGE_BUCKET)
-    .upload(fileName, buffer, {
-      contentType: file.type,
-      upsert: false,
-    });
-
-  if (uploadError) {
-    return NextResponse.json(
-      { error: `Upload failed: ${uploadError.message}` },
-      { status: 500 }
     );
   }
 
@@ -60,14 +44,14 @@ export async function POST(request: NextRequest) {
   if (!topicRecord) {
     topicRecord = await createTopic({
       slug: topicSlug,
-      displayName: displayName,
+      displayName: displayName || topic,
       level: level || "intermediate",
       goal: goal || "general understanding",
       timeCommitment: timeCommitment || "standard",
+      category,
     });
   }
 
-  // Update topic with source info — direct SQL update since createTopic doesn't include source fields
   const { db } = await import("@/lib/db/client");
   const { topics } = await import("@/lib/db/schema");
   const { eq } = await import("drizzle-orm");
@@ -75,7 +59,7 @@ export async function POST(request: NextRequest) {
     .update(topics)
     .set({
       sourceType: sourceType || "pdf",
-      sourcePath: fileName,
+      sourcePath: storagePath,
     })
     .where(eq(topics.id, topicRecord.id));
 
@@ -85,8 +69,8 @@ export async function POST(request: NextRequest) {
     success: true,
     topicSlug,
     topicId: topicRecord.id,
-    storagePath: fileName,
-    fileSize: buffer.length,
-    fileName: file.name,
+    storagePath,
+    fileSize: fileSize ?? null,
+    fileName: fileName ?? null,
   });
 }
