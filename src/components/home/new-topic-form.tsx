@@ -18,7 +18,6 @@ import { generateSlug } from "@/lib/types/learning";
 import type { SourceType, LearnerIntentProfile } from "@/lib/types/learning";
 import { useInterview } from "@/hooks/use-interview";
 import { deriveDisplayLevel, deriveDisplayTimeCommitment } from "@/lib/interview-context";
-import { getBrowserSupabase, STORAGE_BUCKET } from "@/lib/supabase/browser";
 
 async function readJsonOrThrow(res: Response, fallback: string): Promise<Record<string, unknown>> {
   if (!res.ok) {
@@ -188,12 +187,13 @@ export function NewTopicForm() {
             });
             const signedData = await readJsonOrThrow(signedRes, "Failed to prepare upload");
             const {
-              token,
+              signedUrl,
               path,
               topicSlug: derivedTopicSlug,
               displayName,
               category,
             } = signedData as {
+              signedUrl: string;
               token: string;
               path: string;
               topicSlug: string;
@@ -202,13 +202,24 @@ export function NewTopicForm() {
             };
 
             setPipelinePhase("Uploading PDF...");
-            const supabaseBrowser = getBrowserSupabase();
-            const { error: uploadErr } = await supabaseBrowser.storage
-              .from(STORAGE_BUCKET)
-              .uploadToSignedUrl(path, token, sourceFile, {
-                contentType: sourceFile.type || "application/pdf",
-              });
-            if (uploadErr) throw new Error(`Upload failed: ${uploadErr.message}`);
+            // PUT directly to the pre-authenticated Supabase URL. The token
+            // is embedded in signedUrl, so the browser doesn't need a
+            // Supabase client or the anon key. Bytes go straight to
+            // Supabase Storage — no Vercel function involved.
+            const putRes = await fetch(signedUrl, {
+              method: "PUT",
+              headers: {
+                "Content-Type": sourceFile.type || "application/pdf",
+                "x-upsert": "false",
+              },
+              body: sourceFile,
+            });
+            if (!putRes.ok) {
+              const detail = await putRes.text().catch(() => "");
+              throw new Error(
+                `Upload failed (HTTP ${putRes.status})${detail ? `: ${detail.slice(0, 200)}` : ""}`
+              );
+            }
 
             const finalizeRes = await fetch("/api/learn/source/upload", {
               method: "POST",
