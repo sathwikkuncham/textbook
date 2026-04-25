@@ -19,6 +19,27 @@ import type { SourceType, LearnerIntentProfile } from "@/lib/types/learning";
 import { useInterview } from "@/hooks/use-interview";
 import { deriveDisplayLevel, deriveDisplayTimeCommitment } from "@/lib/interview-context";
 
+async function readJsonOrThrow(res: Response, fallback: string): Promise<Record<string, unknown>> {
+  if (!res.ok) {
+    let message = `${fallback} (HTTP ${res.status})`;
+    try {
+      const text = await res.text();
+      if (text) {
+        try {
+          const parsed = JSON.parse(text) as { error?: string };
+          if (parsed.error) message = parsed.error;
+        } catch {
+          message = text.length > 200 ? `${text.slice(0, 200)}…` : text;
+        }
+      }
+    } catch {
+      // ignore — keep fallback
+    }
+    throw new Error(message);
+  }
+  return (await res.json()) as Record<string, unknown>;
+}
+
 const SOURCE_TABS: Array<{
   value: SourceType;
   label: string;
@@ -145,33 +166,87 @@ export function NewTopicForm() {
 
     try {
       if (sourceType === "pdf" && sourceFile) {
-        // PDF flow: upload → interview save → discover → scope page
+        // PDF flow: signed-url → direct browser upload to Supabase →
+        // finalize topic row → save interview → discover → scope page.
+        // Bytes never traverse our serverless function, so the platform body
+        // size limit doesn't apply.
         let pdfSlug = slug;
 
         if (!existingState?.hasSourceStructure) {
           if (!existingState) {
-            setPipelinePhase("Uploading PDF...");
-            const formData = new FormData();
-            formData.append("file", sourceFile);
-            formData.append("topic", topicName);
-            formData.append("level", derivedLevel);
-            formData.append("goal", goal);
-            formData.append("timeCommitment", derivedTimeCommitment);
-            formData.append("sourceType", "pdf");
-
-            const uploadRes = await fetch("/api/learn/source/upload", {
+            setPipelinePhase("Preparing upload...");
+            const signedRes = await fetch("/api/learn/source/signed-upload", {
               method: "POST",
-              body: formData,
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                topic: topicName,
+                fileName: sourceFile.name,
+                level: derivedLevel,
+                goal,
+              }),
             });
-            const uploadData = await uploadRes.json();
-            if (!uploadData.success) throw new Error(uploadData.error);
-            pdfSlug = uploadData.topicSlug;
+            const signedData = await readJsonOrThrow(signedRes, "Failed to prepare upload");
+            const {
+              signedUrl,
+              path,
+              topicSlug: derivedTopicSlug,
+              displayName,
+              category,
+            } = signedData as {
+              signedUrl: string;
+              token: string;
+              path: string;
+              topicSlug: string;
+              displayName: string;
+              category?: string;
+            };
+
+            setPipelinePhase("Uploading PDF...");
+            // PUT directly to the pre-authenticated Supabase URL. The token
+            // is embedded in signedUrl, so the browser doesn't need a
+            // Supabase client or the anon key. Bytes go straight to
+            // Supabase Storage — no Vercel function involved.
+            const putRes = await fetch(signedUrl, {
+              method: "PUT",
+              headers: {
+                "Content-Type": sourceFile.type || "application/pdf",
+                "x-upsert": "false",
+              },
+              body: sourceFile,
+            });
+            if (!putRes.ok) {
+              const detail = await putRes.text().catch(() => "");
+              throw new Error(
+                `Upload failed (HTTP ${putRes.status})${detail ? `: ${detail.slice(0, 200)}` : ""}`
+              );
+            }
+
+            const finalizeRes = await fetch("/api/learn/source/upload", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                topic: topicName,
+                topicSlug: derivedTopicSlug,
+                displayName,
+                level: derivedLevel,
+                goal,
+                timeCommitment: derivedTimeCommitment,
+                sourceType: "pdf",
+                storagePath: path,
+                fileName: sourceFile.name,
+                fileSize: sourceFile.size,
+                category,
+              }),
+            });
+            const finalizeData = await readJsonOrThrow(finalizeRes, "Failed to finalize upload");
+            if (!finalizeData.success) throw new Error((finalizeData.error as string) ?? "Failed to finalize upload");
+            pdfSlug = finalizeData.topicSlug as string;
 
             await fetch("/api/learn/interview", {
               method: "PUT",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
-                topicId: uploadData.topicId,
+                topicId: finalizeData.topicId,
                 profile: profileToShip,
               }),
             });
@@ -183,8 +258,8 @@ export function NewTopicForm() {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ topic: topicName, slug: pdfSlug }),
           });
-          const discoverData = await discoverRes.json();
-          if (!discoverData.success) throw new Error(discoverData.error);
+          const discoverData = await readJsonOrThrow(discoverRes, "Failed to analyze document");
+          if (!discoverData.success) throw new Error((discoverData.error as string) ?? "Failed to analyze document");
         }
 
         router.push(`/learn/${pdfSlug}/scope`);
